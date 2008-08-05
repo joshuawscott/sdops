@@ -1,0 +1,39 @@
+!!! Transitional
+
+%html{ "xmlns"=>"http://www.w3.org/1999/xhtml", "xml:lang"=>"en", "lang"=>"en" }
+  %head
+    %meta{ 'http-equiv'=>"content-type", 'content'=>"text/html;charset=UTF-8"}/
+    %title
+      = 'SDC Operations'
+    = stylesheet_link_tag 'main'
+
+  %body
+    #header
+      = image_tag("sdclogo.jpg", :id => "logo", :width => "192", :height => "80", :border => "0")
+      
+      #title
+        %h1
+          -  @subtitle = yield :subtitle
+          = 'Support Contract Database - ' + @subtitle
+
+      #menu
+        &nbsp;
+
+            
+        #userinfo
+          - if current_user != :false
+            %p
+              = h current_user.first_name + ' ' + current_user.last_name
+              = h " - " + Dropdown.find(current_user.role).label
+        
+        %hr/
+
+
+    #content
+    - if flash[:notice]
+      %p{ :style => "color: green"}
+        = flash[:notice]
+
+    = yield
+    
+

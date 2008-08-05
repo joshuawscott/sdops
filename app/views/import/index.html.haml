@@ -1,0 +1,19 @@
+- content_for :subtitle do
+  Import Contract
+#section1
+  %h2 Import data from Excel Quoter Tool
+  - form_tag '/import', :multipart => true do
+    %p
+      %label{:for => "account_id"}
+        Account
+      = select_tag('account_id', options_from_collection_for_select(@sugar_accts, 'id', 'name'))
+    %p
+      %label{:for => "importfile"}
+        File to import
+      = file_field_tag('importfile')
+    
+    = submit_tag "Import File"
+
+
+#section2
+  = link_to('Home', home_path)

@@ -1,0 +1,77 @@
+<h1>Editing opportunity</h1>
+
+<%= error_messages_for :opportunity %>
+
+<% form_for(@opportunity) do |f| %>
+  <p>
+    <b>Sugar</b><br />
+    <%= f.text_field :sugar_id %>
+  </p>
+
+  <p>
+    <b>Account</b><br />
+    <%= f.text_field :account_id %>
+  </p>
+
+  <p>
+    <b>Account name</b><br />
+    <%= f.text_field :account_name %>
+  </p>
+
+  <p>
+    <b>Opp type</b><br />
+    <%= f.text_field :opp_type %>
+  </p>
+
+  <p>
+    <b>Name</b><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <b>Description</b><br />
+    <%= f.text_area :description %>
+  </p>
+
+  <p>
+    <b>Revenue</b><br />
+    <%= f.text_field :revenue %>
+  </p>
+
+  <p>
+    <b>Cogs</b><br />
+    <%= f.text_field :cogs %>
+  </p>
+
+  <p>
+    <b>Probability</b><br />
+    <%= f.text_field :probability %>
+  </p>
+
+  <p>
+    <b>Status</b><br />
+    <%= f.text_field :status %>
+  </p>
+
+  <p>
+    <b>Modified by</b><br />
+    <%= f.text_field :modified_by %>
+  </p>
+
+  <p>
+    <b>Created at</b><br />
+    <%= f.datetime_select :created_at %>
+  </p>
+
+  <p>
+    <b>Updated at</b><br />
+    <%= f.datetime_select :updated_at %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @opportunity %> |
+<%= link_to 'Back', opportunities_path %>

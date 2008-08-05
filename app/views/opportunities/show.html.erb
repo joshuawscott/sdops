@@ -1,0 +1,68 @@
+<p>
+  <b>Sugar:</b>
+  <%=h @opportunity.sugar_id %>
+</p>
+
+<p>
+  <b>Account:</b>
+  <%=h @opportunity.account_id %>
+</p>
+
+<p>
+  <b>Account name:</b>
+  <%=h @opportunity.account_name %>
+</p>
+
+<p>
+  <b>Opp type:</b>
+  <%=h @opportunity.opp_type %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @opportunity.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @opportunity.description %>
+</p>
+
+<p>
+  <b>Revenue:</b>
+  <%=h @opportunity.revenue %>
+</p>
+
+<p>
+  <b>Cogs:</b>
+  <%=h @opportunity.cogs %>
+</p>
+
+<p>
+  <b>Probability:</b>
+  <%=h @opportunity.probability %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%=h @opportunity.status %>
+</p>
+
+<p>
+  <b>Modified by:</b>
+  <%=h @opportunity.modified_by %>
+</p>
+
+<p>
+  <b>Created at:</b>
+  <%=h @opportunity.created_at %>
+</p>
+
+<p>
+  <b>Updated at:</b>
+  <%=h @opportunity.updated_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_opportunity_path(@opportunity) %> |
+<%= link_to 'Back', opportunities_path %>

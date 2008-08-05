@@ -1,0 +1,167 @@
+#section1
+  #results.boxed
+    %h2 General Details
+    %p
+      %label{:for => "contract_account_id"}
+        Customer
+      = f.collection_select(:account_id, @sugar_accts, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('contract_account_name').value = this.options[this.selectedIndex].text"})
+      = f.hidden_field :account_name
+    %p
+      %label{:for => "contract_sales_office"}
+        Sales Office
+      = f.collection_select(:sales_office, @sales_offices, :label, :label, { :include_blank => true })
+    %p
+      %label{:for => "contract_support_office"}
+        Support Office
+      = f.collection_select(:support_office, @support_offices, :label, :label, { :include_blank => true })
+    %p
+      %label{:for => "contract_sales_rep_id"}
+        Sales rep
+      = f.collection_select(:sales_rep_id, @reps, :id, :full_name, { :include_blank => true })
+    %p
+      %label{:for => "contract_sdc_ref"}
+        SDC Reference
+      = f.text_field :sdc_ref, :class => 'textbox'
+    %p
+      %label{:for => "contract_said"}
+        SAID
+      = f.text_field :said, :class => 'textbox'
+    %p
+      %label{:for => "contract_description"}
+        Description
+      = f.text_field :description, :class => 'textbox'
+    %p
+      %label{:for => "contract_cust_po_num"}
+        Customer PO
+      = f.text_field :cust_po_num, :class => 'textbox'
+    %p
+      %label{:for => "contract_payment_terms"}
+        Payment Terms
+      = f.collection_select(:payment_terms, @pay_terms, :label, :label, { :include_blank => true })
+    %p
+      %label{:for => "contract_platform"}
+        Platform
+      = f.collection_select(:platform, @platform, :label, :label, { :include_blank => true })
+
+  #results.boxed
+    %h2 Revenue
+    %p
+      %label{:for => "contract_revenue"}
+        Amount Paid
+      =f.text_field :revenue, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_hw_rev"}
+        Ann. HW Revenue
+      = f.text_field :annual_hw_rev, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_sw_rev"}
+        Ann. SW Revenue
+      = f.text_field :annual_sw_rev, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_ce_rev"}
+        Ann. CE Revenue
+      = f.text_field :annual_ce_rev, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_sa_rev"}
+        Ann. SA Revenue
+      = f.text_field :annual_sa_rev, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_dr_rev"}
+        Ann. DR Revenue
+      = f.text_field :annual_dr_rev, :class => 'textbox'
+    %p
+      %b &nbsp
+    %p Example: Enter $100,000 as 100000
+
+  #results.boxed
+    %h2 Discounts
+    %p
+      %label{:for => "contract_discount_pref_hw"}
+        Discount HW
+      = f.text_field :discount_pref_hw, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_pref_sw"}
+        Discount SW
+      = f.text_field :discount_pref_sw, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_prepay"}
+        Discount Prepay
+      = f.text_field :discount_prepay, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_multiyear"}
+        Multi-year Disc.
+      = f.text_field :discount_multiyear, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_ce_day"}
+        Discount CE Days
+      = f.text_field :discount_ce_day, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_sa_day"}
+        Discount SA Days
+      = f.text_field :discount_sa_day, :class => 'textbox'
+    %p
+      %b &nbsp
+    %p Example: Enter 35% as 35
+
+  #results.boxed
+    %h2 Terms
+    %p
+      %label{:for => "contract_hw_support_level_id"}
+        HW Support Level
+      = f.collection_select(:hw_support_level_id, @types_hw, :label, :label, { :include_blank => true })
+    %p                                                 
+      %label{:for => "contract_sw_support_level_id"}
+        SW Support Level
+      = f.collection_select(:sw_support_level_id, @types_sw, :label, :label, { :include_blank => true })
+    %p
+      %label{:for => "contract_updates"}
+        SW Updates
+      = f.select(:updates, %w{false true})
+    %p
+      %label{:for => "contract_ce_days"}
+        Num. CE Days
+      = f.text_field :ce_days, :class => 'textbox'
+    %p
+      %label{:for => "contract_sa_days"}
+        Num. SA Days
+      = f.text_field :sa_days, :class => 'textbox'
+    %p
+      %label{:for => "contract_start_date"}
+        Start Date
+      = f.text_field :start_date, :class => 'textbox'
+    %p
+      %label{:for => "contract_end_date"}
+        End Date
+      = f.text_field :end_date, :class => 'textbox'
+    %p
+      %label{:for => "contract_multiyr_end"}
+        Multi-Year End
+      = f.text_field :multiyr_end, :class => 'textbox'
+    %p
+      %label{:for => "contract_expired"}
+        Expired
+      = f.select(:expired, %w{false true})
+    %p Note: Enter dates in yyyy-mm-dd format
+
+  #results.boxed
+    %h2 Relationships &nbsp;
+    
+    %p
+      %b Replaced By
+      %br
+      - for x in @replaced_by
+        = check_box_tag "contract[successor_ids][]", x.id, @contract.successors.include?(x)
+        = x.said + " | " + x.description + " | " + x.start_date.to_s + " | " + x.end_date.to_s
+        %br
+     
+    %p &nbsp;
+    
+    %p
+      %b Replaces
+      %br
+      - for x in @replaces
+        = check_box_tag "contract[predecessor_ids][]", x.id, @contract.predecessors.include?(x)
+        = x.said + " | " + x.description + " | " + x.start_date.to_s + " | " + x.end_date.to_s
+        %br
+
+

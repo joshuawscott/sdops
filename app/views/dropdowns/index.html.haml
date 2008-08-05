@@ -1,0 +1,25 @@
+- content_for :subtitle do
+  Dropdowns List
+
+#section1
+  %table{:border => "2", :cellpadding => "2", :cellspacing => "2"}
+    %tr 
+      %th Dd name
+      %th Filter
+      %th Sort Order
+      %th Label
+      %th{:colspan => "3"} &nbsp;
+    
+    - for dropdowns in @dropdowns
+      %tr
+        %td= h dropdowns.dd_name
+        %td= h dropdowns.filter
+        %td= h dropdowns.sort_order
+        %td= h dropdowns.label
+        %td= link_to 'Show', dropdowns
+        %td= link_to 'Edit', edit_dropdown_path(dropdowns)
+        %td= link_to 'Destroy', dropdowns, :confirm => 'Are you sure?', :method => :delete
+
+
+#section2
+  = link_to 'New dropdowns', new_dropdown_path

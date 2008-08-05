@@ -1,0 +1,40 @@
+<% content_for :subtitle do%>
+     Locations List
+<%end%>
+<h1>Editing location</h1>
+
+<%= error_messages_for :location %>
+
+<% form_for(@location) do |f| %>
+  <p>
+    <b>Name</b><br />
+    <%= f.text_field :name %>
+  </p>
+
+  <p>
+    <b>Description</b><br />
+    <%= f.text_field :description %>
+  </p>
+
+  <p>
+    <b>Data</b><br />
+    <%= f.text_area :data %>
+  </p>
+
+  <p>
+    <b>Resource</b><br />
+    <%= f.text_field :resource_id %>
+  </p>
+
+  <p>
+    <b>Resource type</b><br />
+    <%= f.text_field :resource_type %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @location %> |
+<%= link_to 'Back', locations_path %>

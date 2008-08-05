@@ -1,0 +1,28 @@
+- content_for :subtitle do
+  Show Dropdown
+
+
+%p
+  %b Dd name:
+  =h @dropdown.dd_name
+
+
+%p
+  %b Filter:
+  =h @dropdown.filter
+
+
+%p
+  %b Sort Order:
+  =h @dropdown.sort_order
+
+
+
+%p
+  %b Label:
+  =h @dropdown.label
+
+
+
+= link_to('Edit', edit_dropdown_path(@dropdown)) + " | "
+= link_to 'Back', dropdowns_path

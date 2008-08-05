@@ -1,0 +1,12 @@
+%ul
+  %li
+    = link_to 'Contracts', contracts_path
+  %li
+    = link_to 'Reports', reports_path
+
+  - if logged_in?
+    %li
+      = link_to 'Logout', "/logout"
+  - else
+    %li
+      = link_to 'Login', "/login"

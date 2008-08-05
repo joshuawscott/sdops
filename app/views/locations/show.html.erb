@@ -1,0 +1,31 @@
+<% content_for :subtitle do%>
+     Locations List
+<%end%>
+<p>
+  <b>Name:</b>
+  <%=h @location.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @location.description %>
+</p>
+
+<p>
+  <b>Data:</b>
+  <%=h @location.data %>
+</p>
+
+<p>
+  <b>Resource:</b>
+  <%=h @location.resource_id %>
+</p>
+
+<p>
+  <b>Resource type:</b>
+  <%=h @location.resource_type %>
+</p>
+
+
+<%= link_to 'Edit', edit_location_path(@location) %> |
+<%= link_to 'Back', locations_path %>

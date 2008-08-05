@@ -1,0 +1,66 @@
+<% content_for :subtitle do%>
+     Product Deal
+<%end%>
+<p>
+  <b>Job number:</b>
+  <%=h @product_deal.job_number %>
+</p>
+
+<p>
+  <b>Opportunity:</b>
+  <%=h @product_deal.opportunity_id %>
+</p>
+
+<p>
+  <b>Account:</b>
+  <%=h @product_deal.account_id %>
+</p>
+
+<p>
+  <b>Account name:</b>
+  <%=h @product_deal.account_name %>
+</p>
+
+<p>
+  <b>Invoice number:</b>
+  <%=h @product_deal.invoice_number %>
+</p>
+
+<p>
+  <b>Revenue:</b>
+  <%=h @product_deal.revenue %>
+</p>
+
+<p>
+  <b>Cogs:</b>
+  <%=h @product_deal.cogs %>
+</p>
+
+<p>
+  <b>Freight:</b>
+  <%=h @product_deal.freight %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%=h @product_deal.status %>
+</p>
+
+<p>
+  <b>Modified by:</b>
+  <%=h @product_deal.modified_by %>
+</p>
+
+<p>
+  <b>Created at:</b>
+  <%=h @product_deal.created_at %>
+</p>
+
+<p>
+  <b>Updated at:</b>
+  <%=h @product_deal.updated_at %>
+</p>
+
+
+<%= link_to 'Edit', edit_product_deal_path(@product_deal) %> |
+<%= link_to 'Back', product_deals_path %>

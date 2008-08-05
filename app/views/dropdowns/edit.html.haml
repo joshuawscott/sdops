@@ -1,0 +1,13 @@
+- content_for :subtitle do
+  Edit Dropdown
+
+#section1
+  = error_messages_for :dropdowns 
+  - form_for(:dropdown, :url => dropdown_path(@dropdown), :html => { :method => :put }) do |f|
+    = render :partial => "form", :locals => { :f => f } 
+    
+    %p 
+      = f.submit "Update" 
+
+#section2
+  = link_to 'Back', dropdowns_path 

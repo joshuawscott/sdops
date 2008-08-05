@@ -1,0 +1,54 @@
+- content_for :subtitle do
+  Contract List
+  
+#section1
+  %p
+    %b Total Support Customers - 
+    = Contract.total_customer_count(current_user.office, current_user.role)
+    %b &nbsp; | &nbsp;  Total Support Contracts - 
+    = Contract.total_contract_count(current_user.office, current_user.role)
+
+  %table{:border => "2", :cellpadding => "2", :cellspacing => "2"}
+    - form_tag contracts_path, { :method => :get } do
+      %tr
+        %td= select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 8em"})
+        %td= select("search", "support_office", @support_offices, {:selected => @support_office, :include_blank => true },{:style => "width: 8em"})
+        %td= select("search", "account_name", @account_names, {:selected => @account_name, :include_blank => true },{:style => "width: 10em"})
+        %td= text_field 'search', 'said', :size => 10, :value => @said
+        %td= text_field 'search', 'description', :size => 10, :value => @description
+        %td= text_field 'search', 'cust_po_num', :size => 10, :value => @cust_po_num
+        %td= select("search", "payment_terms", @pay_terms, {:selected => @pay_term, :include_blank => true },{:style => "width: 6em"})
+        %td= text_field 'search', 'revenue', :size => 8, :value => @revenue
+        %td
+          = submit_tag "Search"
+          = link_to 'Clear', contracts_path
+    %tr
+      %th Sales Office
+      %th Support Office
+      %th Account Name
+      %th SAID
+      %th Description
+      %th PO Number
+      %th Terms
+      %th Annual Rev
+      %th{:colspan => "3"} &nbsp;
+    - for contract in @contracts
+      %tr 
+        %td= h contract.sales_office
+        %td= h contract.support_office
+        %td= h contract.account_name
+        %td= h contract.said
+        %td= h contract.description
+        %td= h contract.cust_po_num
+        %td= h contract.payment_terms
+        %td{:align => 'right'}= h number_to_currency(contract.revenue, :precision => 0)
+
+        
+        %td
+          = link_to(' Show ', contract_path(contract))
+          = " | " + link_to(' Edit ', edit_contract_path(contract)) if current_user.role == ADMIN
+          = " | " + link_to(' Destroy ', contract_path(contract), :confirm => 'Are you sure?', :method => :delete)  if current_user.role == ADMIN
+
+
+#section2
+  = link_to 'New contract', new_contract_path if current_user.role == ADMIN

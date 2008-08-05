@@ -1,0 +1,53 @@
+quentin:
+  id: 1
+  login: quentin
+  first_name: quentin
+  last_name: smith
+  office_id: 1
+  email: quentin@example.com
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 5.days.ago.to_s :db %>
+  updated_at: <%= 3.days.ago.to_s :db %>
+  role: 21
+
+
+
+aaron:
+  id: 2
+  login: aaron
+  email: aaron@example.com
+  first_name: aaron
+  last_name: smith
+  office_id: 1
+  role: 21
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 1.days.ago.to_s :db %>
+  
+
+admin:
+  id: 3
+  login: admin
+  first_name: troy
+  last_name: smith
+  office_id: 1
+  email: admin@example.com
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 5.days.ago.to_s :db %>
+  updated_at: <%= 3.days.ago.to_s :db %>
+  role: 23
+  
+basic:
+  id: 4
+  login: basic
+  first_name: Davani
+  last_name: Cutting
+  office_id: 1
+  email: dcutting@example.com
+  salt: 7e3041ebc2fc05a40c60028e2c4901a81035d3cd
+  crypted_password: 00742970dc9e6319f8019fd54864d3ea740f04b1 # test
+  created_at: <%= 5.days.ago.to_s :db %>
+  updated_at: <%= 3.days.ago.to_s :db %>
+  role: 21

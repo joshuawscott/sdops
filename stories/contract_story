@@ -1,0 +1,15 @@
+Story: Working with contract data
+  
+  As an admin user
+  I want to create contracts
+  So that we can track them
+  
+  Scenario: Create a new contract
+    
+    Given admin is logged in
+
+    When I create a new contract
+
+    Then the contract should in database
+    And should redirect to show page
+    

@@ -1,0 +1,7 @@
+log/*.log
+tmp/**/*
+coverage/*
+public/rspec.html
+config/database.yml
+spec/spec.opt*
+spec_output

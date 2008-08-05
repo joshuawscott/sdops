@@ -1,0 +1,75 @@
+<% content_for :subtitle do%>
+     Product Deal
+<%end%>
+<h1>Editing product_deal</h1>
+
+<%= error_messages_for :product_deal %>
+
+<% form_for(@product_deal) do |f| %>
+  <p>
+    <b>Job number</b><br />
+    <%= f.text_field :job_number %>
+  </p>
+
+  <p>
+    <b>Opportunity</b><br />
+    <%= f.text_field :sugar_opp_id %>
+  </p>
+
+  <p>
+    <b>Account</b><br />
+    <%= f.text_field :account_id %>
+  </p>
+
+  <p>
+    <b>Account name</b><br />
+    <%= f.text_field :account_name %>
+  </p>
+
+  <p>
+    <b>Invoice number</b><br />
+    <%= f.text_field :invoice_number %>
+  </p>
+
+  <p>
+    <b>Revenue</b><br />
+    <%= f.text_field :revenue %>
+  </p>
+
+  <p>
+    <b>Cogs</b><br />
+    <%= f.text_field :cogs %>
+  </p>
+
+  <p>
+    <b>Freight</b><br />
+    <%= f.text_field :freight %>
+  </p>
+
+  <p>
+    <b>Status</b><br />
+    <%= f.text_field :status %>
+  </p>
+
+  <p>
+    <b>Modified by</b><br />
+    <%= f.text_field :modified_by %>
+  </p>
+
+  <p>
+    <b>Created at</b><br />
+    <%= f.datetime_select :created_at %>
+  </p>
+
+  <p>
+    <b>Updated at</b><br />
+    <%= f.datetime_select :updated_at %>
+  </p>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @product_deal %> |
+<%= link_to 'Back', product_deals_path %>

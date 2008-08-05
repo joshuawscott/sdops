@@ -1,0 +1,14 @@
+--- 
+vendor/plugins/rspec: 
+  local_branch: braid/svn/vendor/plugins/rspec
+  type: svn
+  remote: http://rspec.rubyforge.org/svn/trunk/rspec
+vendor/plugins/restful_authentication: 
+  local_branch: braid/git/vendor/plugins/restful-authentication/master
+  type: git
+  branch: master
+  remote: git://github.com/technoweenie/restful-authentication.git
+vendor/plugins/rspec_on_rails: 
+  local_branch: braid/svn/vendor/plugins/rspec-on-rails
+  type: svn
+  remote: http://rspec.rubyforge.org/svn/trunk/rspec_on_rails

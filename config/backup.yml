@@ -1,0 +1,27 @@
+production: 
+  dirs: 
+   - db/backups
+   - public/uploaded_images
+  servers: 
+    -  name: backup server number 1
+       host: gridserver.com
+       port: 22
+       user: blah@whatever.com
+       dir: /home/blah/backups
+    -  name: backup server two
+       host: kradradio.com
+       port: 22
+       user: kraduser
+       dir: /home/kraduser/backups_from_my_rails_proj
+
+
+development: 
+  dirs: 
+   - db/backups
+   - public/uploaded_images
+  servers: 
+    -  name: local self
+       host: localhost
+       port: 5222
+       user: oneman
+       dir: /home/oneman/Documents/development_backup

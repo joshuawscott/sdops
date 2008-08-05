@@ -1,0 +1,29 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  job_number: MyString
+  opportunity_id: 1
+  account_id: MyString
+  account_name: MyString
+  invoice_number: MyString
+  revenue: 1
+  cogs: 1
+  freight: 1
+  status: MyString
+  modified_by: MyString
+  created_at: 2008-04-21 07:32:40
+  updated_at: 2008-04-21 07:32:40
+
+two:
+  job_number: MyString
+  opportunity_id: 1
+  account_id: MyString
+  account_name: MyString
+  invoice_number: MyString
+  revenue: 1
+  cogs: 1
+  freight: 1
+  status: MyString
+  modified_by: MyString
+  created_at: 2008-04-21 07:32:40
+  updated_at: 2008-04-21 07:32:40

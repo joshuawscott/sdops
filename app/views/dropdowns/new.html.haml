@@ -1,0 +1,13 @@
+- content_for :subtitle do
+  New Dropdown
+
+#section1
+  = error_messages_for :dropdowns 
+  - form_for(:dropdown, :url => dropdowns_path) do |f|
+    = render :partial => "form", :locals => { :f => f } 
+    
+    %p 
+      = f.submit "Create" 
+
+#section2
+  = link_to 'Back', dropdowns_path 

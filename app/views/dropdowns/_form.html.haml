@@ -1,0 +1,24 @@
+#section1
+  #results.boxed
+    %h2 Dropdown Details
+    - form_for(@dropdown) do |f|
+      %p 
+        %label{:for => "dropdown_dd_name"}
+          Dd name
+        = f.text_field :dd_name, :class => 'textbox'
+      
+      %p 
+        %label{:for => "dropdown_filter"}
+          Filter
+        = f.text_field :filter, :class => 'textbox'
+      
+      %p 
+        %label{:for => "dropdown_sort_order"}
+          Sort Order
+        = f.text_field :sort_order, :class => 'textbox'
+      
+      %p 
+        %label{:for => "dropdown_label"}
+          Label
+        = f.text_field :label, :class => 'textbox'
+

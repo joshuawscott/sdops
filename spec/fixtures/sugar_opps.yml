@@ -1,0 +1,47 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+opp1:
+  id: 1377ecfe-8d7a-9d80-b912-46eae3d98409 
+  date_entered: 2007-11-11 08:18:46
+  date_modified: 2007-11-11 08:18:46
+  modified_user_id: 8bd7a7da-ed7b-1c0e-c2d8-46b778cda4c8 
+  assigned_user_id: 8bd7a7da-ed7b-1c0e-c2d8-46b778cda4c8 
+  created_by: 8bd7a7da-ed7b-1c0e-c2d8-46b778cda4c8 
+  team_id: f07cf584-b1f6-773a-417c-44ce9795bc31 
+  deleted: 0
+  name: RP2470 HW/SW Support 
+  opportunity_type: New Business 
+  campaign_id: NULL 
+  lead_source: Employee 
+  amount: 2041.2
+  amount_backup: NULL 
+  amount_usdollar: 2041.2
+  currency_id: -99
+  date_closed: 2008-01-11 08:18:46
+  next_step: Wait for selection 
+  sales_stage: Closed Won 
+  probability: 100
+  description: 1/23 Proposal and pricing has been submitted.
+
+opp2:
+  id: f2207123-7f4c-9e23-026c-46e82e4fdb0a 
+  date_entered: 2007-11-11 08:18:46
+  date_modified: 2007-11-11 08:18:46
+  modified_user_id: 8bd7a7da-ed7b-1c0e-c2d8-46b778cda4c8 
+  assigned_user_id: 8bd7a7da-ed7b-1c0e-c2d8-46b778cda4c8 
+  created_by: 8bd7a7da-ed7b-1c0e-c2d8-46b778cda4c8 
+  team_id: f07cf584-b1f6-773a-417c-44ce9795bc31 
+  deleted: 0
+  name: RP2470 HW/SW Support 
+  opportunity_type: New Business 
+  campaign_id: NULL 
+  lead_source: Employee 
+  amount: 12041.2
+  amount_backup: NULL 
+  amount_usdollar: 12041.2
+  currency_id: -99
+  date_closed: 2008-02-11 08:18:46
+  next_step: Wait for selection 
+  sales_stage: Closed Lost 
+  probability: 0
+  description: 1/23 Proposal and pricing has been submitted.

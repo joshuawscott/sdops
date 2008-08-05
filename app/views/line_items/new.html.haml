@@ -1,0 +1,13 @@
+- content_for :subtitle do
+  New Line Item
+
+#section1
+  = error_messages_for :line_item
+  - form_for(:line_item, :url => contract_line_items_path(@contract.id)) do |f|
+    = render :partial => "form", :locals => { :f => f } 
+    
+    %p
+      = submit_tag "Create"
+
+#section2
+  = link_to 'Contract List', contract_path(@contract)

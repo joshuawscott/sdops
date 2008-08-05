@@ -1,0 +1,42 @@
+#section1
+  #results.boxed
+    %h2 General Details
+    %p
+      %label{:for => "user_login"}
+        Login
+      = f.text_field :login
+
+    %p
+      %label{:for => "user_first_name"}
+        First Name
+      = f.text_field :first_name
+
+    %p
+      %label{:for => "user_last_name"}
+        Last Name
+      = f.text_field :last_name
+
+    %p
+      %label{:for => "user_office"}
+        Office
+      = f.collection_select(:office, @offices, :label, :label)
+
+    %p
+      %label{:for => "user_role"}
+        Role
+      = f.collection_select(:role, @roles, :id, :label)
+
+    %p
+      %label{:for => "user_email"}
+        Email
+      = f.text_field :email
+
+    %p
+      %label{:for => "user_password"}
+        Password
+      = f.password_field :password
+      
+    %p
+      %label{:for => "user_password"}
+        Confirm Password
+      = f.password_field :password_confirmation

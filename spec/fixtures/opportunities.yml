@@ -1,0 +1,31 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  sugar_id: MyString
+  account_id: MyString
+  account_name: MyString
+  opp_type: MyString
+  name: MyString
+  description: MyText
+  revenue: 1
+  cogs: 1
+  probability: 1
+  status: MyString
+  modified_by: MyString
+  created_at: 2008-04-30 12:20:31
+  updated_at: 2008-04-30 12:20:31
+
+two:
+  sugar_id: MyString
+  account_id: MyString
+  account_name: MyString
+  opp_type: MyString
+  name: MyString
+  description: MyText
+  revenue: 1
+  cogs: 1
+  probability: 1
+  status: MyString
+  modified_by: MyString
+  created_at: 2008-04-30 12:20:31
+  updated_at: 2008-04-30 12:20:31
