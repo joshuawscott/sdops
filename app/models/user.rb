@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password
 
-  validates_presence_of     :login, :email, :first_name, :last_name, :office, :role
+  validates_presence_of     :login, :email, :first_name, :last_name
   validates_presence_of     :password,                   :if => :password_required?
   validates_presence_of     :password_confirmation,      :if => :password_required?
   validates_length_of       :password, :within => 4..40, :if => :password_required?
@@ -25,14 +25,14 @@ class User < ActiveRecord::Base
   end
 
   # Encrypts some data with the salt.
-  def self.encrypt(password, salt)
+  def self.encrypt(password)
     #Digest::SHA1.hexdigest("--#{salt}--#{password}--")
     Digest::MD5.hexdigest("#{password}")
   end
 
   # Encrypts the password with the user salt
   def encrypt(password)
-    self.class.encrypt(password, salt)
+    self.class.encrypt(password)
   end
 
   def authenticated?(password)
@@ -73,16 +73,16 @@ class User < ActiveRecord::Base
   end
   
   #TODO: Finish import of users from sugar
-  def update_from_sugar()
+  def self.update_from_sugar()
     sugar_users = SugarUser.find(:all, :conditions => "status = 'Active'")
     failures = []
     sugar_users.map do |x|
-      local_user = User.find(:first, :conditions => ["user_name = ?", x.user_name])
+      local_user = User.find(:first, :conditions => ["login = ?", x.user_name])
       if local_user
         local_user.first_name = x.first_name
         local_user.last_name = x.last_name
         local_user.email = x.email1
-        local_user.crypted_password = x.user_name
+        local_user.crypted_password = x.user_hash
         local_user.sugar_id = x.id
         if local_user.save
           #all ok
@@ -95,7 +95,7 @@ class User < ActiveRecord::Base
         local_user.first_name = x.first_name
         local_user.last_name = x.last_name
         local_user.email = x.email1
-        local_user.crypted_password = x.user_name
+        local_user.crypted_password = x.user_hash
         local_user.sugar_id = x.id
         if local_user.save
           #all ok
@@ -104,13 +104,13 @@ class User < ActiveRecord::Base
         end
       end
     end
-    
+    failures
   end
   protected
     # before filter 
     def encrypt_password
       return if password.blank?
-      self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
+      #self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
       self.crypted_password = encrypt(password)
     end
       

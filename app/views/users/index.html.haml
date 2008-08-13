@@ -8,12 +8,12 @@
       %th Name
       %th Role
       %th Office
-      %th{:colspan => "3"} &nbsp;
+      %th{:colspan => "2"} Actions
     
     - for user in @users
       %tr
         %td= h user.login
-        %td= h user.first_name
+        %td= h user.first_name + ' ' + user.last_name
         %td= h @roles_labels[user.role]
         %td= h user.office
         %td= link_to ' Edit ', edit_user_path(user)

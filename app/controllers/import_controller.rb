@@ -56,7 +56,7 @@ class ImportController < ApplicationController
   
   protected  
   def authorized?
-    current_user.role == ADMIN || not_authorized
+    current_user.role >= IMPORT || not_authorized
   end
   
 end

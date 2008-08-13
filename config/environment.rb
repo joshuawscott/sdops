@@ -12,10 +12,11 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 require 'gruff'
 
-ADMIN = 23
-MANAGER = 22
-BASIC = 21
-VEIWONLY = 20
+VEIWONLY = 31
+BASIC = 32
+IMPORT = 33
+MANAGER = 34
+ADMIN = 35
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.

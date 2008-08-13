@@ -1,11 +1,11 @@
 #section1
   #results.boxed
     %h2 General Details
+    = f.hidden_field :account_name
     %p
       %label{:for => "contract_account_id"}
         Customer
       = f.collection_select(:account_id, @sugar_accts, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('contract_account_name').value = this.options[this.selectedIndex].text"})
-      = f.hidden_field :account_name
     %p
       %label{:for => "contract_sales_office"}
         Sales Office
