@@ -12,12 +12,14 @@
     %p
       %label{:for => "contract_sales_office"}
         Sales Office
-      =h @contract.sales_office ||= 'N/A'
+      - @temp = SugarTeam.find(@contract.sales_office).name
+      =h @temp ||= 'N/A'
 
     %p
       %label{:for => "contract_support_office"}
         Support Office
-      =h @contract.support_office ||= 'N/A'
+      - @temp = SugarTeam.find(@contract.support_office).name
+      =h @temp ||= 'N/A'
 
     %p
       %label{:for => "contract_description"}
@@ -98,32 +100,32 @@
     %p
       %label{:for => "contract_discount_pref_hw"}
         HW Disct %
-      =h sprintf("%d%", @contract.discount_pref_hw ||= 'N/A')
+      =h sprintf("%d%", @contract.discount_pref_hw ||= 0.0)
 
     %p
       %label{:for => "contract_discount_pref_sw"}
         SW Disct %
-      =h sprintf("%d%", @contract.discount_pref_sw ||= 'N/A')
+      =h sprintf("%d%", @contract.discount_pref_sw ||= 0.0)
 
     %p
       %label{:for => "contract_discount_prepay"}
         Prepay Disct %
-      =h sprintf("%d%", @contract.discount_prepay ||= 'N/A')
+      =h sprintf("%d%", @contract.discount_prepay ||= 0.0)
 
     %p
       %label{:for => "contract_discount_multiyear"}
         Multi-year Disct %
-      =h sprintf("%d%", @contract.discount_multiyear ||= 'N/A')
+      =h sprintf("%d%", @contract.discount_multiyear ||= 0.0)
 
     %p
       %label{:for => "contract_discount_ce_day"}
         CE Days Disc % 
-      =h sprintf("%d%", @contract.discount_ce_day ||= 'N/A')
+      =h sprintf("%d%", @contract.discount_ce_day ||= 0.0)
 
     %p
       %label{:for => "contract_discount_sa_day"}
         SA Days Disct %
-      =h sprintf("%d%", @contract.discount_sa_day ||= 'N/A')
+      =h sprintf("%d%", @contract.discount_sa_day ||= 0.0)
 
   #results.boxed
     %h2 Terms

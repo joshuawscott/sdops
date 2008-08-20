@@ -20,15 +20,15 @@ class Contract < ActiveRecord::Base
   #validates_presence_of :discount_ce_day, :discount_sa_day
   
   #Validate Terms
-  validates_presence_of :start_date, :end_date  #, :multiyr_end
+  validates_presence_of :start_date, :end_date
   #validates_presence_of :hw_support_level_id, :sw_support_level_id, :updates, :ce_days, :sa_days
   
-  def self.short_list(team, role)
+  def self.short_list(role, teams)
     if role >= MANAGER
-      Contract.find(:all, :select => "id, sales_office, support_office, said, description, cust_po_num, payment_terms, revenue, account_name")
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name")
     else
-      Contract.find(:all, :select => "id, sales_office, support_office, said, description, cust_po_num, payment_terms, revenue, account_name",
-        :conditions => ["sales_office = ?", team])
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name",
+        :conditions => ["sales_office IN (?)", teams])
     end
   end
   

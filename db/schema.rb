@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080722021451) do
+ActiveRecord::Schema.define(:version => 20080818123555) do
 
   create_table "contracts", :force => true do |t|
     t.string   "sdc_ref"
@@ -21,12 +21,12 @@ ActiveRecord::Schema.define(:version => 20080722021451) do
     t.string   "cust_po_num"
     t.string   "payment_terms"
     t.string   "platform"
-    t.integer  "revenue",             :limit => 10, :precision => 10, :scale => 0
-    t.integer  "annual_hw_rev",       :limit => 10, :precision => 10, :scale => 0
-    t.integer  "annual_sw_rev",       :limit => 10, :precision => 10, :scale => 0
-    t.integer  "annual_ce_rev",       :limit => 10, :precision => 10, :scale => 0
-    t.integer  "annual_sa_rev",       :limit => 10, :precision => 10, :scale => 0
-    t.integer  "annual_dr_rev",       :limit => 10, :precision => 10, :scale => 0
+    t.integer  "revenue",             :limit => 10
+    t.integer  "annual_hw_rev",       :limit => 10
+    t.integer  "annual_sw_rev",       :limit => 10
+    t.integer  "annual_ce_rev",       :limit => 10
+    t.integer  "annual_sa_rev",       :limit => 10
+    t.integer  "annual_dr_rev",       :limit => 10
     t.date     "start_date"
     t.date     "end_date"
     t.date     "multiyr_end"
@@ -36,17 +36,19 @@ ActiveRecord::Schema.define(:version => 20080722021451) do
     t.string   "updates"
     t.integer  "ce_days",             :limit => 11
     t.integer  "sa_days",             :limit => 11
-    t.integer  "discount_pref_hw",    :limit => 10, :precision => 10, :scale => 0
-    t.integer  "discount_pref_sw",    :limit => 10, :precision => 10, :scale => 0
-    t.integer  "discount_prepay",     :limit => 10, :precision => 10, :scale => 0
-    t.integer  "discount_multiyear",  :limit => 10, :precision => 10, :scale => 0
-    t.integer  "discount_ce_day",     :limit => 10, :precision => 10, :scale => 0
-    t.integer  "discount_sa_day",     :limit => 10, :precision => 10, :scale => 0
+    t.integer  "discount_pref_hw",    :limit => 10
+    t.integer  "discount_pref_sw",    :limit => 10
+    t.integer  "discount_prepay",     :limit => 10
+    t.integer  "discount_multiyear",  :limit => 10
+    t.integer  "discount_ce_day",     :limit => 10
+    t.integer  "discount_sa_day",     :limit => 10
     t.string   "replacement_sdc_ref"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "said"
     t.string   "account_name"
+    t.string   "sales_office_name"
+    t.string   "support_office_name"
   end
 
   create_table "dropdowns", :force => true do |t|

@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.xml
   def index
-    @users = User.find(:all)
+    @users = User.find(:all, :order => "last_name, first_name")
     @roles_labels = Dropdown.role_lables
   
     respond_to do |format|
@@ -31,7 +31,7 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   def new
     @user = User.new
-    @offices = Dropdown.office_list
+    @team = SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
     @roles = Dropdown.role_list
     
     respond_to do |format|
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
-    @offices = Dropdown.office_list
+    @team = SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
     @roles = Dropdown.role_list
   end
   

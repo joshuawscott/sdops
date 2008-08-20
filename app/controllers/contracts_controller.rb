@@ -6,13 +6,13 @@ class ContractsController < ApplicationController
   # GET /contracts
   # GET /contracts.xml
   def index
-    
-    @sales_offices =  Dropdown.office_list.map {|x| x.label}
+    #debugger
+    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
     @support_offices =  @sales_offices
     #@account_names = SugarAcct.find(:all, :select => "id, name", :order => "name")
     @account_names = Contract.find(:all, :select => "distinct(account_name)").map {|x| x.account_name}
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
-    @pay_terms << "not bundled"
+    @pay_terms << "not bundled"                 
 
     if params[:search] != nil
       #Get search criteria from params object
@@ -41,7 +41,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "contracts.cust_po_num like ?", "%"+@cust_po_num+"%" unless @cust_po_num.blank?
       @contracts
     else
-      @contracts = Contract.short_list(current_user.office, current_user.role)
+      @contracts = Contract.short_list(current_user.role, current_user.sugar_team_ids)
     end
     
     respond_to do |format|
@@ -71,7 +71,7 @@ class ContractsController < ApplicationController
   def new
     @contract = Contract.new
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :order => "name")
-    @sales_offices =  Dropdown.office_list
+    @sales_offices =  SugarTeam.dropdown_list
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list
@@ -91,14 +91,14 @@ class ContractsController < ApplicationController
   def edit
     @contract = Contract.find(params[:id])
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :order => "name")
-    @sales_offices =  Dropdown.office_list
+    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list
     @reps = User.user_list
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
-    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name}'")
+    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name}' AND id <> #{params[:id]}")
     @replaced_by = @replaces
 
   end

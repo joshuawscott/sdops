@@ -2,25 +2,31 @@ class GraphsController < ApplicationController
   before_filter :login_required
   
   def sales_by_office
+    # Prepare data and labels for the graph
+    total_rev = Contract.sum(:revenue, :group => :sales_office_name)
+
+    temp = total_rev.map {|x| max = x[1] }
+    max = temp.max * 1.1
+    
+    n = 0
+    labels = {}
+    data = []
+    total_rev.map do |x|
+      labels[n] = x[0].to_s
+      n += 1
+      data << x[1]
+    end
+
     #Initialize new graph and set general properties
     g = Gruff::SideBar.new("400x325")
     theme_sdc(g)
     g.title = "Total Yearly Support Rev By Office"
     g.hide_legend = true
-    g.labels = create_lables
+    g.labels = labels
     g.minimum_value = 0
-    g.maximum_value = 160000
+    g.maximum_value = max
     
-    # Generate data for the graph
-    @offices = get_offices
-    @total_rev =  Contract.sum(:revenue, :group => :sales_office)
-    @data = @offices.map do |d|
-      if @total_rev[d] == nil
-         @total_rev[d] = 0
-      end
-      @total_rev[d]
-    end
-    g.data("Support", @data)
+    g.data("Support", data)
 
     #Convert to blob object and send to browser
     send_data(g.to_blob, 
@@ -31,8 +37,8 @@ class GraphsController < ApplicationController
 
   def sales_by_office_mini_bar
     # Prepare data and labels for the graph
-    total_rev = Contract.sum(:revenue, :group => :sales_office)
-    
+    total_rev = Contract.sum(:revenue, :group => :sales_office_name)
+
     temp = total_rev.map {|x| max = x[1] }
     max = temp.max * 1.1
     
@@ -47,7 +53,7 @@ class GraphsController < ApplicationController
     
     #Initialize new graph and set general properties
     g = Gruff::Bar.new("300x90")
-    g.theme_troy
+    theme_sdc(g)
     #g.render_transparent_background
     #g.hide_title = true
     g.title = "Yearly Support Rev By Office"
@@ -93,15 +99,6 @@ class GraphsController < ApplicationController
 
   protected
   
-  def create_lables
-    @data = Dropdown.find(:all, :select => "sort_order, label", :conditions => "dd_name = 'office'")
-    a = @data.map {|x| x.sort_order-1}
-    b = @data.map {|x| x.label}
-    c = a.zip(b)
-    c.flatten!
-    Hash[*c]
-  end
-  
   def get_offices
     #debugger
     #Dropdown.find(:all, :select => "id", :conditions => "dd_name = 'office'", :order => "sort_order").map do |x|
@@ -115,13 +112,13 @@ class GraphsController < ApplicationController
   def theme_sdc(graph)
     # Colors
     @black = 'black'
-    @blue = '#3d2be0'
-    @green = '#339933'
+    @blue = '#0000cc'
+    @green = '#00cc00'
     @orange = '#cf5910'
     @purple = '#cc99cc'
-    @red = '#c12b44'
+    @red = '#cc0000'
     @yellow = '#FFF804'
-    @colors = [@red, @blue, @green, @yellow, @purple, @orange, @black]
+    @colors = [@green, @red, @blue, @yellow, @purple, @orange, @black]
   
     graph.theme = {
       :colors => @colors,

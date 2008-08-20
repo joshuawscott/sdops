@@ -1,6 +1,9 @@
 #require 'digest/sha1'
 require 'digest/md5'
 class User < ActiveRecord::Base
+  
+  #has_many :sugar_team_memberships, :foreign_key => :user_id
+
   # Virtual attribute for the unencrypted password
   attr_accessor :password
 
@@ -72,6 +75,14 @@ class User < ActiveRecord::Base
      User.find(:all, :order => "last_name")
   end
   
+  def sugar_team_ids
+    if self.role >= MANAGER
+      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0 AND team_id NOT LIKE '%private%' AND team_id <> 1", :group => "team_id").map {|x| x.team_id}
+    else
+      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%' AND team_id <> 1", :group => "team_id").map {|x| x.team_id}
+    end
+  end
+  
   #TODO: Finish import of users from sugar
   def self.update_from_sugar()
     sugar_users = SugarUser.find(:all, :conditions => "status = 'Active'")
@@ -83,6 +94,7 @@ class User < ActiveRecord::Base
         local_user.last_name = x.last_name
         local_user.email = x.email1
         local_user.crypted_password = x.user_hash
+        local_user.office = x.default_team
         local_user.sugar_id = x.id
         if local_user.save
           #all ok
@@ -96,6 +108,7 @@ class User < ActiveRecord::Base
         local_user.last_name = x.last_name
         local_user.email = x.email1
         local_user.crypted_password = x.user_hash
+        local_user.office = x.default_team
         local_user.sugar_id = x.id
         if local_user.save
           #all ok

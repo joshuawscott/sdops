@@ -2,6 +2,9 @@
   #results.boxed
     %h2 General Details
     = f.hidden_field :account_name
+    = f.hidden_field :sales_office_name
+    = f.hidden_field :support_office_name
+    
     %p
       %label{:for => "contract_account_id"}
         Customer
@@ -9,11 +12,11 @@
     %p
       %label{:for => "contract_sales_office"}
         Sales Office
-      = f.collection_select(:sales_office, @sales_offices, :label, :label, { :include_blank => true })
+      = f.collection_select(:sales_office, @sales_offices, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('contract_sales_office_name').value = this.options[this.selectedIndex].text"})
     %p
       %label{:for => "contract_support_office"}
         Support Office
-      = f.collection_select(:support_office, @support_offices, :label, :label, { :include_blank => true })
+      = f.collection_select(:support_office, @support_offices, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('contract_support_office_name').value = this.options[this.selectedIndex].text"})
     %p
       %label{:for => "contract_sales_rep_id"}
         Sales rep
