@@ -9,7 +9,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080818123555) do
+ActiveRecord::Schema.define(:version => 20080820134309) do
+
+  create_table "comments", :force => true do |t|
+    t.text     "body"
+    t.integer  "commentable_id",   :limit => 11
+    t.string   "commentable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "contracts", :force => true do |t|
     t.string   "sdc_ref"

@@ -1,0 +1,11 @@
+- content_for :subtitle do
+  New Comment
+
+#section1
+  = error_messages_for :comments 
+  - form_for(:comment, :url => comments_path) do |f|
+    = render :partial => "form", :locals => { :f => f } 
+    
+    %p 
+      = f.submit "Create" 
+

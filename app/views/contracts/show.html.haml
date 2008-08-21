@@ -195,9 +195,32 @@
   = link_to('Edit', edit_contract_path(@contract)) + ' | '  if current_user.role == ADMIN
   = link_to('List of Contracts', contracts_path)
 
-%p &nbsp
-
 #section3
+  - if current_user.role >= MANAGER
+    %br &nbsp;
+    %label{:for => "comment_body"}
+      New Comment
+    - form_for @comment, :url => comments_path do |f|
+      = f.hidden_field "commentable_id", {:value => @contract.id}
+      = f.hidden_field "commentable_type", {:value => 'Contract'}
+      = f.text_field :body
+      
+  %table{:border => 0}
+    %tr
+      %td{:colspan => 4}
+        %h2 Comments
+    - for comment in @comments
+      %tr
+        %td= h comment.created_at.strftime("%m/%d/%y %I:%M %p")
+        %td{:width => 200}= h comment.body
+        - if current_user.role >= MANAGER
+          %td= link_to 'Edit', edit_comment_path(comment) 
+          %td= link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete
+
+
+%p &nbsp
+      
+#section4
   %table{:border => "1", :cellpadding => "2", :cellspacing => "2"}
     %tr             
       %th Type

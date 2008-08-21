@@ -10,10 +10,14 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :locations
 
   map.resources :users
+  
+  map.refresh '/refresh', :controller => 'users', :action => 'refresh'
 
   map.resources :sessions
 
   map.resources :dropdowns
+
+  map.resources :comments
 
   map.resources :contracts, :has_many => :line_items
   

@@ -5,7 +5,7 @@ class ImportController < ApplicationController
 
   # GET /import
   def index
-    @sugar_accts = SugarAcct.find(:all, :select => "concat(id, '|', name) as id, name", :order => "name")
+    @sugar_accts = SugarAcct.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0", :order => "name")
 
     respond_to do |format|
       format.html # index.html.haml

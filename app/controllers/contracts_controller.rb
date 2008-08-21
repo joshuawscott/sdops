@@ -56,12 +56,14 @@ class ContractsController < ApplicationController
   def show
     logger.error "******* Contracts controller show method"
     @contract = Contract.find(params[:id])
+    @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}
     @line_items = @contract.line_items
     @replaces = @contract.predecessors
     @replaced_by = @contract.successors
+    @comment = Comment.new
     
     respond_to do |format|
-      format.html # show.html.erb
+      format.html # show.html.haml
       format.xml  { render :xml => @contract }
     end
   end
@@ -71,7 +73,7 @@ class ContractsController < ApplicationController
   def new
     @contract = Contract.new
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :order => "name")
-    @sales_offices =  SugarTeam.dropdown_list
+    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list
@@ -90,7 +92,7 @@ class ContractsController < ApplicationController
   # GET /contracts/1/edit
   def edit
     @contract = Contract.find(params[:id])
-    @sugar_accts = SugarAcct.find(:all, :select => "id, name", :order => "name")
+    @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
     @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list

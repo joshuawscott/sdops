@@ -3,6 +3,7 @@ class GraphsController < ApplicationController
   
   def sales_by_office
     # Prepare data and labels for the graph
+    team = current_user.office
     total_rev = Contract.sum(:revenue, :group => :sales_office_name)
 
     temp = total_rev.map {|x| max = x[1] }
@@ -37,29 +38,48 @@ class GraphsController < ApplicationController
 
   def sales_by_office_mini_bar
     # Prepare data and labels for the graph
-    total_rev = Contract.sum(:revenue, :group => :sales_office_name)
-
-    temp = total_rev.map {|x| max = x[1] }
-    max = temp.max * 1.1
+    total_hw_rev = Contract.sum(:annual_hw_rev, :group => :sales_office_name)
+    total_sw_rev = Contract.sum(:annual_sw_rev, :group => :sales_office_name)
     
+    hw_temp = total_hw_rev.map {|x| max = x[1] }
+    sw_temp = total_sw_rev.map {|x| max = x[1] }
+    temp = hw_temp + sw_temp
+    temp.compact!
+    max = temp.max * 1.1
+    #debugger
+    #TODO: Fix data issues
     n = 0
     labels = {}
-    data = []
-    total_rev.map do |x|
+    hw_data = []
+    total_hw_rev.map do |x|
       labels[n] = x[0].to_s.slice(0,3)
       n += 1
-      data << x[1]
+      if x[1].nil?
+        hw_data << 0
+      else
+        hw_data << x[1]
+      end
     end
     
+    sw_data = []
+    total_sw_rev.map do |x|
+      #labels[n] = x[0].to_s.slice(0,3)
+      #n += 1
+      if x[1].nil?
+        sw_data << 0
+      else
+        sw_data << x[1]
+      end
+    end
+
     #Initialize new graph and set general properties
     g = Gruff::Bar.new("300x90")
     theme_sdc(g)
-    #g.render_transparent_background
-    #g.hide_title = true
-    g.title = "Yearly Support Rev By Office"
-    g.top_margin=10
+    g.hide_title = true
+    #g.title = "Yearly Support Rev By Office"
+    g.top_margin= 8
     g.marker_font_size = 23
-    g.hide_legend = true
+    #g.hide_legend = true
     #g.legend_font_size = 10
     g.title_font_size = 27
     g.labels = labels
@@ -67,8 +87,8 @@ class GraphsController < ApplicationController
     g.maximum_value = max
     
    
-    g.data("Support", data)
-    #g.data("Product", data)
+    g.data("HW", hw_data)
+    g.data("SW", sw_data)
 
     #Convert to blob object and send to browser
     send_data(g.to_blob, 
@@ -112,11 +132,11 @@ class GraphsController < ApplicationController
   def theme_sdc(graph)
     # Colors
     @black = 'black'
-    @blue = '#0000cc'
-    @green = '#00cc00'
+    @blue = '#000099'
+    @green = '#009900'
     @orange = '#cf5910'
     @purple = '#cc99cc'
-    @red = '#cc0000'
+    @red = '#990000'
     @yellow = '#FFF804'
     @colors = [@green, @red, @blue, @yellow, @purple, @orange, @black]
   

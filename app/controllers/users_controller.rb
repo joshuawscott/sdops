@@ -16,6 +16,19 @@ class UsersController < ApplicationController
     end
   end
   
+  #Refresh users from SugarCRM
+  def refresh
+    failures = User.update_from_sugar
+    
+    if failures
+      flash[:error] = 'Users were not update - ' + failures.to_s
+      redirect_to(users_path)
+    else
+      flash[:notice] = 'Users updated successfully'
+      redirect_to(users_path)
+    end
+  end
+  
   # GET /users/1
   # GET /users/1.xml
   def show

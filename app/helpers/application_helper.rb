@@ -11,4 +11,10 @@ module ApplicationHelper
     </script>
     END
   end
+  
+  def commenter_url
+    commenter = controller.controller_name.singularize
+    comments_path(:commentable_type => commenter, :commentable_id => controller.instance_variable_get("@#{commenter}").id)
+  end
+
 end

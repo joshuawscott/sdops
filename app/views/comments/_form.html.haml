@@ -1,0 +1,17 @@
+#section1
+  - form_for(@comment) do |f|
+    %p 
+      %label{:for => "comment_body"}
+        Body
+      = f.text_field :body, :class => 'textbox'
+    
+    %p 
+      %label{:for => "commentable_id"}
+        ID
+      = f.text_field :commentable_id, :class => 'textbox'
+
+    %p 
+      %label{:for => "commentable_type"}
+        Type
+      = f.text_field :commentable_type, :class => 'textbox'
+

@@ -7,6 +7,8 @@ class Contract < ActiveRecord::Base
   has_many :successors, :through => :precedes
   has_many :predecessors, :through => :succeeds
   
+  has_many :comments, :as => :commentable
+  
   #Validate General Details
   validates_presence_of :sdc_ref, :description, :sales_rep_id, :sales_office, :support_office
   validates_presence_of :account_id, :cust_po_num, :payment_terms, :platform
@@ -51,4 +53,49 @@ class Contract < ActiveRecord::Base
       Contract.count(:account_id, {:conditions => ["sales_office = ? AND start_date <= ? AND end_date >= ?", team, Date.today, Date.today]})
     end
   end
+
+  def self.total_hw_customer_count(team, role)
+    if role >= MANAGER
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_hw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    else
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_hw_rev > 0 AND sales_office = ? AND start_date <= ? AND end_date >= ?", team, Date.today, Date.today]})
+    end
+  end
+
+  def self.total_sw_customer_count(team, role)
+    if role >= MANAGER
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_sw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    else
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_sw_rev > 0 AND sales_office = ? AND start_date <= ? AND end_date >= ?", team, Date.today, Date.today]})
+    end
+  end
+
+  def self.total_sa_customer_count(team, role)
+    if role >= MANAGER
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_sa_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    else
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_sa_rev > 0 AND sales_office = ? AND start_date <= ? AND end_date >= ?", team, Date.today, Date.today]})
+    end
+  end
+
+  def self.total_ce_customer_count(team, role)
+    if role >= MANAGER
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_ce_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    else
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_ce_rev > 0 AND sales_office = ? AND start_date <= ? AND end_date >= ?", team, Date.today, Date.today]})
+    end
+  end
+
+  def self.total_dr_customer_count(team, role)
+    if role >= MANAGER
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_dr_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    else
+      Contract.count(:account_id, {:distinct => true, :conditions => ["annual_dr_rev > 0 AND sales_office = ? AND start_date <= ? AND end_date >= ?", team, Date.today, Date.today]})
+    end
+  end
 end
+
+
+
+
+
