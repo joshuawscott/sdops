@@ -87,6 +87,10 @@
         Discount SW
       = f.text_field :discount_pref_sw, :class => 'textbox'
     %p
+      %label{:for => "contract_discount_pref_srv"}
+        Discount SRV
+      = f.text_field :discount_pref_srv, :class => 'textbox'
+    %p
       %label{:for => "contract_discount_prepay"}
         Discount Prepay
       = f.text_field :discount_prepay, :class => 'textbox'
@@ -104,7 +108,7 @@
       = f.text_field :discount_sa_day, :class => 'textbox'
     %p
       %b &nbsp
-    %p Example: Enter 35% as 35
+    %p Example: Enter 35% as .35
 
   #results.boxed
     %h2 Terms
@@ -140,10 +144,6 @@
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
       = f.text_field :multiyr_end, :class => 'textbox'
-    %p
-      %label{:for => "contract_expired"}
-        Expired
-      = f.select(:expired, %w{false true})
     %p Note: Enter dates in yyyy-mm-dd format
 
   #results.boxed

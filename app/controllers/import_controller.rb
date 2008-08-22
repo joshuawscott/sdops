@@ -6,6 +6,11 @@ class ImportController < ApplicationController
   # GET /import
   def index
     @sugar_accts = SugarAcct.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0", :order => "name")
+    @sales_reps = User.user_list
+    @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "private = 0 AND deleted = 0 AND id <> 1", :order => "name")
+    @support_offices = @sales_offices
+    @pay_terms = Dropdown.payment_terms_list
+    @platform = Dropdown.platform_list
 
     respond_to do |format|
       format.html # index.html.haml
@@ -16,17 +21,18 @@ class ImportController < ApplicationController
   def create()
     logger.info "***************\nStarting Import process"
     records = YAML::load( params[:importfile] )
-    
+
     #Separate out the data
     contract_ary = records[0]
     line_items_ary = records[1..-1]
-    ary = params[:account_id].split('|')
-    options = {'account_id' => ary[0], 'account_name' => ary[1]}
+    aryAcct = params[:account_id].split('|')
+    arySales = params[:sales_office].split('|')
+    arySupport = params[:support_office].split('|')
+    options = {'account_id' => aryAcct[0], 'account_name' => aryAcct[1], 'sales_rep_id' => params[:sales_rep_id], 'sales_office' => arySales[0], 'sales_office_name' => arySales[1], 'support_office' => arySupport[0], 'support_office_name' => arySupport[1], 'platform' => params[:platform]}
     contract_ary.ivars['attributes'].update(options)
-    
     #Cleanup
     records = nil
-    
+   
     #Save new contract
     logger.info "Importing contract... "
     @contract = Contract.new(contract_ary.ivars['attributes'])

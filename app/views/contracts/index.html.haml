@@ -3,11 +3,6 @@
   
 #section1
   %p
-    %b Total Support Customers - 
-    = Contract.total_customer_count(current_user.office, current_user.role)
-    %b &nbsp; | &nbsp;  Total Support Contracts - 
-    = Contract.total_contract_count(current_user.office, current_user.role)
-
   %table{:border => "2", :cellpadding => "2", :cellspacing => "2"}
     - form_tag contracts_path, { :method => :get } do
       %tr

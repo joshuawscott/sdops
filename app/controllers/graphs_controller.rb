@@ -3,31 +3,101 @@ class GraphsController < ApplicationController
   
   def sales_by_office
     # Prepare data and labels for the graph
-    team = current_user.office
-    total_rev = Contract.sum(:revenue, :group => :sales_office_name)
-
-    temp = total_rev.map {|x| max = x[1] }
-    max = temp.max * 1.1
+    total_hw_rev = Contract.sum(:annual_hw_rev, :group => :sales_office_name)
+    total_sw_rev = Contract.sum(:annual_sw_rev, :group => :sales_office_name)
     
+    hw_temp = total_hw_rev.map {|x| max = x[1] }
+    sw_temp = total_sw_rev.map {|x| max = x[1] }
+    temp = hw_temp + sw_temp
+    temp.compact!
+    max = temp.max * 1.1
+
     n = 0
     labels = {}
-    data = []
-    total_rev.map do |x|
+    hw_data = []
+    total_hw_rev.map do |x|
       labels[n] = x[0].to_s
       n += 1
-      data << x[1]
+      if x[1].nil?
+        hw_data << 0
+      else
+        hw_data << x[1]
+      end
+    end
+    
+    sw_data = []
+    total_sw_rev.map do |x|
+      if x[1].nil?
+        sw_data << 0
+      else
+        sw_data << x[1]
+      end
     end
 
     #Initialize new graph and set general properties
     g = Gruff::SideBar.new("400x325")
     theme_sdc(g)
-    g.title = "Total Yearly Support Rev By Office"
-    g.hide_legend = true
+    g.title = "Total Yearly Support $ Rev By Office"
+    g.hide_legend = false
     g.labels = labels
     g.minimum_value = 0
     g.maximum_value = max
     
-    g.data("Support", data)
+    g.data("HW", hw_data)
+    g.data("SW", sw_data)
+
+    #Convert to blob object and send to browser
+    send_data(g.to_blob, 
+              :disposition => 'inline', 
+              :type => 'image/png', 
+              :filename => "test.png")
+  end
+
+  def contract_counts_by_office
+    # Prepare data and labels for the graph
+    total_hw_rev = Contract.count :annual_hw_rev, {:group => :sales_office_name}
+    total_sw_rev = Contract.count :annual_sw_rev, {:group => :sales_office_name}
+    
+    hw_temp = total_hw_rev.map {|x| max = x[1] }
+    sw_temp = total_sw_rev.map {|x| max = x[1] }
+    temp = hw_temp + sw_temp
+    temp.compact!
+    max = temp.max
+
+    n = 0
+    labels = {}
+    hw_data = []
+    total_hw_rev.map do |x|
+      labels[n] = x[0].to_s
+      n += 1
+      if x[1].nil?
+        hw_data << 0
+      else
+        hw_data << x[1]
+      end
+    end
+    
+    sw_data = []
+    total_sw_rev.map do |x|
+      if x[1].nil?
+        sw_data << 0
+      else
+        sw_data << x[1]
+      end
+    end
+
+    #Initialize new graph and set general properties
+    g = Gruff::Bar.new("400x325")
+    theme_sdc(g)
+    g.title = "Contract Counts By Office"
+    g.hide_legend = false
+    g.labels = labels
+    g.y_axis_increment = 1
+    g.minimum_value = 0
+    g.maximum_value = max
+    
+    g.data("HW", hw_data)
+    g.data("SW", sw_data)
 
     #Convert to blob object and send to browser
     send_data(g.to_blob, 
@@ -46,8 +116,7 @@ class GraphsController < ApplicationController
     temp = hw_temp + sw_temp
     temp.compact!
     max = temp.max * 1.1
-    #debugger
-    #TODO: Fix data issues
+
     n = 0
     labels = {}
     hw_data = []
@@ -63,8 +132,6 @@ class GraphsController < ApplicationController
     
     sw_data = []
     total_sw_rev.map do |x|
-      #labels[n] = x[0].to_s.slice(0,3)
-      #n += 1
       if x[1].nil?
         sw_data << 0
       else
@@ -86,7 +153,6 @@ class GraphsController < ApplicationController
     g.minimum_value = 0
     g.maximum_value = max
     
-   
     g.data("HW", hw_data)
     g.data("SW", sw_data)
 
@@ -119,16 +185,6 @@ class GraphsController < ApplicationController
 
   protected
   
-  def get_offices
-    #debugger
-    #Dropdown.find(:all, :select => "id", :conditions => "dd_name = 'office'", :order => "sort_order").map do |x|
-    #  x.id
-    #end
-    Dropdown.find(:all, :select => "label", :conditions => "dd_name = 'office'", :order => "sort_order").map do |x|
-      x.label
-    end
-  end
-
   def theme_sdc(graph)
     # Colors
     @black = 'black'
@@ -138,7 +194,7 @@ class GraphsController < ApplicationController
     @purple = '#cc99cc'
     @red = '#990000'
     @yellow = '#FFF804'
-    @colors = [@green, @red, @blue, @yellow, @purple, @orange, @black]
+    @colors = [@green, @blue, @red, @yellow, @purple, @orange, @black]
   
     graph.theme = {
       :colors => @colors,

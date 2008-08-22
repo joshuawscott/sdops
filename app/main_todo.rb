@@ -3,6 +3,7 @@
 #TODO:  Add In Users from SugarCRM
 #TODO:  Add In Teams from SugarCRM
 #TODO:  Enable creating SugarCRM Contract when new contract imported
+#TODO:  Switch to decimal data type in database
 
 #Sales Stages from SugarCRM
 #Prospecting

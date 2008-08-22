@@ -108,6 +108,11 @@
       =h sprintf("%d%", @contract.discount_pref_sw ||= 0.0)
 
     %p
+      %label{:for => "contract_discount_pref_srv"}
+        SRV Disct %
+      =h sprintf("%d%", @contract.discount_pref_srv ||= 0.0)
+
+      %p
       %label{:for => "contract_discount_prepay"}
         Prepay Disct %
       =h sprintf("%d%", @contract.discount_prepay ||= 0.0)
@@ -169,11 +174,6 @@
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
       =h @contract.multiyr_end ||= 'N/A'
-
-    %p
-      %label{:for => "contract_expired"}
-        Expired
-      =h @contract.expired ||= 'N/A'
 
   #results.boxed
     %h2 Relationships
