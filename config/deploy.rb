@@ -3,7 +3,7 @@ set :scm, :git
 set :repository,  "."
 set :branch, "master"
 
-set :runner, 'tnini'
+#set :runner, 'tnini'
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
