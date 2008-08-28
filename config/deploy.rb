@@ -2,6 +2,8 @@ set :application, "sdopps.sourcedirect.com"
 set :scm, :git
 set :repository,  "."
 set :branch, "master"
+set :deploy_via, 'copy'
+set :copy_exclude, [".svn", ".git"]
 
 #set :runner, 'tnini'
 
