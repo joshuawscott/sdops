@@ -77,9 +77,9 @@ class User < ActiveRecord::Base
   
   def sugar_team_ids
     if self.role >= MANAGER
-      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0 AND team_id NOT LIKE '%private%' AND team_id <> 1", :group => "team_id").map {|x| x.team_id}
+      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0 AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
     else
-      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%' AND team_id <> 1", :group => "team_id").map {|x| x.team_id}
+      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
     end
   end
   

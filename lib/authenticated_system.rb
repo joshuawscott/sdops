@@ -63,13 +63,13 @@ module AuthenticatedSystem
     # simply close itself.
     def access_denied
       respond_to do |format|
-        format.html do
+        format.any do
           store_location
           redirect_to new_session_path
         end
-        format.any do
-          request_http_basic_authentication 'Web Password'
-        end
+        #format.any do
+        #  request_http_basic_authentication 'Web Password'
+        #end
       end
     end
 
