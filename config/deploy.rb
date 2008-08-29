@@ -23,7 +23,7 @@ namespace :deploy do
   desc "Restarting mod_rails with restart.txt"
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "touch #{current_path}/tmp/restart.txt"
-    run "ln -sf #{current_path}/config/database.yml /var/www/#{application}/shared/config/database.yml"
+    run "ln -sf #{deploy_to}/shared/config/database.yml #{deploy_to}/current/config/database.yml"
   end
  
   [:start, :stop].each do |t|
