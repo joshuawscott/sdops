@@ -62,14 +62,15 @@ module AuthenticatedSystem
     # to access the requested action.  For example, a popup window might
     # simply close itself.
     def access_denied
+      request.format ||= :html if request.env['HTTP_USER_AGENT'] =~ /msie/i 
       respond_to do |format|
         format.any do
           store_location
           redirect_to new_session_path
         end
-        #format.any do
-        #  request_http_basic_authentication 'Web Password'
-        #end
+        format.any do
+          request_http_basic_authentication 'Web Password'
+        end
       end
     end
 

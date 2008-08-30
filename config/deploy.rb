@@ -3,11 +3,11 @@ set :scm, :git
 set :repository,  "."
 set :branch, "master"
 set :deploy_via, 'copy'
-set :copy_exclude, [".svn", ".git"]
+#set :copy_exclude, [".svn", ".git"]
 set :scm_verbose, true
 set :runner, 'tnini'
 
-set :keep_releases, 3 
+set :keep_releases, 3
 
 # If you aren't deploying to /u/apps/#{application} on the target
 # servers (which is the default), you can specify the actual location
