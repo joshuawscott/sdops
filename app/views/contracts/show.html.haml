@@ -57,6 +57,11 @@
         Platform
       =h @contract.platform
 
+    %p
+      %label{:for => "contract_type"}
+        Type
+      =h SugarContractType.find(@contract.contract_type).name
+
   #results.boxed
     %h2 Revenue
     %p

@@ -47,3 +47,4 @@
 
 #section2
   = link_to 'New contract', new_contract_path if current_user.role == ADMIN
+  = link_to 'Export to Excel', formatted_contracts_url(:xls)

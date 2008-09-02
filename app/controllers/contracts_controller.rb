@@ -9,7 +9,6 @@ class ContractsController < ApplicationController
     #debugger
     @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
     @support_offices =  @sales_offices
-    #@account_names = SugarAcct.find(:all, :select => "id, name", :order => "name")
     @account_names = Contract.find(:all, :select => "distinct(account_name)").map {|x| x.account_name}
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
     @pay_terms << "not bundled"                 
@@ -47,6 +46,7 @@ class ContractsController < ApplicationController
     respond_to do |format|
       store_location
       format.html # index.html.haml
+      format.xls  #Respond as Excel Doc
       format.xml  { render :xml => @contracts }
     end
   end
@@ -80,6 +80,7 @@ class ContractsController < ApplicationController
     @reps = User.user_list
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
+    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
     @replaces = []
     @replaced_by = []
    
@@ -100,6 +101,7 @@ class ContractsController < ApplicationController
     @reps = User.user_list
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
+    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
     @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name}' AND id <> #{params[:id]}")
     @replaced_by = @replaces
 
