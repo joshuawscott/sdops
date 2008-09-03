@@ -24,6 +24,10 @@
         Platform
       = select_tag('platform', options_from_collection_for_select(@platform, 'label', 'label'))
     %p
+      %label{:for => "contract_type"}
+        Contract Type
+      = select_tag('contract_type', options_from_collection_for_select(@types, 'id', 'name'))
+    %p
       %label{:for => "importfile"}
         File to import
       = file_field_tag('importfile')

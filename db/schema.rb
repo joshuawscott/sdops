@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080822134126) do
+ActiveRecord::Schema.define(:version => 20080830165634) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -20,16 +20,12 @@ ActiveRecord::Schema.define(:version => 20080822134126) do
   end
 
   create_table "contracts", :force => true do |t|
-    t.string   "account_id"
-    t.string   "account_name"
-    t.string   "sales_office_name"
-    t.string   "support_office_name"
-    t.string   "said"
     t.string   "sdc_ref"
     t.string   "description"
     t.integer  "sales_rep_id",        :limit => 11
     t.string   "sales_office"
     t.string   "support_office"
+    t.string   "account_id"
     t.string   "cust_po_num"
     t.string   "payment_terms"
     t.string   "platform"
@@ -50,7 +46,6 @@ ActiveRecord::Schema.define(:version => 20080822134126) do
     t.integer  "sa_days",             :limit => 11
     t.decimal  "discount_pref_hw",                  :precision => 5,  :scale => 3
     t.decimal  "discount_pref_sw",                  :precision => 5,  :scale => 3
-    t.decimal  "discount_pref_srv",                 :precision => 5,  :scale => 3
     t.decimal  "discount_prepay",                   :precision => 5,  :scale => 3
     t.decimal  "discount_multiyear",                :precision => 5,  :scale => 3
     t.decimal  "discount_ce_day",                   :precision => 5,  :scale => 3
@@ -58,6 +53,12 @@ ActiveRecord::Schema.define(:version => 20080822134126) do
     t.string   "replacement_sdc_ref"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "said"
+    t.string   "account_name"
+    t.string   "sales_office_name"
+    t.string   "support_office_name"
+    t.decimal  "discount_pref_srv",                 :precision => 5,  :scale => 3
+    t.string   "contract_type"
   end
 
   create_table "dropdowns", :force => true do |t|
@@ -138,14 +139,14 @@ ActiveRecord::Schema.define(:version => 20080822134126) do
     t.string   "last_name"
     t.string   "office"
     t.string   "email"
-    t.integer  "role",                      :limit => 11
-    t.string   "sugar_id"
     t.string   "crypted_password",          :limit => 40
     t.string   "salt",                      :limit => 40
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remember_token"
     t.datetime "remember_token_expires_at"
+    t.integer  "role",                      :limit => 11
+    t.string   "sugar_id"
   end
 
 end
