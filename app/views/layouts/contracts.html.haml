@@ -1,0 +1,49 @@
+!!! Transitional
+
+%html{ "xmlns"=>"http://www.w3.org/1999/xhtml", "xml:lang"=>"en", "lang"=>"en" }
+  %head
+    %meta{ 'http-equiv'=>"content-type", 'content'=>"text/html;charset=UTF-8"}/
+    %title
+      = 'Contracts:' + controller.action_name
+    = stylesheet_link_tag 'main'
+    = stylesheet_link_tag "/javascripts/jscalendar-1.0/calendar-win2k-cold-1.css"
+    = javascript_include_tag "jscalendar-1.0/calendar.js"
+    = javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
+    = javascript_include_tag "jscalendar-1.0/calendar-setup.js"
+    
+  %body
+    #header
+      = image_tag("sdclogo.jpg", :id => "logo", :width => "192", :height => "80", :border => "0")
+      
+      #title
+        %h1
+          -  @subtitle = yield :subtitle
+          = 'Support Contract Database - ' + @subtitle
+      
+      #header_mini_graph
+        - @url1 = url_for :controller => 'graphs', :action => 'sales_by_office_mini_bar'
+        %img{'src' => @url1, 'style' => "border:0px solid #111111;"}
+
+      #menu
+        - if current_user.role == ADMIN
+          = render :partial => "layouts/admin_menu"
+        -else
+          = render :partial => "layouts/menu"
+            
+        #userinfo
+          - if current_user != :false
+            %p
+              = h current_user.first_name + ' ' + current_user.last_name
+              = h " - " + Dropdown.find(current_user.role).label
+        
+        %hr/
+
+
+    #content
+    - if flash[:notice]
+      %p{ :style => "color: green"}
+        = flash[:notice]
+
+    = yield
+    
+

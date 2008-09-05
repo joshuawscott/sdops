@@ -1,4 +1,4 @@
-set :application, "sdopps.sourcedirect.com"
+set :application, "sdops.sourcedirect.com"
 set :scm, :git
 set :repository,  "."
 set :branch, "master"

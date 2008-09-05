@@ -139,16 +139,15 @@
     %p
       %label{:for => "contract_start_date"}
         Start Date
-      = f.text_field :start_date, :class => 'textbox'
+      = f.date_select :start_date
     %p
       %label{:for => "contract_end_date"}
         End Date
-      = f.text_field :end_date, :class => 'textbox'
+      = f.date_select :end_date
     %p
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
-      = f.text_field :multiyr_end, :class => 'textbox'
-    %p Note: Enter dates in yyyy-mm-dd format
+      = f.date_select :multiyr_end
 
   #results.boxed
     %h2 Relationships &nbsp;
