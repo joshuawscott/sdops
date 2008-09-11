@@ -1,50 +1,44 @@
 - content_for :subtitle do
   Contract List
-  
+
+= stylesheet_link_tag "/javascripts/codebase/dhtmlxgrid.css"
+= javascript_include_tag "codebase/dhtmlxcommon.js"
+= javascript_include_tag "codebase/dhtmlxgrid.js"
+= javascript_include_tag "codebase/dhtmlxgridcell.js"
+= javascript_include_tag "codebase/ext/dhtmlxgrid_filter.js"
+= javascript_include_tag "codebase/ext/dhtmlxgrid_selection.js"
+= javascript_include_tag "codebase/ext/dhtmlxgrid_nxml.js"
+
+
 #section1
-  %p
-  %table{:border => "2", :cellpadding => "2", :cellspacing => "2"}
-    - form_tag contracts_path, { :method => :get } do
-      %tr
-        %td= select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 8em"})
-        %td= select("search", "support_office", @support_offices, {:selected => @support_office, :include_blank => true },{:style => "width: 8em"})
-        %td= select("search", "account_name", @account_names, {:selected => @account_name, :include_blank => true },{:style => "width: 10em"})
-        %td= text_field 'search', 'said', :size => 10, :value => @said
-        %td= text_field 'search', 'description', :size => 10, :value => @description
-        %td= text_field 'search', 'cust_po_num', :size => 10, :value => @cust_po_num
-        %td= select("search", "payment_terms", @pay_terms, {:selected => @pay_term, :include_blank => true },{:style => "width: 6em"})
-        %td= text_field 'search', 'revenue', :size => 8, :value => @revenue
-        %td
-          = submit_tag "Search"
-          = link_to 'Clear', contracts_path
-    %tr
-      %th Sales Office
-      %th Support Office
-      %th Account Name
-      %th SAID
-      %th Description
-      %th PO Number
-      %th Terms
-      %th Annual Rev
-      %th{:colspan => "3"} &nbsp;
-    - for contract in @contracts
-      %tr 
-        %td= h contract.sales_office_name
-        %td= h contract.support_office_name
-        %td= h contract.account_name
-        %td= h contract.said
-        %td= h contract.description
-        %td= h contract.cust_po_num
-        %td= h contract.payment_terms
-        %td{:align => 'right'}= h number_to_currency(contract.revenue, :precision => 0)
-
-        
-        %td
-          = link_to(' Show ', contract_path(contract))
-          = " | " + link_to(' Edit ', edit_contract_path(contract)) if current_user.role == ADMIN
-          = " | " + link_to(' Destroy ', contract_path(contract), :confirm => 'Are you sure?', :method => :delete)  if current_user.role == ADMIN
-
-
-#section2
   = link_to 'New contract', new_contract_path if current_user.role == ADMIN
   = link_to 'Export to Excel', formatted_contracts_url(:xls)
+  = link_to "Copy to Excel", "javascript:mygrid.copyBlockToClipboard()"
+#section2
+  %p
+  %div{:id => "mygrid_container", :style => "width:800;height:10%;"}
+
+  
+%script
+  var mygrid;
+  mygrid = new dhtmlXGridObject('mygrid_container');
+  mygrid.setImagePath("/javascripts/codebase/imgs/");
+  mygrid.setHeader("Sales,Support,Account,SAID,Description,PO Number,Terms,Annual Rev");
+  mygrid.attachHeader("#select_filter,#select_filter,#text_filter,#text_filter,#text_filter,#text_filter,#select_filter,#numeric_filter")
+  mygrid.setInitWidths("80,80,220,150,120,80,60,80");
+  mygrid.setColAlign("left,left,left,left,left,left,left,right");
+  mygrid.setColTypes("ro,ro,ro,ro,ro,ro,ro,ro");
+  mygrid.setColSorting("str,str,str,str,str,str,str,int");
+  mygrid.attachEvent("onRowDblClicked",doOnRowDblClicked);
+  mygrid.enableAutoHeight();
+  mygrid.enableAutoWidth();
+  mygrid.enableBlockSelection();
+  mygrid.init();
+  mygrid.loadXML('contracts.xml');
+	
+  function doOnRowDblClicked(rowId){
+  if (location.pathname == "/contracts")
+  location.replace(location.href + "/" + rowId)
+  else
+  location.replace(location.href + "contracts/" + rowId)
+  }

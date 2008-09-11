@@ -1,5 +1,5 @@
 
-xml.instruct! :xml, :version=>"1.0", :encoding=>"UTF-8" 
+xml.instruct!
 xml.Workbook({
   'xmlns'      => "urn:schemas-microsoft-com:office:spreadsheet", 
   'xmlns:o'    => "urn:schemas-microsoft-com:office:office",

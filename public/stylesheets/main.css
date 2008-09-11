@@ -26,27 +26,25 @@ label {
   width: 120px;
   font-weight: bold; }
 
-table {
+.main_table table {
   border-width: 1px;
   border-style: solid;
   border-collapse: collapse;
   border-color: #000082;
   /* :background url('/images/sdc_org_grad.gif') repeat-x */ }
-
-td {
+.main_table td {
   border-width: 1px;
   border-style: solid;
   border-collapse: collapse;
   border-color: #000082;
   padding: 3px; }
-  td h2 {
+  .main_table td h2 {
     text-transform: uppercase;
     margin: 0;
     padding-left: 5px;
     color: #000082;
     background: #ffd91e; }
-
-th {
+.main_table th {
   border-width: 1px;
   border-style: solid;
   border-collapse: collapse;

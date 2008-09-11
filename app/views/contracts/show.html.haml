@@ -2,6 +2,10 @@
   Show Contract
 
 #section1
+  = link_to('Edit', edit_contract_path(@contract)) + ' | '  if current_user.role == ADMIN
+  = link_to(' Destroy ', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete)  if current_user.role == ADMIN
+
+#section2
   #results.boxed
     %h2 General Details
     %p
@@ -195,13 +199,8 @@
       - for x in @replaces
         = link_to x.said, contract_path(x.id)
 
-
-#section2
-  = link_to('Edit', edit_contract_path(@contract)) + ' | '  if current_user.role == ADMIN
-  = link_to('List of Contracts', contracts_path)
-
 #section3
-  - if current_user.role >= MANAGER
+  - if current_user.role >= BASIC
     %br &nbsp;
     %label{:for => "comment_body"}
       New Comment
@@ -210,7 +209,7 @@
       = f.hidden_field "commentable_type", {:value => 'Contract'}
       = f.text_field :body
       
-  %table{:border => 0}
+  %table{:class => 'main_table', :border => 0}
     %tr
       %td{:colspan => 4}
         %h2 Comments
@@ -226,7 +225,7 @@
 %p &nbsp
       
 #section4
-  %table{:border => "1", :cellpadding => "2", :cellspacing => "2"}
+  %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
     %tr             
       %th Type
       %th Supp Provider

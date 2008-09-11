@@ -1,7 +1,10 @@
 - content_for :subtitle do
   Edit Contract
-  
+
 #section1
+  = link_to('Show', contract_path(@contract))
+
+#section2
   = error_messages_for :contract
   - form_for(:contract, :url => contract_path(@contract), :html => { :method => :put }) do |f|
     = render :partial => "form", :locals => { :f => f } 
@@ -9,5 +12,4 @@
     %p
     = submit_tag "Update"
 
-#section2
-  = link_to('Show', contract_path(@contract)) + ' | ' + link_to('List of Contracts', contracts_path)
+
