@@ -26,32 +26,29 @@ label {
   width: 120px;
   font-weight: bold; }
 
-.main_table table {
+.main_table {
   border-width: 1px;
   border-style: solid;
   border-collapse: collapse;
-  border-color: #000082;
-  /* :background url('/images/sdc_org_grad.gif') repeat-x */ }
-.main_table td {
-  border-width: 1px;
-  border-style: solid;
-  border-collapse: collapse;
-  border-color: #000082;
-  padding: 3px; }
-  .main_table td h2 {
-    text-transform: uppercase;
-    margin: 0;
-    padding-left: 5px;
-    color: #000082;
-    background: #ffd91e; }
-.main_table th {
-  border-width: 1px;
-  border-style: solid;
-  border-collapse: collapse;
-  border-color: #000082;
-  background: #ffca0f;
-  padding: 3px;
-  height: 20px; }
+  border-color: #000082; }
+  .main_table td {
+    border-width: 1px;
+    border-style: solid;
+    border-collapse: collapse;
+    border-color: #000082; }
+    .main_table td h2 {
+      text-transform: uppercase;
+      margin: 0;
+      padding-left: 5px;
+      color: #000082;
+      background: #ffd91e; }
+  .main_table th {
+    border-width: 1px;
+    border-style: solid;
+    border-collapse: collapse;
+    border-color: #000082;
+    background: #ffca0f;
+    height: 20px; }
 
 #userinfo {
   position: absolute;

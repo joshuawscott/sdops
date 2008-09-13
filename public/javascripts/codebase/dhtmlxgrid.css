@@ -6,12 +6,12 @@ div.gridbox{
 	background-color:white;
 }
 div.gridbox .xhdr{
-	background-Color:#FFFFFF;
+	background-Color:#ffffff;
 }
 div.gridbox table.hdr td {
 	font-family:arial;
 	font-size:12px;
-	background-Color:#cccccc;
+	background-Color:#D4D0C8;
 	border: 1px solid;
 	border-color : white Gray Gray white;
 	text-align: center;
@@ -623,5 +623,6 @@ div.gridbox_sbdark .ev_sbdark {
 div.gridbox_sbdark .odd_sbdark {
     background-color:#EDF3F0;
 } 
+
 
 

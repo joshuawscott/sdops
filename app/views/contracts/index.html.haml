@@ -13,9 +13,12 @@
 #section1
   = link_to 'New contract', new_contract_path if current_user.role == ADMIN
   = link_to 'Export to Excel', formatted_contracts_url(:xls)
-  = link_to "Copy to Excel", "javascript:mygrid.copyBlockToClipboard()"
+  
 #section2
-  %p
+  
+  %b
+    Double click on a row to view details of a contract.
+
   %div{:id => "mygrid_container", :style => "width:800;height:10%;"}
 
   
@@ -30,7 +33,7 @@
   mygrid.setColTypes("ro,ro,ro,ro,ro,ro,ro,ro");
   mygrid.setColSorting("str,str,str,str,str,str,str,int");
   mygrid.attachEvent("onRowDblClicked",doOnRowDblClicked);
-  mygrid.enableAutoHeight();
+  mygrid.enableAutoHeight(true,"600");
   mygrid.enableAutoWidth();
   mygrid.enableBlockSelection();
   mygrid.init();
