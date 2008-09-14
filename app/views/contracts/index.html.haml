@@ -41,7 +41,7 @@
 	
   function doOnRowDblClicked(rowId){
   if (location.pathname == "/contracts")
-  location.replace(location.href + "/" + rowId)
+  window.location = location.href + "/" + rowId
   else
-  location.replace(location.href + "contracts/" + rowId)
+  window.location = location.href + "contracts/" + rowId
   }
