@@ -6,7 +6,12 @@ class ContractsController < ApplicationController
   # GET /contracts
   # GET /contracts.xml
   def index
-    @contracts = Contract.short_list(current_user.role, current_user.sugar_team_ids)
+
+    if params[:serial_search]
+      @contracts = Contract.serial_search(current_user.role, current_user.sugar_team_ids, params[:serial_search])      
+    else
+      @contracts = Contract.short_list(current_user.role, current_user.sugar_team_ids)
+    end
     
     respond_to do |format|
       store_location

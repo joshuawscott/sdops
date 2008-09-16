@@ -33,6 +33,16 @@ class Contract < ActiveRecord::Base
         :conditions => ["sales_office IN (?)", teams])
     end
   end
+
+  def self.serial_search(role, teams, serial_num)
+    if role >= MANAGER
+      Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, cust_po_num, payment_terms, revenue, account_name",
+        :joins => :line_items, :conditions => ['line_items.serial_num = ?', serial_num])
+    else
+      Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, cust_po_num, payment_terms, revenue, account_name",
+        :joins => :line_items, :conditions => ["contracts.sales_office IN (?) AND line_items.serial_num = ?", teams, serial_num])
+    end
+  end
   
   def total_revenue
      annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev
