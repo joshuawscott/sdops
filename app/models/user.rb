@@ -83,7 +83,6 @@ class User < ActiveRecord::Base
     end
   end
   
-  #TODO: Finish import of users from sugar
   def self.update_from_sugar()
     sugar_users = SugarUser.find(:all, :conditions => "status = 'Active'")
     failures = []

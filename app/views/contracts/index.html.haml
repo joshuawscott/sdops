@@ -16,17 +16,20 @@
   = link_to 'Export to Excel', formatted_contracts_url(:xls)
   
 #section2
-  %p
-    %b
-      Search for Serial Number
-    = text_field_tag('serial_search')
-    = link_to_function 'Search', "searchForSerialNumber()"
-  %b
-    Double click on a row to view details of a contract. &nbsp;&nbsp;&nbsp;&nbsp;
-    = link_to "Clear Search", contracts_url
+  %table{:width => '850'}
+    %tr
+      %td{:valign => "bottom"}
+        %b
+          Double click on a row to view details of a contract.
+      %td{:valign => "bottom"}
+        %b
+          Serial # Search
+        = text_field_tag('serial_search')
+        = link_to_function 'Search', "searchForSerialNumber()"
+      %td{:valign => "bottom", :align => 'right'}
+        = link_to "Clear Filter & Search", contracts_url
 
   %div{:id => "mygrid_container", :style => "width:800;height:10%;"}
-
   
 %script
   var mygrid;
