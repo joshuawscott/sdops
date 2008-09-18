@@ -2,14 +2,32 @@
   Reports
 
 #section1
-  %h2 General Stats
-  %table
+  %table{:class => 'main_table', :width => "90%"}
+    %tr
+      %td{:colspan => "2", :align => 'center'}
+        %b
+          Reports
+    %tr
+      %th
+        Performance
+      %th
+        Inventory
     %tr
       %td
-        %b Stats
+        &nbsp;
       %td
+        Spares Requirements
+  %p &nbsp;
+
+#section2
+  %h2 General Stats
+  %table{:class => 'main_table', :width => "250"}
+    %tr
+      %th
+        %b Stat
+      %th
         %b Contracts
-      %td
+      %th
         %b Customers
     %tr
       %td Total Counts
