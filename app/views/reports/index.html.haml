@@ -2,21 +2,29 @@
   Reports
 
 #section1
-  %table{:class => 'main_table', :width => "90%"}
-    %tr
-      %td{:colspan => "2", :align => 'center'}
-        %b
-          Reports
-    %tr
-      %th
-        Performance
-      %th
-        Inventory
-    %tr
-      %td
-        &nbsp;
-      %td
-        Spares Requirements
+  %h2
+    Report Links
+    
+  #linkbox
+    %dt
+      %b Performance
+    %dd{:style => "margin-left:20px"}
+      %ul
+        %li
+          Test
+        %li
+          Test2
+
+  #linkbox
+    %dt
+      %b Inventory
+    %dd{:style => "margin-left:20px"}
+      %ul
+        %li
+          = link_to 'Spares Requirements', 'reports/sparesreq'
+        %li
+          Test2
+  
   %p &nbsp;
 
 #section2
@@ -34,23 +42,27 @@
       %td{:align => 'center'}= h @total_contract_count
       %td{:align => 'center'}= h @total_customer_count
     %tr
-      %td Hardware Counts
-      %td{:align => 'center'}= h @total_hw_contract_count
-      %td{:align => 'center'}= h @total_hw_customer_count
+      %td HW & SW Counts
+      %td{:align => 'center'}= h @total_hw_sw_contract_count
+      %td{:align => 'center'}= h @total_hw_sw_customer_count
     %tr
-      %td Software Counts
-      %td{:align => 'center'}= h @total_sw_contract_count
-      %td{:align => 'center'}= h @total_sw_customer_count
+      %td HW Only Counts
+      %td{:align => 'center'}= h @total_hw_only_contract_count
+      %td{:align => 'center'}= h @total_hw_only_customer_count
     %tr
-      %td SA Counts
+      %td SW Only Counts
+      %td{:align => 'center'}= h @total_sw_only_contract_count
+      %td{:align => 'center'}= h @total_sw_only_customer_count
+    %tr
+      %td SA Contracts
       %td{:align => 'center'}= h @total_sa_contract_count
       %td{:align => 'center'}= h @total_sa_customer_count
     %tr
-      %td CE Counts
+      %td CE Contracts
       %td{:align => 'center'}= h @total_ce_contract_count
       %td{:align => 'center'}= h @total_ce_customer_count
     %tr
-      %td DR Counts
+      %td DR Contracts
       %td{:align => 'center'}= h @total_dr_contract_count
       %td{:align => 'center'}= h @total_dr_customer_count
 

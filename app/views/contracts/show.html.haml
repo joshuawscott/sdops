@@ -6,185 +6,165 @@
   = link_to(' Destroy ', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete)  if current_user.role == ADMIN
 
 #section2
-  #results.boxed
+  #results.boxed{:style => 'height:200px'}
     %h2 General Details
     %p
       %label{:for => "contract_account_name"}
         Customer
       =h @contract.account_name ||= 'N/A'
-
     %p
       %label{:for => "contract_sales_office"}
         Sales Office
       - @temp = SugarTeam.find(@contract.sales_office).name
       =h @temp ||= 'N/A'
-
     %p
       %label{:for => "contract_support_office"}
         Support Office
       - @temp = SugarTeam.find(@contract.support_office).name
       =h @temp ||= 'N/A'
-
     %p
       %label{:for => "contract_description"}
         Description
       =h @contract.description
-
     %p
       %label{:for => "contract_sales_rep_id"}
         Sales rep
       - @temp = User.find(@contract.sales_rep_id).full_name
       = h @temp ||= 'N/A'
-
       %p
       %label{:for => "contract_sdc_ref"}
         SDC Reference
       =h @contract.sdc_ref
-
     %p
       %label{:for => "contract_said"}
         SAID
       =h @contract.said
-
     %p
       %label{:for => "contract_cust_po_num"}
         Customer PO
       =h @contract.cust_po_num ||= 'N/A'
-
     %p
       %label{:for => "contract_payment_terms"}
         Payment Terms
       =h @contract.payment_terms ||= 'N/A'
-
     %p
       %label{:for => "contract_platform"}
         Platform
       =h @contract.platform
-
     %p
       %label{:for => "contract_type"}
         Type
       =h SugarContractType.find(@contract.contract_type).name
 
-  #results.boxed
+  #results.boxed{:style => 'height:200px'}
+    %h2 Terms
+    %p
+      %label{:for => "contract_hw_support_level_id"}
+        HW Support Level
+      =h @contract.hw_support_level_id ||= 'N/A'
+    %p
+      %label{:for => "contract_sw_support_level_id"}
+        SW Support Level
+      =h @contract.sw_support_level_id ||= 'N/A'
+    %p
+      %label{:for => "contract_updates"}
+        SW Updates
+      =h @contract.updates
+    %p
+      %label{:for => "contract_ce_days"}
+        Num. CE Days
+      =h @contract.ce_days ||= 'N/A'
+    %p
+      %label{:for => "contract_sa_days"}
+        Num. SA Days
+      =h @contract.sa_days ||= 'N/A'
+    %p
+      %label{:for => "contract_start_date"}
+        Start Date
+      =h @contract.start_date ||= 'N/A'
+    %p
+      %label{:for => "contract_end_date"}
+        End Date
+      =h @contract.end_date ||= 'N/A'
+    %p
+      %label{:for => "contract_multiyr_end"}
+        Multi-Year End
+      =h @contract.multiyr_end ||= 'N/A'
+    %br/
+    %p
+      %label{:for => "contract_so_number"}
+        Sales Order
+      =h @contract.so_number ||= 'N/A'
+    %p
+      %label{:for => "contract_po_number"}
+        Purchase Order
+      =h @contract.po_number ||= 'N/A'
+
+  #results.boxed{:style => 'height:200px'}
     %h2 Revenue
     %p
       %label{:for => "contract_revenue"}
         Amount Paid
       - @tmp = number_to_currency(@contract.revenue)
       =h @tmp ||= 'N/A'
-
     %p
       %label{:for => "contract_annual_hw_rev"}
         Ann. HW Rev
       - @tmp = number_to_currency(@contract.annual_hw_rev)
       =h @tmp ||= 'N/A'
-
     %p
       %label{:for => "contract_annual_sw_rev"}
         Ann. SW Rev
       - @tmp = number_to_currency(@contract.annual_sw_rev)
       =h @tmp ||= 'N/A'
-
     %p
       %label{:for => "contract_annual_ce_rev"}
         Ann. CE Rev
       - @tmp = number_to_currency(@contract.annual_ce_rev)
       =h @tmp ||= 'N/A'
-
     %p
       %label{:for => "contract_annual_sa_rev"}
         Ann. SA Rev
       - @tmp = number_to_currency(@contract.annual_sa_rev)
       =h @tmp ||= 'N/A'
-
     %p
       %label{:for => "contract_annual_dr_rev"}
         Ann. DR Rev
       - @tmp = number_to_currency(@contract.annual_dr_rev)
       =h @tmp ||= 'N/A'
 
-  #results.boxed
+  #results.boxed{:style => 'height:200px'}
     %h2 Discounts
     %p
       %label{:for => "contract_discount_pref_hw"}
         HW Disct %
       =h sprintf("%d%", @contract.discount_pref_hw ||= 0.0)
-
     %p
       %label{:for => "contract_discount_pref_sw"}
         SW Disct %
       =h sprintf("%d%", @contract.discount_pref_sw ||= 0.0)
-
     %p
       %label{:for => "contract_discount_pref_srv"}
         SRV Disct %
       =h sprintf("%d%", @contract.discount_pref_srv ||= 0.0)
-
       %p
       %label{:for => "contract_discount_prepay"}
         Prepay Disct %
       =h sprintf("%d%", @contract.discount_prepay ||= 0.0)
-
     %p
       %label{:for => "contract_discount_multiyear"}
         Multi-year Disct %
       =h sprintf("%d%", @contract.discount_multiyear ||= 0.0)
-
     %p
       %label{:for => "contract_discount_ce_day"}
         CE Days Disc % 
       =h sprintf("%d%", @contract.discount_ce_day ||= 0.0)
-
     %p
       %label{:for => "contract_discount_sa_day"}
         SA Days Disct %
       =h sprintf("%d%", @contract.discount_sa_day ||= 0.0)
 
-  #results.boxed
-    %h2 Terms
-
-    %p
-      %label{:for => "contract_hw_support_level_id"}
-        HW Support Level
-      =h @contract.hw_support_level_id ||= 'N/A'
-
-    %p
-      %label{:for => "contract_sw_support_level_id"}
-        SW Support Level
-      =h @contract.sw_support_level_id ||= 'N/A'
-
-    %p
-      %label{:for => "contract_updates"}
-        SW Updates
-      =h @contract.updates
-
-    %p
-      %label{:for => "contract_ce_days"}
-        Num. CE Days
-      =h @contract.ce_days ||= 'N/A'
-
-    %p
-      %label{:for => "contract_sa_days"}
-        Num. SA Days
-      =h @contract.sa_days ||= 'N/A'
-
-    %p
-      %label{:for => "contract_start_date"}
-        Start Date
-      =h @contract.start_date ||= 'N/A'
-
-    %p
-      %label{:for => "contract_end_date"}
-        End Date
-      =h @contract.end_date ||= 'N/A'
-
-    %p
-      %label{:for => "contract_multiyr_end"}
-        Multi-Year End
-      =h @contract.multiyr_end ||= 'N/A'
-
-  #results.boxed
+  #results.boxed{:style => 'height:200px'}
     %h2 Relationships
 
     %p
@@ -201,25 +181,28 @@
 
 #section3
   - if current_user.role >= BASIC
-    %br &nbsp;
     %label{:for => "comment_body"}
       New Comment
     - form_for @comment, :url => comments_path do |f|
       = f.hidden_field "commentable_id", {:value => @contract.id}
       = f.hidden_field "commentable_type", {:value => 'Contract'}
+      = f.hidden_field :user, {:value => current_user.login}
       = f.text_field :body
       
-  %table{:class => 'main_table', :border => 0}
-    %tr
-      %td{:colspan => 4}
-        %h2 Comments
+  #results.boxed{:style => 'width:800px;margin-top:5px'}
+    %h2 Comments
+    
     - for comment in @comments
-      %tr
-        %td= h comment.created_at.strftime("%m/%d/%y %I:%M %p")
-        %td{:width => 200}= h comment.body
-        - if current_user.role >= MANAGER
-          %td= link_to 'Edit', edit_comment_path(comment) 
-          %td= link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete
+      %p
+        #date.comment{:style => 'width:150px'}
+          = h comment.created_at.strftime("%m/%d/%y %I:%M %p") + " | "
+          = h comment.user
+        #body.comment{:style => 'width:550px'}
+          = h comment.body
+        #links.comment{:style => 'width:70px'}
+          - if current_user.role >= MANAGER
+            = link_to 'Edit', edit_comment_path(comment)
+            = link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete
 
 
 %p &nbsp
@@ -227,15 +210,15 @@
 #section4
   %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
     %tr             
-      %th Type
-      %th Supp Provider
-      %th Product num
-      %th Serial num
-      %th Description
-      %th Begins
-      %th Ends
-      %th Qty
-      %th List Price
+      %th &nbsp;Type&nbsp;
+      %th &nbsp;Supp Provider&nbsp;
+      %th &nbsp;Product num&nbsp;
+      %th &nbsp;Serial num&nbsp;
+      %th &nbsp;Description&nbsp;
+      %th &nbsp;Begins&nbsp;
+      %th &nbsp;Ends&nbsp;
+      %th &nbsp;Qty&nbsp;
+      %th &nbsp;List Price&nbsp;
       %th{:colspan => "2"} &nbsp;
       
     - for line_item in @line_items

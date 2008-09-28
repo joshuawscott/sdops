@@ -50,7 +50,6 @@ class ImportController < ApplicationController
     
     #Create contract in SugarCRM
     sugar_con = SugarContract.new
-    debugger
     sugar_con.id = create_guid
 
     sugar_con.name = @contract.description

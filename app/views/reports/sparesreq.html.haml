@@ -1,0 +1,46 @@
+- content_for :subtitle do
+  Reports
+
+#section1
+  %h2
+    Report Links
+    
+  #linkbox
+    %dt
+      %b Performance
+    %dd{:style => "margin-left:20px"}
+      %ul
+        %li
+          Test
+        %li
+          Test2
+
+  #linkbox
+    %dt
+      %b Inventory
+    %dd{:style => "margin-left:20px"}
+      %ul
+        %li
+          = link_to 'Spares Requirements', 'reports/sparesreq'
+        %li
+          Test2
+  
+  %p &nbsp;
+
+#section2
+  %h2 General Stats
+  %table{:class => 'main_table', :width => "250"}
+    %tr
+      %th
+        %b Stat
+      %th
+        %b Contracts
+      %th
+        %b Customers
+    %tr
+      %td Total Counts
+      %td{:align => 'center'}= h @total_contract_count
+      %td{:align => 'center'}= h @total_customer_count
+
+
+

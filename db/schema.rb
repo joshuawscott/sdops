@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080830165634) do
+ActiveRecord::Schema.define(:version => 20080925121340) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(:version => 20080830165634) do
     t.string   "commentable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "user"
   end
 
   create_table "contracts", :force => true do |t|
@@ -59,6 +60,8 @@ ActiveRecord::Schema.define(:version => 20080830165634) do
     t.string   "support_office_name"
     t.decimal  "discount_pref_srv",                 :precision => 5,  :scale => 3
     t.string   "contract_type"
+    t.string   "so_number"
+    t.string   "po_number"
   end
 
   create_table "dropdowns", :force => true do |t|
@@ -83,6 +86,7 @@ ActiveRecord::Schema.define(:version => 20080830165634) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "support_provider"
+    t.integer  "position",         :limit => 11
   end
 
   create_table "locations", :force => true do |t|

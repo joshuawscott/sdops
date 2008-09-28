@@ -27,10 +27,11 @@ class Contract < ActiveRecord::Base
   
   def self.short_list(role, teams)
     if role >= MANAGER
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name")
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name",
+        :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today])
     else
       Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name",
-        :conditions => ["sales_office IN (?)", teams])
+        :conditions => ["sales_office IN (?) AND start_date <= ? AND end_date >= ?", teams, Date.today, Date.today])
     end
   end
 
@@ -56,20 +57,28 @@ class Contract < ActiveRecord::Base
     Contract.count(:account_id, {:conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]})
   end
 
-  def self.total_hw_contract_count
-    Contract.count(:account_id, {:conditions => ["annual_hw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  def self.total_hw_sw_contract_count
+    Contract.count(:account_id, {:conditions => ["annual_hw_rev > 0 AND annual_sw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
   end
 
-  def self.total_hw_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_hw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  def self.total_hw_sw_customer_count
+    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_hw_rev > 0 AND annual_sw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
   end
 
-  def self.total_sw_contract_count
-    Contract.count(:account_id, {:conditions => ["annual_sw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  def self.total_hw_only_contract_count
+    Contract.count(:account_id, {:conditions => ["annual_hw_rev > 0 AND annual_sw_rev = 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
   end
 
-  def self.total_sw_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_sw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  def self.total_hw_only_customer_count
+    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_hw_rev > 0 AND annual_sw_rev = 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  end
+
+  def self.total_sw_only_contract_count
+    Contract.count(:account_id, {:conditions => ["annual_sw_rev > 0 AND annual_hw_rev = 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  end
+
+  def self.total_sw_only_customer_count
+    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_sw_rev > 0 AND annual_hw_rev = 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
   end
 
   def self.total_sa_contract_count

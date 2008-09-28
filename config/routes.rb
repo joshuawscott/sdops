@@ -11,8 +11,6 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :users
   
-  map.refresh '/refresh', :controller => 'users', :action => 'refresh'
-
   map.resources :sessions
 
   map.resources :dropdowns
@@ -21,12 +19,16 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :contracts, :has_many => :line_items
   
-  map.resources :reports
   
   map.resources :import, :controller => 'import'
   
   map.resources  :admin, :controller => 'admin'
   
+  #Non-Restful Routes
+  map.refresh '/refresh', :controller => 'users', :action => 'refresh'
+
+  map.reports '/reports', :controller => 'reports', :action => 'index'
+
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.signup '/signup', :controller => 'users', :action => 'new'
   map.login '/login', :controller => 'sessions', :action => 'new'

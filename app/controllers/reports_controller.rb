@@ -5,10 +5,12 @@ class ReportsController < ApplicationController
   def index
     @total_contract_count = Contract.total_contract_count
     @total_customer_count = Contract.total_customer_count
-    @total_hw_contract_count = Contract.total_hw_contract_count
-    @total_hw_customer_count = Contract.total_hw_customer_count
-    @total_sw_contract_count = Contract.total_sw_contract_count
-    @total_sw_customer_count = Contract.total_sw_customer_count
+    @total_hw_sw_contract_count = Contract.total_hw_sw_contract_count
+    @total_hw_sw_customer_count = Contract.total_hw_sw_customer_count
+    @total_hw_only_contract_count = Contract.total_hw_only_contract_count
+    @total_hw_only_customer_count = Contract.total_hw_only_customer_count
+    @total_sw_only_contract_count = Contract.total_sw_only_contract_count
+    @total_sw_only_customer_count = Contract.total_sw_only_customer_count
     @total_sa_contract_count = Contract.total_sa_contract_count
     @total_sa_customer_count = Contract.total_sa_customer_count
     @total_ce_contract_count = Contract.total_ce_contract_count
@@ -17,9 +19,16 @@ class ReportsController < ApplicationController
     @total_dr_customer_count = Contract.total_dr_customer_count
     
     respond_to do |format|
-      format.html # index.html.erb
+      format.html # index.html.haml
     end
   end
 
-
+  def sparesreq
+    @total_contract_count = Contract.total_contract_count
+    @total_customer_count = Contract.total_customer_count
+    
+    respond_to do |format|
+      format.html # sparesreq.html.haml
+    end
+  end
 end

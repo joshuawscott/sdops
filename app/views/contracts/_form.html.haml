@@ -4,7 +4,7 @@
 = javascript_include_tag "jscalendar-1.0/calendar-setup.js"
 
 #section1
-  #results.boxed
+  #results.boxed{:style => 'width:340px;height:260px'}
     %h2 General Details
     = f.hidden_field :account_name
     = f.hidden_field :sales_office_name
@@ -55,71 +55,7 @@
         Type
       = f.collection_select(:contract_type, @contract_types, :id, :name, { :include_blank => true })
 
-  #results.boxed
-    %h2 Revenue
-    %p
-      %label{:for => "contract_revenue"}
-        Amount Paid
-      =f.text_field :revenue, :class => 'textbox'
-    %p
-      %label{:for => "contract_annual_hw_rev"}
-        Ann. HW Revenue
-      = f.text_field :annual_hw_rev, :class => 'textbox'
-    %p
-      %label{:for => "contract_annual_sw_rev"}
-        Ann. SW Revenue
-      = f.text_field :annual_sw_rev, :class => 'textbox'
-    %p
-      %label{:for => "contract_annual_ce_rev"}
-        Ann. CE Revenue
-      = f.text_field :annual_ce_rev, :class => 'textbox'
-    %p
-      %label{:for => "contract_annual_sa_rev"}
-        Ann. SA Revenue
-      = f.text_field :annual_sa_rev, :class => 'textbox'
-    %p
-      %label{:for => "contract_annual_dr_rev"}
-        Ann. DR Revenue
-      = f.text_field :annual_dr_rev, :class => 'textbox'
-    %p
-      %b &nbsp
-    %p Example: Enter $100,000 as 100000
-
-  #results.boxed
-    %h2 Discounts
-    %p
-      %label{:for => "contract_discount_pref_hw"}
-        Discount HW
-      = f.text_field :discount_pref_hw, :class => 'textbox'
-    %p
-      %label{:for => "contract_discount_pref_sw"}
-        Discount SW
-      = f.text_field :discount_pref_sw, :class => 'textbox'
-    %p
-      %label{:for => "contract_discount_pref_srv"}
-        Discount SRV
-      = f.text_field :discount_pref_srv, :class => 'textbox'
-    %p
-      %label{:for => "contract_discount_prepay"}
-        Discount Prepay
-      = f.text_field :discount_prepay, :class => 'textbox'
-    %p
-      %label{:for => "contract_discount_multiyear"}
-        Multi-year Disc.
-      = f.text_field :discount_multiyear, :class => 'textbox'
-    %p
-      %label{:for => "contract_discount_ce_day"}
-        Discount CE Days
-      = f.text_field :discount_ce_day, :class => 'textbox'
-    %p
-      %label{:for => "contract_discount_sa_day"}
-        Discount SA Days
-      = f.text_field :discount_sa_day, :class => 'textbox'
-    %p
-      %b &nbsp
-    %p Example: Enter 35% as .35
-
-  #results.boxed
+  #results.boxed{:style => 'width:340px;height:260px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
@@ -153,8 +89,82 @@
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
       = f.date_select :multiyr_end
+    %br/
+    %p
+      %label{:for => "contract_so_number"}
+        Sales Order
+      = f.text_field :so_number, :class => 'textbox'
+    %p
+      %label{:for => "contract_po_number"}
+        Purchase Order
+      = f.text_field :po_number, :class => 'textbox'
 
-  #results.boxed
+#section2
+  #results.boxed{:style => 'width:260px;height:200px'}
+    %h2 Revenue
+    %p
+      %label{:for => "contract_revenue"}
+        Amount Paid
+      =f.text_field :revenue, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_hw_rev"}
+        Ann. HW Revenue
+      = f.text_field :annual_hw_rev, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_sw_rev"}
+        Ann. SW Revenue
+      = f.text_field :annual_sw_rev, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_ce_rev"}
+        Ann. CE Revenue
+      = f.text_field :annual_ce_rev, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_sa_rev"}
+        Ann. SA Revenue
+      = f.text_field :annual_sa_rev, :class => 'textbox'
+    %p
+      %label{:for => "contract_annual_dr_rev"}
+        Ann. DR Revenue
+      = f.text_field :annual_dr_rev, :class => 'textbox'
+    %p
+      %b &nbsp
+    %p Example: Enter $100,000 as 100000
+
+  #results.boxed{:style => 'width:260px;height:200px'}
+    %h2 Discounts
+    %p
+      %label{:for => "contract_discount_pref_hw"}
+        Discount HW
+      = f.text_field :discount_pref_hw, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_pref_sw"}
+        Discount SW
+      = f.text_field :discount_pref_sw, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_pref_srv"}
+        Discount SRV
+      = f.text_field :discount_pref_srv, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_prepay"}
+        Discount Prepay
+      = f.text_field :discount_prepay, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_multiyear"}
+        Multi-year Disc.
+      = f.text_field :discount_multiyear, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_ce_day"}
+        Discount CE Days
+      = f.text_field :discount_ce_day, :class => 'textbox'
+    %p
+      %label{:for => "contract_discount_sa_day"}
+        Discount SA Days
+      = f.text_field :discount_sa_day, :class => 'textbox'
+    %p
+      %b &nbsp
+    %p Example: Enter 35% as .35
+
+  #results.boxed{:style => 'height:200px'}
     %h2 Relationships &nbsp;
     
     %p

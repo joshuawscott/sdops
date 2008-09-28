@@ -36,6 +36,7 @@ Rails::Initializer.run do |config|
   #config.gem "rmagick"
   #config.gem "haml"
   #config.gem "gruff"
+  config.gem 'ryanb-acts-as-list', :lib => 'acts_as_list', :source => 'http://gems.github.com'
 
   # Only load the plugins named here, in the order given. By default, all plugins 
   # in vendor/plugins are loaded in alphabetical order.

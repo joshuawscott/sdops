@@ -2,6 +2,12 @@
   User List
   
 #section1
+  %p{:style => "margin:0 0 5px 300px"}
+    = link_to( 'Dropdowns', dropdowns_path ) + " | "
+    = link_to( 'Users', users_path ) + " | "
+    = link_to 'Import', import_index_path
+
+#section2
   %p= link_to 'Update Users from Sugar', refresh_path
 
   %table{:class => "main_table"}
