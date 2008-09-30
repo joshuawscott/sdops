@@ -38,31 +38,31 @@
       %th
         %b Customers
     %tr
-      %td Total Counts
+      %td All
       %td{:align => 'center'}= h @total_contract_count
       %td{:align => 'center'}= h @total_customer_count
     %tr
-      %td HW & SW Counts
+      %td HW & SW
       %td{:align => 'center'}= h @total_hw_sw_contract_count
       %td{:align => 'center'}= h @total_hw_sw_customer_count
     %tr
-      %td HW Only Counts
+      %td HW Only
       %td{:align => 'center'}= h @total_hw_only_contract_count
       %td{:align => 'center'}= h @total_hw_only_customer_count
     %tr
-      %td SW Only Counts
+      %td SW Only
       %td{:align => 'center'}= h @total_sw_only_contract_count
       %td{:align => 'center'}= h @total_sw_only_customer_count
     %tr
-      %td SA Contracts
+      %td With SA
       %td{:align => 'center'}= h @total_sa_contract_count
       %td{:align => 'center'}= h @total_sa_customer_count
     %tr
-      %td CE Contracts
+      %td With CE
       %td{:align => 'center'}= h @total_ce_contract_count
       %td{:align => 'center'}= h @total_ce_customer_count
     %tr
-      %td DR Contracts
+      %td With DR
       %td{:align => 'center'}= h @total_dr_contract_count
       %td{:align => 'center'}= h @total_dr_customer_count
 
@@ -70,10 +70,10 @@
   %p
     - @url1 = url_for :controller => 'graphs', :action => 'sales_by_office'
     %img{'src' => @url1, 'style' => "border:1px solid #111111;"}
-
-    - @url2 = url_for :controller => 'graphs', :action => 'contract_counts_by_office'
+  %p
+    - @url2 = url_for :controller => 'graphs', :action => 'sales_by_type_pie'
     %img{'src' => @url2, 'style' => "border:1px solid #111111;"}
-
-    - @url3 = url_for :controller => 'graphs', :action => 'sales_by_type_pie'
+  %p
+    - @url3 = url_for :controller => 'graphs', :action => 'contract_counts_by_office'
     %img{'src' => @url3, 'style' => "border:1px solid #111111;"}
 

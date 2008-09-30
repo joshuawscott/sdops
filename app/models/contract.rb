@@ -27,10 +27,10 @@ class Contract < ActiveRecord::Base
   
   def self.short_list(role, teams)
     if role >= MANAGER
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name",
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, round(revenue,2) as revenue, account_name",
         :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today])
     else
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name",
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, round(revenue,2) as revenue, account_name",
         :conditions => ["sales_office IN (?) AND start_date <= ? AND end_date >= ?", teams, Date.today, Date.today])
     end
   end
@@ -49,6 +49,7 @@ class Contract < ActiveRecord::Base
      annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev
   end
   
+  #All Contracts  sum(revenue) as rev, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw
   def self.total_customer_count
     Contract.count(:account_id, {:distinct => true, :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]})
   end
@@ -57,6 +58,11 @@ class Contract < ActiveRecord::Base
     Contract.count(:account_id, {:conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]})
   end
 
+  def self.all_totals
+    Contract.find(:all, :select => 'sum(revenue) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev', :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today])
+  end
+
+  #Both HW & SW Contracts
   def self.total_hw_sw_contract_count
     Contract.count(:account_id, {:conditions => ["annual_hw_rev > 0 AND annual_sw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
   end

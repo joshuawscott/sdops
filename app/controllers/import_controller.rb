@@ -6,6 +6,7 @@ class ImportController < ApplicationController
   # GET /import
   def index
     @sugar_accts = SugarAcct.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0", :order => "name")
+    @contracts = Contract.find(:all, :select => "id, concat(account_name,' | ',said,' | ',description) as label", :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today])
     @sales_reps = User.user_list
     @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "private = 0 AND deleted = 0 AND id <> 1", :order => "name")
     @support_offices = @sales_offices
@@ -36,7 +37,11 @@ class ImportController < ApplicationController
    
     #Save new contract
     logger.info "Importing contract... "
-    @contract = Contract.new(contract_ary.ivars['attributes'])
+    if params[:contract]
+      @contract = Contract.find(params[:contract])
+    else
+      @contract = Contract.new(contract_ary.ivars['attributes'])
+    end
 
     #if Contract successfully saves then import
     #associated line items

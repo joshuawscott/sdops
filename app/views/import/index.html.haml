@@ -13,27 +13,31 @@
     %p
       %label{:for => "account_id"}
         Account
-      = select_tag('account_id', options_from_collection_for_select(@sugar_accts, 'id', 'name'), { :include_blank => true })
+      = select_tag('account_id', "<option value=''/>" + options_from_collection_for_select(@sugar_accts, 'id', 'name'), { :include_blank => true })
+    %p
+      %label{:for => "contract"}
+        Account
+      = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label'), { :include_blank => true })      
     %p
       %label{:for => "sales_rep_id"}
         Sales Rep
-      = select_tag('sales_rep_id', options_from_collection_for_select(@sales_reps, 'id', 'full_name'))
+      = select_tag('sales_rep_id', "<option value=''/>" + options_from_collection_for_select(@sales_reps, 'id', 'full_name'))
     %p
       %label{:for => "sales_office"}
         Sales Office
-      = select_tag('sales_office', options_from_collection_for_select(@sales_offices, 'id', 'name'))
+      = select_tag('sales_office', "<option value=''/>" + options_from_collection_for_select(@sales_offices, 'id', 'name'))
     %p
       %label{:for => "support_office"}
         Support Office
-      = select_tag('support_office', options_from_collection_for_select(@support_offices, 'id', 'name'))
+      = select_tag('support_office', "<option value=''/>" + options_from_collection_for_select(@support_offices, 'id', 'name'))
     %p
       %label{:for => "platform"}
         Platform
-      = select_tag('platform', options_from_collection_for_select(@platform, 'label', 'label'))
+      = select_tag('platform', "<option value=''/>" + options_from_collection_for_select(@platform, 'label', 'label'))
     %p
       %label{:for => "contract_type"}
         Contract Type
-      = select_tag('contract_type', options_from_collection_for_select(@types, 'id', 'name'))
+      = select_tag('contract_type', "<option value=''/>" + options_from_collection_for_select(@types, 'id', 'name'))
     %p
       %label{:for => "importfile"}
         File to import
