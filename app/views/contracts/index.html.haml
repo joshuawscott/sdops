@@ -7,7 +7,6 @@
 = javascript_include_tag "codebase/dhtmlxgrid.js"
 = javascript_include_tag "codebase/dhtmlxgridcell.js"
 = javascript_include_tag "codebase/ext/dhtmlxgrid_filter.js"
-= javascript_include_tag "codebase/ext/dhtmlxgrid_selection.js"
 = javascript_include_tag "codebase/ext/dhtmlxgrid_nxml.js"
 
 
@@ -16,7 +15,7 @@
   = link_to 'Export to Excel', formatted_contracts_url(:xls)
   
 #section2
-  %table{:width => '850'}
+  %table{:width => '900'}
     %tr
       %td{:valign => "bottom"}
         %b
@@ -29,28 +28,25 @@
       %td{:valign => "bottom", :align => 'right'}
         = link_to "Clear Filter & Search", contracts_url
 
-  %div{:id => "mygrid_container", :style => "width:800;height:10%;"}
+  %div{:id => "mygrid_container", :style => "width:960px;height:700px;"}
   
 %script
   var mygrid;
   mygrid = new dhtmlXGridObject('mygrid_container');
   mygrid.setImagePath("/javascripts/codebase/imgs/");
-  mygrid.setHeader("Sales,Support,Account,SAID,Description,PO Number,Terms,Annual Rev");
-  mygrid.attachHeader("#select_filter,#select_filter,#text_filter,#text_filter,#text_filter,#text_filter,#select_filter,#numeric_filter")
-  mygrid.setInitWidths("80,80,220,150,120,80,60,80");
-  mygrid.setColAlign("left,left,left,left,left,left,left,right");
-  mygrid.setColTypes("ro,ro,ro,ro,ro,ro,ro,ro");
-  mygrid.setColSorting("str,str,str,str,str,str,str,int");
+  //mygrid.enableSmartRendering(true);
+  mygrid.setHeader("Sales,Support,Account,SAID,Description,Terms,Start,End,Annual Rev");
+  mygrid.attachHeader("#select_filter,#select_filter,#text_filter,#text_filter,#text_filter,#select_filter, , ,#numeric_filter")
+  mygrid.setInitWidths("80,80,220,150,120,80,70,70,80");
+  mygrid.setColAlign("left,left,left,left,left,left,left,left,right");
+  mygrid.setColTypes("ro,ro,ro,ro,ro,ro,ro,ro,ro");
+  mygrid.setColSorting("str,str,str,str,str,str,str,date,date,int");
   mygrid.attachEvent("onRowDblClicked",doOnRowDblClicked);
-  mygrid.enableAutoHeight(true,"600");
   mygrid.enableAutoWidth();
-  mygrid.enableBlockSelection();
   mygrid.init();
   mygrid.loadXML('contracts.xml');
 
 
-  //mygrid.loadXML('contracts.xml'+"?serial_search="+$("serial_search").value);
-	
   function doOnRowDblClicked(rowId){
   if (location.pathname == "/contracts")
   window.location = location.href + "/" + rowId

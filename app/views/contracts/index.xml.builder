@@ -9,8 +9,9 @@ xml.rows do
       xml.cell contract.account_name
       xml.cell contract.said
       xml.cell contract.description
-      xml.cell contract.cust_po_num
       xml.cell contract.payment_terms
+      xml.cell contract.start_date
+      xml.cell contract.end_date
       xml.cell contract.revenue
     end
   end

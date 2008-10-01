@@ -6,22 +6,20 @@
   = link_to(' Destroy ', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete)  if current_user.role == ADMIN
 
 #section2
-  #results.boxed{:style => 'height:200px'}
+  #results.boxed{:style => 'height:220px'}
     %h2 General Details
     %p
       %label{:for => "contract_account_name"}
         Customer
       =h @contract.account_name ||= 'N/A'
     %p
-      %label{:for => "contract_sales_office"}
+      %label{:for => "contract_sales_office_name"}
         Sales Office
-      - @temp = SugarTeam.find(@contract.sales_office).name
-      =h @temp ||= 'N/A'
+      =h @contract.sales_office_name ||= 'N/A'
     %p
-      %label{:for => "contract_support_office"}
+      %label{:for => "contract_support_office_name"}
         Support Office
-      - @temp = SugarTeam.find(@contract.support_office).name
-      =h @temp ||= 'N/A'
+      =h @contract.support_office_name ||= 'N/A'
     %p
       %label{:for => "contract_description"}
         Description
@@ -54,9 +52,11 @@
     %p
       %label{:for => "contract_type"}
         Type
-      =h SugarContractType.find(@contract.contract_type).name
+      - @temp = 'N/A'
+      - @temp = SugarContractType.find(@contract.contract_type).name unless @contract.contract_type == "???"
+      =h @temp
 
-  #results.boxed{:style => 'height:200px'}
+  #results.boxed{:style => 'height:220px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
@@ -90,7 +90,14 @@
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
       =h @contract.multiyr_end ||= 'N/A'
-    %br/
+    %p
+      %label{:for => "contract_expired"}
+        Expired
+      =h @contract.expired ||= ''
+    %p
+      %label{:for => "contract_so_number"}
+        Replacement Ref
+      =h @contract.replacement_sdc_ref ||= 'N/A'
     %p
       %label{:for => "contract_so_number"}
         Sales Order
@@ -100,7 +107,7 @@
         Purchase Order
       =h @contract.po_number ||= 'N/A'
 
-  #results.boxed{:style => 'height:200px'}
+  #results.boxed{:style => 'height:220px'}
     %h2 Revenue
     %p
       %label{:for => "contract_revenue"}
@@ -133,7 +140,7 @@
       - @tmp = number_to_currency(@contract.annual_dr_rev)
       =h @tmp ||= 'N/A'
 
-  #results.boxed{:style => 'height:200px'}
+  #results.boxed{:style => 'height:220px'}
     %h2 Discounts
     %p
       %label{:for => "contract_discount_pref_hw"}
@@ -164,20 +171,20 @@
         SA Days Disct %
       =h sprintf("%d%", @contract.discount_sa_day ||= 0.0)
 
-  #results.boxed{:style => 'height:200px'}
+  #results.boxed{:style => 'height:220px'}
     %h2 Relationships
 
     %p
       %b Replaced By
       %br
       - for x in @replaced_by
-        = link_to x.said, contract_path(x.id)
+        = link_to x.sdc_ref, contract_path(x.id)
     %p &nbsp;
     %p
       %b Replaces
       %br
       - for x in @replaces
-        = link_to x.said, contract_path(x.id)
+        = link_to x.sdc_ref, contract_path(x.id)
 
 #section3
   - if current_user.role >= BASIC
