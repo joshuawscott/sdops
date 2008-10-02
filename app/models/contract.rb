@@ -27,18 +27,18 @@ class Contract < ActiveRecord::Base
   
   def self.short_list(role, teams)
     if role >= MANAGER
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, payment_terms, start_date, end_date, round(revenue,2) as revenue, account_name")
-        #:conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today])
+      #Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, payment_terms, start_date, end_date, round(revenue,2) as revenue, account_name", :conditions => "expired <> true")
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name", :conditions => "expired <> true")
     else
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, payment_terms, start_date, end_date, round(revenue,2) as revenue, account_name")
-        #:conditions => ["sales_office IN (?) AND start_date <= ? AND end_date >= ?", teams, Date.today, Date.today])
+      #Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, payment_terms, start_date, end_date, round(revenue,2) as revenue, account_name", :conditions => ["sales_office IN (?) AND expired <> true", teams])
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name", :conditions => ["sales_office IN (?) AND expired <> true", teams])
     end
   end
 
   def self.serial_search(role, teams, serial_num)
     if role >= MANAGER
       Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, payment_terms, start_date, end_date, round(revenue,2) as revenue, account_name",
-        :joins => :line_items) #, :conditions => ['line_items.serial_num = ?', serial_num])
+        :joins => :line_items, :conditions => ['line_items.serial_num = ?', serial_num])
     else
       Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, payment_terms, start_date, end_date, round(revenue,2) as revenue, account_name",
         :joins => :line_items, :conditions => ["contracts.sales_office IN (?) AND line_items.serial_num = ?", teams, serial_num])

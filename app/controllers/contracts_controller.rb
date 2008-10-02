@@ -6,18 +6,47 @@ class ContractsController < ApplicationController
   # GET /contracts
   # GET /contracts.xml
   def index
-    if params[:format] == "xml"
-      if params[:serial_search]
-        @contracts = Contract.serial_search(current_user.role, current_user.sugar_team_ids, params[:serial_search])      
+    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
+    @support_offices =  @sales_offices
+    @account_names = Contract.find(:all, :select => "distinct(account_name)").map {|x| x.account_name}
+    @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
+    @pay_terms << "not bundled"                 
+
+    if params[:search] != nil
+      #Get search criteria from params object
+      @sales_office ||= params[:search][:sales_office]
+      @support_office ||= params[:search][:support_office]
+      @account_name ||= params[:search][:account_name]
+      @said ||= params[:search][:said]
+      @description ||= params[:search][:description]
+      @cust_po_num ||= params[:search][:cust_po_num]
+      @pay_term ||= params[:search][:payment_terms]
+      @revenue ||= params[:search][:revenue]
+      #Create and set the scope conditions
+      @contracts = Contract.scoped({})
+      @contracts = @contracts.conditions "contracts.sales_office = ?", @sales_office unless @sales_office.blank?
+      @contracts = @contracts.conditions "contracts.support_office = ?", @support_office unless @support_office.blank?
+      @contracts = @contracts.conditions "contracts.account_name = ?", @account_name unless @account_name.blank?
+      @contracts = @contracts.conditions "contracts.said like ?", "%"+@said+"%" unless @said.blank?
+      op, val = @revenue.split(" ")
+      @contracts = @contracts.conditions "contracts.revenue #{op} ?", val unless @revenue.blank?
+      if @pay_term =~ /$not/
+        @contracts = @contracts.conditions "contracts.payment_terms <> 'bundled'"
       else
-        @contracts = Contract.short_list(current_user.role, current_user.sugar_team_ids)
+        @contracts = @contracts.conditions "contracts.payment_terms = ?", @pay_term unless @pay_term.blank?
       end
+      @contracts = @contracts.conditions "contracts.description like ?", "%"+@description+"%" unless @description.blank?
+      @contracts = @contracts.conditions "contracts.cust_po_num like ?", "%"+@cust_po_num+"%" unless @cust_po_num.blank?
+      @contracts
+    else
+      @contracts = Contract.short_list(current_user.role, current_user.sugar_team_ids)
     end
+    
     respond_to do |format|
       store_location
       format.html # index.html.haml
       format.xls  #Respond as Excel Doc
-      format.xml  ##{ render :xml => @contracts }
+      format.xml  { render :xml => @contracts }
     end
   end
 
