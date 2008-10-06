@@ -10,42 +10,44 @@
   = link_to 'Export to Excel', formatted_contracts_url(:xls)
   
 #section2
-  %table{:width => '900'}
+  %table{:class => 'plain_table', :cellpadding => "2", :cellspacing => "2"}
     %tr
-      %td{:valign => "bottom"}
+      %td{:valign => "bottom", :width => '350px'}
         %b
           Double click on a row to view details of a contract.
       %td{:valign => "bottom"}
-        %b
-          Serial # Search
-        = text_field_tag('serial_search')
-        = link_to_function 'Search', "searchForSerialNumber()"
-      %td{:valign => "bottom", :align => 'right'}
+        %b Serial #
+      %td{:valign => "bottom"}
+        - form_tag contracts_path, {:method => 'get', :name => 'serial_search' } do
+          = text_field 'serial_search', 'serial_number', :size => 11, :value => @serial_number
+          = submit_tag "Search"
+      %td{:valign => "bottom", :align => 'right', :width => '200px'}
         = link_to "Clear Filter & Search", contracts_url
 
-  %p
-  %table{:border => "2", :cellpadding => "2", :cellspacing => "2"}
+  %table{:class => 'plain_table', :cellpadding => "2", :cellspacing => "2"}
     - form_tag contracts_path, { :method => :get } do
       %tr
-        %td{:width => '80px'}
-          = select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 6em"})
-        %td{:width => '80px'}
-          = select("search", "support_office", @support_offices, {:selected => @support_office, :include_blank => true },{:style => "width: 6em"})
-        %td{:width => '150px'}
-          = select("search", "account_name", @account_names, {:selected => @account_name, :include_blank => true },{:style => "width: 11em"})
-        %td{:width => '100px'}
-          = text_field 'search', 'said', :size => 10, :value => @said
-        %td{:width => '150px'}
-          = text_field 'search', 'description', :size => 10, :value => @description
-        %td{:width => '110px'}
-          = text_field 'search', 'cust_po_num', :size => 10, :value => @cust_po_num
-        %td{:width => '80px'}
-          = select("search", "payment_terms", @pay_terms, {:selected => @pay_term, :include_blank => true },{:style => "width: 6em"})
-        %td{:width => '85px'}
-          = text_field 'search', 'revenue', :size => 8, :value => @revenue
-        %td{:width => '90px'}
+        %td{:width => '82px', :valign => "bottom"}
+          = select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 82px"})
+        %td{:width => '82px', :valign => "bottom"}
+          = select("search", "support_office", @support_offices, {:selected => @support_office, :include_blank => true },{:style => "width: 82px"})
+        %td{:width => '150px', :valign => "bottom"}
+          = select("search", "account_name", @account_names, {:selected => @account_name, :include_blank => true },{:style => "width: 150px"})
+        %td{:width => '100px', :valign => "bottom"}
+          = text_field 'search', 'said', :size => 11, :value => @said
+        %td{:width => '150px', :valign => "bottom"}
+          = text_field 'search', 'description', :size => 19, :value => @description
+        %td{:width => '108px', :valign => "bottom"}
+          = text_field 'search', 'cust_po_num', :size => 12, :value => @cust_po_num
+        %td{:width => '81px', :valign => "bottom"}
+          = select("search", "payment_terms", @pay_terms, {:selected => @pay_term, :include_blank => true },{:style => "width: 80px"})
+        %td{:width => '88px', :valign => "bottom"}
+          = text_field 'search', 'revenue', :size => 9, :value => @revenue
+        %td{:width => '90px', :valign => "bottom"}
+          = check_box_tag 'search_expired', @expired, @expired,{:name=> 'search[expired]'}
+          Inc. Expired
           = submit_tag "Search"
-          = link_to 'Clear', contracts_path
+
   %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
     %tr
       %th{:width => '80px'} Sales Office
@@ -53,10 +55,9 @@
       %th{:width => '150px'} Account Name
       %th{:width => '100px'} SAID
       %th{:width => '150px'} Description
-      %th{:width => '110px'} PO Number
+      %th{:width => '108px'} PO Number
       %th{:width => '80px'} Terms
       %th{:width => '85px'} Annual Rev
-      %th{:width => '90px'} &nbsp;
     - for contract in @contracts
       %tr{:ondblclick => "doOnRowDblClicked(#{contract.id})"} 
         %td= h contract.sales_office_name
@@ -67,14 +68,7 @@
         %td= h contract.cust_po_num.length > 10 ? contract.cust_po_num.slice(0..10) + "..." : contract.cust_po_num
         %td= h contract.payment_terms
         %td{:align => 'right'}= h number_to_currency(contract.revenue, :precision => 0)
-        %td
-          &nbsp;
-  
+
 %script
-  function doOnRowDblClicked(rowId){
-  window.location = "contracts/" + rowId
-  }
-  
-  function searchForSerialNumber(){
-  mygrid.clearAll(); mygrid.loadXML('contracts.xml?serial_search=' + $('serial_search').value);
-  }
+  function doOnRowDblClicked(rowId){window.location = "contracts/" + rowId}
+  function searchForSerialNumber(){document.serial_search.submit;}

@@ -4,7 +4,7 @@
 = javascript_include_tag "jscalendar-1.0/calendar-setup.js"
 
 #section1
-  #results.boxed{:style => 'width:340px;height:260px'}
+  #results.boxed{:style => 'width:340px;height:280px'}
     %h2 General Details
     = f.hidden_field :account_name
     = f.hidden_field :sales_office_name
@@ -55,7 +55,7 @@
         Type
       = f.collection_select(:contract_type, @contract_types, :id, :name, { :include_blank => true })
 
-  #results.boxed{:style => 'width:340px;height:260px'}
+  #results.boxed{:style => 'width:340px;height:280px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
@@ -90,14 +90,6 @@
         Multi-Year End
       = f.date_select :multiyr_end
     %p
-      %label{:for => "contract_expired"}
-        Expired
-      = f.check_box :expired, {}, "true", "false"
-    %p
-      %label{:for => "contract_multiyr_end"}
-        Replacement Ref
-      = f.text_field :replacement_sdc_ref
-    %p
       %label{:for => "contract_so_number"}
         Sales Order
       = f.text_field :so_number, :class => 'textbox'
@@ -105,6 +97,14 @@
       %label{:for => "contract_po_number"}
         Purchase Order
       = f.text_field :po_number, :class => 'textbox'
+    %p
+      %label{:for => "contract_replacement_sdc_ref"}
+        Replaced By
+      = f.text_field :replacement_sdc_ref, :class => 'textbox'
+    %p
+      %label{:for => "contract_expired"}
+        Expired
+      = f.check_box :expired
 
 #section2
   #results.boxed{:style => 'width:260px;height:200px'}

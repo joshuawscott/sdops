@@ -1,0 +1,59 @@
+- content_for :subtitle do
+  Contract List
+
+= stylesheet_link_tag "/javascripts/codebase/dhtmlxgrid.css"
+= javascript_include_tag "prototype.js"
+= javascript_include_tag "codebase/dhtmlxcommon.js"
+= javascript_include_tag "codebase/dhtmlxgrid.js"
+= javascript_include_tag "codebase/dhtmlxgridcell.js"
+= javascript_include_tag "codebase/ext/dhtmlxgrid_filter.js"
+= javascript_include_tag "codebase/ext/dhtmlxgrid_nxml.js"
+
+
+#section1
+  = link_to 'New contract', new_contract_path if current_user.role == ADMIN
+  = link_to 'Export to Excel', formatted_contracts_url(:xls)
+  
+#section2
+  %table{:width => '900'}
+    %tr
+      %td{:valign => "bottom"}
+        %b
+          Double click on a row to view details of a contract.
+      %td{:valign => "bottom"}
+        %b
+          Serial # Search
+        = text_field_tag('serial_search')
+        = link_to_function 'Search', "searchForSerialNumber()"
+      %td{:valign => "bottom", :align => 'right'}
+        = link_to "Clear Filter & Search", contracts_url
+
+  %div{:id => "mygrid_container", :style => "width:960px;height:700px;"}
+  
+%script
+  var mygrid;
+  mygrid = new dhtmlXGridObject('mygrid_container');
+  mygrid.setImagePath("/javascripts/codebase/imgs/");
+  //mygrid.enableSmartRendering(true);
+  mygrid.setHeader("Sales,Support,Account,SAID,Description,Terms,Start,End,Annual Rev");
+  mygrid.attachHeader("#select_filter,#select_filter,#text_filter,#text_filter,#text_filter,#select_filter, , ,#numeric_filter")
+  mygrid.setInitWidths("80,80,220,150,120,80,70,70,80");
+  mygrid.setColAlign("left,left,left,left,left,left,left,left,right");
+  mygrid.setColTypes("ro,ro,ro,ro,ro,ro,ro,ro,ro");
+  mygrid.setColSorting("str,str,str,str,str,str,str,date,date,int");
+  mygrid.attachEvent("onRowDblClicked",doOnRowDblClicked);
+  mygrid.enableAutoWidth();
+  mygrid.init();
+  mygrid.loadXML('contracts.xml');
+
+
+  function doOnRowDblClicked(rowId){
+  if (location.pathname == "/contracts")
+  window.location = location.href + "/" + rowId
+  else
+  window.location = location.href + "contracts/" + rowId
+  }
+  
+  function searchForSerialNumber(){
+  mygrid.clearAll(); mygrid.loadXML('contracts.xml?serial_search=' + $('serial_search').value);
+  }

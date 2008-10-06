@@ -32,9 +32,6 @@ table {
   border-collapse: collapse;
   border-color: #000082; }
   table td {
-    border-width: 1px;
-    border-style: solid;
-    border-collapse: collapse;
     border-color: #000082; }
     table td h2 {
       text-transform: uppercase;
@@ -43,12 +40,12 @@ table {
       color: #000082;
       background: #ffd91e; }
   table th {
-    border-width: 1px;
-    border-style: solid;
-    border-collapse: collapse;
-    border-color: #000082;
     background: #ffca0f;
     height: 20px; }
+
+.plain_table {
+  border-width: 0px;
+  border-collapse: collapse; }
 
 #userinfo {
   position: absolute;

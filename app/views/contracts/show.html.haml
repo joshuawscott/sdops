@@ -91,14 +91,6 @@
         Multi-Year End
       =h @contract.multiyr_end ||= 'N/A'
     %p
-      %label{:for => "contract_expired"}
-        Expired
-      =h @contract.expired ||= ''
-    %p
-      %label{:for => "contract_so_number"}
-        Replacement Ref
-      =h @contract.replacement_sdc_ref ||= 'N/A'
-    %p
       %label{:for => "contract_so_number"}
         Sales Order
       =h @contract.so_number ||= 'N/A'
@@ -106,6 +98,14 @@
       %label{:for => "contract_po_number"}
         Purchase Order
       =h @contract.po_number ||= 'N/A'
+    %p
+      %label{:for => "contract_replacement_sdc_ref"}
+        Replacement Ref
+      =h @contract.replacement_sdc_ref ||= 'N/A'
+    %p
+      %label{:for => "contract_expired"}
+        Expired
+      =h @contract.expired ||= '0'
 
   #results.boxed{:style => 'height:220px'}
     %h2 Revenue
