@@ -19,7 +19,7 @@
       = select_tag('account_id', "<option value=''/>" + options_from_collection_for_select(@sugar_accts, 'id', 'name'), { :include_blank => true })
     %p
       %label{:for => "contract"}
-        Account
+        Contract
       = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label'), { :include_blank => true })      
     %p
       %label{:for => "sales_rep_id"}
