@@ -7,11 +7,11 @@
 
 a {
   text-decoration: underline;
-  color: #000082; }
+  color: #000000; }
 
 a:hover {
   text-decoration: none;
-  color: #ffbb00; }
+  color: #a0d55c; }
 
 p, blockquote, ul, ol {
   margin-bottom: 1em;
@@ -30,27 +30,67 @@ table {
   border-width: 1px;
   border-style: solid;
   border-collapse: collapse;
-  border-color: #000082; }
+  border-color: #000000; }
   table td {
-    border-color: #000082; }
-    table td h2 {
+    border-width: 1px;
+    border-style: solid;
+    border-collapse: collapse;
+    border-color: #000000;
+    padding: 1px 2px 1px 2px; }
+  table th {
+    background: #a0d55c;
+    height: 20px;
+    border-width: 1px;
+    border-style: solid;
+    border-collapse: collapse;
+    border-color: #000000; }
+    table th h2 {
       text-transform: uppercase;
       margin: 0;
       padding-left: 5px;
-      color: #000082;
-      background: #ffd91e; }
-  table th {
-    background: #ffca0f;
-    height: 20px; }
+      color: #0000ff;
+      background: #bef37a; }
 
-.plain_table {
+table.plain_table {
   border-width: 0px;
   border-collapse: collapse; }
+  table.plain_table td {
+    border-width: 0px;
+    border-collapse: collapse;
+    padding: 1px 0px 1px 0px; }
+
+ul.sub_menu {
+  position: absolute;
+  top: 84px;
+  left: 315px;
+  margin: 0;
+  padding-top: 0px;
+  list-style: none; }
+  ul.sub_menu li {
+    display: inline; }
+  ul.sub_menu a {
+    display: block;
+    float: left;
+    width: 80px;
+    /* :height 20px */
+    margin-left: 2px;
+    padding: 1px 2px 1px 2px;
+    background: #1e1e1e;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff; }
+  ul.sub_menu a:hover {
+    color: #000000;
+    background: #89be45; }
+  ul.sub_menu a.active {
+    color: #a0d55c;
+    background: #000000; }
 
 #userinfo {
   position: absolute;
   top: 33pt;
-  left: 150pt;
+  left: 205pt;
   z-index: 100;
   height: 9pt; }
   #userinfo p {
@@ -78,7 +118,7 @@ table {
   background: #cccccc;
   border-width: 1px;
   border-style: solid;
-  border-color: #000082; }
+  border-color: #000000; }
 
 .comments {
   float: left;
@@ -88,7 +128,7 @@ table {
   margin-bottom: 5px;
   border-width: 1px;
   border-style: solid;
-  border-color: #000082; }
+  border-color: #000000; }
 
 .comment {
   float: left;
@@ -96,12 +136,12 @@ table {
   margin-bottom: 5px;
   border-top-width: 1px;
   border-top-style: solid;
-  border-top-color: #000082; }
+  border-top-color: #000000; }
   .comment h2 {
     text-transform: uppercase;
     padding-left: 5px;
-    color: #000082;
-    background: #ffd91e; }
+    color: #000000;
+    background: #bef37a; }
 
 .boxed {
   float: left;
@@ -110,22 +150,22 @@ table {
   margin-bottom: 5px;
   border-width: 1px;
   border-style: solid;
-  border-color: #000082; }
+  border-color: #000000; }
   .boxed p {
     margin: 0;
     padding: 0; }
   .boxed h2 {
     text-transform: uppercase;
     padding-left: 5px;
-    color: #000082;
-    background: #ffd91e; }
+    color: #000000;
+    background: #a0d55c; }
   .boxed label {
     float: left;
     width: 120px;
     font-weight: bold; }
   .boxed hr {
-    color: #000082;
-    background-color: #000082;
+    color: #000000;
+    background-color: #000000;
     margin: 3px 0px 5px 0px;
     height: 2px;
     width: 100%; }
@@ -135,14 +175,14 @@ table {
     margin: .5px;
     border-width: 1px;
     border-style: solid;
-    border-color: #000082; }
+    border-color: #000000; }
   .boxed .textbox {
     width: 9.5em;
     padding: .5px;
     margin: .5px;
     border-width: 1px;
     border-style: solid;
-    border-color: #000082; }
+    border-color: #000000; }
 
 /* Header Styles */
 #header {
@@ -155,14 +195,15 @@ table {
   /* Header > Title */
   /* Header > Menu */ }
   #header #logo {
-    float: left; }
+    float: left;
+    margin-right: 15px; }
     #header #logo h1 {
       float: left;
       width: 650px;
       font-size: 1.5em;
       margin: 0;
       padding: 18px 0 0px 0;
-      color: #000082; }
+      color: #000000; }
     #header #logo h2 {
       float: left;
       margin-top: -5px;
@@ -173,7 +214,7 @@ table {
       font-size: 1.5em;
       margin: 0;
       padding: 18px 0 0px 0;
-      color: #000082; }
+      color: #000000; }
   #header #menu {
     /* :float left */
     width: 780px; }
@@ -190,23 +231,23 @@ table {
       height: 20px;
       margin-left: 2px;
       padding-top: 3px;
-      background: #ffbb00;
+      background: #1e1e1e;
       text-decoration: none;
       text-align: center;
       font-weight: bold;
-      color: #000082; }
+      color: #ffffff; }
     #header #menu a:hover {
-      color: #000082;
-      background: #e8a400; }
-    #header #menu .active a {
-      color: #ffbb00;
-      background: #000082; }
+      color: #000000;
+      background: #89be45; }
+    #header #menu a.active {
+      color: #a0d55c;
+      background: #000000; }
     #header #menu hr {
       position: absolute;
       left: 0px;
-      top: 82px;
-      color: #000082;
-      background-color: #000082;
+      top: 81px;
+      color: #000000;
+      background-color: #000000;
       height: 5px;
       width: 100%; }
 

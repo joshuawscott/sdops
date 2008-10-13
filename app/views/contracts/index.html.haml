@@ -10,7 +10,7 @@
   = link_to 'Export to Excel', formatted_contracts_url(:xls)
   
 #section2
-  %table{:class => 'plain_table', :cellpadding => "2", :cellspacing => "2"}
+  %table{:class => 'plain_table'}
     %tr
       %td{:valign => "bottom", :width => '350px'}
         %b
@@ -24,7 +24,7 @@
       %td{:valign => "bottom", :align => 'right', :width => '200px'}
         = link_to "Clear Filter & Search", contracts_url
 
-  %table{:class => 'plain_table', :cellpadding => "2", :cellspacing => "2"}
+  %table{:class => 'plain_table'}
     - form_tag contracts_path, { :method => :get } do
       %tr
         %td{:width => '82px', :valign => "bottom"}
@@ -34,11 +34,11 @@
         %td{:width => '150px', :valign => "bottom"}
           = select("search", "account_name", @account_names, {:selected => @account_name, :include_blank => true },{:style => "width: 150px"})
         %td{:width => '100px', :valign => "bottom"}
-          = text_field 'search', 'said', :size => 11, :value => @said
+          = text_field 'search', 'said', :size => 18, :value => @said
         %td{:width => '150px', :valign => "bottom"}
           = text_field 'search', 'description', :size => 19, :value => @description
         %td{:width => '108px', :valign => "bottom"}
-          = text_field 'search', 'cust_po_num', :size => 12, :value => @cust_po_num
+          = text_field 'search', 'cust_po_num', :size => 13, :value => @cust_po_num
         %td{:width => '81px', :valign => "bottom"}
           = select("search", "payment_terms", @pay_terms, {:selected => @pay_term, :include_blank => true },{:style => "width: 80px"})
         %td{:width => '88px', :valign => "bottom"}
@@ -63,7 +63,7 @@
         %td= h contract.sales_office_name
         %td= h contract.support_office_name
         %td= h contract.account_name.length > 18 ? contract.account_name.slice(0..18) + "..." : contract.account_name
-        %td= h contract.said
+        %td= h contract.said.length > 15 ? contract.said.slice(0..15) + "..." : contract.said
         %td= h contract.description.length > 18 ? contract.description.slice(0..18) + "..." : contract.description
         %td= h contract.cust_po_num.length > 10 ? contract.cust_po_num.slice(0..10) + "..." : contract.cust_po_num
         %td= h contract.payment_terms

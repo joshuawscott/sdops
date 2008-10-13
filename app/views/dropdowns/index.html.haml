@@ -1,13 +1,16 @@
 - content_for :subtitle do
   Dropdowns List
 
-#section1
-  %p{:style => "margin:0 0 5px 300px"}
-    = link_to( 'Dropdowns', dropdowns_path ) + " | "
-    = link_to( 'Users', users_path ) + " | "
+%ul{:class => 'sub_menu'}
+  %li
+    = link_to( 'Dropdowns', dropdowns_path, :class => 'active' )
+  %li
+    = link_to( 'Users', users_path )
+  %li
     = link_to 'Import', import_index_path
 
 #section2
+  %p
   %table{:class => 'main_table', :border => "2", :cellpadding => "2", :cellspacing => "2"}
     %tr 
       %th Dd name

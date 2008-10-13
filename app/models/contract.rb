@@ -28,10 +28,10 @@ class Contract < ActiveRecord::Base
   def self.short_list(role, teams)
     if role >= MANAGER
       #Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, payment_terms, start_date, end_date, round(revenue,2) as revenue, account_name", :conditions => "expired <> true")
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name", :conditions => "expired <> true")
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name", :conditions => "expired <> true", :order => 'sales_office, account_name, start_date')
     else
       #Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, payment_terms, start_date, end_date, round(revenue,2) as revenue, account_name", :conditions => ["sales_office IN (?) AND expired <> true", teams])
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name", :conditions => ["sales_office IN (?) AND expired <> true", teams])
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, cust_po_num, payment_terms, revenue, account_name", :conditions => ["sales_office IN (?) AND expired <> true", teams], :order => 'sales_office, account_name, start_date')
     end
   end
 
@@ -55,64 +55,55 @@ class Contract < ActiveRecord::Base
   
   #All Contracts  sum(revenue) as rev, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw
   def self.total_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    Contract.count(:account_id, {:distinct => true, :conditions => "expired <> 1"})
   end
   
   def self.total_contract_count
-    Contract.count(:account_id, {:conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    Contract.count(:account_id, :conditions => "expired <> 1")
   end
 
-  def self.all_totals
-    Contract.find(:all, :select => 'sum(revenue) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev', :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today])
+  def self.all_revenue
+    Contract.find(:all, :select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev', :conditions => "expired <> 1")
   end
 
-  #Both HW & SW Contracts
-  def self.total_hw_sw_contract_count
-    Contract.count(:account_id, {:conditions => ["annual_hw_rev > 0 AND annual_sw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  def self.total_hw_contract_count
+    Contract.count(:account_id, :conditions => "annual_hw_rev > 0 AND expired <> 1")
   end
 
-  def self.total_hw_sw_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_hw_rev > 0 AND annual_sw_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  def self.total_hw_customer_count
+    Contract.count(:account_id, {:distinct => true, :conditions => "annual_hw_rev > 0 AND expired <> 1"})
   end
 
-  def self.total_hw_only_contract_count
-    Contract.count(:account_id, {:conditions => ["annual_hw_rev > 0 AND annual_sw_rev = 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  def self.total_sw_contract_count
+    Contract.count(:account_id, :conditions => "annual_sw_rev > 0 AND expired <> 1")
   end
 
-  def self.total_hw_only_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_hw_rev > 0 AND annual_sw_rev = 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
-  end
-
-  def self.total_sw_only_contract_count
-    Contract.count(:account_id, {:conditions => ["annual_sw_rev > 0 AND annual_hw_rev = 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
-  end
-
-  def self.total_sw_only_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_sw_rev > 0 AND annual_hw_rev = 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+  def self.total_sw_customer_count
+    Contract.count(:account_id, {:distinct => true, :conditions => "annual_sw_rev > 0 AND expired <> 1"})
   end
 
   def self.total_sa_contract_count
-    Contract.count(:account_id, {:conditions => ["annual_sa_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    Contract.count(:account_id, :conditions => "annual_sa_rev > 0 AND expired <> 1")
   end
 
   def self.total_sa_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_sa_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    Contract.count(:account_id, {:distinct => true, :conditions => "annual_sa_rev > 0 AND expired <> 1"})
   end
 
   def self.total_ce_contract_count
-    Contract.count(:account_id, {:conditions => ["annual_ce_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    Contract.count(:account_id, :conditions => "annual_ce_rev > 0 AND expired <> 1")
   end
 
   def self.total_ce_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_ce_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    Contract.count(:account_id, {:distinct => true, :conditions => "annual_ce_rev > 0 AND expired <> 1"})
   end
 
   def self.total_dr_contract_count
-    Contract.count(:account_id, {:conditions => ["annual_dr_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    Contract.count(:account_id, :conditions => "annual_dr_rev > 0 AND expired <> 1")
   end
 
   def self.total_dr_customer_count
-    Contract.count(:account_id, {:distinct => true, :conditions => ["annual_dr_rev > 0 AND start_date <= ? AND end_date >= ?", Date.today, Date.today]})
+    Contract.count(:account_id, {:distinct => true, :conditions => "annual_dr_rev > 0 AND expired <> 1"})
   end
 end
 

@@ -35,7 +35,7 @@ class GraphsController < ApplicationController
     end
 
     #Initialize new graph and set general properties
-    g = Gruff::SideBar.new("600x400")
+    g = Gruff::SideBar.new("800x500")
     theme_sdc(g)
     g.title = "Total Yearly Support $ Rev By Office"
     g.hide_legend = false
@@ -55,8 +55,8 @@ class GraphsController < ApplicationController
 
   def contract_counts_by_office
     # Prepare data and labels for the graph
-    total_hw_rev = Contract.count :annual_hw_rev, {:group => :sales_office_name}
-    total_sw_rev = Contract.count :annual_sw_rev, {:group => :sales_office_name}
+    total_hw_rev = Contract.count :annual_hw_rev, {:conditions => 'expired <> 1', :group => :sales_office_name}
+    total_sw_rev = Contract.count :annual_sw_rev, {:conditions => 'expired <> 1', :group => :sales_office_name}
     
     hw_temp = total_hw_rev.map {|x| max = x[1] }
     sw_temp = total_sw_rev.map {|x| max = x[1] }
@@ -68,7 +68,7 @@ class GraphsController < ApplicationController
     labels = {}
     hw_data = []
     total_hw_rev.map do |x|
-      labels[n] = x[0].to_s
+      labels[n] = x[0][0,4].to_s
       n += 1
       if x[1].nil?
         hw_data << 0
@@ -87,12 +87,13 @@ class GraphsController < ApplicationController
     end
 
     #Initialize new graph and set general properties
-    g = Gruff::Bar.new("600x400")
+    g = Gruff::Bar.new("800x500")
     theme_sdc(g)
     g.title = "Contract Counts By Office"
     g.hide_legend = false
     g.labels = labels
-    g.y_axis_increment = 1
+    g.y_axis_increment = 20
+    g.marker_font_size=15.0
     g.minimum_value = 0
     g.maximum_value = max
     
@@ -165,7 +166,7 @@ class GraphsController < ApplicationController
 
   def sales_by_type_pie
     #Initialize new graph and set general properties
-    g = Gruff::Pie.new("600x400")
+    g = Gruff::Pie.new("800x500")
     theme_sdc(g)
     g.title = "Support Rev By Type"
     

@@ -1,70 +1,64 @@
 - content_for :subtitle do
   Reports
 
-#section1
-  %h2
-    Report Links
-    
-  #linkbox
-    %dt
-      %b Performance
-    %dd{:style => "margin-left:20px"}
-      %ul
-        %li
-          Test
-        %li
-          Test2
-
-  #linkbox
-    %dt
-      %b Inventory
-    %dd{:style => "margin-left:20px"}
-      %ul
-        %li
-          = link_to 'Spares Requirements', 'reports/sparesreq'
-        %li
-          Test2
-  
-  %p &nbsp;
+-##section1
+-#%h2
+-#  Report Links
+-#  
+-##linkbox
+-#  %dt
+-#    %b Performance
+-#  %dd{:style => "margin-left:20px"}
+-#    %ul
+-#      %li
+-#        Test
+-#      %li
+-#        Test2
+-#
+-#%p &nbsp;
 
 #section2
   %h2 General Stats
-  %table{:class => 'main_table', :width => "250"}
+  %table{:padding => '2'}
     %tr
-      %th
+      %th{:width => '90'}
         %b Stat
-      %th
-        %b Contracts
-      %th
-        %b Customers
+      %th{:width => '95'}
+        %b Total
+      %th{:width => '95'}
+        %b HW
+      %th{:width => '95'}
+        %b SW
+      %th{:width => '95'}
+        %b SA
+      %th{:width => '95'}
+        %b CE
+      %th{:width => '95'}
+        %b DR
     %tr
-      %td All
+      %td # Contracts
       %td{:align => 'center'}= h @total_contract_count
-      %td{:align => 'center'}= h @total_customer_count
-    %tr
-      %td HW & SW
-      %td{:align => 'center'}= h @total_hw_sw_contract_count
-      %td{:align => 'center'}= h @total_hw_sw_customer_count
-    %tr
-      %td HW Only
       %td{:align => 'center'}= h @total_hw_only_contract_count
-      %td{:align => 'center'}= h @total_hw_only_customer_count
-    %tr
-      %td SW Only
       %td{:align => 'center'}= h @total_sw_only_contract_count
-      %td{:align => 'center'}= h @total_sw_only_customer_count
-    %tr
-      %td With SA
       %td{:align => 'center'}= h @total_sa_contract_count
-      %td{:align => 'center'}= h @total_sa_customer_count
-    %tr
-      %td With CE
       %td{:align => 'center'}= h @total_ce_contract_count
-      %td{:align => 'center'}= h @total_ce_customer_count
-    %tr
-      %td With DR
       %td{:align => 'center'}= h @total_dr_contract_count
+    %tr
+      %td # Customers
+      %td{:align => 'center'}= h @total_customer_count
+      %td{:align => 'center'}= h @total_hw_only_customer_count
+      %td{:align => 'center'}= h @total_sw_only_customer_count
+      %td{:align => 'center'}= h @total_sa_customer_count
+      %td{:align => 'center'}= h @total_ce_customer_count
       %td{:align => 'center'}= h @total_dr_customer_count
+    %tr
+      %td Revenue
+      %td{:align => 'right'}= number_to_currency(@all_revenue[0][:total_revenue])
+      %td{:align => 'right'}= number_to_currency(@all_revenue[0][:annual_hw_rev])
+      %td{:align => 'right'}= number_to_currency(@all_revenue[0][:annual_sw_rev])
+      %td{:align => 'right'}= number_to_currency(@all_revenue[0][:annual_sa_rev])
+      %td{:align => 'right'}= number_to_currency(@all_revenue[0][:annual_ce_rev])
+      %td{:align => 'right'}= number_to_currency(@all_revenue[0][:annual_dr_rev])
 
   %br &nbsp;
   %p

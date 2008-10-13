@@ -9,7 +9,7 @@
 
   %body
     #header
-      = image_tag("sdclogo.jpg", :id => "logo", :width => "192", :height => "80", :border => "0")
+      = image_tag("sodi-logo-tag.jpg", :id => "logo", :width => "242", :height => "80", :border => "0")
       
       #title
         %h1
@@ -17,10 +17,20 @@
           = 'Support Contract Database - ' + @subtitle
       
       #menu
-        - if current_user.role == ADMIN
-          = render :partial => "layouts/admin_menu"
-        -else
-          = render :partial => "layouts/menu"
+        %ul
+          %li
+            = link_to 'Contracts', contracts_path
+          %li
+            = link_to 'Reports', reports_path, :class => 'active'
+          - if current_user.role == ADMIN
+            %li
+              = link_to 'Admin', admin_index_path
+          - if logged_in?
+            %li
+              = link_to 'Logout', "/logout"
+          - else
+            %li
+              = link_to 'Login', "/login"
             
         #userinfo
           - if current_user != :false

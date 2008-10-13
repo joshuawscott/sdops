@@ -53,7 +53,7 @@
       %label{:for => "contract_type"}
         Type
       - @temp = 'N/A'
-      - @temp = SugarContractType.find(@contract.contract_type).name unless @contract.contract_type == "???"
+      - @temp = SugarContractType.find(@contract.contract_type).name unless @contract.contract_type == ""
       =h @temp
 
   #results.boxed{:style => 'height:220px'}

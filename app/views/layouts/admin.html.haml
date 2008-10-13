@@ -4,7 +4,7 @@
   %head
     %meta{ 'http-equiv'=>"content-type", 'content'=>"text/html;charset=UTF-8"}/
     %title
-      = 'SDC Operations'
+      = 'Contracts:' + controller.action_name
     = stylesheet_link_tag 'main'
 
   %body
@@ -15,10 +15,26 @@
         %h1
           -  @subtitle = yield :subtitle
           = 'Support Contract Database - ' + @subtitle
+      
+      #header_mini_graph
+        - @url1 = url_for :controller => 'graphs', :action => 'sales_by_office_mini_bar'
+        %img{'src' => @url1, 'style' => "border:0px solid #111111;"}
 
       #menu
-        &nbsp;
-
+        %ul
+          %li
+            = link_to 'Contracts', contracts_path
+          %li
+            = link_to 'Reports', reports_path
+          - if current_user.role == ADMIN
+            %li
+              = link_to 'Admin', admin_index_path, :class => 'active'
+          - if logged_in?
+            %li
+              = link_to 'Logout', "/logout"
+          - else
+            %li
+              = link_to 'Login', "/login"
             
         #userinfo
           - if current_user != :false
