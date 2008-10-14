@@ -8,7 +8,7 @@ class ContractsController < ApplicationController
   def index
     @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
     @support_offices =  @sales_offices
-    @account_names = Contract.find(:all, :select => "distinct(account_name)").map {|x| x.account_name}
+    @account_names = Contract.find(:all, :select => "distinct(account_name)", :order => 'account_name').map {|x| x.account_name}
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
     @pay_terms << "not bundled"                 
     
