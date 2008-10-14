@@ -34,7 +34,7 @@
         %td{:width => '150px', :valign => "bottom"}
           = select("search", "account_name", @account_names, {:selected => @account_name, :include_blank => true },{:style => "width: 150px"})
         %td{:width => '100px', :valign => "bottom"}
-          = text_field 'search', 'said', :size => 18, :value => @said
+          = text_field 'search', 'said', :size => 16, :value => @said
         %td{:width => '150px', :valign => "bottom"}
           = text_field 'search', 'description', :size => 19, :value => @description
         %td{:width => '108px', :valign => "bottom"}
@@ -63,7 +63,7 @@
         %td= h contract.sales_office_name
         %td= h contract.support_office_name
         %td= h contract.account_name.length > 18 ? contract.account_name.slice(0..18) + "..." : contract.account_name
-        %td= h contract.said.length > 15 ? contract.said.slice(0..15) + "..." : contract.said
+        %td= h contract.said.length > 14 ? contract.said.slice(0..14) + "..." : contract.said
         %td= h contract.description.length > 18 ? contract.description.slice(0..18) + "..." : contract.description
         %td= h contract.cust_po_num.length > 10 ? contract.cust_po_num.slice(0..10) + "..." : contract.cust_po_num
         %td= h contract.payment_terms
