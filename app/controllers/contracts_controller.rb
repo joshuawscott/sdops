@@ -10,7 +10,7 @@ class ContractsController < ApplicationController
     @support_offices =  @sales_offices
     @account_names = Contract.find(:all, :select => "distinct(account_name)", :order => 'account_name').map {|x| x.account_name}
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
-    @pay_terms << "not bundled"                 
+    @pay_terms << "not bundled"
     
     if params[:serial_search] != nil
       @serial_number = params[:serial_search][:serial_number]
@@ -23,7 +23,8 @@ class ContractsController < ApplicationController
         @account_name ||= params[:search][:account_name]
         @said ||= params[:search][:said]
         @description ||= params[:search][:description]
-        @cust_po_num ||= params[:search][:cust_po_num]
+        @start_date ||= params[:search][:start_date]
+        @end_date ||= params[:search][:end_date]
         @pay_term ||= params[:search][:payment_terms]
         @revenue ||= params[:search][:revenue]
         @expired ||= params[:search][:expired]
@@ -31,7 +32,7 @@ class ContractsController < ApplicationController
         @contracts = Contract.scoped({})
         @contracts = @contracts.conditions "contracts.sales_office = ?", @sales_office unless @sales_office.blank?
         @contracts = @contracts.conditions "contracts.support_office = ?", @support_office unless @support_office.blank?
-        @contracts = @contracts.conditions "contracts.account_name = ?", @account_name unless @account_name.blank?
+        @contracts = @contracts.conditions "contracts.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
         @contracts = @contracts.conditions "contracts.said like ?", "%"+@said+"%" unless @said.blank?
         op, val = @revenue.split(" ")
         @contracts = @contracts.conditions "contracts.revenue #{op} ?", val unless @revenue.blank?
@@ -42,7 +43,10 @@ class ContractsController < ApplicationController
           @contracts = @contracts.conditions "contracts.payment_terms = ?", @pay_term unless @pay_term.blank?
         end
         @contracts = @contracts.conditions "contracts.description like ?", "%"+@description+"%" unless @description.blank?
-        @contracts = @contracts.conditions "contracts.cust_po_num like ?", "%"+@cust_po_num+"%" unless @cust_po_num.blank?
+        op, val = @start_date.split(" ")
+        @contracts = @contracts.conditions "contracts.start_date #{op} ?", val unless @start_date.blank?
+        op, val = @end_date.split(" ")
+        @contracts = @contracts.conditions "contracts.end_date #{op} ?", val unless @end_date.blank?
         @contracts = @contracts.conditions "contracts.replacement_sdc_ref = '' OR contracts.replacement_sdc_ref IS Null" unless @expired == "on"
         @contracts
       else

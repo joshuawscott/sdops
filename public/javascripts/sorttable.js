@@ -178,7 +178,7 @@ var ml_tsort = {
   default_sort_asc : true, // if true then by default, the first sort on the table would be in ascending order
   forcesort_msg : 'This column can only be sorted in one way!', // if you set a message here, user will be warned with this message when they try to resort the ts_forcesort column you had set that could only be sorted in one direction. Set it to '' to NOT display a message.
   nosort_title : 'No sorting on this column!', // if you set a title here, the if user moves their move over the ts_nosort column heading they'd see this message displayed and learn that this column is not to be sorted. Set it to '' to NOT display this message on ts_nosort columns 
-  cookie_days : 0, // set the days to be 0 (session cookie) or positive to use cookie to record the state of sorted tables so that when user comes back to this page, tables would remain sorted the way they left the page with. Use -1 if you do not want this feature
+  cookie_days : -1, // set the days to be 0 (session cookie) or positive to use cookie to record the state of sorted tables so that when user comes back to this page, tables would remain sorted the way they left the page with. Use -1 if you do not want this feature
   
   ///////////////////////////////////////////////////
   // not important ones, provides compatibility with TableTools FF extension

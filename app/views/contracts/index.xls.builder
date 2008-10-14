@@ -18,7 +18,8 @@ xml.Workbook({
           xml.Cell { xml.Data 'Account Name', 'ss:Type' => 'String' }
           xml.Cell { xml.Data 'SAID', 'ss:Type' => 'String' }
           xml.Cell { xml.Data 'Description', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'PO Number', 'ss:Type' => 'String' }
+          xml.Cell { xml.Data 'Start Date', 'ss:Type' => 'String' }
+          xml.Cell { xml.Data 'End Date', 'ss:Type' => 'String' }
           xml.Cell { xml.Data 'Terms', 'ss:Type' => 'String' }
           xml.Cell { xml.Data 'Annual Rev', 'ss:Type' => 'String' }
       end
@@ -31,7 +32,8 @@ xml.Workbook({
             xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.said, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.description, 'ss:Type' => 'String' }
-            xml.Cell { xml.Data contract.cust_po_num, 'ss:Type' => 'String' }
+            xml.Cell { xml.Data contract.start_date, 'ss:Type' => 'String' }
+            xml.Cell { xml.Data contract.end_date, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.payment_terms, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.revenue, 'ss:Type' => 'Number' }
         end
