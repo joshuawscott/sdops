@@ -3,13 +3,16 @@
 = javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
 = javascript_include_tag "jscalendar-1.0/calendar-setup.js"
 
-#section1
-  #results.boxed{:style => 'width:340px;height:280px'}
+#section1{:style => 'width:900px'}
+  #results.boxed{:style => 'width:300px;height:371px'}
     %h2 General Details
-    = f.hidden_field :account_name
     = f.hidden_field :sales_office_name
     = f.hidden_field :support_office_name
     
+    %p
+      %label{:for => "contract_account_name"}
+        Name
+      = f.text_field :account_name, :class => 'textbox'
     %p
       %label{:for => "contract_account_id"}
         Customer
@@ -55,7 +58,7 @@
         Type
       = f.collection_select(:contract_type, @contract_types, :id, :name, { :include_blank => true })
 
-  #results.boxed{:style => 'width:340px;height:280px'}
+  #results.boxed{:style => 'width:300px;height:371px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
@@ -106,8 +109,7 @@
         Expired
       = f.check_box :expired
 
-#section2
-  #results.boxed{:style => 'width:260px;height:200px'}
+  #results.boxed{:style => 'width:260px'}
     %h2 Revenue
     %p
       %label{:for => "contract_revenue"}
@@ -137,7 +139,7 @@
       %b &nbsp
     %p Example: Enter $100,000 as 100000
 
-  #results.boxed{:style => 'width:260px;height:200px'}
+  #results.boxed{:style => 'width:260px'}
     %h2 Discounts
     %p
       %label{:for => "contract_discount_pref_hw"}
@@ -171,7 +173,8 @@
       %b &nbsp
     %p Example: Enter 35% as .35
 
-  #results.boxed{:style => 'height:200px'}
+#section2
+  #results.boxed{:style => 'width:600px'}
     %h2 Relationships &nbsp;
     
     %p

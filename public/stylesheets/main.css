@@ -148,7 +148,8 @@ ul.sub_menu {
   padding: 2px 3px 10px 3px;
   margin-right: 5px;
   margin-bottom: 5px;
-  border-width: 1px;
+  background: #eeeeee;
+  border-width: 0px;
   border-style: solid;
   border-color: #000000; }
   .boxed p {
@@ -177,7 +178,7 @@ ul.sub_menu {
     border-style: solid;
     border-color: #000000; }
   .boxed .textbox {
-    width: 9.5em;
+    width: 10em;
     padding: .5px;
     margin: .5px;
     border-width: 1px;

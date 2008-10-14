@@ -35,7 +35,8 @@ class ContractsController < ApplicationController
         @contracts = @contracts.conditions "contracts.said like ?", "%"+@said+"%" unless @said.blank?
         op, val = @revenue.split(" ")
         @contracts = @contracts.conditions "contracts.revenue #{op} ?", val unless @revenue.blank?
-        if @pay_term =~ /$not/
+
+        if @pay_term =~ /^not/
           @contracts = @contracts.conditions "contracts.payment_terms <> 'bundled'"
         else
           @contracts = @contracts.conditions "contracts.payment_terms = ?", @pay_term unless @pay_term.blank?
