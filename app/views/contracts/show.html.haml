@@ -27,7 +27,7 @@
     %p
       %label{:for => "contract_sales_rep_id"}
         Sales rep
-      - @temp = User.find(@contract.sales_rep_id).full_name
+      - @temp = User.find(@contract.sales_rep_id).full_name unless User.find(:first, :conditions => ['id = ?', @contract.sales_rep_id]).nil?
       = h @temp ||= 'N/A'
       %p
       %label{:for => "contract_sdc_ref"}
