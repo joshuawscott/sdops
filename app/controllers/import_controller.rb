@@ -20,23 +20,22 @@ class ImportController < ApplicationController
 
   # POST /import
   def create()
-    logger.info "***************\nStarting Import process"
     records = YAML::load( params[:importfile] )
-
     #Separate out the data
 
     contract_ary = records[0]
     line_items_ary = records[1..-1]
+    logger.info contract_ary.methods
     aryAcct = params[:account_id].split('|')
     arySales = params[:sales_office].split('|')
     arySupport = params[:support_office].split('|')
     options = {'account_id' => aryAcct[0], 'account_name' => aryAcct[1], 'sales_rep_id' => params[:sales_rep_id], 'sales_office' => arySales[0], 'sales_office_name' => arySales[1], 'support_office' => arySupport[0], 'support_office_name' => arySupport[1], 'platform' => params[:platform], 'contract_type' => params[:contract_type]}
     contract_ary.ivars['attributes'].update(options)
+
     #Cleanup
     records = nil
 
     #Save new contract
-    logger.info "Importing contract... "
     if params[:contract]
       @contract = Contract.find(params[:contract])
       @contract.hw_support_level_id = contract_ary.ivars['attributes']['hw_support_level_id']

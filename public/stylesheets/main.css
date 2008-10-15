@@ -186,6 +186,14 @@ ul.sub_menu {
     border-width: 1px;
     border-style: solid;
     border-color: #000000; }
+  .boxed .textboxright {
+    text-align: right;
+    width: 10em;
+    padding: .5px;
+    margin: .5px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #000000; }
 
 /* Header Styles */
 #header {
