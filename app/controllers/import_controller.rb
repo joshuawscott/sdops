@@ -6,7 +6,7 @@ class ImportController < ApplicationController
   # GET /import
   def index
     @sugar_accts = SugarAcct.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0", :order => "name")
-    @contracts = Contract.find(:all, :select => "id, concat(account_name,' | ',said,' | ',description) as label", :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today])
+    @contracts = Contract.find(:all, :select => "id, concat(account_name,' | ',said,' | ',start_date,' | ',description) as label", :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today], :order => 'account_name, said')
     @sales_reps = User.user_list
     @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "private = 0 AND deleted = 0 AND id <> 1", :order => "name")
     @support_offices = @sales_offices
@@ -34,11 +34,16 @@ class ImportController < ApplicationController
     contract_ary.ivars['attributes'].update(options)
     #Cleanup
     records = nil
-   
+
     #Save new contract
     logger.info "Importing contract... "
     if params[:contract]
       @contract = Contract.find(params[:contract])
+      @contract.hw_support_level_id = contract_ary.ivars['attributes']['hw_support_level_id']
+      @contract.sw_support_level_id = contract_ary.ivars['attributes']['sw_support_level_id']
+      @contract.updates = contract_ary.ivars['attributes']['updates']
+      @contract.said = contract_ary.ivars['attributes']['said']
+
     else
       @contract = Contract.new(contract_ary.ivars['attributes'])
     end

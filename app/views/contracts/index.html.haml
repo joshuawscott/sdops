@@ -34,7 +34,7 @@
         %tr
           %th{:width => '80px'} Sales Office
           %th{:width => '80px'} Supp. Office
-          %th{:width => '150px'} Account Name
+          %th{:width => '149px'} Account Name
           %th{:width => '100px'} SAID
           %th{:width => '150px'} Description
           %th{:width => '90px'} Start Date
@@ -61,7 +61,8 @@
           %th
             = text_field 'search', 'revenue', :size => 9, :value => @revenue
       - for contract in @contracts
-        %tr{:ondblclick => "doOnRowDblClicked(#{contract.id})"} 
+        - rowclass = contract.end_date < Date.today ? 'expired' : '' unless contract.end_date.nil?
+        %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"} 
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
           %td= h contract.account_name.length > 18 ? contract.account_name.slice(0..18) + "..." : contract.account_name

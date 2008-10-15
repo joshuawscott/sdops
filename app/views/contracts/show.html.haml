@@ -238,8 +238,10 @@
         %td= h line_item.description
         %td= h line_item.begins
         %td= h line_item.ends
-        %td= h line_item.qty
-        %td= h line_item.list_price
+        %td{:align => 'center'}
+          = h line_item.qty
+        %td{:align => 'right'}
+          = h number_to_currency(line_item.list_price)
         %td= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
         %td= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you sure?', :method => :delete
 

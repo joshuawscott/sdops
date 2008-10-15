@@ -31,6 +31,8 @@ table {
   border-style: solid;
   border-collapse: collapse;
   border-color: #000000; }
+  table tr.expired {
+    background: #ffff99; }
   table td {
     border-width: 1px;
     border-style: solid;

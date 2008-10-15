@@ -9,7 +9,7 @@ class ContractsController < ApplicationController
     @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
     @support_offices =  @sales_offices
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
-    @pay_terms << "not bundled"
+    @pay_terms << "Not Bundled"
     
     if params[:serial_search] != nil
       @serial_number = params[:serial_search][:serial_number]
@@ -36,7 +36,7 @@ class ContractsController < ApplicationController
         op, val = @revenue.split(" ")
         @contracts = @contracts.conditions "contracts.revenue #{op} ?", val unless @revenue.blank?
 
-        if @pay_term =~ /^not/
+        if @pay_term =~ /^Not/
           @contracts = @contracts.conditions "contracts.payment_terms <> 'bundled'"
         else
           @contracts = @contracts.conditions "contracts.payment_terms = ?", @pay_term unless @pay_term.blank?
