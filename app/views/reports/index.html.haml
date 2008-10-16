@@ -1,25 +1,22 @@
 - content_for :subtitle do
   Reports
 
--##section1
--#%h2
--#  Report Links
--#  
--##linkbox
--#  %dt
--#    %b Performance
--#  %dd{:style => "margin-left:20px"}
--#    %ul
--#      %li
--#        Test
--#      %li
--#        Test2
--#
--#%p &nbsp;
+%ul{:class => 'sub_menu'}
+  %li
+    = link_to 'Dashboard', reports_path, :class => 'active'
+  %li
+    = link_to 'Renewals', {:controller => "reports", :action => "renewals"}
+  %li
+    = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}
 
-#section2
-  %h2 General Stats
-  %table{:padding => '2'}
+%p &nbsp;
+
+#section1
+  %h1{:align => 'center'}
+    Dashboard
+
+  %h2 Overall Stats
+  %table{:padding => '2', :border => '1'}
     %tr
       %th{:width => '90'}
         %b Stat
@@ -59,6 +56,33 @@
       %td{:align => 'right'}= number_to_currency(@all_revenue[0][:annual_sa_rev])
       %td{:align => 'right'}= number_to_currency(@all_revenue[0][:annual_ce_rev])
       %td{:align => 'right'}= number_to_currency(@all_revenue[0][:annual_dr_rev])
+      
+  %p &nbsp;
+  %h2 By Office Stats
+  %table{:padding => '2', :border => '1'}
+    %tr
+      %th{:width => '90'}
+        %b Stat
+      %th{:width => '95'}
+        %b Total
+      %th{:width => '95'}
+        %b HW
+      %th{:width => '95'}
+        %b SW
+      %th{:width => '95'}
+        %b SA
+      %th{:width => '95'}
+        %b CE
+      %th{:width => '95'}
+        %b DR
+    %tr
+      %td # Contracts
+      %td{:align => 'center'}= h @total_contract_count
+      %td{:align => 'center'}= h @total_hw_only_contract_count
+      %td{:align => 'center'}= h @total_sw_only_contract_count
+      %td{:align => 'center'}= h @total_sa_contract_count
+      %td{:align => 'center'}= h @total_ce_contract_count
+      %td{:align => 'center'}= h @total_dr_contract_count
 
   %br &nbsp;
   %p

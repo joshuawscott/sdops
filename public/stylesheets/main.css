@@ -17,6 +17,11 @@ p, blockquote, ul, ol {
   margin-bottom: 1em;
   text-align: justify; }
 
+h1 {
+  font-size: 16pt;
+  font-weight: bold;
+  margin-bottom: .5em; }
+
 h2 {
   font-size: 12pt;
   margin-bottom: .5em; }

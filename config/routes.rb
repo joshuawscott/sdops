@@ -17,8 +17,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :comments
 
-  map.resources :contracts, :has_many => :line_items
-  
+  map.resources :contracts, :has_many => :line_items  
   
   map.resources :import, :controller => 'import'
   

@@ -1,0 +1,16 @@
+- content_for :subtitle do
+  Reports
+
+%ul{:class => 'sub_menu'}
+  %li
+    = link_to 'Dashboard', reports_path
+  %li
+    = link_to 'Renewals', {:controller => "reports", :action => "renewals"}, :class => 'active'
+  %li
+    = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}
+
+%p &nbsp;
+
+#section1
+  %h2 Renewals
+

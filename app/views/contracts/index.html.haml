@@ -62,7 +62,7 @@
             = text_field 'search', 'revenue', :size => 9, :value => @revenue
       - for contract in @contracts
         - rowclass = contract.end_date < Date.today ? 'expired' : '' unless contract.end_date.nil?
-        %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"} 
+        %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})", :onmouseover => 'this.style.background = "#a0d55c"', :onmouseout => 'this.style.background = ""'} 
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
           %td= h contract.account_name.length > 18 ? contract.account_name.slice(0..18) + "..." : contract.account_name
