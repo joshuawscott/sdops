@@ -24,8 +24,8 @@ class ImportController < ApplicationController
     #Separate out the data
 
     contract_ary = records[0]
+    logger.info "Creating Contract"
     line_items_ary = records[1..-1]
-    logger.info contract_ary.methods
     aryAcct = params[:account_id].split('|')
     arySales = params[:sales_office].split('|')
     arySupport = params[:support_office].split('|')
@@ -50,7 +50,6 @@ class ImportController < ApplicationController
     #associated line items
     if @contract.save
       line_items_ary.each do |item|
-        logger.info "Importing line item..."
         @line_item = @contract.line_items.new(item.ivars['attributes'])
         @line_item.save
       end
