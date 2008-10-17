@@ -36,13 +36,12 @@ class ImportController < ApplicationController
     records = nil
 
     #Save new contract
-    if params[:contract]
+    if params[:contract] != ""
       @contract = Contract.find(params[:contract])
       @contract.hw_support_level_id = contract_ary.ivars['attributes']['hw_support_level_id']
       @contract.sw_support_level_id = contract_ary.ivars['attributes']['sw_support_level_id']
       @contract.updates = contract_ary.ivars['attributes']['updates']
       @contract.said = contract_ary.ivars['attributes']['said']
-
     else
       @contract = Contract.new(contract_ary.ivars['attributes'])
     end
