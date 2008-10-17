@@ -105,6 +105,59 @@ class Contract < ActiveRecord::Base
   def self.total_dr_customer_count
     Contract.count(:account_id, {:distinct => true, :conditions => "annual_dr_rev > 0 AND expired <> 1"})
   end
+
+  def self.contract_counts_by_office
+    offices = Contract.find(:all, :select => 'DISTINCT sales_office_name', :conditions => 'expired <> 1', :order => 'sales_office_name')
+    hash = {}
+    offices.length.times do |x|
+      hash[offices[x].sales_office_name] = {'hw' => 0, 'sw' => 0, 'sa' => 0, 'ce' => 0, 'dr' => 0, 'total' => 0 }
+    end
+    hw = Contract.count(:account_name, {:conditions => "annual_hw_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    sw = Contract.count(:account_name, {:conditions => "annual_sw_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    sa = Contract.count(:account_name, {:conditions => "annual_sa_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    ce = Contract.count(:account_name, {:conditions => "annual_ce_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    dr = Contract.count(:account_name, {:conditions => "annual_dr_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    total = Contract.count(:account_name, {:conditions => "expired <> 1", :group => 'sales_office_name'})
+   
+    offices.each do |x|
+      hash[x.sales_office_name]['hw'] = hw[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['sw'] = sw[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['sa'] = sa[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['ce'] = ce[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['dr'] = dr[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['total'] = total[x.sales_office_name] ||= 0
+    end
+    hash
+  end
+
+  def self.customer_counts_by_office
+    offices = Contract.find(:all, :select => 'DISTINCT sales_office_name', :conditions => 'expired <> 1', :order => 'sales_office_name')
+    hash = {}
+    offices.length.times do |x|
+      hash[offices[x].sales_office_name] = {'hw' => 0, 'sw' => 0, 'sa' => 0, 'ce' => 0, 'dr' => 0, 'total' => 0 }
+    end
+    hw = Contract.count(:account_name, {:distinct => true, :conditions => "annual_hw_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    sw = Contract.count(:account_name, {:distinct => true, :conditions => "annual_sw_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    sa = Contract.count(:account_name, {:distinct => true, :conditions => "annual_sa_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    ce = Contract.count(:account_name, {:distinct => true, :conditions => "annual_ce_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    dr = Contract.count(:account_name, {:distinct => true, :conditions => "annual_dr_rev > 0 AND expired <> 1", :group => 'sales_office_name'})
+    total = Contract.count(:account_name, {:distinct => true, :conditions => "expired <> 1", :group => 'sales_office_name'})
+   
+    offices.each do |x|
+      hash[x.sales_office_name]['hw'] = hw[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['sw'] = sw[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['sa'] = sa[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['ce'] = ce[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['dr'] = dr[x.sales_office_name] ||= 0
+      hash[x.sales_office_name]['total'] = total[x.sales_office_name] ||= 0
+    end
+    hash
+  end
+
+  def self.revenue_by_office_by_type
+    Contract.find(:all, :select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr', :conditions => 'expired <> 1', :group => 'sales_office_name')
+  end
+  
 end
 
 
