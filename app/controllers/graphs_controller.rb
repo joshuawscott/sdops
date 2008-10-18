@@ -35,12 +35,13 @@ class GraphsController < ApplicationController
     end
 
     #Initialize new graph and set general properties
-    g = Gruff::Bar.new("300x90")
+    g = Gruff::Bar.new("270x90")
     theme_sdc(g)
     g.hide_title = true
     #g.title = "Yearly Support Rev By Office"
     g.top_margin= 8
     g.marker_font_size = 23
+    g.hide_line_numbers=true
     #g.hide_legend = true
     #g.legend_font_size = 10
     g.title_font_size = 27
@@ -92,7 +93,7 @@ class GraphsController < ApplicationController
     end
 
     #Initialize new graph and set general properties
-    g = Gruff::SideBar.new("600x400")
+    g = Gruff::SideBar.new("670x400")
     theme_sdc(g)
     g.title = "Total Yearly Support $ Rev By Office"
     g.hide_legend = false
@@ -144,7 +145,7 @@ class GraphsController < ApplicationController
     end
 
     #Initialize new graph and set general properties
-    g = Gruff::Bar.new("600x400")
+    g = Gruff::Bar.new("680x400")
     theme_sdc(g)
     g.title = "Contract Counts By Office"
     g.hide_legend = false
@@ -166,7 +167,7 @@ class GraphsController < ApplicationController
 
   def sales_by_type_pie
     #Initialize new graph and set general properties
-    g = Gruff::Pie.new("600x400")
+    g = Gruff::Pie.new("670x400")
     theme_sdc(g)
     g.title = "Support Rev By Type"
     

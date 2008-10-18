@@ -1,7 +1,7 @@
 - content_for :subtitle do
   Reports
 
-%ul{:class => 'sub_menu'}
+%ul{:id => 'submenu', :class => 'sub_menu'}
   %li
     = link_to 'Dashboard', reports_path, :class => 'active'
   %li
@@ -12,25 +12,43 @@
 %p &nbsp;
 
 #section1
-  %h1
-    Dashboard
   %div{:class=>'boxed', :style=>'background:white'}
-    %h2 Contracts By Office
-    %table{:padding => '2'}
+    %h2
+      Counts By Office &nbsp;&nbsp;&nbsp;
+      %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
+    %table{:padding => '2', :border => '1'}
+      %tr
+        %th
+        %th{:colspan => '6'}
+          Contracts
+        %th{:colspan => '6'}
+          Customers
       %tr
         %th{:width => '90'}
           %b Office
-        %th{:width => '38'}
+        %th{:width => '47'}
           %b HW
-        %th{:width => '38'}
+        %th{:width => '47'}
           %b SW
-        %th{:width => '38'}
+        %th{:width => '47'}
           %b SA
-        %th{:width => '38'}
+        %th{:width => '47'}
           %b CE
-        %th{:width => '38'}
+        %th{:width => '47'}
           %b DR
-        %th{:width => '38'}
+        %th{:width => '47'}
+          %b Total
+        %th{:width => '47'}
+          %b HW
+        %th{:width => '47'}
+          %b SW
+        %th{:width => '47'}
+          %b SA
+        %th{:width => '47'}
+          %b CE
+        %th{:width => '47'}
+          %b DR
+        %th{:width => '47'}
           %b Total
       - @offices.each do |k|
         %tr
@@ -41,28 +59,6 @@
           %td{:align => 'right'}= h @contract_counts_by_office[k]['ce']
           %td{:align => 'right'}= h @contract_counts_by_office[k]['dr']
           %td{:align => 'right'}= h @contract_counts_by_office[k]['total']
-
-  %div{:class=>'boxed', :style=>'background:white'}
-    %h2 Customers By Office
-    %table{:padding => '2'}
-      %tr
-        %th{:width => '90'}
-          %b Office
-        %th{:width => '38'}
-          %b HW
-        %th{:width => '38'}
-          %b SW
-        %th{:width => '38'}
-          %b SA
-        %th{:width => '38'}
-          %b CE
-        %th{:width => '38'}
-          %b DR
-        %th{:width => '38'}
-          %b Total
-      - @offices.each do |k|
-        %tr
-          %td= h k
           %td{:align => 'center'}= h @customer_counts_by_office[k]['hw']
           %td{:align => 'center'}= h @customer_counts_by_office[k]['sw']
           %td{:align => 'center'}= h @customer_counts_by_office[k]['sa']
@@ -70,10 +66,9 @@
           %td{:align => 'center'}= h @customer_counts_by_office[k]['dr']
           %td{:align => 'center'}= h @customer_counts_by_office[k]['total']
 
-      
   %div{:class=>'boxed', :style=>'background:white'}
     %h2 Revenues By Office
-    %table{:padding => '2'}
+    %table{:padding => '2', :border => '1'}
       %tr
         %th{:width => '90'}
           %b Office
@@ -115,10 +110,22 @@
 
   %br &nbsp;
 #section2
-  %p
+  %p{:style=>"page-break-before: always"}
     - @url1 = url_for :controller => 'graphs', :action => 'sales_by_office'
     %img{'src' => @url1, 'style' => "border:1px solid #111111;"}
   %p
     - @url2 = url_for :controller => 'graphs', :action => 'sales_by_type_pie'
     %img{'src' => @url2, 'style' => "border:1px solid #111111;"}
 
+%script
+  function toggleHeaderStuff(){
+  var header = $('header');
+  var submenu = $('submenu');
+
+  if(header.style.display == "none")
+  {Element.show("header");
+  Element.show("submenu");}
+  else
+  {Element.hide("header");
+  Element.hide("submenu");}
+  }

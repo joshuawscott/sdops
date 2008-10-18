@@ -108,8 +108,7 @@ ul.sub_menu {
 #header_mini_graph {
   position: absolute;
   top: 0pt;
-  right: 0pt;
-  z-index: 0;
+  left: 540pt;
   padding: 0pt; }
 
 #error {

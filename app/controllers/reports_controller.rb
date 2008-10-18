@@ -31,8 +31,6 @@ class ReportsController < ApplicationController
   end
   
   def sparesreq
-    @total_contract_count = Contract.total_contract_count
-    @total_customer_count = Contract.total_customer_count
     
     respond_to do |format|
       format.html # sparesreq.html.haml
