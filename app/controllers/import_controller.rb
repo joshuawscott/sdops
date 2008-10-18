@@ -68,7 +68,7 @@ class ImportController < ApplicationController
     sugar_con.total_contract_value_usdollar = sugar_con.total_contract_value
     sugar_con.status = 'signed'
     sugar_con.expiration_notice = @contract.end_date
-    sugar_con.description = "https://sdops/contracts/#{@contract.id}\n" + "#{@contract.cust_po_num}\n"
+    sugar_con.description = "https://sdops/contracts/#{@contract.id}\n" + "Customer PO: #{@contract.cust_po_num}\n"
     sugar_con.assigned_user_id = User.find(@contract.sales_rep_id).sugar_id
     sugar_con.created_by = @contract.sales_rep_id
     sugar_con.date_entered = DateTime.now

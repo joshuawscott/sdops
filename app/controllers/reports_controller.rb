@@ -3,7 +3,7 @@ class ReportsController < ApplicationController
 
   # GET /reports
   def index
-    #Contract counts
+    #Counts
     @contract_counts_by_office = Contract.contract_counts_by_office
     @customer_counts_by_office = Contract.customer_counts_by_office
     @offices = []
@@ -14,14 +14,6 @@ class ReportsController < ApplicationController
     end
     @offices.sort!
     
-    #Customer counts
-    @total_customer_count = Contract.total_customer_count
-    @total_hw_only_customer_count = Contract.total_hw_customer_count
-    @total_sw_only_customer_count = Contract.total_sw_customer_count
-    @total_sa_customer_count = Contract.total_sa_customer_count
-    @total_ce_customer_count = Contract.total_ce_customer_count
-    @total_dr_customer_count = Contract.total_dr_customer_count
-
     #Revenue totals
     @all_revenue = Contract.all_revenue
     @revenue_by_office_by_type = Contract.revenue_by_office_by_type
