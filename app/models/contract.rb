@@ -1,4 +1,7 @@
 class Contract < ActiveRecord::Base
+  require "parsedate.rb"
+  include ParseDate
+  
   has_many :line_items, :dependent => :destroy
 
   has_many :succeeds, :foreign_key => :successor_id, :class_name => 'Relationship'
@@ -36,6 +39,23 @@ class Contract < ActiveRecord::Base
         :joins => :line_items, :conditions => ["contracts.sales_office IN (?) AND line_items.serial_num = ?", teams, serial_num])
     end
   end
+  
+  def self.renewals_next_90_days(role, teams, ref_date)
+    if ref_date.nil? 
+      ref_date = Date.today
+    else
+      ref_date = ParseDate.parsedate(ref_date)
+      ref_date = Date.new(ref_date[0], ref_date[1], ref_date[2])
+    end
+
+    plus90 = ref_date.months_since(3)
+    if role >= MANAGER
+      Contract.find(:all, :select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due", :conditions => "end_date <= '#{plus90}' AND expired <> 1", :order => 'sales_office, days_due')
+    else
+      Contract.find(:all, :select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due", :conditions => ["end_date <= '#{plus90}' AND expired <> 1 AND sales_office IN (?)", teams], :order => 'sales_office, days_due')
+    end
+  end
+  
   
   def total_revenue
      annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev
@@ -98,8 +118,3 @@ class Contract < ActiveRecord::Base
   end
   
 end
-
-
-
-
-

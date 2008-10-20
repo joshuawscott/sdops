@@ -12,5 +12,132 @@
 %p &nbsp;
 
 #section1
-  %h2 Renewals
+  %h2
+    Renewals
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px',:ts_linkrow => "1", :style => 'background:#ff5455'}
+    %thead
+      %tr
+        %th{:colspan => '7'}
+          EXPIRED CONTRACTS
+      %tr
+        %th{:width => '80px'}
+          %b Office
+        %th{:width => '160px'}
+          %b Account
+        %th{:width => '250px'}
+          %b Description
+        %th{:width => '70px'}
+          %b Start Date
+        %th{:width => '70px'}
+          %b End Date
+        %th{:width => '50px'}
+          %b Days Due
+        %th{:width => '100px'}
+          %b Revenue
+    - for x in @contracts
+      - if x.days_due.to_i <= 0
+        %tr{:id => x.sales_office_name}
+          %td= h x.sales_office_name
+          %td= h x.account_name
+          %td= link_to x.description, contract_url(x.id)
+          %td{:align => 'center'}= h x.start_date
+          %td{:align => 'center'}= h x.end_date
+          %td{:align => 'right'}= h x.days_due
+          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+
+  %p &nbsp;
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ffff66'}
+    %thead
+      %tr
+        %th{:colspan => '7'}
+          Contracts expiring in 30 days or less
+      %tr
+        %th{:width => '80px'}
+          %b Office
+        %th{:width => '160px'}
+          %b Account
+        %th{:width => '250px'}
+          %b Description
+        %th{:width => '70px'}
+          %b Start Date
+        %th{:width => '70px'}
+          %b End Date
+        %th{:width => '50px'}
+          %b Days Due
+        %th{:width => '100px'}
+          %b Revenue
+    - for x in @contracts
+      - if x.days_due.to_i > 0 && x.days_due.to_i <= 30
+        %tr
+          %td= h x.sales_office_name
+          %td= h x.account_name
+          %td= link_to x.description, contract_url(x.id)
+          %td{:align => 'center'}= h x.start_date
+          %td{:align => 'center'}= h x.end_date
+          %td{:align => 'right'}= h x.days_due
+          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+
+  %p &nbsp;
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ffff66'}
+    %thead
+      %tr
+        %th{:colspan => '7'}
+          Contracts expiring in 31 to 60 days
+      %tr
+        %th{:width => '80px'}
+          %b Office
+        %th{:width => '160px'}
+          %b Account
+        %th{:width => '250px'}
+          %b Description
+        %th{:width => '70px'}
+          %b Start Date
+        %th{:width => '70px'}
+          %b End Date
+        %th{:width => '50px'}
+          %b Days Due
+        %th{:width => '100px'}
+          %b Revenue
+    - for x in @contracts
+      - if x.days_due.to_i > 30 && x.days_due.to_i <= 60
+        %tr
+          %td= h x.sales_office_name
+          %td= h x.account_name
+          %td= link_to x.description, contract_url(x.id)
+          %td{:align => 'center'}= h x.start_date
+          %td{:align => 'center'}= h x.end_date
+          %td{:align => 'right'}= h x.days_due
+          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+
+  %p &nbsp;
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}
+    %thead
+      %tr
+        %th{:colspan => '7'}
+          Contracts expiring in 61 to 90 days
+      %tr
+        %th{:width => '80px'}
+          %b Office
+        %th{:width => '160px'}
+          %b Account
+        %th{:width => '250px'}
+          %b Description
+        %th{:width => '70px'}
+          %b Start Date
+        %th{:width => '70px'}
+          %b End Date
+        %th{:width => '50px'}
+          %b Days Due
+        %th{:width => '80px'}
+          %b Revenue
+    - for x in @contracts
+      - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
+        %tr
+          %td= h x.sales_office_name
+          %td= h x.account_name
+          %td= link_to x.description, contract_url(x.id)
+          %td{:align => 'center'}= h x.start_date
+          %td{:align => 'center'}= h x.end_date
+          %td{:align => 'right'}= h x.days_due
+          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 

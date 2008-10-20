@@ -24,7 +24,7 @@ class ReportsController < ApplicationController
   end
 
   def renewals
-    
+    @contracts = Contract.renewals_next_90_days(current_user.role, current_user.sugar_team_ids, params[:date])
     respond_to do |format|
       format.html # renewals.html.haml
     end
