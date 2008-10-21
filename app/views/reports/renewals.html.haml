@@ -12,8 +12,17 @@
 %p &nbsp;
 
 #section1
-  %h2
-    Renewals
+  %table
+    %tr
+      %td
+        %h2
+          Renewals
+    %tr
+      %td
+        - form_tag 'reports/renewals', {:method => 'post', :name => 'date_search' }  do
+          = text_field 'date_search', 'ref_date', :size => 11, :value => @ref_date
+          = submit_tag "Search"
+  
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px',:ts_linkrow => "1", :style => 'background:#ff5455'}
     %thead
       %tr

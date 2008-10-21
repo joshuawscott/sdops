@@ -15,9 +15,9 @@ set :keep_releases, 3
 set :deploy_to, "/var/www/#{application}"
 
 set :user, "tnini"
-role :app, "acct.sourcedirect.com"
-role :web, "acct.sourcedirect.com"
-role :db,  "acct.sourcedirect.com", :primary => true
+role :app, "sdops"
+role :web, "sdops"
+role :db,  "sdops", :primary => true
 
 namespace :deploy do
   desc "Restarting mod_rails with restart.txt"

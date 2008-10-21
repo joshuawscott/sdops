@@ -73,11 +73,11 @@
     %p
       %label{:for => "contract_ce_days"}
         Num. CE Days
-      =h (@contract.ce_days.nil? || @contract.ce_days == '') ? 'N/A' : @contract.ce_days
+      =h @contract.ce_days.nil? || @contract.ce_days == '' ? 'N/A' : @contract.ce_days
     %p
       %label{:for => "contract_sa_days"}
         Num. SA Days
-      =h (@contract.sa_days.nil? || @contract.sa_days == '') ? 'N/A' : @contract.sa_days
+      =h @contract.sa_days.nil? || @contract.sa_days == '' ? 'N/A' : @contract.sa_days
     %p
       %label{:for => "contract_start_date"}
         Start Date
@@ -89,23 +89,23 @@
     %p
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
-      =h (@contract.multiyr_end.nil? || @contract.multiyr_end == '') ? 'N/A' : @contract.multiyr_end
+      =h @contract.multiyr_end.nil? || @contract.multiyr_end == '' ? 'N/A' : @contract.multiyr_end
     %p
       %label{:for => "contract_so_number"}
         Sales Order
-      =h (@contract.so_number.nil? || @contract.so_number == '') ? 'N/A' : @contract.so_number
+      =h @contract.so_number.nil? || @contract.so_number == '' ? 'N/A' : @contract.so_number
     %p
       %label{:for => "contract_po_number"}
         Purchase Order
-      =h (@contract.po_number.nil? || @contract.po_number == '') ? 'N/A' : @contract.po_number
+      =h @contract.po_number.nil? || @contract.po_number == '' ? 'N/A' : @contract.po_number
     %p
       %label{:for => "contract_replacement_sdc_ref"}
         Replacement Ref
-      =h (@contract.replacement_sdc_ref.nil? || @contract.replacement_sdc_ref == '') ? 'N/A' : @contract.replacement_sdc_ref
+      =h @contract.replacement_sdc_ref.nil? || @contract.replacement_sdc_ref == '' ? 'N/A' : @contract.replacement_sdc_ref
     %p
       %label{:for => "contract_expired"}
         Expired
-      =h (@contract.expired.nil? || @contract.expired == '') ? 'N/A' : @contract.expired
+      =h @contract.expired.nil? || @contract.expired == '' ? 'N/A' : @contract.expired
 
   #results.boxed{:style => 'width:200px'}
     %h2 Revenue
