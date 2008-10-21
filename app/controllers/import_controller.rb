@@ -41,6 +41,14 @@ class ImportController < ApplicationController
       @contract.sw_support_level_id = contract_ary.ivars['attributes']['sw_support_level_id']
       @contract.updates = contract_ary.ivars['attributes']['updates']
       @contract.said = contract_ary.ivars['attributes']['said']
+      @contract.sales_rep_id = contract_ary.ivars['attributes']['sales_rep_id']
+      @contract.sales_office = contract_ary.ivars['attributes']['sales_office']
+      @contract.support_office = contract_ary.ivars['attributes']['support_office']
+      @contract.sales_office_name = contract_ary.ivars['attributes']['sales_office_name']
+      @contract.support_office_name = contract_ary.ivars['attributes']['support_office_name']
+      @contract.platform = contract_ary.ivars['attributes']['platform']
+      @contract.contract_type = contract_ary.ivars['attributes']['contract_type']
+
     else
       @contract = Contract.new(contract_ary.ivars['attributes'])
     end
@@ -85,7 +93,7 @@ class ImportController < ApplicationController
     respond_to do |format|
       if !@contract.new_record?
         flash[:notice] = 'Contract was successfully created.'
-        format.html { redirect_to(@contract) }
+        format.html { redirect_to(contract_url(@contract)) }
         format.xml  { render :xml => @contract, :status => :created, :location => @contract }
       else
         flash[:notice] = 'Contract was not successfully created.'
