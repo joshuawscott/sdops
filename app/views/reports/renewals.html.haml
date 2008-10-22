@@ -12,15 +12,14 @@
 %p &nbsp;
 
 #section1
-  %table
+  %table{:class => 'plain_table'}
     %tr
-      %td
-        %h2
+      %td{:style => 'valign:bottom'}
+        %h2{:margin => '0'}
           Renewals
-    %tr
-      %td
-        - form_tag 'reports/renewals', {:method => 'post', :name => 'date_search' }  do
-          = text_field 'date_search', 'ref_date', :size => 11, :value => @ref_date
+      %td{:width => '725px', :align => 'right'}
+        - form_tag'/reports/renewals', {:name => 'date_search' }  do |f|
+          = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
           = submit_tag "Search"
   
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px',:ts_linkrow => "1", :style => 'background:#ff5455'}

@@ -24,7 +24,16 @@ class ReportsController < ApplicationController
   end
 
   def renewals
-    @contracts = Contract.renewals_next_90_days(current_user.role, current_user.sugar_team_ids, params[:date])
+
+    @ref_date = Date.today.strftime("%Y-%m-%d")
+    if params[:date_search] != nil
+      if params[:date_search][:ref_date] != nil && params[:date_search][:ref_date] != ''
+        @ref_date = params[:date_search][:ref_date]
+      end
+    end
+
+    
+    @contracts = Contract.renewals_next_90_days(current_user.role, current_user.sugar_team_ids, @ref_date)
     respond_to do |format|
       format.html # renewals.html.haml
     end
