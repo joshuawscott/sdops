@@ -3,6 +3,7 @@
 
 #section1
   = link_to('Show', contract_path(@contract))
+  = link_to(' Import Line Items ', '/import?contract=' + @contract.id.to_s) if current_user.role == ADMIN
 
 #section2
   = error_messages_for :contract
