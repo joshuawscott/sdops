@@ -5,6 +5,7 @@
   = link_to('Edit', edit_contract_path(@contract)) + ' | '  if current_user.role == ADMIN
   = link_to(' Destroy ', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete) + ' | '  if current_user.role == ADMIN
   = link_to(' Import Line Items ', '/import?contract=' + @contract.id.to_s) if current_user.role == ADMIN
+  
 #section2{:style => 'width:800px'}
   #results.boxed{:style => 'height:320px'}
     %h2 General Details
