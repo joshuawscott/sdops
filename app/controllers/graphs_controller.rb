@@ -61,8 +61,8 @@ class GraphsController < ApplicationController
 
   def sales_by_office
     # Prepare data and labels for the graph
-    total_hw_rev = Contract.sum(:annual_hw_rev, :group => :sales_office_name)
-    total_sw_rev = Contract.sum(:annual_sw_rev, :group => :sales_office_name)
+    total_hw_rev = Contract.sum(:annual_hw_rev, :conditions => 'expired <> 1', :group => 'sales_office_name')
+    total_sw_rev = Contract.sum(:annual_sw_rev, :conditions => 'expired <> 1', :group => 'sales_office_name')
     
     hw_temp = total_hw_rev.map {|x| max = x[1] }
     sw_temp = total_sw_rev.map {|x| max = x[1] }
@@ -172,11 +172,11 @@ class GraphsController < ApplicationController
     g.title = "Support Rev By Type"
     
     # Generate data for the graph
-    g.data("Hardware", Contract.sum(:annual_hw_rev))
-    g.data("Software", Contract.sum(:annual_sw_rev))
-    g.data("CE Days", Contract.sum(:annual_ce_rev))
-    g.data("SA Days", Contract.sum(:annual_sa_rev))
-    g.data("DR", Contract.sum(:annual_dr_rev))
+    g.data("Hardware", Contract.sum(:annual_hw_rev, :conditions => 'expired <> 1'))
+    g.data("Software", Contract.sum(:annual_sw_rev, :conditions => 'expired <> 1'))
+    g.data("CE Days", Contract.sum(:annual_ce_rev, :conditions => 'expired <> 1'))
+    g.data("SA Days", Contract.sum(:annual_sa_rev, :conditions => 'expired <> 1'))
+    g.data("DR", Contract.sum(:annual_dr_rev, :conditions => 'expired <> 1'))
     
     #Convert to blob object and send to browser
     send_data(g.to_blob, 
