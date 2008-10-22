@@ -20,8 +20,9 @@
     %p
       %label{:for => "contract"}
         Contract
-      = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label'), { :include_blank => true })      
-    %p
+      = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label', @contract.to_i))
+      - debugger
+      %p
       %label{:for => "sales_rep_id"}
         Sales Rep
       = select_tag('sales_rep_id', "<option value=''/>" + options_from_collection_for_select(@sales_reps, 'id', 'full_name'))

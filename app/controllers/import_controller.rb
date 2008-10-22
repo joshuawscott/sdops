@@ -7,6 +7,7 @@ class ImportController < ApplicationController
   def index
     @sugar_accts = SugarAcct.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0", :order => "name")
     @contracts = Contract.find(:all, :select => "id, concat(account_name,' | ',said,' | ',start_date,' | ',description) as label", :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today], :order => 'account_name, said')
+    @contract ||= params[:contract]
     @sales_reps = User.user_list
     @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "private = 0 AND deleted = 0 AND id <> 1", :order => "name")
     @support_offices = @sales_offices
