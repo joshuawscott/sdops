@@ -6,6 +6,9 @@ class ReportsController < ApplicationController
     #Counts
     @contract_counts_by_office = Contract.contract_counts_by_office
     @customer_counts_by_office = Contract.customer_counts_by_office
+    @total_contracts = @contract_counts_by_office.map{|k,v| @contract_counts_by_office[k]['total']}.sum
+    @total_customers = @customer_counts_by_office.map{|k,v| @customer_counts_by_office[k]['total']}.sum
+    
     @offices = []
     n = 0
     @contract_counts_by_office.each_key do |k|
