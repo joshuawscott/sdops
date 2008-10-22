@@ -4,7 +4,7 @@
   %head
     %meta{ 'http-equiv'=>"content-type", 'content'=>"text/html;charset=UTF-8"}/
     %title
-      = 'Contracts:' + controller.action_name
+      = 'SD Ops:' + controller.controller_name.camelcase + ':' + controller.action_name.camelcase
     = stylesheet_link_tag 'main'
 
   %body
