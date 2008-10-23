@@ -14,10 +14,13 @@
 #section1
   %table{:class => 'plain_table'}
     %tr
-      %td{:style => 'valign:bottom'}
+      %td{:width => '200px', :style => 'valign:bottom'}
         %h2{:margin => '0'}
           Renewals
-      %td{:width => '725px', :align => 'right'}
+      %td
+        Filter by Office
+        =select("filter", "offices", @offices, {:include_blank => true },{:onChange => 'toggleOffices(this.value);', :style => "width: 82px"})
+      %td{:width => '425px', :align => 'right'}
         - form_tag'/reports/renewals', {:name => 'date_search' }  do |f|
           = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
           = submit_tag "Search"
@@ -76,7 +79,7 @@
           %b Revenue
     - for x in @contracts
       - if x.days_due.to_i > 0 && x.days_due.to_i <= 30
-        %tr
+        %tr{:id => x.sales_office_name}
           %td= h x.sales_office_name
           %td= h x.account_name
           %td= link_to x.description, contract_url(x.id)
@@ -108,7 +111,7 @@
           %b Revenue
     - for x in @contracts
       - if x.days_due.to_i > 30 && x.days_due.to_i <= 60
-        %tr
+        %tr{:id => x.sales_office_name}
           %td= h x.sales_office_name
           %td= h x.account_name
           %td= link_to x.description, contract_url(x.id)
@@ -140,7 +143,7 @@
           %b Revenue
     - for x in @contracts
       - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
-        %tr
+        %tr{:id => x.sales_office_name}
           %td= h x.sales_office_name
           %td= h x.account_name
           %td= link_to x.description, contract_url(x.id)
@@ -148,4 +151,24 @@
           %td{:align => 'center'}= h x.end_date
           %td{:align => 'right'}= h x.days_due
           %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+          
+%script
+  function toggleOffices(office){
+  a = $('filter_offices').options;
+  if (office == ""){
+  showAll(a);
+  }
+  else {
+  showAll(a);
+  for (i=0; i<a.length; i++){
+  if (a[i].value != office && a[i].value !=""){
+  name = '#'+a[i].value;
+  $$(name).invoke('hide');
+  }}}}
+  
+  function showAll(a){
+  for (i=0; i<a.length; i++){
+  name = '#'+a[i].value;
+  $$(name).invoke('show');
+  }}
 
