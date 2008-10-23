@@ -49,7 +49,7 @@ class ImportController < ApplicationController
       @contract.support_office_name = contract_ary.ivars['attributes']['support_office_name']
       @contract.platform = contract_ary.ivars['attributes']['platform']
       @contract.contract_type = contract_ary.ivars['attributes']['contract_type']
-
+      @contract.cust_po_num = contract_ary.ivars['attributes']['cust_po_num']
     else
       @contract = Contract.new(contract_ary.ivars['attributes'])
     end
