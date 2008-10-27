@@ -1,7 +1,7 @@
 - content_for :subtitle do
   Reports
 
-%ul{:class => 'sub_menu'}
+%ul{:id => 'submenu', :class => 'sub_menu'}
   %li
     = link_to 'Dashboard', reports_path
   %li
@@ -14,13 +14,14 @@
 #section1
   %table{:class => 'plain_table'}
     %tr
-      %td{:width => '200px', :style => 'valign:bottom'}
+      %td{:width => '300px', :style => 'valign:bottom'}
         %h2{:margin => '0'}
-          Renewals
+          Renewals &nbsp;&nbsp;&nbsp;
+          %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
       %td
         Filter by Office
-        =select("filter", "offices", @offices, {:include_blank => true },{:onChange => 'toggleOffices(this.value);', :style => "width: 82px"})
-      %td{:width => '425px', :align => 'right'}
+        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices()', :style => "width: 82px"})
+      %td{:width => '325px', :align => 'right'}
         - form_tag'/reports/renewals', {:name => 'date_search' }  do |f|
           = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
           = submit_tag "Search"
@@ -45,16 +46,17 @@
           %b Days Due
         %th{:width => '100px'}
           %b Revenue
-    - for x in @contracts
-      - if x.days_due.to_i <= 0
-        %tr{:id => x.sales_office_name}
-          %td= h x.sales_office_name
-          %td= h x.account_name
-          %td= link_to x.description, contract_url(x.id)
-          %td{:align => 'center'}= h x.start_date
-          %td{:align => 'center'}= h x.end_date
-          %td{:align => 'right'}= h x.days_due
-          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+    %tbody
+      - for x in @contracts
+        - if x.days_due.to_i <= 0
+          %tr{:id => x.sales_office_name}
+            %td= h x.sales_office_name
+            %td= h x.account_name
+            %td= link_to x.description, contract_url(x.id)
+            %td{:align => 'center'}= h x.start_date
+            %td{:align => 'center'}= h x.end_date
+            %td{:align => 'right'}= h x.days_due
+            %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
   %p &nbsp;
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ffff66'}
@@ -77,16 +79,17 @@
           %b Days Due
         %th{:width => '100px'}
           %b Revenue
-    - for x in @contracts
-      - if x.days_due.to_i > 0 && x.days_due.to_i <= 30
-        %tr{:id => x.sales_office_name}
-          %td= h x.sales_office_name
-          %td= h x.account_name
-          %td= link_to x.description, contract_url(x.id)
-          %td{:align => 'center'}= h x.start_date
-          %td{:align => 'center'}= h x.end_date
-          %td{:align => 'right'}= h x.days_due
-          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+    %tbody
+      - for x in @contracts
+        - if x.days_due.to_i > 0 && x.days_due.to_i <= 30
+          %tr{:id => x.sales_office_name}
+            %td= h x.sales_office_name
+            %td= h x.account_name
+            %td= link_to x.description, contract_url(x.id)
+            %td{:align => 'center'}= h x.start_date
+            %td{:align => 'center'}= h x.end_date
+            %td{:align => 'right'}= h x.days_due
+            %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
   %p &nbsp;
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ffff66'}
@@ -109,16 +112,17 @@
           %b Days Due
         %th{:width => '100px'}
           %b Revenue
-    - for x in @contracts
-      - if x.days_due.to_i > 30 && x.days_due.to_i <= 60
-        %tr{:id => x.sales_office_name}
-          %td= h x.sales_office_name
-          %td= h x.account_name
-          %td= link_to x.description, contract_url(x.id)
-          %td{:align => 'center'}= h x.start_date
-          %td{:align => 'center'}= h x.end_date
-          %td{:align => 'right'}= h x.days_due
-          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+    %tbody
+      - for x in @contracts
+        - if x.days_due.to_i > 30 && x.days_due.to_i <= 60
+          %tr{:id => x.sales_office_name}
+            %td= h x.sales_office_name
+            %td= h x.account_name
+            %td= link_to x.description, contract_url(x.id)
+            %td{:align => 'center'}= h x.start_date
+            %td{:align => 'center'}= h x.end_date
+            %td{:align => 'right'}= h x.days_due
+            %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
   %p &nbsp;
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}
@@ -141,34 +145,15 @@
           %b Days Due
         %th{:width => '80px'}
           %b Revenue
-    - for x in @contracts
-      - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
-        %tr{:id => x.sales_office_name}
-          %td= h x.sales_office_name
-          %td= h x.account_name
-          %td= link_to x.description, contract_url(x.id)
-          %td{:align => 'center'}= h x.start_date
-          %td{:align => 'center'}= h x.end_date
-          %td{:align => 'right'}= h x.days_due
-          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+    %tbody
+      - for x in @contracts
+        - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
+          %tr{:id => x.sales_office_name}
+            %td= h x.sales_office_name
+            %td= h x.account_name
+            %td= link_to x.description, contract_url(x.id)
+            %td{:align => 'center'}= h x.start_date
+            %td{:align => 'center'}= h x.end_date
+            %td{:align => 'right'}= h x.days_due
+            %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
           
-%script
-  function toggleOffices(office){
-  a = $('filter_offices').options;
-  if (office == ""){
-  showAll(a);
-  }
-  else {
-  showAll(a);
-  for (i=0; i<a.length; i++){
-  if (a[i].value != office && a[i].value !=""){
-  name = '#'+a[i].value;
-  $$(name).invoke('hide');
-  }}}}
-  
-  function showAll(a){
-  for (i=0; i<a.length; i++){
-  name = '#'+a[i].value;
-  $$(name).invoke('show');
-  }}
-

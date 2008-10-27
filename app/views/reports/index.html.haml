@@ -127,15 +127,3 @@
     - @url2 = url_for :controller => 'graphs', :action => 'sales_by_type_pie'
     %img{'src' => @url2, 'style' => "border:1px solid #111111;"}
 
-%script
-  function toggleHeaderStuff(){
-  var header = $('header');
-  var submenu = $('submenu');
-
-  if(header.style.display == "none")
-  {Element.show("header");
-  Element.show("submenu");}
-  else
-  {Element.hide("header");
-  Element.hide("submenu");}
-  }
