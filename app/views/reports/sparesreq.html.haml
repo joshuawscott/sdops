@@ -11,31 +11,35 @@
 
 %p &nbsp;
 #section1
-  %h2
-    Report Links
-    
-  #linkbox
-    %dt
-      %b Performance
-    %dd{:style => "margin-left:20px"}
-      %ul
-        %li
-          Test
-        %li
-          Test2
-
-  #linkbox
-    %dt
-      %b Inventory
-    %dd{:style => "margin-left:20px"}
-      %ul
-        %li
-          = link_to 'Spares Requirements', 'reports/sparesreq'
-        %li
-          Test2
-  
-  %p &nbsp;
-
-
-
-
+  %table{:class => 'plain_table'}
+    %tr
+      %td{:width => '300px'}
+        %h2{:margin => '0'}
+          Spares Requirements &nbsp;&nbsp;&nbsp;
+          %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
+      %td
+        %b Filter by Office&nbsp;
+      %td
+        - form_tag'/reports/sparesreq', {:name => 'search' }  do |f|
+          = select("filter", "offices", @offices, {:include_blank => true })
+          = submit_tag "Search"
+        
+  %table{:class => "sortable", :padding => '2', :border => '1',:ts_linkrow => "2"}
+    %thead
+      %tr
+        %th{:colspan => '3'}
+          Products Under Support
+      %tr
+        %th{:width => '120px'}
+          %b Product Number
+        %th{:width => '380px'}
+          %b Description
+        %th{:width => '60px'}
+          %b Count
+    %tbody
+      - for x in @lineitems
+        %tr
+          %td= h x.product_num
+          %td= h x.description
+          %td{:align => 'right'}= h x.count
+          
