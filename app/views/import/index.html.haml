@@ -21,31 +21,33 @@
       %label{:for => "contract"}
         Contract
       = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label', @contract.to_i))
-      - debugger
-      %p
-      %label{:for => "sales_rep_id"}
+    %p
+      %label{:for => "sales_rep_id", :style => 'color:red'}
         Sales Rep
       = select_tag('sales_rep_id', "<option value=''/>" + options_from_collection_for_select(@sales_reps, 'id', 'full_name'))
     %p
-      %label{:for => "sales_office"}
+      %label{:for => "sales_office", :style => 'color:red'}
         Sales Office
       = select_tag('sales_office', "<option value=''/>" + options_from_collection_for_select(@sales_offices, 'id', 'name'))
     %p
-      %label{:for => "support_office"}
+      %label{:for => "support_office", :style => 'color:red'}
         Support Office
       = select_tag('support_office', "<option value=''/>" + options_from_collection_for_select(@support_offices, 'id', 'name'))
     %p
-      %label{:for => "platform"}
+      %label{:for => "platform", :style => 'color:red'}
         Platform
       = select_tag('platform', "<option value=''/>" + options_from_collection_for_select(@platform, 'label', 'label'))
     %p
-      %label{:for => "contract_type"}
+      %label{:for => "contract_type", :style => 'color:red'}
         Contract Type
       = select_tag('contract_type', "<option value=''/>" + options_from_collection_for_select(@types, 'id', 'name'))
     %p
-      %label{:for => "importfile"}
+      %label{:for => "importfile", :style => 'color:red'}
         File to import
       = file_field_tag('importfile')
+      
+    %p{:style => 'color:#FF0000'}
+      %b Red means required field
     
     = submit_tag "Import File"
 
