@@ -181,7 +181,7 @@
       %b Replaced By
       %br
       - for x in @replaced_by
-        = check_box_tag "contract[successor_ids][]", x.id, @contract.successors.include?(x)
+        = check_box_tag "contract[successor_ids][#{x.id}]", x.id, @contract.successors.include?(x), :onClick => "setReplacedBy(#{x.id});"
         = x.sdc_ref + " | " + x.description + " | " + x.start_date.to_s + " | " + x.end_date.to_s
         %br
      

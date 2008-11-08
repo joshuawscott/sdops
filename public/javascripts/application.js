@@ -36,3 +36,35 @@ function toggleHeaderStuff(){
   $('submenu').toggle();
 }
 
+// ************************************************
+// Functions for Contract Edit
+// ************************************************
+function setReplacedBy(box){
+  var chBox = $('contract[successor_ids][' + box + ']');
+  if (chBox.checked == true)
+  {
+    var set_expired = confirm('This contract will be set to "Expired", are you sure you want to continue?\nBe sure to you are selecting the right replacement contract.\n\nHit "Update" to accept changes.');
+    if (set_expired == true)
+      { 
+      setExpiredTrue();
+      }
+    else
+      {
+      chBox.checked = false;
+      return false;
+      }
+  }
+  else
+  {
+    setExpiredFalse();
+    chBox.checked = false;
+  }
+}
+
+function setExpiredTrue(){
+  $('contract_expired').checked = true;
+}
+
+function setExpiredFalse(){
+  $('contract_expired').checked = false;
+}
