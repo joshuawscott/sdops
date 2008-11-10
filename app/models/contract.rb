@@ -24,9 +24,9 @@ class Contract < ActiveRecord::Base
   
   def self.short_list(role, teams)
     if role >= MANAGER
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, revenue, account_name", :conditions => "expired <> true", :order => 'sales_office, account_name, start_date', :group => 'id')
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, revenue, account_name", :conditions => "expired <> 1", :order => 'sales_office, account_name, start_date', :group => 'id')
     else
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, revenue, account_name", :conditions => ["sales_office IN (?) AND expired <> true", teams], :order => 'sales_office, account_name, start_date', :group => 'id')
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, revenue, account_name", :conditions => ["sales_office IN (?) AND expired <> 1", teams], :order => 'sales_office, account_name, start_date', :group => 'id')
     end
   end
 
