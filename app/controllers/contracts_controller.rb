@@ -47,7 +47,7 @@ class ContractsController < ApplicationController
         @contracts = @contracts.conditions "contracts.start_date #{op} ?", val unless @start_date.blank?
         op, val = @end_date.split(" ")
         @contracts = @contracts.conditions "contracts.end_date #{op} ?", val unless @end_date.blank?
-        @contracts = @contracts.conditions "contracts.replacement_sdc_ref = '' OR contracts.replacement_sdc_ref IS Null" unless @expired == "on"
+        @contracts = @contracts.conditions "contracts.expired <> true" unless @expired == "on"
         @contracts
       else
         @contracts = Contract.short_list(current_user.role, current_user.sugar_team_ids)

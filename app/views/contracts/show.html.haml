@@ -62,11 +62,17 @@
     %p
       %label{:for => "contract_hw_support_level_id"}
         HW Support Level
-      =h @contract.hw_support_level_id ||= 'N/A'
+      - temp = @contract.hw_support_level_id
+      - if @contract.hw_support_level_id == '' || @contract.hw_support_level_id.nil?
+        - temp = 'N/A'
+      =h temp
     %p
       %label{:for => "contract_sw_support_level_id"}
         SW Support Level
-      =h @contract.sw_support_level_id ||= 'N/A'
+      - temp = @contract.sw_support_level_id
+      - if @contract.sw_support_level_id == '' || @contract.sw_support_level_id.nil?
+        - temp = 'N/A'
+      =h temp
     %p
       %label{:for => "contract_updates"}
         SW Updates
