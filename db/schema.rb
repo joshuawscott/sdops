@@ -9,11 +9,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20080925121340) do
+ActiveRecord::Schema.define(:version => 20081110195705) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
-    t.integer  "commentable_id",   :limit => 11
+    t.integer  "commentable_id"
     t.string   "commentable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -23,34 +23,34 @@ ActiveRecord::Schema.define(:version => 20080925121340) do
   create_table "contracts", :force => true do |t|
     t.string   "sdc_ref"
     t.string   "description"
-    t.integer  "sales_rep_id",        :limit => 11
+    t.integer  "sales_rep_id",        :limit => 8
     t.string   "sales_office"
     t.string   "support_office"
     t.string   "account_id"
     t.string   "cust_po_num"
     t.string   "payment_terms"
     t.string   "platform"
-    t.decimal  "revenue",                           :precision => 20, :scale => 3
-    t.decimal  "annual_hw_rev",                     :precision => 20, :scale => 3
-    t.decimal  "annual_sw_rev",                     :precision => 20, :scale => 3
-    t.decimal  "annual_ce_rev",                     :precision => 20, :scale => 3
-    t.decimal  "annual_sa_rev",                     :precision => 20, :scale => 3
-    t.decimal  "annual_dr_rev",                     :precision => 20, :scale => 3
+    t.decimal  "revenue",                          :precision => 20, :scale => 3
+    t.decimal  "annual_hw_rev",                    :precision => 20, :scale => 3
+    t.decimal  "annual_sw_rev",                    :precision => 20, :scale => 3
+    t.decimal  "annual_ce_rev",                    :precision => 20, :scale => 3
+    t.decimal  "annual_sa_rev",                    :precision => 20, :scale => 3
+    t.decimal  "annual_dr_rev",                    :precision => 20, :scale => 3
     t.date     "start_date"
     t.date     "end_date"
     t.date     "multiyr_end"
-    t.string   "expired"
+    t.boolean  "expired",                                                         :default => false
     t.string   "hw_support_level_id"
     t.string   "sw_support_level_id"
     t.string   "updates"
-    t.integer  "ce_days",             :limit => 11
-    t.integer  "sa_days",             :limit => 11
-    t.decimal  "discount_pref_hw",                  :precision => 5,  :scale => 3
-    t.decimal  "discount_pref_sw",                  :precision => 5,  :scale => 3
-    t.decimal  "discount_prepay",                   :precision => 5,  :scale => 3
-    t.decimal  "discount_multiyear",                :precision => 5,  :scale => 3
-    t.decimal  "discount_ce_day",                   :precision => 5,  :scale => 3
-    t.decimal  "discount_sa_day",                   :precision => 5,  :scale => 3
+    t.integer  "ce_days",             :limit => 8
+    t.integer  "sa_days",             :limit => 8
+    t.decimal  "discount_pref_hw",                 :precision => 5,  :scale => 3
+    t.decimal  "discount_pref_sw",                 :precision => 5,  :scale => 3
+    t.decimal  "discount_prepay",                  :precision => 5,  :scale => 3
+    t.decimal  "discount_multiyear",               :precision => 5,  :scale => 3
+    t.decimal  "discount_ce_day",                  :precision => 5,  :scale => 3
+    t.decimal  "discount_sa_day",                  :precision => 5,  :scale => 3
     t.string   "replacement_sdc_ref"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(:version => 20080925121340) do
     t.string   "account_name"
     t.string   "sales_office_name"
     t.string   "support_office_name"
-    t.decimal  "discount_pref_srv",                 :precision => 5,  :scale => 3
+    t.decimal  "discount_pref_srv",                :precision => 5,  :scale => 3
     t.string   "contract_type"
     t.string   "so_number"
     t.string   "po_number"
@@ -70,30 +70,30 @@ ActiveRecord::Schema.define(:version => 20080925121340) do
     t.string   "label"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "sort_order", :limit => 11
+    t.integer  "sort_order", :limit => 8
   end
 
   create_table "line_items", :force => true do |t|
-    t.integer  "contract_id",      :limit => 11
+    t.integer  "contract_id",      :limit => 8
     t.string   "support_type"
     t.string   "product_num"
     t.string   "serial_num"
     t.string   "description"
     t.date     "begins"
     t.date     "ends"
-    t.integer  "qty",              :limit => 11
-    t.decimal  "list_price",                     :precision => 20, :scale => 3
+    t.integer  "qty",              :limit => 8
+    t.decimal  "list_price",                    :precision => 20, :scale => 3
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "support_provider"
-    t.integer  "position",         :limit => 11
+    t.integer  "position"
   end
 
   create_table "locations", :force => true do |t|
     t.string   "name"
     t.string   "description"
     t.text     "data"
-    t.integer  "resource_id",   :limit => 11
+    t.integer  "resource_id",   :limit => 8
     t.string   "resource_type"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -117,13 +117,13 @@ ActiveRecord::Schema.define(:version => 20080925121340) do
 
   create_table "product_deals", :force => true do |t|
     t.string   "job_number"
-    t.integer  "sugar_opp_id",   :limit => 11
+    t.integer  "sugar_opp_id",   :limit => 8
     t.string   "account_id"
     t.string   "account_name"
     t.string   "invoice_number"
-    t.decimal  "revenue",                      :precision => 20, :scale => 3
-    t.decimal  "cogs",                         :precision => 20, :scale => 3
-    t.decimal  "freight",                      :precision => 20, :scale => 3
+    t.decimal  "revenue",                     :precision => 20, :scale => 3
+    t.decimal  "cogs",                        :precision => 20, :scale => 3
+    t.decimal  "freight",                     :precision => 20, :scale => 3
     t.string   "status"
     t.string   "modified_by"
     t.datetime "created_at"
@@ -131,8 +131,8 @@ ActiveRecord::Schema.define(:version => 20080925121340) do
   end
 
   create_table "relationships", :force => true do |t|
-    t.integer  "successor_id",   :limit => 11
-    t.integer  "predecessor_id", :limit => 11
+    t.integer  "successor_id",   :limit => 8
+    t.integer  "predecessor_id", :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(:version => 20080925121340) do
     t.datetime "updated_at"
     t.string   "remember_token"
     t.datetime "remember_token_expires_at"
-    t.integer  "role",                      :limit => 11
+    t.integer  "role",                      :limit => 8
     t.string   "sugar_id"
   end
 
