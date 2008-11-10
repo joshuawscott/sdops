@@ -1,9 +1,6 @@
 - content_for :subtitle do
   Contract List
 
-= javascript_include_tag "prototype.js"
-= javascript_include_tag "sorttable.js" 
-
 
 #section1
   = link_to 'New contract', new_contract_path if current_user.role == ADMIN

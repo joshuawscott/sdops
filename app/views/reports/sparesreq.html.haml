@@ -21,14 +21,16 @@
         %b Filter by Office&nbsp;
       %td
         - form_tag'/reports/sparesreq', {:name => 'search' }  do |f|
-          = select("filter", "offices", @offices, {:include_blank => true })
+          = select("filter", "offices", @offices, {:include_blank => true}, {:onchange => "document.getElementById('filter_office_name').value = this.options[this.selectedIndex].text" })
+          = hidden_field "filter", "office_name"
           = submit_tag "Search"
-        
-  %table{:class => "sortable", :padding => '2', :border => '1',:ts_linkrow => "2"}
+
+  %h2{:style => 'margin:15px 0px 0px 200px'}
+    Products Under Support - 
+    = @office
+
+  %table{:class => "sortable", :padding => '2', :border => '1'}
     %thead
-      %tr
-        %th{:colspan => '3'}
-          Products Under Support
       %tr
         %th{:width => '120px'}
           %b Product Number

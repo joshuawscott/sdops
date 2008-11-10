@@ -49,8 +49,8 @@ class ReportsController < ApplicationController
   def sparesreq
     
     @offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
-    
     if params[:filter] != nil
+      @office = params[:filter][:office_name]
       @lineitems = LineItem.find(:all,
         :select => 'l.product_num, l.description, count(l.product_num) as count',
         :conditions => ['c.support_office = ? AND l.support_type = "HW" AND l.product_num <> "LABEL"', params[:filter][:offices]],

@@ -26,11 +26,10 @@
           = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
           = submit_tag "Search"
   
-  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px',:ts_linkrow => "1", :style => 'background:#ff5455'}
+  %h2{:style => 'margin:15px 0px 0px 300px'} EXPIRED CONTRACTS
+  
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ff5455'}
     %thead
-      %tr
-        %th{:colspan => '7'}
-          EXPIRED CONTRACTS
       %tr
         %th{:width => '80px'}
           %b Office
@@ -58,12 +57,10 @@
             %td{:align => 'right'}= h x.days_due
             %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
-  %p &nbsp;
+  %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 30 days or less
+  
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ffff66'}
     %thead
-      %tr
-        %th{:colspan => '7'}
-          Contracts expiring in 30 days or less
       %tr
         %th{:width => '80px'}
           %b Office
@@ -91,12 +88,10 @@
             %td{:align => 'right'}= h x.days_due
             %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
-  %p &nbsp;
+  %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 31 to 60 days
+  
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ffff66'}
     %thead
-      %tr
-        %th{:colspan => '7'}
-          Contracts expiring in 31 to 60 days
       %tr
         %th{:width => '80px'}
           %b Office
@@ -124,12 +119,10 @@
             %td{:align => 'right'}= h x.days_due
             %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
-  %p &nbsp;
+  %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 61 to 90 days
+  
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}
     %thead
-      %tr
-        %th{:colspan => '7'}
-          Contracts expiring in 61 to 90 days
       %tr
         %th{:width => '80px'}
           %b Office
