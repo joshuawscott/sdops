@@ -113,7 +113,7 @@ class ContractsController < ApplicationController
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
     @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
-    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name}' AND id <> #{params[:id]}")
+    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]}")
     @replaced_by = @replaces
 
   end
