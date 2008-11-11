@@ -68,7 +68,7 @@
           %td= h contract.start_date
           %td= h contract.end_date
           %td= h contract.payment_terms
-          %td{:align => 'right'}= h number_to_currency(contract.revenue, :precision => 0)
+          %td{:align => 'right'}= h number_to_currency(contract.total_revenue, :precision => 0)
   
 %script
   function doOnRowDblClicked(rowId){window.location = "contracts/" + rowId}
