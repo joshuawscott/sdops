@@ -52,7 +52,7 @@
     %p
       %label{:for => "contract_type"}
         Type
-      =h @contract.contract_type.blank? ? 'N/A' : @contract.contract_type
+      =h @contract.contract_type.blank? ? 'N/A' : SugarContractType.find(:first, :conditions => "id = '#{@contract.contract_type}'").name
 
   #results.boxed{:style => 'height:320px'}
     %h2 Terms
