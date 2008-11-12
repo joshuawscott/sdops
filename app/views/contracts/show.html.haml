@@ -12,32 +12,31 @@
     %p
       %label{:for => "contract_account_name"}
         Customer
-      =h @contract.account_name ||= 'N/A'
+      =h @contract.account_name.blank? ? 'N/A' : @contract.account_name
     %p
       %label{:for => "contract_sales_office_name"}
         Sales Office
-      =h @contract.sales_office_name ||= 'N/A'
+      =h @contract.sales_office_name.blank? ? 'N/A' : @contract.sales_office_name
     %p
       %label{:for => "contract_support_office_name"}
         Support Office
-      =h @contract.support_office_name ||= 'N/A'
+      =h @contract.support_office_name.blank? ? 'N/A' : @contract.support_office_name
     %p
       %label{:for => "contract_description"}
         Description
-      =h @contract.description
+      =h @contract.description.blank? ? 'N/A' : @contract.description
     %p
       %label{:for => "contract_sales_rep_id"}
         Sales rep
-      - @temp = User.find(@contract.sales_rep_id).full_name unless User.find(:first, :conditions => ['id = ?', @contract.sales_rep_id]).nil?
-      = h @temp ||= 'N/A'
+      = h @contract.sales_rep_id.blank? ? 'N/A' : User.find(@contract.sales_rep_id).full_name
       %p
       %label{:for => "contract_sdc_ref"}
         SDC Reference
-      =h @contract.sdc_ref
+      =h @contract.sdc_ref ||= 'N/A'
     %p
       %label{:for => "contract_said"}
         SAID
-      =h @contract.said
+      =h @contract.said ||= 'N/A'
     %p
       %label{:for => "contract_cust_po_num"}
         Customer PO
@@ -49,42 +48,34 @@
     %p
       %label{:for => "contract_platform"}
         Platform
-      =h @contract.platform
+      =h @contract.platform.blank? ? 'N/A' : @contract.platform
     %p
       %label{:for => "contract_type"}
         Type
-      - @temp = 'N/A'
-      - @temp = SugarContractType.find(@contract.contract_type).name unless @contract.contract_type == ""
-      =h @temp
+      =h @contract.contract_type.blank? ? 'N/A' : @contract.contract_type
 
   #results.boxed{:style => 'height:320px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
         HW Support Level
-      - temp = @contract.hw_support_level_id
-      - if @contract.hw_support_level_id == '' || @contract.hw_support_level_id.nil?
-        - temp = 'N/A'
-      =h temp
+      =h @contract.hw_support_level_id.blank? ? 'N/A' : @contract.hw_support_level_id
     %p
       %label{:for => "contract_sw_support_level_id"}
         SW Support Level
-      - temp = @contract.sw_support_level_id
-      - if @contract.sw_support_level_id == '' || @contract.sw_support_level_id.nil?
-        - temp = 'N/A'
-      =h temp
+      =h @contract.sw_support_level_id.blank? ? 'N/A' : @contract.sw_support_level_id
     %p
       %label{:for => "contract_updates"}
         SW Updates
-      =h @contract.updates
+      =h @contract.updates.blank? ? 'N/A' : @contract.updates
     %p
       %label{:for => "contract_ce_days"}
         Num. CE Days
-      =h @contract.ce_days.nil? || @contract.ce_days == '' ? 'N/A' : @contract.ce_days
+      =h @contract.ce_days.blank? ? 'N/A' : @contract.ce_days
     %p
       %label{:for => "contract_sa_days"}
         Num. SA Days
-      =h @contract.sa_days.nil? || @contract.sa_days == '' ? 'N/A' : @contract.sa_days
+      =h @contract.sa_days.blank? ? 'N/A' : @contract.sa_days
     %p
       %label{:for => "contract_start_date"}
         Start Date
@@ -96,23 +87,23 @@
     %p
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
-      =h @contract.multiyr_end.nil? || @contract.multiyr_end == '' ? 'N/A' : @contract.multiyr_end
+      =h @contract.multiyr_end.blank? ? 'N/A' : @contract.multiyr_end
     %p
       %label{:for => "contract_so_number"}
         SD Sales Order
-      =h @contract.so_number.nil? || @contract.so_number == '' ? 'N/A' : @contract.so_number
+      =h @contract.so_number.blank? ? 'N/A' : @contract.so_number
     %p
       %label{:for => "contract_po_number"}
         SD Purch. Order
-      =h @contract.po_number.nil? || @contract.po_number == '' ? 'N/A' : @contract.po_number
+      =h @contract.po_number.blank? ? 'N/A' : @contract.po_number
     %p
       %label{:for => "contract_replacement_sdc_ref"}
         Replacement Ref
-      =h @contract.replacement_sdc_ref.nil? || @contract.replacement_sdc_ref == '' ? 'N/A' : @contract.replacement_sdc_ref
+      =h @contract.replacement_sdc_ref.blank? ? 'N/A' : @contract.replacement_sdc_ref
     %p
       %label{:for => "contract_expired"}
         Expired
-      =h @contract.expired.nil? || @contract.expired == '' ? 'N/A' : @contract.expired
+      =h @contract.expired.blank? ? 'N/A' : @contract.expired
 
   #results.boxed{:style => 'width:200px'}
     %h2 Revenue

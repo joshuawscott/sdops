@@ -90,7 +90,6 @@ class ImportController < ApplicationController
       flash[:error] = "Sugar Contract was not created"
     end
     
-    
     respond_to do |format|
       if !@contract.new_record?
         flash[:notice] = 'Contract was successfully created.'
