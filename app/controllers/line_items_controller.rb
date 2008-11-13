@@ -55,7 +55,6 @@ class LineItemsController < ApplicationController
   # POST /line_items.xml
   def create
     logger.info "******* LineItems controller create method"
-    #debugger
     @line_item = @contract.line_items.new(params[:line_item])
     @line_item.contract_id = params[:contract_id]
     
