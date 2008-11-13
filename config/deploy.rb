@@ -1,11 +1,11 @@
 set :application, "sdops.sourcedirect.com"
 set :scm, :git
-set :repository,  "."
+set :repository,  "git@mirrors:sdops.git"
 set :branch, "master"
-set :deploy_via, 'copy'
+#set :deploy_via, 'copy'
 set :copy_exclude, [".svn", ".git"]
 set :scm_verbose, true
-set :runner, 'tnini'
+set :runner, 'git'
 
 set :keep_releases, 3
 
@@ -14,7 +14,7 @@ set :keep_releases, 3
 # via the :deploy_to variable:
 set :deploy_to, "/var/www/#{application}"
 
-set :user, "tnini"
+set :user, "deploy"
 role :app, "sdops"
 role :web, "sdops"
 role :db,  "sdops", :primary => true

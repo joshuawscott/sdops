@@ -6,7 +6,6 @@ describe "/dropdowns/index.html.erb" do
   include DropdownsHelper
 
   before do
-    #debugger
     dropdowns_98 = mock_model(Dropdown)
     dropdowns_98.stub!(:dd_name).and_return("support_type")
     dropdowns_98.stub!(:filter).and_return("hardware")

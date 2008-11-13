@@ -2,7 +2,6 @@ class OpportunitiesController < ApplicationController
   # GET /opportunities
   # GET /opportunities.xml
   def index
-    #debugger
     @opportunities = SugarOpp.find(:all, :conditions => "sales_stage = 'Qualification' AND deleted <> 1")
     #@opportunities = Opportunity.find(:all)
 

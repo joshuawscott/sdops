@@ -29,8 +29,6 @@ class AdminController < ApplicationController
   
   protected  
   def authorized?
-    #logged_in?
-    #debugger
     if logged_in? && current_user.role == ADMIN
        true
     else
