@@ -2,11 +2,13 @@ set :application, "sdops.sourcedirect.com"
 set :scm, :git
 set :repository,  "git@mirrors:sdops.git"
 set :branch, "master"
-set :deploy_via, :remote_cache
+set :deploy_via, :copy
 set :copy_exclude, [".svn", ".git"]
 set :scm_verbose, true
-set :runner, 'deploy'
-
+set :runner, 'git'
+#ssh_options[:username] = "deploy"
+#ssh_options[:forward_agent] = true
+#ssh_options[:keys] = %w(/home/deploy/.ssh/id_rsa)
 set :keep_releases, 3
 
 # If you aren't deploying to /u/apps/#{application} on the target
@@ -15,7 +17,7 @@ set :keep_releases, 3
 set :deploy_to, "/var/www/#{application}"
 
 set :user, "deploy"
-set :scm_passphrase, "zebwokra"
+#set :scm_passphrase, "zebwokra"
 role :app, "sdops"
 role :web, "sdops"
 role :db,  "sdops", :primary => true
