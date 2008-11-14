@@ -27,6 +27,15 @@ class AdminController < ApplicationController
     end
   end
   
+  # GET /admin/cashflow
+  def cashflow
+    @contracts = Contract.find(:all, :conditions => 'expired <> true AND end_date > CURDATE()', :order => 'end_date, account_name')
+
+    respond_to do |format|
+      format.html # cashflow.html.haml
+    end
+  end
+
   protected  
   def authorized?
     if logged_in? && current_user.role == ADMIN
