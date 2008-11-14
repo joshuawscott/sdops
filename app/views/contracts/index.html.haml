@@ -62,9 +62,9 @@
         %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})", :onmouseover => 'this.style.background = "#a0d55c"', :onmouseout => 'this.style.background = ""'} 
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
-          %td= h contract.account_name.length > 18 ? contract.account_name.slice(0..18) + "..." : contract.account_name
-          %td= h contract.said.length > 13 ? contract.said.slice(0..12) + "..." : contract.said
-          %td= h contract.description.length > 18 ? contract.description.slice(0..18) + "..." : contract.description
+          %td{:title => contract.account_name.length > 18 ? contract.account_name : ""}= h contract.account_name.length > 18 ? contract.account_name.slice(0..18) + "..." : contract.account_name
+          %td{:title => contract.said.length > 13 ? contract.said : ""}= h contract.said.length > 13 ? contract.said.slice(0..12) + "..." : contract.said
+          %td{:title => contract.description.length > 18 ? contract.description : ""}= h contract.description.length > 18 ? contract.description.slice(0..18) + "..." : contract.description
           %td= h contract.start_date
           %td= h contract.end_date
           %td= h contract.payment_terms
