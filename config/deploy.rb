@@ -2,10 +2,10 @@ set :application, "sdops.sourcedirect.com"
 set :scm, :git
 set :repository,  "git@mirrors:sdops.git"
 set :branch, "master"
-#set :deploy_via, 'copy'
+set :deploy_via, :remote_cache
 set :copy_exclude, [".svn", ".git"]
 set :scm_verbose, true
-set :runner, 'git'
+set :runner, 'deploy'
 
 set :keep_releases, 3
 
@@ -15,6 +15,7 @@ set :keep_releases, 3
 set :deploy_to, "/var/www/#{application}"
 
 set :user, "deploy"
+set :scm_passphrase, "zebwokra"
 role :app, "sdops"
 role :web, "sdops"
 role :db,  "sdops", :primary => true
