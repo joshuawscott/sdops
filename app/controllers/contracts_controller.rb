@@ -2,7 +2,7 @@ class ContractsController < ApplicationController
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
 
-
+	#TODO: show current contracts, including those marked expired
   # GET /contracts
   # GET /contracts.xml
   def index
