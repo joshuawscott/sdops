@@ -5,3 +5,4 @@ public/rspec.html
 config/database.yml
 spec/spec.opt*
 spec_output
+*~
