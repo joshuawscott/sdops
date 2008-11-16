@@ -1,14 +1,16 @@
 - content_for :subtitle do
   Reports
   
-%ul{:class => 'sub_menu'}
+%ul{:id => 'submenu', :class => 'sub_menu'}
   %li
     = link_to 'Dashboard', reports_path
   %li
     = link_to 'Renewals', {:controller => "reports", :action => "renewals"}
   %li
     = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}, :class => 'active'
-
+  %li
+    = link_to 'Customers', {:controller => "reports", :action => "customers"}
+    
 %p &nbsp;
 #section1
   %table{:class => 'plain_table'}
