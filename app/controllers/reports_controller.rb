@@ -65,4 +65,14 @@ class ReportsController < ApplicationController
       format.html # sparesreq.html.haml
     end
   end
+  def customers
+		@offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name]}
+		if params[:filter] != nil
+			@office = params[:filter][:office_name]
+			@customers = Contract.customer_rev_list_by_support_office (current_user.role, current_user.sugar_team_ids)
+		else
+			@customers = Contract.customer_rev_list_by_support_office (current_user.role, current_user.sugar_team_ids)
+		end
+		
+  end
 end
