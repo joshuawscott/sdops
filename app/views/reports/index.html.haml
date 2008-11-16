@@ -69,14 +69,15 @@
             %td{:align => 'right'}= h @customer_counts_by_office[k]['dr']
             %td{:align => 'right'}
               %b= h @customer_counts_by_office[k]['total']
-      %tr
-        %td
-          %b
-            Totals
-        %td{:colspan => '6', :align => 'right'}
-          %b= @total_contracts
-        %td{:colspan => '6', :align => 'right'}
-          %b= @total_customers
+      %tfoot
+        %tr
+          %td
+            %b
+              Totals
+          %td{:colspan => '6', :align => 'right'}
+            %b= @total_contracts
+          %td{:colspan => '6', :align => 'right'}
+            %b= @total_customers
   %br/
   %div{:class=>'boxed', :style=>'background:white'}
     %h2 Revenues By Office
