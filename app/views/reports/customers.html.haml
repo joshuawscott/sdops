@@ -24,11 +24,8 @@
         Filter by Office
         =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices()', :style => "width: 82px"})
       %td{:width => '325px', :align => 'right'}
-        - form_tag'/reports/customers', {:name => 'date_search' }  do |f|
-          = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
-          = submit_tag "Search"
           
-  %h2{:style => 'margin:15px 0px 0px 300px'} Revenue by Customer and Support Office
+  %h2{:style => 'margin:15px 0px 0px 90px'} Revenue by Customer and Support Office
   
   %table{:class => "sortable", :padding => '2', :border => '1'}
     %thead
@@ -37,7 +34,7 @@
           Office
         %th{:width => '300px', :ts_type => 'string'}
           Customer
-        %th{:ts_type => 'money'}
+        %th{:width => '120px', :ts_type => 'money'}
           Annual Revenue
     %tbody
       - for x in @customers
