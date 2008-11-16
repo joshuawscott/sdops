@@ -24,29 +24,27 @@
         Filter by Office
         =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices()', :style => "width: 82px"})
       %td{:width => '325px', :align => 'right'}
-
+        - form_tag'/reports/customers', {:name => 'date_search' }  do |f|
+          = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
+          = submit_tag "Search"
+          
   %h2{:style => 'margin:15px 0px 0px 300px'} Revenue by Customer and Support Office
   
-  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}
+  %table{:class => "sortable", :padding => '2', :border => '1'}
     %thead
       %tr
-        %th
-          \#
-        %th
-          Customer
-        %th
-          Annual Revenue
-        %th
+        %th{:width => '90px'}
           Office
-        %th
-          \% of Revenue
+        %th{:width => '300px'}
+          Customer
+        %th{:ts_type => 'money'}
+          Annual Revenue
     %tbody
-      - n = 1
       - for x in @customers
-        %tr
-          %td= h n
-          %td= h x.account_name
-          %td= h x.total
-          %td= h x.support_office_name
+        %tr{:id => x.support_office_name}
           %td
-            0
+            = h x.support_office_name
+          %td
+            = h x.account_name
+          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+

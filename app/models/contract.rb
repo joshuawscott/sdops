@@ -67,7 +67,9 @@ class Contract < ActiveRecord::Base
   end
   
   def self.all_revenue
-    Contract.find(:all, :select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev', :conditions => "expired <> true")
+    Contract.find(:all, 
+			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev', 
+			:conditions => "expired <> true")
   end
 
   def self.contract_counts_by_office
@@ -119,7 +121,10 @@ class Contract < ActiveRecord::Base
   end
 
   def self.revenue_by_office_by_type
-    Contract.find(:all, :select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr', :conditions => 'expired <> true', :group => 'sales_office_name')
+    Contract.find(:all, 
+			:select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr', 
+			:conditions => 'expired <> true', 
+			:group => 'sales_office_name')
   end
 
 	def self.customer_rev_list_by_sales_office
@@ -127,10 +132,25 @@ class Contract < ActiveRecord::Base
 	end
 
 	def self.customer_rev_list_by_support_office (role, teams)
-		Contract.find(:all, 
-			:select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, support_office_name', 
-			:conditions => 'expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) )', 
-			:group => 'account_name, support_office_name')
+		if role >= MANAGER
+			Contract.find(:all, 
+				:select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue, support_office_name', 
+				:conditions => 'expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) )', 
+				:group => 'account_name, support_office_name',
+				:order => 'revenue DESC')
+		else
+			Contract.find(:all, 
+				:select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue, support_office_name', 
+				:conditions => ['support_office IN (?) AND (expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) ))', teams], 
+				:group => 'account_name, support_office_name',
+				:order => 'revenue DESC')
+		end
+		
+	end
+
+	def self.revenue_total(teams)
+		Contract.find(:all,
+			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue')
 	end
 		
 end
