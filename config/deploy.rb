@@ -5,7 +5,7 @@ set :branch, "master"
 set :deploy_via, :copy
 set :copy_exclude, [".svn", ".git"]
 set :scm_verbose, true
-set :runner, 'git'
+set :runner, 'depoly'
 #ssh_options[:username] = "deploy"
 #ssh_options[:forward_agent] = true
 #ssh_options[:keys] = %w(/home/deploy/.ssh/id_rsa)
@@ -17,7 +17,7 @@ set :keep_releases, 3
 set :deploy_to, "/var/www/#{application}"
 
 set :user, "deploy"
-#set :scm_passphrase, "zebwokra"
+set :scm_password, "zebwokra"
 role :app, "sdops"
 role :web, "sdops"
 role :db,  "sdops", :primary => true
