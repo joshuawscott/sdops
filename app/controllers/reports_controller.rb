@@ -67,9 +67,9 @@ class ReportsController < ApplicationController
 		
 		if params[:filter] != nil
 			@office = params[:filter][:office_name]
-			@customers = Contract.customer_rev_list_by_support_office (current_user.role, current_user.sugar_team_ids)
+			@customers = Contract.customer_rev_list_by_support_office(current_user.role, current_user.sugar_team_ids)
 		else
-			@customers = Contract.customer_rev_list_by_support_office (current_user.role, current_user.sugar_team_ids)
+			@customers = Contract.customer_rev_list_by_support_office(current_user.role, current_user.sugar_team_ids)
 		end
 		
 		@offices = @customers.map{|x| x.support_office_name}

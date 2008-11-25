@@ -24,7 +24,7 @@
         Filter by Office
         =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices()', :style => "width: 82px"})
       %td{:width => '325px', :align => 'right'}
-        - form_tag'/reports/renewals', {:name => 'date_search' }  do |f|
+        - form_tag'/reports/renewals', {:name => 'date_search' }  do
           = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
           = submit_tag "Search"
   
@@ -33,19 +33,19 @@
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ff5455'}
     %thead
       %tr
-        %th{:width => '80px'}
+        %th{:width => '80px', :ts_type => 'string'}
           %b Office
-        %th{:width => '160px'}
+        %th{:width => '160px', :ts_type => 'string'}
           %b Account
-        %th{:width => '250px'}
+        %th{:width => '250px', :ts_type => 'string'}
           %b Description
-        %th{:width => '70px'}
+        %th{:width => '70px', :ts_type => "other_date", :ts_date_format => "YYYY-MM-DD"}
           %b Start Date
-        %th{:width => '70px'}
+        %th{:width => '70px', :ts_type => "other_date", :ts_date_format => "YYYY-MM-DD"}
           %b End Date
-        %th{:width => '50px'}
+        %th{:width => '50px', :ts_type => 'number'}
           %b Days Due
-        %th{:width => '100px'}
+        %th{:width => '100px', :ts_type => 'money'}
           %b Revenue
     %tbody
       - for x in @contracts
