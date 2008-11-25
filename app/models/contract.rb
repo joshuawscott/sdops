@@ -13,14 +13,10 @@ class Contract < ActiveRecord::Base
   has_many :comments, :as => :commentable
   
   #Validate General Details
-  #validates_presence_of :sdc_ref, :description, :sales_rep_id, :sales_office, :support_office
-  #validates_presence_of :account_id, :cust_po_num, :payment_terms
-  
-  #Validate Revenue
-  #validates_presence_of :revenue
+  validates_presence_of :account_id, :sales_office, :support_office, :sales_rep_id
   
   #Validate Terms
-  #validates_presence_of :start_date, :end_date
+  validates_presence_of :start_date, :end_date
   
   def self.short_list(role, teams)
     if role >= MANAGER

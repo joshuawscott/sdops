@@ -142,6 +142,17 @@ class ContractsController < ApplicationController
     params[:contract][:predecessor_ids] ||= []
     params[:contract][:successor_ids] ||= []
     @contract = Contract.find(params[:id])
+    @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
+    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
+    @support_offices = @sales_offices
+    @pay_terms = Dropdown.payment_terms_list
+    @platform = Dropdown.platform_list
+    @reps = User.user_list
+    @types_hw = Dropdown.support_type_list_hw
+    @types_sw = Dropdown.support_type_list_sw
+    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
+    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]}")
+    @replaced_by = @replaces
 
     respond_to do |format|
       if @contract.update_attributes(params[:contract])
