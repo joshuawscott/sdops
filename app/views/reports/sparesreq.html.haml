@@ -22,7 +22,7 @@
       %td
         %b Filter by Office&nbsp;
       %td
-        - form_tag'/reports/sparesreq', {:name => 'search' }  do |f|
+        - form_tag'/reports/sparesreq', {:name => 'search' }  do
           = select("filter", "offices", @offices, {:include_blank => true}, {:onchange => "document.getElementById('filter_office_name').value = this.options[this.selectedIndex].text" })
           = hidden_field "filter", "office_name"
           = submit_tag "Search"
@@ -34,11 +34,11 @@
   %table{:class => "sortable", :padding => '2', :border => '1'}
     %thead
       %tr
-        %th{:width => '120px'}
+        %th{:width => '120px', :ts_type => 'string'}
           %b Product Number
-        %th{:width => '380px'}
+        %th{:width => '380px', :ts_type => 'string'}
           %b Description
-        %th{:width => '60px'}
+        %th{:width => '60px', :ts_type => 'number'}
           %b Count
     %tbody
       - for x in @lineitems

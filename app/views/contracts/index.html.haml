@@ -29,15 +29,24 @@
     %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
       %thead
         %tr
-          %th{:width => '80px'} Sales Office
-          %th{:width => '80px'} Supp. Office
-          %th{:width => '149px'} Account Name
-          %th{:width => '100px'} SAID
-          %th{:width => '150px'} Description
-          %th{:width => '90px'} Start Date
-          %th{:width => '90px'} End Date
-          %th{:width => '80px'} Terms
-          %th{:width => '85px'} Annual Rev
+          %th{:width => '80px', :ts_type => 'string'}
+            Sales Office
+          %th{:width => '80px', :ts_type => 'string'}
+            Supp. Office
+          %th{:width => '149px', :ts_type => 'string'}
+            Account Name
+          %th{:width => '100px', :ts_type => 'string'}
+            SAID
+          %th{:width => '150px', :ts_type => 'string'}
+            Description
+          %th{:width => '90px', :ts_type => "other_date", :ts_date_format => "YYYY-MM-DD"}
+            Start Date
+          %th{:width => '90px', :ts_type => "other_date", :ts_date_format => "YYYY-MM-DD"}
+            End Date
+          %th{:width => '80px', :ts_type => 'string'}
+            Terms
+          %th{:width => '85px', :ts_type => 'money'}
+            Annual Rev
         %tr
           %th
             = select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 82px"})
@@ -68,7 +77,7 @@
           %td= h contract.start_date
           %td= h contract.end_date
           %td= h contract.payment_terms
-          %td{:align => 'right'}= h number_to_currency(contract.total_revenue, :precision => 0)
+          %td{:align => 'right'}= h number_to_currency(contract.total_revenue, :precision => 2)
   
 %script
   function doOnRowDblClicked(rowId){window.location = "contracts/" + rowId}
