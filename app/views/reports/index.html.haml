@@ -8,7 +8,8 @@
     = link_to 'Renewals', {:controller => "reports", :action => "renewals"}
   %li
     = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}
-
+  %li
+    = link_to 'Customers', {:controller => "reports", :action => "customers"}
 %p &nbsp;
 
 #section1
@@ -84,7 +85,7 @@
     %table{:class => 'sortable', :padding => '2', :border => '1'}
       %thead
         %tr
-          %th{:width => '90'}
+          %th{:width => '90', :ts_type => 'string'}
             %b Office
           %th{:width => '95', :ts_type => 'money'}
             %b HW

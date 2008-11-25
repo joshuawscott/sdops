@@ -1,0 +1,47 @@
+- content_for :subtitle do
+  Reports
+  
+%ul{:id => 'submenu', :class => 'sub_menu'}
+  %li
+    = link_to 'Dashboard', reports_path
+  %li
+    = link_to 'Renewals', {:controller => "reports", :action => "renewals"}
+  %li
+    = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}
+  %li
+    = link_to 'Customers', {:controller => "reports", :action => "customers"}, :class => 'active'
+
+%p &nbsp;
+
+#section1
+  %table{:class => 'plain_table'}
+    %tr
+      %td{:width => '300px', :style => 'valign:bottom'}
+        %h2{:margin => '0'}
+          Renewals &nbsp;&nbsp;&nbsp;
+          %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
+      %td
+        Filter by Office
+        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices()', :style => "width: 82px"})
+      %td{:width => '325px', :align => 'right'}
+          
+  %h2{:style => 'margin:15px 0px 0px 90px'} Revenue by Customer and Support Office
+  
+  %table{:class => "sortable", :padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th{:width => '90px', :ts_type => 'string'}
+          Office
+        %th{:width => '300px', :ts_type => 'string'}
+          Customer
+        %th{:width => '120px', :ts_type => 'money'}
+          Annual Revenue
+    %tbody
+      - for x in @customers
+        %tr{:id => x.support_office_name}
+          %td
+            = h x.support_office_name
+          %td
+            = h x.account_name
+          %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+
