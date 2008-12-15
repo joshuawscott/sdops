@@ -31,12 +31,15 @@ class Contract < ActiveRecord::Base
   end
 
   def self.serial_search(role, teams, serial_num)
+		#TODO: Use passed parameters to determine if expired are shown.
     if role >= MANAGER
       Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
-        :joins => :line_items, :conditions => ['line_items.serial_num = ?', serial_num])
+        :joins => :line_items,
+				:conditions => ['expired <> 1 AND line_items.serial_num = ?', serial_num])
     else
       Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
-        :joins => :line_items, :conditions => ["contracts.sales_office IN (?) AND line_items.serial_num = ?", teams, serial_num])
+        :joins => :line_items,
+				:conditions => ["expired <> 1 AND contracts.sales_office IN (?) AND line_items.serial_num = ?", teams, serial_num])
     end
   end
   

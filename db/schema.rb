@@ -13,7 +13,7 @@ ActiveRecord::Schema.define(:version => 20081119132936) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
-    t.integer  "commentable_id"
+    t.integer  "commentable_id",   :limit => 8
     t.string   "commentable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -21,12 +21,16 @@ ActiveRecord::Schema.define(:version => 20081119132936) do
   end
 
   create_table "contracts", :force => true do |t|
+    t.string   "account_id"
+    t.string   "account_name"
+    t.string   "sales_office_name"
+    t.string   "support_office_name"
+    t.string   "said"
     t.string   "sdc_ref"
     t.string   "description"
     t.integer  "sales_rep_id",        :limit => 8
     t.string   "sales_office"
     t.string   "support_office"
-    t.string   "account_id"
     t.string   "cust_po_num"
     t.string   "payment_terms"
     t.string   "platform"
@@ -47,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20081119132936) do
     t.integer  "sa_days",             :limit => 8
     t.decimal  "discount_pref_hw",                 :precision => 5,  :scale => 3
     t.decimal  "discount_pref_sw",                 :precision => 5,  :scale => 3
+    t.decimal  "discount_pref_srv",                :precision => 5,  :scale => 3
     t.decimal  "discount_prepay",                  :precision => 5,  :scale => 3
     t.decimal  "discount_multiyear",               :precision => 5,  :scale => 3
     t.decimal  "discount_ce_day",                  :precision => 5,  :scale => 3
@@ -54,11 +59,6 @@ ActiveRecord::Schema.define(:version => 20081119132936) do
     t.string   "replacement_sdc_ref"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "said"
-    t.string   "account_name"
-    t.string   "sales_office_name"
-    t.string   "support_office_name"
-    t.decimal  "discount_pref_srv",                :precision => 5,  :scale => 3
     t.string   "contract_type"
     t.string   "so_number"
     t.string   "po_number"
@@ -144,14 +144,14 @@ ActiveRecord::Schema.define(:version => 20081119132936) do
     t.string   "last_name"
     t.string   "office"
     t.string   "email"
+    t.integer  "role",                      :limit => 8
+    t.string   "sugar_id"
     t.string   "crypted_password",          :limit => 40
     t.string   "salt",                      :limit => 40
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "remember_token"
     t.datetime "remember_token_expires_at"
-    t.integer  "role",                      :limit => 8
-    t.string   "sugar_id"
   end
 
 end
