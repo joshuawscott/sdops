@@ -15,7 +15,7 @@
       = f.text_field :account_name, :class => 'textbox'
     %p
       %label{:for => "contract_account_id"}
-        Customer
+        Account
       = f.collection_select(:account_id, @sugar_accts, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('contract_account_name').value = this.options[this.selectedIndex].text"})
     %p
       %label{:for => "contract_sales_office"}

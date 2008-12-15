@@ -111,6 +111,19 @@ ul.sub_menu {
   left: 540pt;
   padding: 0pt; }
 
+.errorExplanation {
+  width: 700px;
+  padding: 2pt;
+  background-color: #ff9999;
+  border-width: 2pt;
+  border-style: solid;
+  border-color: #ff0000; }
+
+.fieldWithErrors {
+  padding: 1pt;
+  background-color: #ff0000;
+  display: table; }
+
 #error {
   font-weight: bold;
   color: #f00; }
