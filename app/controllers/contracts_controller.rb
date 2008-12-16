@@ -72,7 +72,7 @@ class ContractsController < ApplicationController
     @replaces = @contract.predecessors
     @replaced_by = @contract.successors
     @comment = Comment.new
-    
+		@support_providers = Dropdown.support_provider_list
     respond_to do |format|
       format.html # show.html.haml
       format.xml  { render :xml => @contract }

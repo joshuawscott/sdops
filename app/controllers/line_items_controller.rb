@@ -103,6 +103,19 @@ class LineItemsController < ApplicationController
     end
   end
   
+  # PUT /line_items/mass_update
+	def mass_update
+		logger.info "******* LineItems controller mass_update method"
+		@line_items = @contract.line_items.find(params[:line_item_ids])
+		for x in @line_items do
+			x.support_provider = params[:support_provider] unless params[:support_provider] == ""
+			x.location = params[:location] unless params[:location] == ""
+			x.begins = params[:begins] unless params[:begins] == ""
+			x.ends = params[:ends] unless params[:ends] == ""
+			x.save
+		end
+		redirect_to contract_path(@contract)
+	end
   protected
   
   def get_contract

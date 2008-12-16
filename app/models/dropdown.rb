@@ -1,10 +1,10 @@
 class Dropdown < ActiveRecord::Base
    def self.office_list
-      Dropdown.find(:all, :conditions => "dd_name = 'office'",
-                          :select => "label", 
+     Dropdown.find(:all, :conditions => "dd_name = 'office'",
+                          :select => "label",
                           :order => "sort_order")
    end
-   
+
    def self.role_list
      Dropdown.find(:all, :conditions => "dd_name = 'roles'",
                                  :select => "id, label",
@@ -21,27 +21,34 @@ class Dropdown < ActiveRecord::Base
    end
 
    def self.payment_terms_list
-      Dropdown.find(:all, :conditions => "dd_name = 'payment_terms'",
-                          :select => "label", 
+		 Dropdown.find(:all, :conditions => "dd_name = 'payment_terms'",
+                          :select => "label",
                           :order => "sort_order")
    end
-   
+
    def self.platform_list
      Dropdown.find(:all, :conditions => "dd_name = 'platform'",
-                          :select => "label", 
+                          :select => "label",
                           :order => "sort_order")
    end
-   
+
    def self.support_type_list_hw
-      Dropdown.find(:all, :conditions => "dd_name = 'support_type' AND filter = 'hardware'",
-                          :select => "label", 
+     Dropdown.find(:all, :conditions => "dd_name = 'support_type' AND filter = 'hardware'",
+                          :select => "label",
                           :order => "sort_order")
    end
 
    def self.support_type_list_sw
-      Dropdown.find(:all, :conditions => "dd_name = 'support_type' AND filter = 'software'",
-                          :select => "label", 
+     Dropdown.find(:all, :conditions => "dd_name = 'support_type' AND filter = 'software'",
+                          :select => "label",
                           :order => "sort_order")
    end
-   
+
+
+	 def self.support_provider_list
+		 Dropdown.find(:all, :conditions => "dd_name = 'support_providers'",
+                          :select => "label",
+                          :order => "sort_order")
+	 end
+
 end
