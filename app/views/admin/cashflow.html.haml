@@ -18,7 +18,9 @@
     %thead
       %tr
         %th
-          %b Primary Office
+          %b Sales Office
+        %th
+          %b Support Office
         %th
           %b Terms
         %th
@@ -35,6 +37,7 @@
       - for x in @contracts
         %tr
           %td= h x.sales_office_name
+          %td= h x.support_office_name
           %td= h x.payment_terms
           %td= h x.account_name
           %td= h x.description
