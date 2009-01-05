@@ -29,7 +29,7 @@ class AdminController < ApplicationController
   
   # GET /admin/cashflow
   def cashflow
-    @contracts = Contract.find(:all, :conditions => 'expired <> true AND end_date > CURDATE()', :order => 'end_date, account_name')
+    @contracts = Contract.find(:all, :conditions => 'expired <> true', :order => 'end_date, account_name')
 
     respond_to do |format|
       format.html # cashflow.html.haml

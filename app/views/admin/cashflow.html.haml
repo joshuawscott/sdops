@@ -34,18 +34,11 @@
     %tbody
       - for x in @contracts
         %tr
-          %td
-            =h x.sales_office_name
-          %td
-            =h x.payment_terms
-          %td
-            =h x.account_name
-          %td
-            =h x.description
-          %td
-            =h x.total_revenue
-          %td
-            =h x.start_date
-          %td
-            =h x.end_date
+          %td= h x.sales_office_name
+          %td= h x.payment_terms
+          %td= h x.account_name
+          %td= h x.description
+          %td= h x.total_revenue
+          %td= h x.start_date
+          %td= h x.end_date
 
