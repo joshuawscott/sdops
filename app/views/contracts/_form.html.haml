@@ -184,5 +184,12 @@
         = check_box_tag "contract[successor_ids][]", x.id, @contract.successors.include?(x), :onClick => "setReplacedBy(this);"
         = x.sdc_ref + " | " + x.description + " | " + x.start_date.to_s + " | " + x.end_date.to_s
         %br
+    %p
+      %b Replaces
+      %br
+      - for x in @replaces
+        = check_box_tag "contract[predecessor_ids][]", x.id, @contract.predecessors.include?(x)
+        = x.sdc_ref + " | " + x.description + " | " + x.start_date.to_s + " | " + x.end_date.to_s
+        %br
      
     %p &nbsp;
