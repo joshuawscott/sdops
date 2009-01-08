@@ -20,7 +20,7 @@ class AdminController < ApplicationController
   
   # GET /admin/account_id
   def account_id
-    @contracts = Contract.find(:all, :conditions => 'expired <> true AND CHAR_LENGTH(account_id) < 2', :order => 'account_name, start_date')
+    @contracts = Contract.find(:all, :conditions => 'CHAR_LENGTH(account_id) < 2', :order => 'account_name, start_date')
 
     respond_to do |format|
       format.html # account_id.html.haml
@@ -29,7 +29,7 @@ class AdminController < ApplicationController
   
   # GET /admin/cashflow
   def cashflow
-    @contracts = Contract.find(:all, :conditions => 'expired <> true AND end_date > CURDATE()', :order => 'end_date, account_name')
+    @contracts = Contract.find(:all, :conditions => 'expired <> true', :include => :predecessors, :order => 'end_date, account_name')
 
     respond_to do |format|
       format.html # cashflow.html.haml
