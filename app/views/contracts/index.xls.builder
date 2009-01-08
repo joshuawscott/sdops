@@ -35,7 +35,7 @@ xml.Workbook({
             xml.Cell { xml.Data contract.start_date, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.end_date, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.payment_terms, 'ss:Type' => 'String' }
-            xml.Cell { xml.Data contract.revenue, 'ss:Type' => 'Number' }
+            xml.Cell { xml.Data contract.total_revenue, 'ss:Type' => 'Number' }
         end
       end
 

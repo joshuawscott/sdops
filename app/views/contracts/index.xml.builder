@@ -12,7 +12,7 @@ xml.rows do
       xml.cell contract.payment_terms
       xml.cell contract.start_date
       xml.cell contract.end_date
-      xml.cell contract.revenue
+      xml.cell contract.total_revenue
     end
   end
 end
