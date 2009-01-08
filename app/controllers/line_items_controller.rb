@@ -1,5 +1,4 @@
 #require 'ruby-debug'
-#TODO: Mass update feature for line_items
 class LineItemsController < ApplicationController
   #TODO: Determine if login required
   before_filter :get_contract
