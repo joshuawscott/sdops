@@ -1,15 +1,8 @@
 - content_for :subtitle do
   Reports
 
-%ul{:id => 'submenu', :class => 'sub_menu'}
-  %li
-    = link_to 'Dashboard', reports_path, :class => 'active'
-  %li
-    = link_to 'Renewals', {:controller => "reports", :action => "renewals"}
-  %li
-    = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}
-  %li
-    = link_to 'Customers', {:controller => "reports", :action => "customers"}
+= render :partial => "renewal_header"
+
 %p &nbsp;
 
 #section1
@@ -133,4 +126,3 @@
   %p
     - @url2 = url_for :controller => 'graphs', :action => 'sales_by_type_pie'
     %img{'src' => @url2, 'style' => "border:1px solid #111111;"}
-

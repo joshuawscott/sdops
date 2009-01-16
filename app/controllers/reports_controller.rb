@@ -3,7 +3,8 @@ class ReportsController < ApplicationController
 
   # GET /reports
   def index
-    #Counts
+    @current_tab = 'index'
+		#Counts
     @contract_counts_by_office = Contract.contract_counts_by_office
     @customer_counts_by_office = Contract.customer_counts_by_office
     @total_contracts = @contract_counts_by_office.map{|k,v| @contract_counts_by_office[k]['total']}.sum
@@ -28,6 +29,7 @@ class ReportsController < ApplicationController
 
   def renewals
 
+    @current_tab = 'renewals'
     @ref_date = Date.today.strftime("%Y-%m-%d")
     if params[:date_search] != nil
       if params[:date_search][:ref_date] != nil && params[:date_search][:ref_date] != ''
@@ -46,6 +48,7 @@ class ReportsController < ApplicationController
   
   def sparesreq
     
+    @current_tab = 'sparesreq'
     @offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
     if params[:filter] != nil
       @office = params[:filter][:office_name]
@@ -65,6 +68,7 @@ class ReportsController < ApplicationController
   
   def customers
 		
+    @current_tab = 'customers'
 		if params[:filter] != nil
 			@office = params[:filter][:office_name]
 			@customers = Contract.customer_rev_list_by_support_office(current_user.role, current_user.sugar_team_ids)

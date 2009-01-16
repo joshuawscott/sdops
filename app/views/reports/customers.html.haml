@@ -1,15 +1,7 @@
 - content_for :subtitle do
   Reports
-  
-%ul{:id => 'submenu', :class => 'sub_menu'}
-  %li
-    = link_to 'Dashboard', reports_path
-  %li
-    = link_to 'Renewals', {:controller => "reports", :action => "renewals"}
-  %li
-    = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}
-  %li
-    = link_to 'Customers', {:controller => "reports", :action => "customers"}, :class => 'active'
+
+= render :partial => "renewal_header"
 
 %p &nbsp;
 
@@ -44,4 +36,3 @@
           %td
             = h x.account_name
           %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
-
