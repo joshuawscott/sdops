@@ -1,0 +1,9 @@
+%ul{:id => 'submenu', :class => 'sub_menu'}
+  %li
+    = link_to 'Dashboard', reports_path, :class => (@current_tab == 'index' ? 'active' : '')
+  %li
+    = link_to 'Renewals', {:controller => "reports", :action => "renewals"}, :class => (@current_tab == 'renewals' ? 'active' : '')
+  %li
+    = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}, :class => (@current_tab == 'inventory' ? 'active' : '')
+  %li
+    = link_to 'Customers', {:controller => "reports", :action => "customers"}, :class => (@current_tab == 'customers' ? 'active' : '')
