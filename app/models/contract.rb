@@ -65,6 +65,14 @@ class Contract < ActiveRecord::Base
      annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev
   end
   
+  def status
+    if self.predecessor_ids.count > 0
+      'Renewal'
+    elseif
+      
+    end
+  end
+  
   def self.all_revenue
     Contract.find(:all, 
 			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev', 
