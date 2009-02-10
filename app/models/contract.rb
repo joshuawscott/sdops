@@ -19,7 +19,7 @@ class Contract < ActiveRecord::Base
   validates_presence_of :start_date, :end_date
   
   def self.short_list(role, teams)
-    if role >= MANAGER
+    if role >= ADMIN
       Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => "expired <> true", :order => 'sales_office, account_name, start_date', :group => 'id')
     else
       Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => ["sales_office IN (?) AND expired <> true", teams], :order => 'sales_office, account_name, start_date', :group => 'id')
@@ -28,7 +28,7 @@ class Contract < ActiveRecord::Base
 
   def self.serial_search(role, teams, serial_num)
 		#TODO: Use passed parameters to determine if expired are shown.
-    if role >= MANAGER
+    if role >= ADMIN
       Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
         :joins => :line_items,
 				:conditions => ['expired <> 1 AND line_items.serial_num = ?', serial_num])
@@ -48,7 +48,7 @@ class Contract < ActiveRecord::Base
     end
     
     plus90 = ref_date.months_since(3)
-    if role >= MANAGER
+    if role >= ADMIN
       Contract.find(:all, 
 				:select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due",
 				:conditions => "end_date <= '#{plus90}' AND expired <> 1", 
@@ -139,7 +139,7 @@ class Contract < ActiveRecord::Base
 	end
 
 	def self.customer_rev_list_by_support_office (role, teams)
-		if role >= MANAGER
+		if role >= ADMIN
 			Contract.find(:all, 
 				:select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue, support_office_name', 
 				:conditions => 'expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) )', 

@@ -5,7 +5,7 @@ class SugarTeam < SugarDb
   belongs_to :user
   
   def self.dropdown_list(role, teams)
-    if role >= MANAGER
+    if role >= ADMIN
       SugarTeam.find(:all, :select => "id, name", :conditions => "private = 0 AND deleted = 0 AND id <> 1 ", :order => 'name')
     else
       SugarTeam.find(:all, :select => "id, name", :conditions => ["private = 0 AND deleted = 0 AND id IN (?)", teams], :order => 'name')
