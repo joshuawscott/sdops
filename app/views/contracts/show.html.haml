@@ -228,7 +228,8 @@
         %th &nbsp;Ends&nbsp;
         %th &nbsp;Qty&nbsp;
         %th &nbsp;List Price&nbsp;
-        %th{:colspan => "2"} &nbsp;
+        - if current_user.role == ADMIN
+          %th{:colspan => "2"} &nbsp;
 
       - for line_item in @line_items
         %tr
@@ -245,30 +246,32 @@
             = h line_item.qty
           %td{:align => 'right'}
             = h number_to_currency(line_item.list_price)
-          %td= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
-          %td= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you sure?', :method => :delete
+          - if current_user.role == ADMIN
+            %td= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
+            %td= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you sure?', :method => :delete
     %br/
-    #results.boxed{:style => 'height:160px', :style => 'width:480px'}
-      %h2 Line Items Mass Update
-      %label
-        Supp Provider
-      = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
-      %br/
-      %label
-        Supp Location
-      = text_field_tag "location"
-      %br/
-      %label
-        Begins
-      = text_field_tag "begins"
-      %br/
-      %label
-        Ends
-      = text_field_tag "ends"
-      = hidden_field_tag "contract_id", @contract.id
-      %br/
-      = submit_tag "Update Checked Items"
-      %p
-      %br/
-      = link_to 'New line_item', new_contract_line_item_path(@contract) if current_user.role == ADMIN
-      %br/
+    - if current_user.role == ADMIN
+      #results.boxed{:style => 'height:160px', :style => 'width:480px'}
+        %h2 Line Items Mass Update
+        %label
+          Supp Provider
+        = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
+        %br/
+        %label
+          Supp Location
+        = text_field_tag "location"
+        %br/
+        %label
+          Begins
+        = text_field_tag "begins"
+        %br/
+        %label
+          Ends
+        = text_field_tag "ends"
+        = hidden_field_tag "contract_id", @contract.id
+        %br/
+        = submit_tag "Update Checked Items"
+        %p
+        %br/
+        = link_to 'New line_item', new_contract_line_item_path(@contract) if current_user.role == ADMIN
+        %br/

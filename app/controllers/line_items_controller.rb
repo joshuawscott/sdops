@@ -3,7 +3,7 @@ class LineItemsController < ApplicationController
   #TODO: Determine if login required
   before_filter :get_contract
   before_filter :login_required
-  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy, :mass_update]
 
 =begin
   # GET /line_items
