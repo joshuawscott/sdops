@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081119132936) do
+ActiveRecord::Schema.define(:version => 20090210225604) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -62,6 +62,8 @@ ActiveRecord::Schema.define(:version => 20081119132936) do
     t.string   "contract_type"
     t.string   "so_number"
     t.string   "po_number"
+    t.date     "renewal_sent"
+    t.date     "po_received"
   end
 
   create_table "dropdowns", :force => true do |t|

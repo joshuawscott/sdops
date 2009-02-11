@@ -53,6 +53,14 @@
       %label{:for => "contract_type"}
         Type
       =h @contract.contract_type.blank? ? 'N/A' : SugarContractType.find(:first, :conditions => "id = '#{@contract.contract_type}'").name
+    %p
+      %label{:for => "contract_renewal_sent"}
+        Renewal Sent
+      =h @contract.renewal_sent.blank? ? 'N/A' : @contract.renewal_sent
+    %p
+      %label{:for => "contract_renewal_sent"}
+        PO Received
+      =h @contract.po_received.blank? ? 'N/A' : @contract.po_received
 
   #results.boxed{:style => 'height:320px'}
     %h2 Terms

@@ -27,14 +27,16 @@
       %tr
         %th{:width => '80px', :ts_type => 'string'}
           %b Office
-        %th{:width => '160px', :ts_type => 'string'}
+        %th{:width => '140px', :ts_type => 'string'}
           %b Account
-        %th{:width => '250px', :ts_type => 'string'}
+        %th{:width => '200px', :ts_type => 'string'}
           %b Description
         %th{:width => '70px'}
           %b Start Date
         %th{:width => '70px'}
           %b End Date
+        %th{:width => '70px'}
+          %b Renewal Sent
         %th{:width => '50px', :ts_type => 'number'}
           %b Days Due
         %th{:width => '100px', :ts_type => 'money'}
@@ -48,6 +50,7 @@
             %td= link_to x.description, contract_url(x.id)
             %td{:align => 'center'}= h x.start_date
             %td{:align => 'center'}= h x.end_date
+            %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent
             %td{:align => 'right'}= h x.days_due
             %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
@@ -58,14 +61,16 @@
       %tr
         %th{:width => '80px'}
           %b Office
-        %th{:width => '160px'}
+        %th{:width => '140px'}
           %b Account
-        %th{:width => '250px'}
+        %th{:width => '200px'}
           %b Description
         %th{:width => '70px'}
           %b Start Date
         %th{:width => '70px'}
           %b End Date
+        %th{:width => '70px'}
+          %b Renewal Sent
         %th{:width => '50px'}
           %b Days Due
         %th{:width => '100px'}
@@ -79,6 +84,7 @@
             %td= link_to x.description, contract_url(x.id)
             %td{:align => 'center'}= h x.start_date
             %td{:align => 'center'}= h x.end_date
+            %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent
             %td{:align => 'right'}= h x.days_due
             %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
@@ -89,14 +95,16 @@
       %tr
         %th{:width => '80px'}
           %b Office
-        %th{:width => '160px'}
+        %th{:width => '140px'}
           %b Account
-        %th{:width => '250px'}
+        %th{:width => '200px'}
           %b Description
         %th{:width => '70px'}
           %b Start Date
         %th{:width => '70px'}
           %b End Date
+        %th{:width => '70px'}
+          %b Renewal Sent
         %th{:width => '50px'}
           %b Days Due
         %th{:width => '100px'}
@@ -110,6 +118,7 @@
             %td= link_to x.description, contract_url(x.id)
             %td{:align => 'center'}= h x.start_date
             %td{:align => 'center'}= h x.end_date
+            %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent
             %td{:align => 'right'}= h x.days_due
             %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
 
@@ -120,17 +129,19 @@
       %tr
         %th{:width => '80px'}
           %b Office
-        %th{:width => '160px'}
+        %th{:width => '140px'}
           %b Account
-        %th{:width => '250px'}
+        %th{:width => '200px'}
           %b Description
         %th{:width => '70px'}
           %b Start Date
         %th{:width => '70px'}
           %b End Date
+        %th{:width => '70px'}
+          %b Renewal Sent
         %th{:width => '50px'}
           %b Days Due
-        %th{:width => '80px'}
+        %th{:width => '100px'}
           %b Revenue
     %tbody
       - for x in @contracts
@@ -141,5 +152,6 @@
             %td= link_to x.description, contract_url(x.id)
             %td{:align => 'center'}= h x.start_date
             %td{:align => 'center'}= h x.end_date
+            %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent
             %td{:align => 'right'}= h x.days_due
             %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')

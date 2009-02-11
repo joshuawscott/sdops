@@ -57,6 +57,14 @@
       %label{:for => "contract_contract_type"}
         Type
       = f.collection_select(:contract_type, @contract_types, :id, :name, { :include_blank => true })
+    %p
+      %label{:for => "contract_renewal_sent"}
+        Renewal Sent
+      = f.date_select :renewal_sent
+    %p
+      %label{:for => "contract_po_received"}
+        PO Received
+      = f.date_select :po_received
 
   #results.boxed{:style => 'width:300px;height:371px'}
     %h2 Terms
