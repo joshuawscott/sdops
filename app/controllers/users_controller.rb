@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   layout 'admin'
   before_filter :login_required
-  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy, :refresh]
 
   # GET /users
   # GET /users.xml
