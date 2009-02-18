@@ -24,7 +24,8 @@
     %p
       %label{:for => "contract_description"}
         Description
-      =h @contract.description.blank? ? 'N/A' : @contract.description
+      %span{:title => @contract.description.length > 30 ? @contract.description : ""}
+        =h @contract.description.blank? ? 'N/A' : @contract.description.length > 30 ? @contract.description.slice(0..30) + "....." : @contract.description
     %p
       %label{:for => "contract_sales_rep_id"}
         Sales rep
