@@ -1,6 +1,7 @@
 class ContractsController < ApplicationController
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+	before_filter :manager?, :only => [:sentrenewal, :backtorenewals]
 
 	#TODO: show current contracts, including those marked expired
   # GET /contracts
@@ -182,9 +183,34 @@ class ContractsController < ApplicationController
     end
   end
 
+	def sentrenewal
+    logger.info "******* Contracts controller sentrenewal method"
+		@contract = Contract.find(params[:id])
+	end
+
+	def backtorenewals
+    @contract = Contract.find(params[:id])
+		
+		respond_to do |format|
+      if @contract.update_attributes(params[:contract])
+				logger.info "*** contract.update_atttributes(params[:contract]) is TRUE"
+        flash[:notice] = 'Date was successfully updated.'
+        format.html { redirect_to('/reports/renewals') }
+        format.xml  { head :ok }
+      else
+				logger.info "*** contract.update_atttributes(params[:contract]) is FALSE"
+        format.html { render :action => "sentrenewal" }
+        format.xml  { render :xml => @contract.errors, :status => :unprocessable_entity }
+      end
+    end
+	end
+
   protected
   def authorized?
     current_user.role == ADMIN || not_authorized
   end
 
+	def manager?
+		current_user.role >= MANAGER || not_manager
+	end
 end

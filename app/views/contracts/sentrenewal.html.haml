@@ -1,0 +1,18 @@
+= stylesheet_link_tag "/javascripts/jscalendar-1.0/calendar-blue.css"
+= javascript_include_tag "jscalendar-1.0/calendar.js"
+= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
+= javascript_include_tag "jscalendar-1.0/calendar-setup.js"
+
+- content_for :subtitle do
+  Renewal Sent
+
+- form_for(:contract, :url => {:action => "backtorenewals", :id=>@contract.id}, :html => { :method => :post }) do |f|
+  
+  %h2 Update Renewal Sent Date
+  %p
+    = h @contract.account_name + ' | ' + @contract.description + ' | ' + @contract.said
+  %p
+    %label{:for => "contract_renewal_sent"}
+      Renewal Sent
+    = f.date_select :renewal_sent
+  = submit_tag "Update"

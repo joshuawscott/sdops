@@ -40,7 +40,7 @@ class ReportsController < ApplicationController
     @contracts = Contract.renewals_next_90_days(current_user.role, current_user.sugar_team_ids, @ref_date)
     @offices = @contracts.map{|x| x.sales_office_name}
     @offices.uniq!.sort!
-    
+    @userrole = current_user.role
     respond_to do |format|
       format.html # renewals.html.haml
     end
