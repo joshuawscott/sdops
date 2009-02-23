@@ -47,7 +47,6 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
-        #flash[:notice] = 'Comments was successfully created.'
         format.html { redirect_to :controller => @commenter.class.to_s.pluralize.downcase, :action => :show, :id => @commenter.id }
       else
         format.html { render :action => "new" }

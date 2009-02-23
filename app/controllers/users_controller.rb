@@ -18,11 +18,15 @@ class UsersController < ApplicationController
   #Refresh users from SugarCRM
   def refresh
     failures = User.update_from_sugar
-    
-    if failures
-      flash[:error] = 'Users were not update - ' + failures.to_s
+    unless failures.empty?
+			logger.error "**************************************"
+			logger.error "*** Failed to update users from Sugar:"
+			logger.error failures.to_s
+			logger.error "**************************************"
+      flash[:error] = 'Users were not updated - ' + failures.to_s
       redirect_to(users_path)
     else
+			logger.info current_user.login + " Successfully updated users from Sugar"
       flash[:notice] = 'Users updated successfully'
       redirect_to(users_path)
     end
@@ -90,7 +94,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
-        flash.now[:notice] = 'User was successfully updated.'
+        flash[:notice] = 'User ' + @user.login + ' was successfully updated.'
         format.html { redirect_to(users_path) }
         #format.xml  { head :ok }
       else

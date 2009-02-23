@@ -46,7 +46,7 @@ class DropdownsController < ApplicationController
 
     respond_to do |format|
       if @dropdown.save
-        flash[:notice] = 'Dropdowns was successfully created.'
+        flash[:notice] = 'Dropdown was successfully created.'
         format.html { redirect_to(dropdowns_path) }
       else
         format.html { render :action => "new" }
@@ -61,7 +61,7 @@ class DropdownsController < ApplicationController
 
     respond_to do |format|
       if @dropdowns.update_attributes(params[:dropdown])
-        flash[:notice] = 'Dropdowns was successfully updated.'
+        flash[:notice] = 'Dropdown was successfully updated.'
         format.html { redirect_to(@dropdowns) }
         format.xml  { head :ok }
       else
