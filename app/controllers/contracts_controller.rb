@@ -66,7 +66,7 @@ class ContractsController < ApplicationController
   # GET /contracts/1
   # GET /contracts/1.xml
   def show
-    logger.error "******* Contracts controller show method"
+    logger.debug "******* Contracts controller show method"
     @contract = Contract.find(params[:id])
     @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}
     @line_items = @contract.line_items
@@ -122,7 +122,7 @@ class ContractsController < ApplicationController
   # POST /contracts
   # POST /contracts.xml
   def create
-    logger.info "******* Contracts controller create method"
+    logger.debug "******* Contracts controller create method"
     @contract = Contract.new(params[:contract])
 
     respond_to do |format|
@@ -184,7 +184,7 @@ class ContractsController < ApplicationController
   end
 
 	def sentrenewal
-    logger.info "******* Contracts controller sentrenewal method"
+    logger.debug "******* Contracts controller sentrenewal method"
 		@contract = Contract.find(params[:id])
 	end
 
@@ -193,12 +193,12 @@ class ContractsController < ApplicationController
 		
 		respond_to do |format|
       if @contract.update_attributes(params[:contract])
-				logger.info "*** contract.update_atttributes(params[:contract]) is TRUE"
+				logger.debug "*** contract.update_atttributes(params[:contract]) is TRUE"
         flash[:notice] = 'Date was successfully updated.'
         format.html { redirect_to('/reports/renewals') }
         format.xml  { head :ok }
       else
-				logger.info "*** contract.update_atttributes(params[:contract]) is FALSE"
+				logger.debug "*** contract.update_atttributes(params[:contract]) is FALSE"
         format.html { render :action => "sentrenewal" }
         format.xml  { render :xml => @contract.errors, :status => :unprocessable_entity }
       end

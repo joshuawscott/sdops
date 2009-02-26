@@ -9,7 +9,7 @@ class LineItemsController < ApplicationController
   # GET /line_items
   # GET /line_items.xml
   def index
-    logger.info "******* LineItems controller index method"
+    logger.debug "******* LineItems controller index method"
     @line_items = @contract.line_items.find(:all)
 
     respond_to do |format|
@@ -22,7 +22,7 @@ class LineItemsController < ApplicationController
 # GET /line_items/1
   # GET /line_items/1.xml
   def show
-    logger.info "******* LineItems controller show method"
+    logger.debug "******* LineItems controller show method"
     @line_item = @contract.line_items.find(params[:id])
 
     respond_to do |format|
@@ -36,7 +36,7 @@ class LineItemsController < ApplicationController
   # GET /line_items/new
   # GET /line_items/new.xml
   def new
-    logger.info "******* LineItems controller new method"
+    logger.debug "******* LineItems controller new method"
     @line_item = @contract.line_items.new
 
     respond_to do |format|
@@ -47,14 +47,14 @@ class LineItemsController < ApplicationController
 
   # GET /line_items/1/edit
   def edit
-    logger.info "******* LineItems controller edit method"
+    logger.debug "******* LineItems controller edit method"
     @line_item = @contract.line_items.find(params[:id])
   end
 
   # POST /line_items
   # POST /line_items.xml
   def create
-    logger.info "******* LineItems controller create method"
+    logger.debug "******* LineItems controller create method"
     @line_item = @contract.line_items.new(params[:line_item])
     @line_item.contract_id = params[:contract_id]
     
@@ -73,7 +73,7 @@ class LineItemsController < ApplicationController
   # PUT /line_items/1
   # PUT /line_items/1.xml
   def update
-    logger.info "******* LineItems controller update method"
+    logger.debug "******* LineItems controller update method"
     @line_item = @contract.line_items.find(params[:id])
 
     respond_to do |format|
@@ -91,9 +91,9 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1
   # DELETE /line_items/1.xml
   def destroy
-    logger.info "******* LineItems controller destroy method"
-    
+    logger.debug "******* LineItems controller destroy method"
     @line_item = @contract.line_items.find(params[:id])
+		logger.info current_user.login + " destroyed line item " + @line_item.id.to_s
     @line_item.destroy
 
     respond_to do |format|
@@ -104,7 +104,7 @@ class LineItemsController < ApplicationController
   
   # PUT /line_items/mass_update
 	def mass_update
-		logger.info "******* LineItems controller mass_update method"
+		logger.debug "******* LineItems controller mass_update method"
 		unless params[:line_item_ids].nil?
 			@line_items = @contract.line_items.find(params[:line_item_ids])
 			for x in @line_items do
@@ -112,7 +112,15 @@ class LineItemsController < ApplicationController
 				x.location = params[:location] unless params[:location] == ""
 				x.begins = params[:begins] unless params[:begins] == ""
 				x.ends = params[:ends] unless params[:ends] == ""
-				x.save		
+				if x.save
+					logger.debug "Succesfully performed line items mass update"
+				  flash[:notice] = "Mass update successful."
+				else
+					logger.error "*******************************"
+					logger.error "*line_items mass update failed*"
+					logger.error "*******************************"
+					flash[:error] = "Mass update failed"
+				end
 			end
 		end
 		redirect_to contract_path(@contract)
