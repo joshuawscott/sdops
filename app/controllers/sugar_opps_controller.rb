@@ -76,6 +76,7 @@ class SugarOppsController < ApplicationController
   ## DELETE /sugar_opps/1.xml
   #def destroy
   #  @sugar_opp = SugarOpp.find(params[:id])
+  #  logger.info current_user.login + " destroyed sugar_opp " + @sugar_opp.id.to_s
   #  @sugar_opp.destroy
   #
   #  respond_to do |format|

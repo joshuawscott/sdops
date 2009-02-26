@@ -108,6 +108,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.xml
   def destroy
     @user = User.find(params[:id])
+    logger.info current_user.login + " destroyed user " + @user.id.to_s
     @user.destroy
   
     respond_to do |format|

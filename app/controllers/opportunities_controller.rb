@@ -77,6 +77,7 @@ class OpportunitiesController < ApplicationController
   # DELETE /opportunities/1.xml
   def destroy
     @opportunity = Opportunity.find(params[:id])
+    logger.info current_user.login + " destroyed opportunity " + @opportunity.id.to_s
     @opportunity.destroy
 
     respond_to do |format|

@@ -171,6 +171,7 @@ class ContractsController < ApplicationController
   # DELETE /contracts/1.xml
   def destroy
     @contract = Contract.find(params[:id])
+    logger.info current_user.login + " destroyed contract " + @contract.id.to_s
     @contract.destroy
     
     #Deleted associated Comments

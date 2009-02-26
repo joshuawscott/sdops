@@ -75,6 +75,7 @@ class DropdownsController < ApplicationController
   # DELETE /dropdowns/1.xml
   def destroy
     @dropdowns = Dropdown.find(params[:id])
+    logger.info current_user.login + " destroyed dropdown " + @dropdowns.id.to_s
     @dropdowns.destroy
 
     respond_to do |format|

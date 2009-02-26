@@ -76,6 +76,7 @@ class LocationsController < ApplicationController
   # DELETE /locations/1.xml
   def destroy
     @location = Location.find(params[:id])
+    logger.info current_user.login + " destroyed location " + @location.id.to_s
     @location.destroy
 
     respond_to do |format|

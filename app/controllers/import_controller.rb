@@ -59,8 +59,19 @@ class ImportController < ApplicationController
     if @contract.save
       line_items_ary.each do |item|
         @line_item = @contract.line_items.new(item.ivars['attributes'])
-        @line_item.save
+        if @line_item.save
+          #all good
+        else
+          logger.error "*************************"
+          logger.error "LineItem failed to import"
+          logger.error "for Contract ID # " + @contract.id
+          logger.error "*************************"
+        end
       end
+    else
+      logger.error "************************"
+      logger.error "*Contract failed import*"
+      logger.error "************************"
     end
     
     #Create contract in SugarCRM
@@ -88,6 +99,7 @@ class ImportController < ApplicationController
     
     if sugar_con.save == false
       flash[:error] = "Sugar Contract was not created"
+      logger.error "Failed to create Sugar Contract for Contract ID# " + @contract.id
     end
     
     respond_to do |format|
@@ -97,6 +109,7 @@ class ImportController < ApplicationController
         format.xml  { render :xml => @contract, :status => :created, :location => @contract }
       else
         flash[:notice] = 'Contract was not successfully created.'
+        logger.warn ""
         format.html { render :action => "new" }
         format.xml  { render :xml => @contract.errors, :status => :unprocessable_entity }
       end

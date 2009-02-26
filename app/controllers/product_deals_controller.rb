@@ -76,6 +76,7 @@ class ProductDealsController < ApplicationController
   # DELETE /product_deals/1.xml
   def destroy
     @product_deal = ProductDeal.find(params[:id])
+    logger.info current_user.login + " destroyed product_deal " + @product_deal.id.to_s
     @product_deal.destroy
 
     respond_to do |format|
