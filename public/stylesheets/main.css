@@ -60,7 +60,6 @@ table {
     border-collapse: collapse;
     border-color: #000000; }
   table th.search {
-    background: #a0d55c;
     height: 24px; }
     table th.search h2 {
       text-transform: uppercase;
