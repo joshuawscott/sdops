@@ -38,6 +38,14 @@ table {
   border-color: #000000; }
   table tr.expired {
     background: #ffff99; }
+  table tr.expired:hover {
+    background: #a0d55c; }
+  table tr.plain {
+    background: ''; }
+  table tr.plain:hover {
+    background: #a0d55c; }
+  table tr.mouseover {
+    background: #a0d55c; }
   table td {
     border-width: 1px;
     border-style: solid;
@@ -51,7 +59,10 @@ table {
     border-style: solid;
     border-collapse: collapse;
     border-color: #000000; }
-    table th h2 {
+  table th.search {
+    background: #a0d55c;
+    height: 24px; }
+    table th.search h2 {
       text-transform: uppercase;
       margin: 0;
       padding-left: 5px;

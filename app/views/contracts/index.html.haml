@@ -48,27 +48,27 @@
           %th{:width => '85px', :ts_type => 'money'}
             Annual Rev
         %tr
-          %th
+          %th{:class => "search"}
             = select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 82px"})
-          %th
+          %th{:class => "search"}
             = select("search", "support_office", @support_offices, {:selected => @support_office, :include_blank => true },{:style => "width: 82px"})
-          %th
+          %th{:class => "search"}
             = text_field 'search', 'account_name', :size => 19, :value => @account_name
-          %th
+          %th{:class => "search"}
             = text_field 'search', 'said', :size => 16, :value => @said
-          %th
+          %th{:class => "search"}
             = text_field 'search', 'description', :size => 20, :value => @description
-          %th
+          %th{:class => "search"}
             = text_field 'search', 'start_date', :size => 11, :value => @start_date
-          %th
+          %th{:class => "search"}
             = text_field 'search', 'end_date', :size => 11, :value => @end_date
-          %th
+          %th{:class => "search"}
             = select("search", "payment_terms", @pay_terms, {:selected => @pay_term, :include_blank => true },{:style => "width: 80px"})
-          %th
+          %th{:class => "search"}
             = text_field 'search', 'revenue', :size => 9, :value => @revenue
       - for contract in @contracts
-        - rowclass = contract.end_date < Date.today ? 'expired' : '' unless contract.end_date.nil?
-        %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})", :onmouseover => 'this.style.background = "#a0d55c"', :onmouseout => 'this.style.background = ""'} 
+        - rowclass = contract.end_date < Date.today ? 'expired' : 'plain' unless contract.end_date.nil?
+        %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"} 
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
           %td{:title => contract.account_name.length > 18 ? contract.account_name : ""}= h contract.account_name.length > 18 ? contract.account_name.slice(0..18) + "..." : contract.account_name

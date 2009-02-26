@@ -45,7 +45,19 @@ table
 
   tr.expired
     :background = #ffff99
-  
+
+  tr.expired:hover
+    :background = !sdc_green
+
+  tr.plain
+    :background = ''
+
+  tr.plain:hover
+    :background = !sdc_green
+
+  tr.mouseover
+    :background = !sdc_green
+
   td
     :border-width 1px
     :border-style solid
@@ -60,6 +72,9 @@ table
     :border-style solid
     :border-collapse collapse
     :border-color = !sdc_black
+
+  th.search
+    :height 24px
 
     h2
       :text-transform uppercase
