@@ -54,9 +54,10 @@ class ReportsController < ApplicationController
       @office = params[:filter][:office_name]
       @lineitems = LineItem.find(:all,
         :select => 'l.product_num, l.description, count(l.product_num) as count',
-        :conditions => ['c.support_office = ? AND l.support_type = "HW" AND l.product_num <> "LABEL" AND (c.end_date > CURDATE() AND c.start_date < ADDDATE(CURDATE(), INTERVAL 30 DAY) OR c.expired <> true)', params[:filter][:offices]],
-                                 :joins => 'as l inner join contracts c on c.id = l.contract_id',
-                                 :group => 'l.product_num')
+        :conditions => ['l.support_provider = "Sourcedirect" AND l.location = ? AND l.support_type = "HW" AND l.product_num <> "LABEL" AND (l.ends > CURDATE() AND l.begins < ADDDATE(CURDATE(), INTERVAL 30 DAY) OR c.expired <> true)', params[:filter][:office_name]],
+        :joins => 'as l inner join contracts c on c.id = l.contract_id',
+        :group => 'l.product_num')
+        
     else
       @lineitems = []
     end

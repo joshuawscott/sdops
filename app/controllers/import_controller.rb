@@ -59,6 +59,7 @@ class ImportController < ApplicationController
     if @contract.save
       line_items_ary.each do |item|
         @line_item = @contract.line_items.new(item.ivars['attributes'])
+        @line_item.location = @contract.support_office_name
         if @line_item.save
           #all good
         else
