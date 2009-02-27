@@ -51,7 +51,7 @@
             %td{:align => 'center'}= h x.start_date
             %td{:align => 'center'}= h x.end_date
             - if @userrole >= MANAGER 
-              %td{:align => 'center', :title => 'Set "Renewal Sent" date to today\'s date'}
+              %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
                 = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
             -else
               %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
@@ -89,7 +89,7 @@
             %td{:align => 'center'}= h x.start_date
             %td{:align => 'center'}= h x.end_date
             - if @userrole >= MANAGER 
-              %td{:align => 'center'}
+              %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
                 = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
             -else
               %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
@@ -127,7 +127,7 @@
             %td{:align => 'center'}= h x.start_date
             %td{:align => 'center'}= h x.end_date
             - if @userrole >= MANAGER 
-              %td{:align => 'center'}
+              %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
                 = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
             -else
               %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
@@ -165,7 +165,7 @@
             %td{:align => 'center'}= h x.start_date
             %td{:align => 'center'}= h x.end_date
             - if @userrole >= MANAGER 
-              %td{:align => 'center'}
+              %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
                 = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
             -else
               %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
