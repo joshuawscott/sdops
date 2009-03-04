@@ -49,7 +49,7 @@ class ReportsController < ApplicationController
   def sparesreq
     
     @current_tab = 'sparesreq'
-    @offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
+    @offices = LineItem.locations(current_user.role, current_user.sugar_team_ids)
     if params[:filter] != nil
       @office = params[:filter][:office_name]
       @lineitems = LineItem.find(:all,
