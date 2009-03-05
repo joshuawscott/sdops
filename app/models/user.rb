@@ -84,7 +84,7 @@ class User < ActiveRecord::Base
   end
   
   def self.update_from_sugar()
-    sugar_users = SugarUser.find(:all, :conditions => "status = 'Active'")
+    sugar_users = SugarUser.getuserinfo(:all)
     failures = []
     sugar_users.map do |x|
       local_user = User.find(:first, :conditions => ["login = ?", x.user_name])
@@ -92,8 +92,7 @@ class User < ActiveRecord::Base
         logger.debug x.user_name + " exists, updating..."
 				local_user.first_name = x.first_name
 				local_user.last_name = x.last_name
-				# TODO: sugar functionality does not update the email1 field any longer, find another way to extract from sugar
-        local_user.email = x.email1 == nil ? local_user.email : x.email1
+        local_user.email = x.email
         local_user.crypted_password = x.user_hash
         local_user.office = x.default_team
         local_user.sugar_id = x.id
@@ -108,7 +107,7 @@ class User < ActiveRecord::Base
         local_user.login = x.user_name
         local_user.first_name = x.first_name
         local_user.last_name = x.last_name
-        local_user.email = x.email1 == nil ? x.user_name + '@sourcedirect.com' : x.email1
+        local_user.email = x.email
         local_user.crypted_password = x.user_hash
         local_user.office = x.default_team
         local_user.sugar_id = x.id
