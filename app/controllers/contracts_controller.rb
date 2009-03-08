@@ -104,6 +104,7 @@ class ContractsController < ApplicationController
 
   # GET /contracts/1/edit
   def edit
+    #TODO: narrow down list of replaced/replaced_by
     @contract = Contract.find(params[:id])
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
     @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)

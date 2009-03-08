@@ -36,8 +36,16 @@ class LineItemsController < ApplicationController
   # GET /line_items/new
   # GET /line_items/new.xml
   def new
+    #TODO: JS to Pull description/list price from support price db?
+    #TODO: Dropdowns for new/edit form
     logger.debug "******* LineItems controller new method"
     @line_item = @contract.line_items.new
+    #set defaults for 'new' form:
+    @line_item.support_provider = 'Sourcedirect'
+    @line_item.location = @contract.support_office_name
+    @line_item.begins = @contract.start_date
+    @line_item.ends = @contract.end_date
+    @support_providers = Dropdown.support_provider_list
 
     respond_to do |format|
       format.html # new.html.erb
@@ -49,6 +57,7 @@ class LineItemsController < ApplicationController
   def edit
     logger.debug "******* LineItems controller edit method"
     @line_item = @contract.line_items.find(params[:id])
+    @support_providers = Dropdown.support_provider_list
   end
 
   # POST /line_items
@@ -56,8 +65,9 @@ class LineItemsController < ApplicationController
   def create
     logger.debug "******* LineItems controller create method"
     @line_item = @contract.line_items.new(params[:line_item])
+
     @line_item.contract_id = params[:contract_id]
-    
+
     respond_to do |format|
       if @line_item.save
         flash[:notice] = 'Line Item was successfully created.'

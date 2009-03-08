@@ -9,14 +9,14 @@
     %p
       %label{:for => "line_item_support_provider"}
         Support Provider
-      = f.text_field :support_provider
+      = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label', @line_item.support_provider))
 
     %p
       %label{:for => "line_item_location"}
         Support Location
       = f.text_field :location
 
-      %p
+    %p
       %label{:for => "line_item_product_num"}
         Product num
       = f.text_field :product_num
