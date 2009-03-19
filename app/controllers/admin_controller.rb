@@ -11,7 +11,6 @@ class AdminController < ApplicationController
 
   # GET /admin/lineitems
   def lineitems
-    #TODO: fix this to a normal find
     @contracts = Contract.find_by_sql("select c.id, c.account_name, c.description, c.end_date, count(l.id) as line_items FROM `contracts` c left join line_items as l on c.id = l.contract_id where c.expired <> true group by c.id having count(l.id) = 0 ORDER BY c.end_date DESC, c.account_name, c.description")
 
     respond_to do |format|

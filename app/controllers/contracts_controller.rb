@@ -66,6 +66,8 @@ class ContractsController < ApplicationController
   # GET /contracts/1
   # GET /contracts/1.xml
   def show
+    #TODO: line_item positions displayed
+    #TODO: make line item list narrower
     logger.debug "******* Contracts controller show method"
     @contract = Contract.find(params[:id])
     @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}
@@ -77,6 +79,7 @@ class ContractsController < ApplicationController
     respond_to do |format|
       format.html # show.html.haml
       format.xml  { render :xml => @contract }
+      format.xls  #Respond as Excel Doc
     end
   end
 
@@ -104,7 +107,6 @@ class ContractsController < ApplicationController
 
   # GET /contracts/1/edit
   def edit
-    #TODO: narrow down list of replaced/replaced_by
     @contract = Contract.find(params[:id])
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
     @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
@@ -115,8 +117,8 @@ class ContractsController < ApplicationController
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
     @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
-    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]}")
-    @replaced_by = @replaces
+    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND start_date <= '#{@contract.start_date}'")
+    @replaced_by = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND end_date >= '#{@contract.end_date}'")
 
   end
 
@@ -153,9 +155,8 @@ class ContractsController < ApplicationController
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
     @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
-    #TODO: Make replaced and replaced_by smarter (check dates)
-    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]}")
-    @replaced_by = @replaces
+    @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND start_date <= '#{@contract.start_date}'")
+    @replaced_by = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND end_date >= '#{@contract.end_date}'")
 
     respond_to do |format|
       if @contract.update_attributes(params[:contract])
@@ -207,6 +208,17 @@ class ContractsController < ApplicationController
       end
     end
 	end
+
+  def lineitems # exports line items to excel
+    logger.debug "******* Contracts controller lineitems (export to excel) method"
+    @contract = Contract.find(params[:id])
+    @line_items = @contract.line_items
+    respond_to do |format|
+      format.html # show.html.haml
+      format.xml  { render :xml => @contract }
+      format.xls  #Respond as Excel Doc
+    end    
+  end
 
   protected
   def authorized?

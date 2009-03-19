@@ -26,6 +26,8 @@ ActionController::Routing::Routes.draw do |map|
   #map.resources  :admin, :controller => 'admin'
 
   #Non-Restful Routes
+  map.lineitems '/contracts/:id/lineitems.xls', :controller => 'contracts', :action => 'lineitems', :format => 'xls'
+
   map.refresh '/refresh', :controller => 'users', :action => 'refresh'
 
   map.reports '/reports', :controller => 'reports', :action => 'index'
