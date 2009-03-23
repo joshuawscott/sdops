@@ -36,6 +36,13 @@ class AdminController < ApplicationController
     end
   end
 
+  def hwpricing
+    @items = SupportPriceHw.search(params[:productnumber], params[:description], Time.now)
+  end
+  def swpricing
+    @items = SupportPriceSw.search(params[:productnumber], params[:description], Time.now)
+  end
+
   protected  
   def authorized?
     if logged_in? && current_user.role == ADMIN

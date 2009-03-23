@@ -1,0 +1,53 @@
+- content_for :subtitle do
+  Admin Area
+
+%ul{:class => 'sub_menu'}
+  %li
+    = link_to( 'Dropdowns', dropdowns_path )
+  %li
+    = link_to( 'Users', users_path )
+  %li
+    = link_to 'Import', import_index_path
+
+%p &nbsp;
+
+#section1
+  %h2{:margin => '0'}
+    HW Pricing Lookup
+  %table{:class => 'plain_table'}
+    -form_tag '/admin/hwpricing', {:name => 'search', :method => :get} do
+      %tr
+        %td
+          %b Product Number:&nbsp;
+        %td
+          = text_field_tag :productnumber
+      %tr
+        %td
+          %b Description:
+        %td
+          = text_field_tag :description
+      %tr
+        %td
+          = submit_tag "Search"
+        %td
+  %table{:padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th{:width => '70px', :ts_type => 'string'}
+          %b Part Number
+        %th{:width => '300px', :ts_type => 'string'}
+          %b Description
+        %th{:width => '60px', :ts_type => 'number'}
+          %b Price/mo
+        %th{:width => '80px', :ts_type => 'date'}
+          %b Effective Date
+        %th{:width => '80px', :ts_type => 'date'}
+          %b Confirmation Date
+    %tbody
+      - for x in @items
+        %tr
+          %td= h x.part_number
+          %td= h x.description
+          %td= h x.list_price
+          %td= h x.modified_at
+          %td= h x.confirm_date
