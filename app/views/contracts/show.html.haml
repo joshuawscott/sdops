@@ -208,15 +208,15 @@
       = f.hidden_field :user, {:value => current_user.login}
       = f.text_field :body
       
-  #results.boxed{:style => 'width:800px;margin-top:5px'}
+  #results.boxed{:style => 'width:900px;margin-top:5px'}
     %h2 Comments
     
     - for comment in @comments
       %p
-        #date.comment{:style => 'width:150px'}
-          = h comment.created_at.strftime("%m/%d/%y %I:%M %p") + " | "
+        #date.comment{:style => 'width:200px'}
+          = h comment.created_at.strftime("%m/%d/%y %I:%M %p") + " - "
           = h comment.user
-        #body.comment{:style => 'width:550px'}
+        #body.comment{:style => 'width:600px'}
           = h comment.body
         #links.comment{:style => 'width:70px'}
           - if current_user.role >= ADMIN
