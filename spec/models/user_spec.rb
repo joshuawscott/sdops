@@ -104,7 +104,7 @@ describe User do
 
 protected
   def create_user(options = {})
-    record = User.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire', :office_id => '1', :role => '1', :first_name => 'Troy', :last_name => 'Nini' }.merge(options))
+    record = User.new({ :login => 'quire', :email => 'quire@example.com', :password => 'quire', :password_confirmation => 'quire', :office => '1', :role => '1', :first_name => 'Troy', :last_name => 'Nini' }.merge(options))
     record.save
     record
   end

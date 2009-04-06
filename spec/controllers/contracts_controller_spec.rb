@@ -102,6 +102,8 @@ describe ContractsController, "handling GET /contracts/1" do
     @line_item = mock_model(LineItem)
     @contract.stub!(:line_items).and_return([@line_item])
     Contract.stub!(:find).and_return(@contract)
+    @comment = mock_model(Comment)
+    @contract.stub!(:comments).and_return([@comment])
   end
   
   def do_get

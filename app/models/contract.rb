@@ -28,15 +28,15 @@ class Contract < ActiveRecord::Base
 
   def self.serial_search(role, teams, serial_num)
 		#TODO: Use passed parameters to determine if expired are shown.
-    if role >= ADMIN
-      Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
+    #if role >= ADMIN
+      Contract.find(:all, :select => "DISTINCT contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
         :joins => :line_items,
 				:conditions => ['expired <> 1 AND line_items.serial_num = ?', serial_num])
-    else
-      Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
-        :joins => :line_items,
-				:conditions => ["expired <> 1 AND contracts.sales_office IN (?) AND line_items.serial_num = ?", teams, serial_num])
-    end
+    #else
+    #  Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
+    #    :joins => :line_items,
+		#		:conditions => ["expired <> 1 AND contracts.sales_office IN (?) AND line_items.serial_num = ?", teams, serial_num])
+    #end
   end
   
   def self.renewals_next_90_days(role, teams, ref_date)
@@ -66,10 +66,18 @@ class Contract < ActiveRecord::Base
   end
   
   def status
-    if self.predecessor_ids.count > 0
+    if self.renewal?
       'Renewal'
-    elseif
+    else
       
+    end
+  end
+
+  def renewal?
+    if self.predecessor_ids.size > 0
+      true
+    else
+      false
     end
   end
   
@@ -159,11 +167,24 @@ class Contract < ActiveRecord::Base
 		Contract.find(:all,
 			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue')
 	end
-		
+
+  #def annual_hw_rev_by_location
+  #  #returns a hash giving the percentage of revenue for each Location
+  #  locations = self.locations
+  #  if locations.size == 1
+  #    {locations[0] => self.annual_hw_rev.to_f}
+  #  else
+  #    total = 0.0
+  #    h={}
+  #    self.locations.each {|l| l.list_price}
+  #    x = self.line_items.find(:all, :select => "location, sum(list_price) as total", :group => "location")
+  #    x.each {|i| total = total + i.total.to_f}
+  #    x.map {|i| h.store(i.location, i.total.to_f)}
+  #    h
+  #  end
+  #end
+  #
+  #def locations
+  #  self.line_items.map  {|x| x.location}.uniq
+  #end
 end
-
-
-
-
-
-

@@ -1,10 +1,10 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe CommentController do
+describe CommentsController do
 
   #Delete this example and add some real ones
   it "should use CommentController" do
-    controller.should be_an_instance_of(CommentController)
+    controller.should be_an_instance_of(CommentsController)
   end
 
 end
