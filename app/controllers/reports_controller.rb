@@ -82,4 +82,8 @@ class ReportsController < ApplicationController
 		@all_revenue = Contract.all_revenue
 	
   end
+
+  def potentialoffices
+    @locations = LineItem.hw_revenue_by_location
+  end
 end

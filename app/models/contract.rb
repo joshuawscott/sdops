@@ -168,6 +168,16 @@ class Contract < ActiveRecord::Base
 			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue')
 	end
 
+  def effective_hw_discount
+    total_list = 0.0
+    self.line_items.each do |x|
+      if x.support_type == 'HW'
+        x.list_price ||= 0.0
+        total_list += x.list_price
+      end
+    end
+    1.0 - (self.annual_hw_rev / (total_list * 12))
+  end
   #def annual_hw_rev_by_location
   #  #returns a hash giving the percentage of revenue for each Location
   #  locations = self.locations

@@ -1,0 +1,22 @@
+- content_for :subtitle do
+  Admin Reports
+
+%p &nbsp;
+
+#section1
+  %h2{:style => 'margin:15px 0px 0px 3px'} Current Annual HW revenue by equipment location
+  
+  %table{:class => "sortable", :padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th
+          Location
+        %th
+          Revenue
+    %tbody
+      - for x in @locations
+        %tr
+          %td
+            = x.location
+          %td{:align => 'right'}
+            = number_to_currency(x.revenue, :format => '%u%n')

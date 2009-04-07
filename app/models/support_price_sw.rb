@@ -4,7 +4,7 @@ class SupportPriceSw < SupportPricingDb
   #part_number string
   #description string
   #phone_price decimal
-  #updates_price decimal
+  #update_price decimal
   #modified_by STRING
   #modified_at DATE
   #confirm_date DATE
@@ -14,11 +14,11 @@ class SupportPriceSw < SupportPricingDb
 
   # SupportPriceSw.search -- Returns many product records for searching purposes
   def self.search(partnumber, description, quotedate)
-    return [] if partnumber == nil && description == nil
+    return [] if partnumber.nil? && description.nil?
     SupportPriceSw.find(:all,
-      :select => "id, part_number, description, phone_price + updates_price as list_price, modified_at, confirm_date", 
+      :select => "id, part_number, description, phone_price + update_price as list_price, modified_at, confirm_date", 
       :conditions => ["part_number LIKE '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND description like '%#{description.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND modified_at <= ?", quotedate],
-      :group => "part_number ASC, confirm_date ASC, modified_at ASC")
+      :group => "part_number ASC, confirm_date ASC, modified_at ASC",
       :limit => "1000")
   end
 
@@ -32,7 +32,7 @@ class SupportPriceSw < SupportPricingDb
   #   ORDER BY modified_at DESC) as t2
   #GROUP BY part_number
   def self.getprice(partnumber, quotedate)
-    return [] if partnumber == nil
+    return [] if partnumber.nil?
     SupportPriceSw.find(:first,
       :select => "id, part_number, description, phone_price + updates_price as list_price, modified_at, confirm_date", 
       :conditions => ["part_number = '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND modified_at <= ?", quotedate],
