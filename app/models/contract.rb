@@ -17,7 +17,7 @@ class Contract < ActiveRecord::Base
   
   #Validate Terms
   validates_presence_of :start_date, :end_date
-  
+  validates_presence_of :po_received
   def self.short_list(role, teams)
     if role >= ADMIN
       Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => "expired <> true", :order => 'sales_office, account_name, start_date', :group => 'id')
@@ -178,23 +178,5 @@ class Contract < ActiveRecord::Base
     end
     1.0 - (self.annual_hw_rev / (total_list * 12))
   end
-  #def annual_hw_rev_by_location
-  #  #returns a hash giving the percentage of revenue for each Location
-  #  locations = self.locations
-  #  if locations.size == 1
-  #    {locations[0] => self.annual_hw_rev.to_f}
-  #  else
-  #    total = 0.0
-  #    h={}
-  #    self.locations.each {|l| l.list_price}
-  #    x = self.line_items.find(:all, :select => "location, sum(list_price) as total", :group => "location")
-  #    x.each {|i| total = total + i.total.to_f}
-  #    x.map {|i| h.store(i.location, i.total.to_f)}
-  #    h
-  #  end
-  #end
-  #
-  #def locations
-  #  self.line_items.map  {|x| x.location}.uniq
-  #end
+
 end

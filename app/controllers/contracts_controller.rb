@@ -2,7 +2,7 @@ class ContractsController < ApplicationController
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
 	before_filter :manager?, :only => [:sentrenewal, :backtorenewals]
-
+  before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
 	#TODO: show current contracts, including those marked expired
   # GET /contracts
   # GET /contracts.xml
@@ -87,15 +87,6 @@ class ContractsController < ApplicationController
   # GET /contracts/new.xml
   def new
     @contract = Contract.new
-    @sugar_accts = SugarAcct.find(:all, :select => "id, name", :order => "name")
-    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
-    @support_offices = @sales_offices
-    @pay_terms = Dropdown.payment_terms_list
-    @platform = Dropdown.platform_list
-    @reps = User.user_list
-    @types_hw = Dropdown.support_type_list_hw
-    @types_sw = Dropdown.support_type_list_sw
-    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
     @replaces = []
     @replaced_by = []
    
@@ -108,15 +99,6 @@ class ContractsController < ApplicationController
   # GET /contracts/1/edit
   def edit
     @contract = Contract.find(params[:id])
-    @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
-    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
-    @support_offices = @sales_offices
-    @pay_terms = Dropdown.payment_terms_list
-    @platform = Dropdown.platform_list
-    @reps = User.user_list
-    @types_hw = Dropdown.support_type_list_hw
-    @types_sw = Dropdown.support_type_list_sw
-    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
     @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND start_date <= '#{@contract.start_date}'")
     @replaced_by = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND end_date >= '#{@contract.end_date}'")
 
@@ -127,6 +109,8 @@ class ContractsController < ApplicationController
   def create
     logger.debug "******* Contracts controller create method"
     @contract = Contract.new(params[:contract])
+    @replaces ||= []
+    @replaced_by ||= []
 
     respond_to do |format|
       if @contract.save
@@ -228,4 +212,16 @@ class ContractsController < ApplicationController
 	def manager?
 		current_user.role >= MANAGER || not_manager
 	end
+
+  def set_dropdowns
+    @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
+    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
+    @support_offices = @sales_offices
+    @pay_terms = Dropdown.payment_terms_list
+    @platform = Dropdown.platform_list
+    @reps = User.user_list
+    @types_hw = Dropdown.support_type_list_hw
+    @types_sw = Dropdown.support_type_list_sw
+    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
+  end
 end

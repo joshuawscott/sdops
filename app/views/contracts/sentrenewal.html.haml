@@ -14,5 +14,5 @@
   %p
     %label{:for => "contract_renewal_sent"}
       Renewal Sent
-    = f.date_select :renewal_sent
+    = f.date_select :renewal_sent, @currdate
   = submit_tag "Update"

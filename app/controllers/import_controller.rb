@@ -2,18 +2,9 @@ class ImportController < ApplicationController
   layout 'admin'
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
-  
+  before_filter :set_dropdowns, :only => [:index, :create]
   # GET /import
   def index
-    @sugar_accts = SugarAcct.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0", :order => "name")
-    @contracts = Contract.find(:all, :select => "id, concat(account_name,' | ',IF(LENGTH(said)>29,CONCAT(LEFT(said,30),'...'),said),' | ',start_date,' | ', IF(LENGTH(description)>29,CONCAT(LEFT(description,30),'...'),description)) as label", :order => 'account_name, said')
-    @contract ||= params[:contract]
-    @sales_reps = User.user_list
-    @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "private = 0 AND deleted = 0 AND id <> 1", :order => "name")
-    @support_offices = @sales_offices
-    @pay_terms = Dropdown.payment_terms_list
-    @platform = Dropdown.platform_list
-    @types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
     respond_to do |format|
       format.html # index.html.haml
     end
@@ -21,21 +12,46 @@ class ImportController < ApplicationController
 
   # POST /import
   def create()
-    records = YAML::load( params[:importfile] )
+    #TODO: javascript form checking?
+    #because the import processing is so complex, we must do form checking in the controller
+    #to avoid nils and NoMethodErrors
+    if params["importfile"] == ""
+      flash[:error] = "You must select a file to import"
+      render :controller => :import, :action => :index and return
+    else
+      records = YAML::load( params[:importfile] )
+    end
+    if params["platform"] == "" || params["sales_office"] == "" || params["contract_type"] == "" || params["sales_rep_id"] == ""
+      flash[:error] = "Please fill in all fields in red."
+      render :controller => :import, :action => :index and return
+    end
+    if params["account_id"] == "" && params["contract"] == ""
+      flash[:error] = "You must select either an account or a current contract"
+      render :controller => :import, :action => :index and return
+    end
     #Separate out the data
-
     contract_ary = records[0]
     line_items_ary = records[1..-1]
     aryAcct = params[:account_id].split('|')
     arySales = params[:sales_office].split('|')
     arySupport = params[:support_office].split('|')
-    options = {'account_id' => aryAcct[0], 'account_name' => aryAcct[1], 'sales_rep_id' => params[:sales_rep_id], 'sales_office' => arySales[0], 'sales_office_name' => arySales[1], 'support_office' => arySupport[0], 'support_office_name' => arySupport[1], 'platform' => params[:platform], 'contract_type' => params[:contract_type]}
+    options = {'account_id' => aryAcct[0],
+      'account_name' => aryAcct[1],
+      'sales_rep_id' => params[:sales_rep_id],
+      'sales_office' => arySales[0],
+      'sales_office_name' => arySales[1],
+      'support_office' => arySupport[0],
+      'support_office_name' => arySupport[1],
+      'platform' => params[:platform],
+      'contract_type' => params[:contract_type],
+      'po_received' => params[:po_received]}
     contract_ary.ivars['attributes'].update(options)
 
     #Cleanup
     records = nil
 
     #Save new contract
+    #If this is an existing contract
     if params[:contract] != ""
       @contract = Contract.find(params[:contract])
       @contract.hw_support_level_id = contract_ary.ivars['attributes']['hw_support_level_id']
@@ -50,7 +66,7 @@ class ImportController < ApplicationController
       @contract.platform = contract_ary.ivars['attributes']['platform']
       @contract.contract_type = contract_ary.ivars['attributes']['contract_type']
       @contract.cust_po_num = contract_ary.ivars['attributes']['cust_po_num']
-    else
+    else # If this is a new contract
       @contract = Contract.new(contract_ary.ivars['attributes'])
     end
 
@@ -110,8 +126,8 @@ class ImportController < ApplicationController
         format.xml  { render :xml => @contract, :status => :created, :location => @contract }
       else
         flash[:notice] = 'Contract was not successfully created.'
-        logger.warn ""
-        format.html { render :action => "new" }
+        logger.warn "Contract creation FAILED"
+        format.html { redirect_to :action => "index" }
         format.xml  { render :xml => @contract.errors, :status => :unprocessable_entity }
       end
     end
@@ -169,5 +185,18 @@ class ImportController < ApplicationController
        @retval << sprintf("%x", rand(15))
      end
      return @retval
+  end
+
+  def set_dropdowns
+    @currdate = Date.today
+    @sugar_accts = SugarAcct.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0", :order => "name")
+    @contracts = Contract.find(:all, :select => "id, concat(account_name,' | ',IF(LENGTH(said)>29,CONCAT(LEFT(said,30),'...'),said),' | ',start_date,' | ', IF(LENGTH(description)>29,CONCAT(LEFT(description,30),'...'),description)) as label", :order => 'account_name, said')
+    @contract ||= params[:contract]
+    @sales_reps = User.user_list
+    @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "private = 0 AND deleted = 0 AND id <> 1", :order => "name")
+    @support_offices = @sales_offices
+    @pay_terms = Dropdown.payment_terms_list
+    @platform = Dropdown.platform_list
+    @types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
   end
 end

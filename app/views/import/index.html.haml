@@ -1,3 +1,7 @@
+= stylesheet_link_tag "/javascripts/jscalendar-1.0/calendar-blue.css"
+= javascript_include_tag "jscalendar-1.0/calendar.js"
+= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
+= javascript_include_tag "jscalendar-1.0/calendar-setup.js"
 - content_for :subtitle do
   Import
 
@@ -12,6 +16,9 @@
 #section2
   %p &nbsp;
   %h2 Import data from Excel Quoter Tool
+  - if flash[:error]
+    %h2{ :style => "color: red"}
+      = flash[:error]
   - form_tag '/import', :multipart => true do
     %p
       %label{:for => "account_id"}
@@ -41,6 +48,10 @@
       %label{:for => "contract_type", :style => 'color:red'}
         Contract Type
       = select_tag('contract_type', "<option value=''/>" + options_from_collection_for_select(@types, 'id', 'name'))
+    %p
+      %label{:for => "po_received", :style => 'color:red'}
+        PO Received
+      = date_select_tag (:po_received, nil, {}, {})
     %p
       %label{:for => "importfile", :style => 'color:red'}
         File to import
