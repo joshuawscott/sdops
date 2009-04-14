@@ -83,7 +83,21 @@ class ReportsController < ApplicationController
 	
   end
 
+  def newbusiness
+    logger.debug "TIMER entering self.newbusiness " + Time.now.to_f.to_s
+    @contracts = Contract.newbusiness
+    logger.debug "TIMER leaving self.newbusiness " + Time.now.to_f.to_s
+    @period_names = []
+    @period_ids = []
+    (2003..Date.today.year).to_a.each do |y|
+      1.upto(4) {|q| @period_names << y.to_s + " Q" + q.to_s; @period_ids << y.to_s + q.to_s}
+    end
+    @periods = @period_names.zip(@period_ids)
+    @currperiod = Date.today.year.to_s + ((Date.today.month / 4) + 1).to_s
+  end
+
   def potentialoffices
     @locations = LineItem.hw_revenue_by_location
   end
+
 end

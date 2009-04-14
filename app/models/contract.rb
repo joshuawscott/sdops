@@ -179,4 +179,16 @@ class Contract < ActiveRecord::Base
     1.0 - (self.annual_hw_rev / (total_list * 12))
   end
 
+  def self.newbusiness
+    Contract.find(:all, 
+      :select => "contracts.*, CONCAT(users.first_name, ' ', users.last_name) AS sales_rep_name",
+      :joins => "LEFT JOIN users ON contracts.sales_rep_id = users.id",
+      :conditions => "payment_terms <> 'Bundled'").map { |x|  x unless x.renewal? }
+  end
+
+  def period
+    @quarter = (self.po_received.month / 4) + 1
+    self.po_received.year.to_s + @quarter.to_s
+  end
+
 end

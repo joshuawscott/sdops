@@ -9,11 +9,13 @@ function toggleOffices(){
     showAll();
   }
   else {
-    showAll();
     for (i=0; i < a.length; i++){
+      var name = 'tr[id="'+a[i].value+'"]';
       if (a[i].value != office && a[i].value !=""){
-        var name = 'tr[id="'+a[i].value+'"]';
         $$(name).invoke('hide');
+      }
+      else {
+        $$(name).invoke('show');
       }
     }
   }
