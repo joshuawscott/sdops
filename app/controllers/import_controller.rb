@@ -21,7 +21,7 @@ class ImportController < ApplicationController
     else
       records = YAML::load( params[:importfile] )
     end
-    if params["platform"] == "" || params["sales_office"] == "" || params["contract_type"] == "" || params["sales_rep_id"] == ""
+    if params["platform"] == "" || params["sales_office"] == "" || params["contract_type"] == "" || params["sales_rep_id"] == "" || params["po_received"] == ""
       flash[:error] = "Please fill in all fields in red."
       render :controller => :import, :action => :index and return
     end

@@ -26,7 +26,7 @@ module ApplicationHelper
     trigger = name.to_s + "_trigger"
     value ||= Date.today.to_s(:local)
     html = ""
-    html += tag :input, {"type" => "text", "id" => name, "name" => name, "value" => value, "disabled" => true}.update(field_options.stringify_keys)
+    html += tag :input, {"type" => "text", "id" => name, "name" => name, "value" => value}.update(field_options.stringify_keys)
     html += "\n"
     html += tag("img", {"src" => "/images/calendar.png", "id" => trigger, "style" => "cursor: pointer", "title" => "Date selector"}.update(img_options.stringify_keys))
     html += "\n"
