@@ -14,8 +14,7 @@
           %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
       %td
         Filter by Quarter
-        =select("filter", "period", @periods, {:include_blank => true, :selected => @currperiod },{:onchange => 'return togglePeriods()', :style => "width: 82px"})
-  
+        =select("filter", "period", @periods, {:include_blank => true, :selected => @currperiod },{:onchange => 'return togglePeriods()', :style => "width: 110px"})
   %h2{:style => 'margin:15px 0px 0px 300px'} New support business for selected period
   
   %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}

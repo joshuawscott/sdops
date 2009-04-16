@@ -187,8 +187,8 @@ class Contract < ActiveRecord::Base
   end
 
   def period
-    @quarter = (self.po_received.month / 4) + 1
-    self.po_received.year.to_s + @quarter.to_s
+    @month = self.po_received.month
+    self.po_received.year.to_s + @month.to_s
   end
 
 end
