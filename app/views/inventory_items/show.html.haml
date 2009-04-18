@@ -1,0 +1,55 @@
+- content_for :subtitle do
+  Show Inv. Item
+
+#section1
+  %b
+    = link_to('Edit', edit_inventory_item_path(@inventory_item)) + ' | '  if current_user.role == ADMIN
+    = link_to('Destroy', inventory_item_path(@inventory_item), :confirm => 'Are you sure?', :method => :delete) if current_user.role == ADMIN
+
+#section2{:style => 'width:800px'}
+  %p
+    %label{:for => "inventory_item_id"}
+      Inventory Item ID
+    =h @inventory_item.id.to_s
+  %p
+    %label{:for => "inventory_item_tracking"}
+      Inventory Item ID
+    =h @inventory_item.tracking
+  %p
+    %label{:for => "inventory_item_item_code"}
+      Inventory Item ID
+    =h @inventory_item.item_code
+  %p
+    %label{:for => "inventory_item_description"}
+      Inventory Item ID
+    =h @inventory_item.description
+  %p
+    %label{:for => "inventory_item_warehouse"}
+      Inventory Item ID
+    =h @inventory_item.warehouse
+  %p
+    %label{:for => "inventory_item_location"}
+      Inventory Item ID
+    =h @inventory_item.location
+  %p
+    %label{:for => "inventory_item_serial_number"}
+      Inventory Item ID
+    =h @inventory_item.serial_number
+  %p
+    %label{:for => "inventory_item_commited"}
+      Inventory Item ID
+    =h @inventory_item.commited
+  %p
+    %label{:for => "inventory_item_cost"}
+      Inventory Item ID
+    =number_to_currency(@inventory_item.cost)
+
+    
+
+
+
+
+
+
+
+

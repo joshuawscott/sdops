@@ -1,0 +1,16 @@
+- content_for :subtitle do
+  Edit Inv. Item
+
+#section1
+  = link_to('Show', inventory_item_path(@inventory_item))
+
+
+#section2
+  = error_messages_for 'inventory_item'
+  - form_for(:inventory_item, :url => inventory_item_path(@inventory_item), :html => { :method => :put }) do |f|
+    = render :partial => "form", :locals => { :f => f } 
+
+%p
+  = submit_tag "Update"
+
+

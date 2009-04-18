@@ -1,0 +1,41 @@
+= stylesheet_link_tag "/javascripts/jscalendar-1.0/calendar-blue.css"
+= javascript_include_tag "jscalendar-1.0/calendar.js"
+= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
+= javascript_include_tag "jscalendar-1.0/calendar-setup.js"
+
+#section1{:style => 'width:900px'}
+  #results.boxed{:style => 'width:300px'}
+    %h2 Inventory Item Details
+    %p
+      %label{:for => "inventory_item_tracking"}
+        Tracking
+      = f.text_field :tracking, :class => 'textbox'
+    %p
+      %label{:for => "inventory_item_item_code"}
+        Item Code
+      = f.text_field :item_code, :class => 'textbox'
+    %p
+      %label{:for => "inventory_item_description"}
+        Description
+      = f.text_field :description, :class => 'textbox'
+    %p
+      %label{:for => "inventory_item_warehouse"}
+        Warehouse
+      = f.text_field :warehouse, :class => 'textbox'
+    %p
+      %label{:for => "inventory_item_location"}
+        Location
+      = f.text_field :location, :class => 'textbox'
+    %p
+      %label{:for => "inventory_item_serial_number"}
+        Serial Number
+      = f.text_field :serial_number, :class => 'textbox'
+    %p
+      %label{:for => "inventory_item_commited"}
+        Commited
+      = f.text_field :commited, :class => 'textbox'
+    %p
+      %label{:for => "inventory_item_cost"}
+        Cost
+      = f.text_field :cost, :class => 'textbox'
+

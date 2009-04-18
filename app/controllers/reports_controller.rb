@@ -1,6 +1,6 @@
 class ReportsController < ApplicationController
   before_filter :login_required
-
+  #TODO: Add filtering based on role to allow viewing of reports
   # GET /reports
   def index
     @current_tab = 'index'

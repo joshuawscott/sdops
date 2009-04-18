@@ -1,0 +1,10 @@
+- content_for :subtitle do
+  New Inv. Item
+
+#section1
+  = error_messages_for :inventory_item
+  - form_for(:inventory_item, :url => inventory_items_path) do |f|
+    = render :partial => "form", :locals => { :f => f } 
+    
+    %p
+      = submit_tag "Create"

@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :inventory_items
+
   map.resources :line_items, :collection => { :mass_update => :put }
 
 	map.resources :opportunities

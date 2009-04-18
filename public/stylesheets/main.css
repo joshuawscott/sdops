@@ -84,7 +84,8 @@ ul.sub_menu {
   padding-top: 0px;
   list-style: none; }
   ul.sub_menu li {
-    display: inline; }
+    display: inline;
+    font-size: 12px; }
   ul.sub_menu a {
     display: block;
     float: left;
@@ -265,7 +266,7 @@ ul.sub_menu {
     #header #menu a {
       display: block;
       float: left;
-      width: 95px;
+      width: 75px;
       height: 20px;
       margin-left: 2px;
       padding-top: 3px;
