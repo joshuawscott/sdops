@@ -1,0 +1,11 @@
+<h1>Editing swproduct for pattern '<%= @swlist_whitelist.pattern %>'</h1>
+
+<% form_for(:swproduct, :url => swlist_whitelist_swproduct_path(@swlist_whitelist.id, @swproduct.id), :html => { :method => :put } ) do |f| %>
+  <%= render :partial => "form", :locals => { :f => f } %> 
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Cancel', @swlist_whitelist %>
+

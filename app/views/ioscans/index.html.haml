@@ -1,0 +1,15 @@
+- content_for :subtitle do
+  Tools - IOScan
+
+#section1
+  - form_tag '/ioscans/show', :multipart => true do
+    %p
+      %label{:for => "server_name"}
+        Server Model
+      = select_tag 'server_id', options_from_collection_for_select(@server_names, 'id', 'model_name')
+    %p
+      %label{:for => "ioscan_file"}
+        Upload ioscan
+      = file_field_tag("ioscan_file")
+    %p{:style => "padding-left: 120px"}
+      = submit_tag  :import_file, :value => "Process IOScan"

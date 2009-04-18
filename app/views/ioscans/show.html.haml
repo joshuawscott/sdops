@@ -1,0 +1,46 @@
+- content_for :subtitle do
+  Tools - IOScan
+%h1
+  Processed File
+%h3{:id => "top"}
+  Index
+%p
+  - @io_slots_in_server.each do |io_slot|
+    %a{:href => "#" + io_slot.id.to_s}
+      = "Slot " + io_slot.slot_number.to_s if io_slot.slot_number != 0
+      = "(" + io_slot.description + ")" unless io_slot.description.nil? || io_slot.description == ''
+    %br
+- @io_slots_in_server.each_with_index do |io_slot, i|
+  %h2{:id => io_slot.id}
+    = "Slot " + io_slot.slot_number.to_s if io_slot.slot_number != 0
+    = "(" + io_slot.description + ")" unless io_slot.description.nil? || io_slot.description == ''
+  %a{:href => "#top"}
+    back to top
+  |
+  - unless @io_slots_in_server[i - 1].nil? || i == 0
+    %a{:href => "#" + @io_slots_in_server[i - 1].id.to_s}
+      prev 
+  - else
+    prev 
+  |
+  - unless @io_slots_in_server[i + 1].nil?
+    %a{:href => "#" + @io_slots_in_server[i + 1].id.to_s}
+      next
+  - else
+    next
+  %table
+    %tr
+      %th Path
+      %th Class
+      %th Driver
+      %th HW Type
+      %th Description
+    - @ioscan_array.each do |line|
+      -if line && line[:slot_id] == io_slot.id
+        %tr
+          %td= line[:path] unless line.nil?
+          %td= line[:classname] unless line.nil?
+          %td= line[:drivername] unless line.nil?
+          %td= line[:hw_type] unless line.nil?
+          %td= line[:description] unless line.nil?
+= link_to 'Process another ioscan', '/ioscans'

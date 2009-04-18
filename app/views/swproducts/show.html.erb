@@ -1,0 +1,23 @@
+<p>
+  <b>Product number:</b>
+  <%=h @swproducts.product_number %>
+</p>
+
+<p>
+  <b>License type:</b>
+  <%=h @swproducts.license_type %>
+</p>
+
+<p>
+  <b>Tier:</b>
+  <%=h @swproducts.tier %>
+</p>
+
+<p>
+  <b>License product:</b>
+  <%=h @swproducts.license_product %>
+</p>
+
+
+<%= link_to 'Edit', edit_swproduct_path(@swproduct) %> |
+<%= link_to 'Back', swproducts_path %>

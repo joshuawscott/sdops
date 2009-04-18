@@ -1,0 +1,31 @@
+<h2>Whitelist Information</h2>
+<p>
+  <b>Pattern:</b>
+  <%=h @swlist_whitelist.pattern %>
+</p>
+<%= link_to 'Edit', edit_swlist_whitelist_path(@swlist_whitelist) %> |
+<%= link_to 'Back', swlist_whitelists_path %>
+<h2>SW Products for pattern '<%= @swlist_whitelist.pattern %>'</h2>
+<table border=1>
+  <tr>
+    <th>Product Num</th>
+    <th>License Type</th>
+    <th>Tier</th>
+    <th>License Product</th>
+    <th>Server Line</th>
+    <th colspan='2'>Options</th>
+  </tr>
+<% for swproduct in @swlist_whitelist.swproducts %>
+  <tr>
+    <td><%=h swproduct.product_number %></td>
+    <td><%=h swproduct.license_type %></td>
+    <td><%=h swproduct.tier.nil? ? 'N/A' : swproduct.tier %></td>
+    <td><%=h swproduct.license_product %></td>
+    <td><%=h swproduct.server_line %></td>
+    <td><%= link_to 'Edit', edit_swlist_whitelist_swproduct_path(@swlist_whitelist,swproduct) %></td>
+    <td><%= link_to 'Destroy', swlist_whitelist_swproduct_path(@swlist_whitelist,swproduct), :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+<p><%= link_to 'Add Product', new_swlist_whitelist_swproduct_path(@swlist_whitelist) %></p>
+

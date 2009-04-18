@@ -1,4 +1,20 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :swproducts
+
+  map.resources :swlist_whitelists, :has_many => :swproducts
+
+  map.resources :swlist_blacklists
+
+  map.resources :io_slots
+
+  map.resources :servers
+
+  map.resources :swlists
+  
+  map.resources :ioscans
+  
+  map.resources :servers, :has_many => :io_slots
+
   map.resources :inventory_items
 
   map.resources :line_items, :collection => { :mass_update => :put }

@@ -1,0 +1,22 @@
+<h1>Listing swlist_blacklists</h1>
+
+<table>
+  <tr>
+    <th>Pattern</th>
+  </tr>
+
+<% for swlist_blacklist in @swlist_blacklists %>
+  <tr>
+    <td><%=h swlist_blacklist.pattern %></td>
+    <td><%= link_to 'Show', swlist_blacklist %></td>
+    <td><%= link_to 'Edit', edit_swlist_blacklist_path(swlist_blacklist) %></td>
+    <td><%= link_to 'Destroy', swlist_blacklist, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New swlist_blacklist', new_swlist_blacklist_path %>
+<br />
+<%= link_to 'Main Menu', '/' %>

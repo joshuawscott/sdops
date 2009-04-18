@@ -1,0 +1,16 @@
+<h1>Editing swlist_blacklist</h1>
+
+<% form_for(@swlist_blacklist) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :pattern %><br />
+    <%= f.text_field :pattern %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @swlist_blacklist %> |
+<%= link_to 'Back', swlist_blacklists_path %>

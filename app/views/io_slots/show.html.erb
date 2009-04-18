@@ -1,0 +1,24 @@
+<p>
+  <b>Server:</b>
+  <%=h @io_slot.server_id %>
+</p>
+
+<p>
+  <b>Slot number:</b>
+  <%=h @io_slot.slot_number %>
+</p>
+
+<p>
+  <b>Path:</b>
+  <%=h @io_slot.path %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%=h @io_slot.description %>
+</p>
+
+
+
+<%= link_to 'Edit', edit_server_io_slot_path(@server, @io_slot) %> |
+<%= link_to 'Back', server_path(@server) %>

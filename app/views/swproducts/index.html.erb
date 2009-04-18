@@ -1,0 +1,26 @@
+<h1>Listing swproducts</h1>
+
+<table>
+  <tr>
+    <th>Product number</th>
+    <th>License type</th>
+    <th>Tier</th>
+    <th>License product</th>
+  </tr>
+
+<% for swproducts in @swproducts %>
+  <tr>
+    <td><%=h swproducts.product_number %></td>
+    <td><%=h swproducts.license_type %></td>
+    <td><%=h swproducts.tier %></td>
+    <td><%=h swproducts.license_product %></td>
+    <td><%= link_to 'Show', swproducts %></td>
+    <td><%= link_to 'Edit', edit_swproducts_path(swproducts) %></td>
+    <td><%= link_to 'Destroy', swproducts, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New swproduct', new_swproduct_path %>

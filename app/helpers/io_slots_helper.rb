@@ -1,0 +1,2 @@
+module IoSlotsHelper
+end
