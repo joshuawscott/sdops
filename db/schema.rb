@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090404165604) do
+ActiveRecord::Schema.define(:version => 20090401193440) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -88,6 +88,15 @@ ActiveRecord::Schema.define(:version => 20090404165604) do
     t.datetime "updated_at"
   end
 
+  create_table "io_slots", :force => true do |t|
+    t.integer  "server_id"
+    t.integer  "slot_number"
+    t.string   "path"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "description"
+  end
+
   create_table "line_items", :force => true do |t|
     t.integer  "contract_id",      :limit => 8
     t.string   "support_type"
@@ -151,6 +160,39 @@ ActiveRecord::Schema.define(:version => 20090404165604) do
     t.integer  "predecessor_id", :limit => 8
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "servers", :force => true do |t|
+    t.string   "model_name"
+    t.string   "server_line"
+    t.integer  "tier"
+    t.integer  "sockets"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "swlist_blacklists", :force => true do |t|
+    t.string   "pattern"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "swlist_whitelists", :force => true do |t|
+    t.string   "pattern"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "swproducts", :force => true do |t|
+    t.string   "product_number"
+    t.string   "license_type"
+    t.integer  "tier"
+    t.string   "license_product"
+    t.integer  "swlist_whitelist_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "explanation"
+    t.string   "server_line"
   end
 
   create_table "users", :force => true do |t|

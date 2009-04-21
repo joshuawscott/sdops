@@ -6,7 +6,7 @@ class InventoryItemsController < ApplicationController
   # GET /inventory_items.xml
   def index
     @warehouses =  %w[A1 C1 D1 DL H1 I1 N1 ON P1 T1 U1 X1]
-    
+    #TODO: grab warehouses from ProDealer
     if params[:search] != nil
       #Get search criteria from params object
       @tracking ||= params[:search][:tracking]
