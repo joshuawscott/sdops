@@ -1,0 +1,32 @@
+- content_for :subtitle do
+  Tools
+
+= render :partial => "tools_header"
+
+%p &nbsp
+
+%h2{:align => :center}
+  Please select a tool above.
+#section1
+  %p
+    %b
+      =link_to 'IO Scan', ioscans_path
+    This will process the output of the 'ioscan -F' command into a human readable format,
+    organized into I/O slots.
+  %p
+    %b
+      =link_to 'SW List', swlists_path
+    This will process the output of the 'swlist' command into a listing of products to be quoted.
+  %p
+    %b
+      =link_to 'Inventory', '/reports/inventory'
+    This is a listing of the inventory at your location.
+- if current_user.role >= ADMIN
+  #section2
+    %h2 Tool administration
+    %p
+      =link_to "Configure Servers and I/O slots for the I/O Scan and SW List tools", servers_path
+    %p
+      = link_to "Configure blacklists for swlists", swlist_blacklists_path
+    %p
+      = link_to "Configure whitelists for swlists", swlist_whitelists_path

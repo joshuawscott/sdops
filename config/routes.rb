@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :tools
+
   map.resources :swproducts
 
   map.resources :swlist_whitelists, :has_many => :swproducts

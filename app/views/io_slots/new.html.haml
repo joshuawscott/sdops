@@ -1,0 +1,11 @@
+- content_for :subtitle do
+  I/O Slots
+%h1
+  New I/O Slot for 
+  = @server.model_name
+
+- form_for(:io_slot, :url => server_io_slots_path(@server.id)) do |f|
+  = render :partial => "form", :locals => { :f => f } 
+%p
+  = submit_tag "Create"
+= link_to 'Back', server_path(@server)

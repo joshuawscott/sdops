@@ -6,7 +6,10 @@
     %title
       = 'SD Ops:' + controller.controller_name.camelcase + ':' + controller.action_name.camelcase
     = stylesheet_link_tag 'main'
-
+    = javascript_include_tag "application.js"
+    = javascript_include_tag "prototype.js"
+    = javascript_include_tag "lowpro.js"
+    = javascript_include_tag "sorttable.js" 
   %body
     #header
       = image_tag("sodi-logo-tag.jpg", :id => "logo", :width => "242", :height => "80", :border => "0")
@@ -16,10 +19,6 @@
           -  @subtitle = yield :subtitle
           = 'SD Ops - ' + @subtitle
       
-      #header_mini_graph
-        - @url1 = url_for :controller => 'graphs', :action => 'sales_by_office_mini_bar'
-        %img{'src' => @url1, 'style' => "border:0px solid #111111;"}
-
       #menu
         %ul
           %li
@@ -27,10 +26,10 @@
           %li
             = link_to 'Reports', reports_path
           %li
-            = link_to 'Tools', tools_path
+            = link_to 'Tools', tools_path, :class => 'active'
           - if current_user.role == ADMIN
             %li
-              = link_to 'Admin', admin_path, :class => 'active'
+              = link_to 'Admin', admin_path
           - if logged_in?
             %li
               = link_to 'Logout', "/logout"

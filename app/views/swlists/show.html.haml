@@ -1,0 +1,42 @@
+- content_for :subtitle do
+  Tools - SWList
+
+%p
+  = link_to 'Parse another swlist', swlists_path
+
+%h2 Affirmitive Matches - Translated
+%table
+  %tr
+    %th Product Number(s)
+    %th Qty
+  - @productslist_array.each do |line|
+    - unless line[0] == ''
+      %tr
+        %td{:font => 'courier'
+          = line[0]
+        %td{:font='courier'}
+          = line[1]
+
+%h2 Other affirmitive matches - not translated
+%table
+  %tr
+    %th Product Number(s)
+    %th Qty
+  - @whitelist_array.each do |line|
+    %tr
+      %td{:font => 'courier'
+        = line
+
+%h2 Unknown Entries (please have these added to whitelist or blacklist)
+%table
+  - @unmatched_array.each do |line|
+    %tr
+      %td{:font => 'courier'
+        = line
+
+%h2 Do-not-Quote list
+%table
+  - @blacklist_array.each do |line|
+    %tr
+      %td{:class='blacklist'
+        = line

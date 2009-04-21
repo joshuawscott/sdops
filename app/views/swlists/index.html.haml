@@ -1,0 +1,22 @@
+- content_for :subtitle do
+  Tools - SWList
+
+- form_tag '/swlists/show', :multipart => true do
+  %p
+    %label{:for=> "server_name"}
+      Server Model
+    = select_tag 'server_id', options_from_collection_for_select(@server_names, 'id', 'model_name')
+  %p
+    %label{:for => "server_cores"}
+      Active Cores
+    = text_field_tag 'server_cores'
+  %p
+    %label{:for => "hpux_version"}
+      HP-UX Version
+    = select_tag 'hpux_version', options_for_select(['10.20','11.00','11.11','11.23','11.31'], '11.11')
+  %p
+    %label{:for => "swlist_file"}
+      Upload swlist
+    = file_field_tag("swlist_file")
+  %p
+    = submit_tag 'import file'

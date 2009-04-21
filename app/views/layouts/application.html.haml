@@ -23,9 +23,11 @@
       #menu
         %ul
           %li
-            = link_to 'Contracts', contracts_path, :class => 'active'
+            = link_to 'Contracts', contracts_path
           %li
             = link_to 'Reports', reports_path
+          %li
+            = link_to 'Tools', tools_path
           - if current_user.role == ADMIN
             %li
               = link_to 'Admin', admin_path
