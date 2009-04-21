@@ -19,6 +19,10 @@
         Description
       = f.text_field :description, :class => 'textbox'
     %p
+      %label{:for => "inventory_item_serial_number"}
+        Serial Number
+      = f.text_field :serial_number, :class => 'textbox'
+    %p
       %label{:for => "inventory_item_warehouse"}
         Warehouse
       = f.text_field :warehouse, :class => 'textbox'
@@ -26,16 +30,4 @@
       %label{:for => "inventory_item_location"}
         Location
       = f.text_field :location, :class => 'textbox'
-    %p
-      %label{:for => "inventory_item_serial_number"}
-        Serial Number
-      = f.text_field :serial_number, :class => 'textbox'
-    %p
-      %label{:for => "inventory_item_commited"}
-        Commited
-      = f.text_field :commited, :class => 'textbox'
-    %p
-      %label{:for => "inventory_item_cost"}
-        Cost
-      = f.text_field :cost, :class => 'textbox'
 

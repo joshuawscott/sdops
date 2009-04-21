@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090401193440) do
+ActiveRecord::Schema.define(:version => 20090421174554) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -76,17 +76,14 @@ ActiveRecord::Schema.define(:version => 20090401193440) do
   end
 
   create_table "inventory_items", :force => true do |t|
-    t.string   "tracking"
-    t.string   "item_code"
-    t.string   "description"
-    t.string   "warehouse"
-    t.string   "location"
-    t.string   "serial_number"
-    t.string   "commited"
-    t.integer  "cost",          :limit => 10, :precision => 10, :scale => 0
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "item_code"
+    t.string "description"
+    t.string "serial_number"
+    t.string "warehouse"
+    t.string "location"
   end
+
+  add_index "inventory_items", ["id"], :name => "tracking", :unique => true
 
   create_table "io_slots", :force => true do |t|
     t.integer  "server_id"
