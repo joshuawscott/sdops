@@ -1,6 +1,6 @@
-class AddIoscanToolTables < ActiveRecord::Migration
+class AddIoscanTables < ActiveRecord::Migration
   def self.up
-    create_table "io_slots", :force => true do |t|
+    create_table "io_slots" do |t|
       t.integer  "server_id"
       t.integer  "slot_number"
       t.string   "path"
@@ -9,7 +9,7 @@ class AddIoscanToolTables < ActiveRecord::Migration
       t.string   "description"
     end
 
-    create_table "servers", :force => true do |t|
+    create_table "servers" do |t|
       t.string   "model_name"
       t.string   "server_line"
       t.integer  "tier"
@@ -18,19 +18,19 @@ class AddIoscanToolTables < ActiveRecord::Migration
       t.datetime "updated_at"
     end
 
-    create_table "swlist_blacklists", :force => true do |t|
+    create_table "swlist_blacklists" do |t|
       t.string   "pattern"
       t.datetime "created_at"
       t.datetime "updated_at"
     end
 
-    create_table "swlist_whitelists", :force => true do |t|
+    create_table "swlist_whitelists" do |t|
       t.string   "pattern"
       t.datetime "created_at"
       t.datetime "updated_at"
     end
 
-    create_table "swproducts", :force => true do |t|
+    create_table "swproducts" do |t|
       t.string   "product_number"
       t.string   "license_type"
       t.integer  "tier"
