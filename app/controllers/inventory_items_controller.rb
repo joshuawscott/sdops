@@ -20,7 +20,7 @@ class InventoryItemsController < ApplicationController
       #Create and set the scope conditions
       @inventory_items = InventoryItem.scoped({})
       @inventory_items = @inventory_items.conditions "inventory_items.id = ?", @tracking unless @tracking.blank?
-      @inventory_items = @inventory_items.conditions "inventory_items.item_code = ?", @item_code unless @item_code.blank?
+      @inventory_items = @inventory_items.conditions "inventory_items.item_code like ?", @item_code+"%" unless @item_code.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.description like ?", "%"+@description+"%" unless @description.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.serial_number = ?", @serial_number unless @serial_number.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.warehouse = ?", @warehouse unless @warehouse.blank?
