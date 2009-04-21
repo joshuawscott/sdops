@@ -1,6 +1,8 @@
 class InventoryItemsController < ApplicationController
+  layout "reports"
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :set_curr_tab
 
   # GET /inventory_items
   # GET /inventory_items.xml
@@ -120,4 +122,8 @@ class InventoryItemsController < ApplicationController
 	def manager?
 		current_user.role >= MANAGER || not_manager
 	end
+
+  def set_curr_tab
+    @current_tab = 'inventory'
+  end
 end
