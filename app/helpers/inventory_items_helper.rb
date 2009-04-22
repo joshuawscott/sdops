@@ -1,2 +1,2 @@
-module InventoryItemsHelper
+module InventoryItemsHelper #:nodoc:
 end

@@ -82,7 +82,8 @@ class User < ActiveRecord::Base
       SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
     end
   end
-  
+
+  # Updates local users' information from SugarCRM
   def self.update_from_sugar()
     sugar_users = SugarUser.getuserinfo(:all)
     failures = []

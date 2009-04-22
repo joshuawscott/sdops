@@ -1,2 +1,2 @@
-module OpportunitiesHelper
+module OpportunitiesHelper #:nodoc:
 end

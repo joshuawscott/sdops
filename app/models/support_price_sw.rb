@@ -23,6 +23,7 @@ class SupportPriceSw < SupportPricingDb
   end
 
   # SupportPriceSw.getprice -- Returns the product record for quoting purposes
+  #--
   #FIXME: SupportPriceSW.getprice doesn't work correctly
   # original query from quoter tool:
   #SELECT part_number, description, list_price FROM 

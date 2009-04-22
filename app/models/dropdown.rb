@@ -1,3 +1,4 @@
+# Various dropdowns stored in the Database.
 class Dropdown < ActiveRecord::Base
    def self.office_list
      Dropdown.find(:all, :conditions => "dd_name = 'office'",

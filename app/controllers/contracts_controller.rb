@@ -13,8 +13,8 @@ class ContractsController < ApplicationController
     @pay_terms << "Not Bundled"
     
     if params[:serial_search] != nil
-      @serial_number = params[:serial_search][:serial_number]
-      @contracts = Contract.serial_search(current_user.role, current_user.sugar_team_ids, @serial_number)
+      #@serial_number = params[:serial_search][:serial_number]
+      @contracts = Contract.serial_search(params[:serial_search][:serial_number])
     else
       if params[:search] != nil
         #Get search criteria from params object

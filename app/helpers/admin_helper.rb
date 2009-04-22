@@ -1,2 +1,2 @@
-module AdminHelper
+module AdminHelper #:nodoc:
 end
