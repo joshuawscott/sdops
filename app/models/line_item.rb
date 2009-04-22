@@ -1,3 +1,19 @@
+# Schema
+#   id            integer
+#   contract_id   integer
+#   support_type  string
+#   product_num   string
+#   serial_num    string
+#   description   string
+#   begins        date
+#   ends          date
+#   qty           integer
+#   list_price    decimal
+#   created_at    datetime
+#   updated_at    datetime
+#   support_provider  string
+#   position      integer
+#   location      string
 class LineItem < ActiveRecord::Base
   belongs_to :contract
 

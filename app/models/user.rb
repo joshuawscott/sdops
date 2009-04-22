@@ -1,4 +1,18 @@
-#require 'digest/sha1'
+# Schema:
+#   id                integer
+#   login             string
+#   first_name        string
+#   last_name         string
+#   office            string
+#   email             string
+#   role              integer
+#   sugar_id          string
+#   crypted_password  string
+#   salt              string
+#   created_at        datetime
+#   updated_at        datetime
+#   remember_token    string
+#   remember_token_expires_at  datetime
 require 'digest/md5'
 class User < ActiveRecord::Base
   

@@ -1,3 +1,9 @@
+# Schema:
+#   id              string
+#   opportunity_id  string
+#   account_id      string
+#   date_modified   string
+#   deleted         boolean
 class SugarAcctOpp < SugarDb
   set_table_name "accounts_opportunities"
   

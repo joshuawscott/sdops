@@ -1,3 +1,11 @@
+# Schema:
+#   id              string
+#   date_modified   datetime
+#   team_id         string
+#   user_id         string
+#   explicit_assign boolean
+#   implicit_assign boolean
+#   deleted         boolean
 class SugarTeamMembership < SugarDb
   set_table_name "team_memberships"
   

@@ -1,2 +1,2 @@
-class ProductDeal < ActiveRecord::Base
+class ProductDeal < ActiveRecord::Base #:nodoc:
 end

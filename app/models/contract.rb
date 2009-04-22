@@ -1,3 +1,48 @@
+# Schema:
+#   id                    integer
+#   account_id            string
+#   account_name          string
+#   sales_office_name     string
+#   support_office_name   string
+#   said                  string
+#   sdc_ref               string
+#   description           string
+#   sales_rep_id          integer
+#   sales_office          string
+#   support_office        string
+#   cust_po_num           string
+#   payment_terms         string
+#   platform              string
+#   revenue               decimal
+#   annual_hw_rev         decimal
+#   annual_sw_rev         decimal
+#   annual_ce_rev         decimal
+#   annual_sa_rev         decimal
+#   annual_dr_rev         decimal
+#   start_date            date
+#   end_date              date
+#   multiyr_end           date
+#   expired               boolean
+#   hw_support_level_id   string
+#   sw_support_level_id   string
+#   updates               string
+#   ce_days               integer
+#   sa_days               integer
+#   discount_pref_hw      decimal
+#   discount_pref_sw      decimal
+#   discount_pref_srv     decimal
+#   discount_prepay       decimal
+#   discount_multiyear    decimal
+#   discount_ce_day       decimal
+#   discount_sa_day       decimal
+#   replacement_sdc_ref   string
+#   created_at            datetime
+#   updated_at            datetime
+#   contract_type         string
+#   so_number             string
+#   po_number             string
+#   renewal_sent          date
+#   po_received           date
 class Contract < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate

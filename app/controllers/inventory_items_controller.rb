@@ -115,14 +115,13 @@ class InventoryItemsController < ApplicationController
   end
 
   protected
+
+  # :before_filter
   def authorized?
     current_user.role == ADMIN || not_authorized
   end
 
-	def manager?
-		current_user.role >= MANAGER || not_manager
-	end
-
+  # :before_filter
   def set_curr_tab
     @current_tab = 'inventory'
   end
