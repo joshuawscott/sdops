@@ -1,3 +1,13 @@
+# Schema:
+#   id                string
+#   name              string
+#   date_entered      datetime
+#   date_modified     datetime
+#   modified_user_id  string
+#   created_by        string
+#   private           boolean
+#   description       text
+#   deleted           boolean
 class SugarTeam < SugarDb
   set_table_name "teams"
   

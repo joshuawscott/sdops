@@ -1,2 +1,2 @@
-module ContractsHelper
+module ContractsHelper #:nodoc:
 end

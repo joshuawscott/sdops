@@ -1,2 +1,2 @@
-module LocationsHelper
+module LocationsHelper #:nodoc:
 end

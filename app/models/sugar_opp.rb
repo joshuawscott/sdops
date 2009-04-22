@@ -1,3 +1,23 @@
+# Schema:
+#   id          string
+#   date_entered  datetime
+#   date_modified datetime
+#   created_by    string
+#   team_id       string
+#   deleted       boolean
+#   name          string
+#   opportunity_type  string
+#   campaign_id       string
+#   lead_source       string
+#   amount            float (MySQL type DOUBLE)
+#   amount_backup     string
+#   amount_usdollar   float (MySQL type DOUBLE)
+#   currency_id       string
+#   date_closed       date
+#   next_step         string
+#   sales_stage       string
+#   probability       float (MySQL type DOUBLE)
+#   description       text
 class SugarOpp < SugarDb
   set_table_name "opportunities"
   

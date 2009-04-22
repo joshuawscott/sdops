@@ -1,34 +1,35 @@
 class InventoryItemsController < ApplicationController
+  layout "reports"
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :set_curr_tab
 
   # GET /inventory_items
   # GET /inventory_items.xml
   def index
-    @warehouses =  %w[A1 C1 D1 DL H1 I1 N1 ON P1 T1 U1 X1]
-    
+    #@warehouses =  %w[A1 C1 D1 DL H1 I1 N1 ON P1 T1 U1 X1]
+    #TODO: grab warehouses from ProDealer
     if params[:search] != nil
       #Get search criteria from params object
       @tracking ||= params[:search][:tracking]
       @item_code ||= params[:search][:item_code]
       @description ||= params[:search][:description]
+      @serial_number ||= params[:search][:serial_number]
       @warehouse ||= params[:search][:warehouse]
       @location ||= params[:search][:location]
-      @serial_number ||= params[:search][:serial_number]
-      @cost ||= params[:search][:cost]
       #Create and set the scope conditions
       @inventory_items = InventoryItem.scoped({})
-      @inventory_items = @inventory_items.conditions "inventory_items.tracking = ?", @tracking unless @tracking.blank?
-      @inventory_items = @inventory_items.conditions "inventory_items.item_code = ?", @item_code unless @item_code.blank?
+      @inventory_items = @inventory_items.conditions "inventory_items.id = ?", @tracking unless @tracking.blank?
+      @inventory_items = @inventory_items.conditions "inventory_items.item_code like ?", @item_code+"%" unless @item_code.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.description like ?", "%"+@description+"%" unless @description.blank?
+      @inventory_items = @inventory_items.conditions "inventory_items.serial_number = ?", @serial_number unless @serial_number.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.warehouse = ?", @warehouse unless @warehouse.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.location = ?", @location unless @location.blank?
-      @inventory_items = @inventory_items.conditions "inventory_items.serial_number = ?", @serial_number unless @serial_number.blank?
-      @inventory_items = @inventory_items.conditions "inventory_items.cost = ?", @cost unless @cost.blank?
     else
       @inventory_items = InventoryItem.find(:all)
     end
-    
+    @locations = @inventory_items.map {|x| x.location}.uniq.sort
+    @warehouses = @inventory_items.map {|x| x.warehouse}.uniq.sort
     respond_to do |format|
       store_location
       format.html { render :html => @inventory_items }# index.html.haml
@@ -114,11 +115,14 @@ class InventoryItemsController < ApplicationController
   end
 
   protected
+
+  # :before_filter
   def authorized?
     current_user.role == ADMIN || not_authorized
   end
 
-	def manager?
-		current_user.role >= MANAGER || not_manager
-	end
+  # :before_filter
+  def set_curr_tab
+    @current_tab = 'inventory'
+  end
 end

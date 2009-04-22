@@ -1,3 +1,12 @@
+# Schema:
+#   id          integer
+#   dd_name     string
+#   filter      string
+#   label       string
+#   created_at  datetime
+#   updated_at  datetime
+#   sort_order  integer
+# Various dropdowns stored in the Database.
 class Dropdown < ActiveRecord::Base
    def self.office_list
      Dropdown.find(:all, :conditions => "dd_name = 'office'",

@@ -33,7 +33,7 @@ module SugarGuid
   end
   
   protected
-    def ensure_length(str, len)
+    def ensure_length(str, len) #:nodoc:
        strlen = str.length
        
        if strlen < len
@@ -46,7 +46,7 @@ module SugarGuid
        return str
     end
     
-    def create_guid_section(chars)
+    def create_guid_section(chars) #:nodoc:
        @retval = ""
        
        chars.times do |i|

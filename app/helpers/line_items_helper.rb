@@ -1,2 +1,2 @@
-module LineItemsHelper
+module LineItemsHelper #:nodoc:
 end

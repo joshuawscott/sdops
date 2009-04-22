@@ -4,6 +4,8 @@
   %li
     = link_to 'Renewals', {:controller => "reports", :action => "renewals"}, :class => (@current_tab == 'renewals' ? 'active' : '')
   %li
-    = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}, :class => (@current_tab == 'sparesreq' ? 'active' : '')
+    = link_to 'Inventory', {:controller => "inventory_items", :action => "index"}, :class => (@current_tab == 'inventory' ? 'active' : '')
+  %li
+    = link_to 'Spares Req.', {:controller => "reports", :action => "sparesreq"}, :class => (@current_tab == 'sparesreq' ? 'active' : '')
   %li
     = link_to 'Customers', {:controller => "reports", :action => "customers"}, :class => (@current_tab == 'customers' ? 'active' : '')

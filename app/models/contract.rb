@@ -1,3 +1,48 @@
+# Schema:
+#   id                    integer
+#   account_id            string
+#   account_name          string
+#   sales_office_name     string
+#   support_office_name   string
+#   said                  string
+#   sdc_ref               string
+#   description           string
+#   sales_rep_id          integer
+#   sales_office          string
+#   support_office        string
+#   cust_po_num           string
+#   payment_terms         string
+#   platform              string
+#   revenue               decimal
+#   annual_hw_rev         decimal
+#   annual_sw_rev         decimal
+#   annual_ce_rev         decimal
+#   annual_sa_rev         decimal
+#   annual_dr_rev         decimal
+#   start_date            date
+#   end_date              date
+#   multiyr_end           date
+#   expired               boolean
+#   hw_support_level_id   string
+#   sw_support_level_id   string
+#   updates               string
+#   ce_days               integer
+#   sa_days               integer
+#   discount_pref_hw      decimal
+#   discount_pref_sw      decimal
+#   discount_pref_srv     decimal
+#   discount_prepay       decimal
+#   discount_multiyear    decimal
+#   discount_ce_day       decimal
+#   discount_sa_day       decimal
+#   replacement_sdc_ref   string
+#   created_at            datetime
+#   updated_at            datetime
+#   contract_type         string
+#   so_number             string
+#   po_number             string
+#   renewal_sent          date
+#   po_received           date
 class Contract < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate
@@ -26,19 +71,15 @@ class Contract < ActiveRecord::Base
     end
   end
 
-  def self.serial_search(role, teams, serial_num)
+  # Returns Contracts where Contracts.LineItem.serial_num matches serial_num
+  def self.serial_search(serial_num)
 		#TODO: Use passed parameters to determine if expired are shown.
-    #if role >= ADMIN
       Contract.find(:all, :select => "DISTINCT contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
         :joins => :line_items,
 				:conditions => ['expired <> 1 AND line_items.serial_num = ?', serial_num])
-    #else
-    #  Contract.find(:all, :select => "contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
-    #    :joins => :line_items,
-		#		:conditions => ["expired <> 1 AND contracts.sales_office IN (?) AND line_items.serial_num = ?", teams, serial_num])
-    #end
   end
-  
+
+  # Returns Contracts with end_date in the next 90 days, unless Contract.expired = 1
   def self.renewals_next_90_days(role, teams, ref_date)
     if ref_date.nil? 
       ref_date = Date.today
@@ -60,11 +101,14 @@ class Contract < ActiveRecord::Base
 				:order => 'sales_office, days_due')
     end
   end
-    
+  
+  # Total Annual Revenue
   def total_revenue
      annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev
   end
-  
+
+  # Returns string "Renewal" if the Contract has a predecessor, otherwise returns
+  # an empty string.
   def status
     if self.renewal?
       'Renewal'
@@ -73,6 +117,7 @@ class Contract < ActiveRecord::Base
     end
   end
 
+  # Returns true if the Contract has predecessor(s), otherwise false
   def renewal?
     if self.predecessor_ids.size > 0
       true
@@ -80,13 +125,15 @@ class Contract < ActiveRecord::Base
       false
     end
   end
-  
+
+  # Pulls just the revenue fields (for reports)
   def self.all_revenue
     Contract.find(:all, 
 			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev', 
 			:conditions => "expired <> true")
   end
 
+  # For Dashboard report
   def self.contract_counts_by_office
     offices = Contract.find(:all, :select => 'DISTINCT sales_office_name', :conditions => 'expired <> true', :order => 'sales_office_name')
     hash = {}
@@ -111,6 +158,7 @@ class Contract < ActiveRecord::Base
     hash
   end
 
+  # For Dashboard report
   def self.customer_counts_by_office
     offices = Contract.find(:all, :select => 'DISTINCT sales_office_name', :conditions => 'expired <> 1', :order => 'sales_office_name')
     hash = {}
@@ -135,6 +183,7 @@ class Contract < ActiveRecord::Base
     hash
   end
 
+  # For Dashboard report
   def self.revenue_by_office_by_type
     Contract.find(:all, 
 			:select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr', 
@@ -168,6 +217,7 @@ class Contract < ActiveRecord::Base
 			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue')
 	end
 
+  # Calculates the actual discount of a Contract
   def effective_hw_discount
     total_list = 0.0
     self.line_items.each do |x|
@@ -179,6 +229,7 @@ class Contract < ActiveRecord::Base
     1.0 - (self.annual_hw_rev / (total_list * 12))
   end
 
+  # For newbusiness report
   def self.newbusiness
     Contract.find(:all, 
       :select => "contracts.*, CONCAT(users.first_name, ' ', users.last_name) AS sales_rep_name",
@@ -186,6 +237,8 @@ class Contract < ActiveRecord::Base
       :conditions => "payment_terms <> 'Bundled'").map { |x|  x unless x.renewal? }
   end
 
+  # String: po_received date translated to YYYYM.
+  # Useful for in-place filtering based on date
   def period
     @month = self.po_received.month
     self.po_received.year.to_s + @month.to_s

@@ -1,18 +1,18 @@
+# Schema:
+#   id            integer
+#   part_number   string
+#   description   string
+#   phone_price   decimal
+#   update_price  decimal
+#   modified_by   string
+#   modified_at   date
+#   confirm_date  date
+#   notes         text
 class SupportPriceSw < SupportPricingDb
-  #Schema:
-  #id integer
-  #part_number string
-  #description string
-  #phone_price decimal
-  #update_price decimal
-  #modified_by STRING
-  #modified_at DATE
-  #confirm_date DATE
-  #notes TEXT
   
   set_table_name "swdb"
 
-  # SupportPriceSw.search -- Returns many product records for searching purposes
+  # Returns many product records for searching purposes
   def self.search(partnumber, description, quotedate)
     return [] if partnumber.nil? && description.nil?
     SupportPriceSw.find(:all,
@@ -22,7 +22,8 @@ class SupportPriceSw < SupportPricingDb
       :limit => "1000")
   end
 
-  # SupportPriceSw.getprice -- Returns the product record for quoting purposes
+  # Returns the product record for quoting purposes
+  #--
   #FIXME: SupportPriceSW.getprice doesn't work correctly
   # original query from quoter tool:
   #SELECT part_number, description, list_price FROM 
@@ -39,7 +40,7 @@ class SupportPriceSw < SupportPricingDb
       :group => "part_number ASC, confirm_date DESC, modified_at DESC")
   end
 
-  # SupportPriceSw.currentprice -- convenience method for getprice with a quotedate of Time.now
+  # Convenience method for getprice with a quotedate of Time.now
   def self.currentprice(partnumber)
     SupportPriceSw.getprice(partnumber, Time.now)
   end

@@ -1,2 +1,2 @@
-module CommentHelper
+module CommentHelper #:nodoc:
 end

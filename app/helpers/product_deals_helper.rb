@@ -1,2 +1,2 @@
-module ProductDealsHelper
+module ProductDealsHelper #:nodoc:
 end

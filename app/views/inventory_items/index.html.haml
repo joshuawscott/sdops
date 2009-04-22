@@ -1,12 +1,16 @@
 - content_for :subtitle do
   Inventory
 
+= render :partial => "reports/renewal_header"
+
 #section1
   %p &nbsp;
   = #render :partial => "maineditor/main"
 #section2
   = link_to 'New Inventory Item', new_inventory_item_path if current_user.role == ADMIN
-
+  | 
+  %b 
+    = link_to 'Clear Search', inventory_items_path
   - form_tag inventory_items_path, { :method => :get } do
     %div{:align => 'right', :style => 'width:980px'}
       = submit_tag "Search"
@@ -14,48 +18,37 @@
     %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
       %thead
         %tr
-          %th{:width => '80px'}
-            Tracking
-          %th{:width => '80px'}
-            Item Code
-          %th{:width => '149px'}
+          %th{:width => '88px'}
+            Tracking #
+          %th{:width => '130px'}
+            Part Number
+          %th{:width => '238px'}
             Description
-          %th{:width => '100px'}
-            Warehouse
-          %th{:width => '150px'}
-            Location
-          %th{:width => '90px'}
+          %th{:width => '112px'}
             Serial Number
-          %th{:width => '90px'}
-            Commited
-          %th{:width => '80px', :ts_type => 'number'}
-            Cost
+          %th{:width => '110px'}
+            Warehouse
+          %th{:width => '80px'}
+            Location
         %tr
           %th{:class => "search"}
-            = text_field 'search', 'tracking', :size => 19, :value => @tracking
+            = text_field 'search', 'tracking', :size => 8, :value => @tracking
           %th{:class => "search"}
-            = text_field 'search', 'item_code', :size => 19, :value => @item_code
+            = text_field 'search', 'item_code', :size => 15, :value => @item_code
           %th{:class => "search"}
-            = text_field 'search', 'description', :size => 16, :value => @description
+            = text_field 'search', 'description', :size => 33, :value => @description
           %th{:class => "search"}
-            = select("search", "warehouse", @warehouses, {:selected => @warehouse, :include_blank => true },{:style => "width: 82px"})
+            = text_field 'search', 'serial_number', :size => 12, :value => @serial_number
           %th{:class => "search"}
-            = text_field 'search', 'location', :size => 20, :value => @location
+            = select("search", "warehouse", @warehouses, {:selected => @warehouse, :include_blank => true },{:style => "width: 104px"})
           %th{:class => "search"}
-            = text_field 'search', 'serial_number', :size => 11, :value => @serial_number
-          %th{:class => "search"}
-            = text_field 'search', 'commited', :size => 11, :value => @commited
-          %th{:class => "search"}
-            = text_field 'search', 'cost', :size => 9, :value => @cost
+            = select("search", "location", @locations, {:selected => @location, :include_blank => true },{:style => "width: 74px"})
       - for inventory_item in @inventory_items
         %tr 
           %td= h inventory_item.tracking
           %td= h inventory_item.item_code
           %td= h inventory_item.description
+          %td= h inventory_item.serial_number
           %td= h inventory_item.warehouse
           %td= h inventory_item.location
-          %td= h inventory_item.serial_number
-          %td= h inventory_item.commited
-          %td= h inventory_item.cost
-  
 

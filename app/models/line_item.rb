@@ -1,5 +1,23 @@
+# Schema
+#   id            integer
+#   contract_id   integer
+#   support_type  string
+#   product_num   string
+#   serial_num    string
+#   description   string
+#   begins        date
+#   ends          date
+#   qty           integer
+#   list_price    decimal
+#   created_at    datetime
+#   updated_at    datetime
+#   support_provider  string
+#   position      integer
+#   location      string
 class LineItem < ActiveRecord::Base
   belongs_to :contract
+
+  # Aggregates the locations in LineItems as an Array Object
   def self.locations(role,teams)
     if role >= MANAGER
       LineItem.find(:all, :select => 'location', :joins => :contract, :conditions => ['contracts.expired = ?', false]).map {|x| x.location}.uniq!.sort!
@@ -8,7 +26,8 @@ class LineItem < ActiveRecord::Base
     end
   end
 
-  #OPTIMIZE: hw_revenue_by_location is VERY slow (>15 seconds)
+  # OPTIMIZE: hw_revenue_by_location is VERY slow (>15 seconds)
+  # Returns a collection of LineItem Objects with the total revenue for each location
   def self.hw_revenue_by_location
     locations = LineItem.find(:all, 
       :select => 'DISTINCT location, 0.0 as revenue', 

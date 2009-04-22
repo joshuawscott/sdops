@@ -1,3 +1,4 @@
+# This controller handles processing of an uploaded YAML file to create a new Contract.
 class ImportController < ApplicationController
   layout 'admin'
   before_filter :login_required

@@ -1,4 +1,18 @@
-#require 'digest/sha1'
+# Schema:
+#   id                integer
+#   login             string
+#   first_name        string
+#   last_name         string
+#   office            string
+#   email             string
+#   role              integer
+#   sugar_id          string
+#   crypted_password  string
+#   salt              string
+#   created_at        datetime
+#   updated_at        datetime
+#   remember_token    string
+#   remember_token_expires_at  datetime
 require 'digest/md5'
 class User < ActiveRecord::Base
   
@@ -82,7 +96,8 @@ class User < ActiveRecord::Base
       SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
     end
   end
-  
+
+  # Updates local users' information from SugarCRM
   def self.update_from_sugar()
     sugar_users = SugarUser.getuserinfo(:all)
     failures = []

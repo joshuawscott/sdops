@@ -75,6 +75,16 @@ ActiveRecord::Schema.define(:version => 20090421174554) do
     t.integer  "sort_order", :limit => 8
   end
 
+  create_table "inventory_items", :force => true do |t|
+    t.string "item_code"
+    t.string "description"
+    t.string "serial_number"
+    t.string "warehouse"
+    t.string "location"
+  end
+
+  add_index "inventory_items", ["id"], :name => "tracking", :unique => true
+
   create_table "io_slots", :force => true do |t|
     t.integer  "server_id"
     t.integer  "slot_number"

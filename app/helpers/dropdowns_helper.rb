@@ -1,2 +1,2 @@
-module DropdownsHelper
+module DropdownsHelper #:nodoc:
 end
