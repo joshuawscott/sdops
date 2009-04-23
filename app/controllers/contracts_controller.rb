@@ -178,7 +178,7 @@ class ContractsController < ApplicationController
 
 	def backtorenewals
     @contract = Contract.find(params[:id])
-		
+		params[:contract][:renewal_amount].gsub!(/[^0-9\.]/,"")
 		respond_to do |format|
       if @contract.update_attributes(params[:contract])
 				logger.debug "*** contract.update_atttributes(params[:contract]) is TRUE"

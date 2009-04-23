@@ -22,152 +22,41 @@
   
   %h2{:style => 'margin:15px 0px 0px 300px'} EXPIRED CONTRACTS
   
-  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ff5455'}
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ff5455'}
     %thead
-      %tr
-        %th{:width => '80px', :ts_type => 'string'}
-          %b Office
-        %th{:width => '140px', :ts_type => 'string'}
-          %b Account
-        %th{:width => '200px', :ts_type => 'string'}
-          %b Description
-        %th{:width => '70px'}
-          %b Start Date
-        %th{:width => '70px'}
-          %b End Date
-        %th{:width => '70px'}
-          %b Renewal Sent
-        %th{:width => '50px', :ts_type => 'number'}
-          %b Days Due
-        %th{:width => '100px', :ts_type => 'money'}
-          %b Revenue
+      = render :partial => 'renewals_table_header'
     %tbody
       - for x in @contracts
         - if x.days_due.to_i <= 0
-          %tr{:id => x.sales_office_name}
-            %td= h x.sales_office_name
-            %td= h x.account_name
-            %td= link_to x.description, contract_url(x.id)
-            %td{:align => 'center'}= h x.start_date
-            %td{:align => 'center'}= h x.end_date
-            - if @userrole >= MANAGER 
-              %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
-                = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
-            -else
-              %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
-            %td{:align => 'right'}= h x.days_due
-            %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+          = render :partial => "renewals_table_content", :locals => { :x => x }
 
   %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 30 days or less
   
-  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ffff66'}
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ffff66'}
     %thead
-      %tr
-        %th{:width => '80px'}
-          %b Office
-        %th{:width => '140px'}
-          %b Account
-        %th{:width => '200px'}
-          %b Description
-        %th{:width => '70px'}
-          %b Start Date
-        %th{:width => '70px'}
-          %b End Date
-        %th{:width => '70px'}
-          %b Renewal Sent
-        %th{:width => '50px'}
-          %b Days Due
-        %th{:width => '100px'}
-          %b Revenue
+      = render :partial => 'renewals_table_header'
     %tbody
       - for x in @contracts
         - if x.days_due.to_i > 0 && x.days_due.to_i <= 30
-          %tr{:id => x.sales_office_name}
-            %td= h x.sales_office_name
-            %td= h x.account_name
-            %td= link_to x.description, contract_url(x.id)
-            %td{:align => 'center'}= h x.start_date
-            %td{:align => 'center'}= h x.end_date
-            - if @userrole >= MANAGER 
-              %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
-                = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
-            -else
-              %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
-            %td{:align => 'right'}= h x.days_due
-            %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+          = render :partial => "renewals_table_content", :locals => { :x => x }
 
   %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 31 to 60 days
   
-  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px', :style => 'background:#ffff66'}
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ffff66'}
     %thead
-      %tr
-        %th{:width => '80px'}
-          %b Office
-        %th{:width => '140px'}
-          %b Account
-        %th{:width => '200px'}
-          %b Description
-        %th{:width => '70px'}
-          %b Start Date
-        %th{:width => '70px'}
-          %b End Date
-        %th{:width => '70px'}
-          %b Renewal Sent
-        %th{:width => '50px'}
-          %b Days Due
-        %th{:width => '100px'}
-          %b Revenue
+      = render :partial => 'renewals_table_header'
     %tbody
       - for x in @contracts
         - if x.days_due.to_i > 30 && x.days_due.to_i <= 60
-          %tr{:id => x.sales_office_name}
-            %td= h x.sales_office_name
-            %td= h x.account_name
-            %td= link_to x.description, contract_url(x.id)
-            %td{:align => 'center'}= h x.start_date
-            %td{:align => 'center'}= h x.end_date
-            - if @userrole >= MANAGER 
-              %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
-                = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
-            -else
-              %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
-            %td{:align => 'right'}= h x.days_due
-            %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+          = render :partial => "renewals_table_content", :locals => { :x => x }
 
   %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 61 to 90 days
   
-  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '860px'}
     %thead
-      %tr
-        %th{:width => '80px'}
-          %b Office
-        %th{:width => '140px'}
-          %b Account
-        %th{:width => '200px'}
-          %b Description
-        %th{:width => '70px'}
-          %b Start Date
-        %th{:width => '70px'}
-          %b End Date
-        %th{:width => '70px'}
-          %b Renewal Sent
-        %th{:width => '50px'}
-          %b Days Due
-        %th{:width => '100px'}
-          %b Revenue
+      = render :partial => 'renewals_table_header'
     %tbody
       - for x in @contracts
         - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
-          %tr{:id => x.sales_office_name}
-            %td= h x.sales_office_name
-            %td= h x.account_name
-            %td= link_to x.description, contract_url(x.id)
-            %td{:align => 'center'}= h x.start_date
-            %td{:align => 'center'}= h x.end_date
-            - if @userrole >= MANAGER 
-              %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
-                = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
-            -else
-              %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
-            %td{:align => 'right'}= h x.days_due
-            %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+          = render :partial => "renewals_table_content", :locals => { :x => x }
+

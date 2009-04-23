@@ -15,4 +15,15 @@
     %label{:for => "contract_renewal_sent"}
       Renewal Sent
     = f.date_select :renewal_sent
+    %br
+    %span{:style => "padding-left: 120px"}
+      %em click the calendar icon to choose the date
+  %p
+    %label{:for => "contract_renewal_amount"}
+      Renewal Amount
+    = f.text_field :renewal_amount
+    %br
+    %span{:style => "padding-left: 120px"}
+      %em format: 12345.00
+    
   = submit_tag "Update"

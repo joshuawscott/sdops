@@ -43,6 +43,7 @@
 #   po_number             string
 #   renewal_sent          date
 #   po_received           date
+#   renewal_amount        decimal
 class Contract < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate
@@ -91,12 +92,12 @@ class Contract < ActiveRecord::Base
     plus90 = ref_date.months_since(3)
     if role >= ADMIN
       Contract.find(:all, 
-				:select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent",
+				:select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent, renewal_amount",
 				:conditions => "end_date <= '#{plus90}' AND expired <> 1", 
 				:order => 'sales_office, days_due')
     else
       Contract.find(:all, 
-				:select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent", 
+				:select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent, renewal_amount", 
 				:conditions => ["end_date <= '#{plus90}' AND expired <> 1 AND sales_office IN (?)", teams], 
 				:order => 'sales_office, days_due')
     end
