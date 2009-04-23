@@ -1,0 +1,15 @@
+%tr{:id => x.sales_office_name}
+  %td= h x.sales_office_name
+  %td= h x.account_name
+  %td= link_to x.description, contract_url(x.id)
+  %td{:align => 'center'}= h x.start_date
+  %td{:align => 'center'}= h x.end_date
+  - if @userrole >= MANAGER 
+    %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
+      = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
+  -else
+    %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
+  %td{:align => 'right'}= h x.days_due
+  %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
+  %td{:align => 'right'}= number_to_currency(x.renewal_amount, :format => '%n')
+

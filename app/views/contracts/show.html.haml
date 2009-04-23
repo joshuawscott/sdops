@@ -64,8 +64,8 @@
       =h @contract.renewal_sent.blank? ? 'N/A' : @contract.renewal_sent
     %p
       %label{:for => "contract_renewal_sent"}
-        PO Received
-      =h @contract.po_received.blank? ? 'N/A' : @contract.po_received
+        Renewal Amount
+      =h @contract.renewal_amount.nil? ? 'N/A' : @contract.renewal_amount
 
   #results.boxed{:style => 'height:320px'}
     %h2 Terms
@@ -113,6 +113,10 @@
       %label{:for => "contract_replacement_sdc_ref"}
         Replacement Ref
       =h @contract.replacement_sdc_ref.blank? ? 'N/A' : @contract.replacement_sdc_ref
+    %p
+      %label{:for => "contract_renewal_sent"}
+        PO Received
+      =h @contract.po_received.blank? ? 'N/A' : @contract.po_received
     %p
       %label{:for => "contract_expired"}
         Expired
