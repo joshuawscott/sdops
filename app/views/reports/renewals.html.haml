@@ -59,4 +59,3 @@
       - for x in @contracts
         - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
           = render :partial => "renewals_table_content", :locals => { :x => x }
-
