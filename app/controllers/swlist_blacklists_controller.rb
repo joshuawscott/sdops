@@ -1,4 +1,6 @@
 class SwlistBlacklistsController < ApplicationController
+  before_filter :login_required
+  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   # GET /swlist_blacklists
   # GET /swlist_blacklists.xml
   def index
@@ -82,4 +84,10 @@ class SwlistBlacklistsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  protected
+  def authorized?
+    current_user.role == ADMIN || not_authorized
+  end
+
 end

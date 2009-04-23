@@ -1,2 +1,2 @@
-module SwlistsHelper
+module SwlistsHelper #:nodoc:
 end

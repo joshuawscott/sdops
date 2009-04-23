@@ -1,7 +1,9 @@
 class IoSlotsController < ApplicationController
+  before_filter :login_required
+  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :get_server
   # GET /io_slots
   # GET /io_slots.xml
-  before_filter :get_server
   def index
     @io_slots = IoSlot.find(:all)
 
@@ -90,4 +92,9 @@ class IoSlotsController < ApplicationController
   def get_server
     @server = Server.find params[:server_id]
   end
+
+  def authorized?
+    current_user.role == ADMIN || not_authorized
+  end
+
 end

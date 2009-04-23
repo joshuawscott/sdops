@@ -1,7 +1,9 @@
 class SwproductsController < ApplicationController
+  before_filter :login_required
+  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :get_swlist_whitelist
   # GET /swproducts
   # GET /swproducts.xml
-  before_filter :get_swlist_whitelist
   def index
     @swproducts = Swproduct.find(:all)
 
@@ -95,7 +97,10 @@ class SwproductsController < ApplicationController
   end
   
   protected
-  
+  def authorized?
+    current_user.role == ADMIN || not_authorized
+  end
+
   def get_swlist_whitelist
     @swlist_whitelist = SwlistWhitelist.find params[:swlist_whitelist_id]
   end

@@ -1,2 +1,2 @@
-module SwproductsHelper
+module SwproductsHelper #:nodoc:
 end

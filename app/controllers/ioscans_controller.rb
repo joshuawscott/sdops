@@ -1,15 +1,24 @@
 class IoscansController < ApplicationController
+  before_filter :login_required
+  before_filter :set_curr_tab
+  # GET /ioscans
   def index
     @server_names = Server.by_name
   end
 
+  # POST /ioscans/show
+  #
+  # This is where the ioscan is processed into an Array of Hashes
+  # for the view.
   def show
+    unless request.post?
+      redirect_to :action => :index and return
+    end
     ioscan_file = params[:ioscan_file]
     @server = Server.find(params[:server_id])
     
     io_slots_by_path = IoSlot.find(:all, :conditions => ["server_id = ?", @server.id], :order => 'path ASC')
     @io_slots_in_server = IoSlot.find(:all, :conditions => ["server_id = ?", @server.id], :order => 'slot_number ASC')
-
     # Store the lines in the uploaded file into an array of hashes "@ioscan_array"
     @ioscan_array = Array.new
     x = io_slots_by_path.each do |io_slot|
@@ -27,20 +36,16 @@ class IoscansController < ApplicationController
             :path => hwpath,
             :hw_type => fields[16]
           }
-          #logger.debug @ioscan_array[line_num]
-          #classname = fields[8]
-          #drivername = fields[9]
-          #description = fields[17]
-          #io_slot_number = io_slot.id
         end #if
         line_num = line_num.succ
       end #@ioscan_file.each_line
-      ioscan_file.pos = 0
+      ioscan_file.pos = 0 #reset to the beginning of the file.
     end #@io_slots_in_server.each
   
   end #def show
 
-  def new_show
+  def new_show #:nodoc:
+    # OPTIMIZE: Re-write ioscan/show.
     ioscan_file = params[:ioscan_file]
     @server = Server.find(params[:server_id])
     
@@ -50,5 +55,9 @@ class IoscansController < ApplicationController
     # Store the lines in the uploaded file into an array of hashes "@ioscan_array"
     @ioscan_array = Array.new
     
+  end
+  protected
+  def set_curr_tab
+    @current_tab = 'ioscans'
   end
 end

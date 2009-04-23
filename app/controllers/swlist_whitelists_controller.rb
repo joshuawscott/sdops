@@ -1,4 +1,6 @@
 class SwlistWhitelistsController < ApplicationController
+  before_filter :login_required
+  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   # GET /swlist_whitelists
   # GET /swlist_whitelists.xml
   def index
@@ -86,5 +88,9 @@ class SwlistWhitelistsController < ApplicationController
     end
   end
   
+  protected
+  def authorized?
+    current_user.role == ADMIN || not_authorized
+  end
 
 end

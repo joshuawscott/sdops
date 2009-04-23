@@ -1,2 +1,2 @@
-module SwlistBlacklistsHelper
+module SwlistBlacklistsHelper #:nodoc:
 end

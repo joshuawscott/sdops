@@ -1,4 +1,6 @@
 class ServersController < ApplicationController
+  before_filter :login_required
+  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   # GET /servers
   # GET /servers.xml
   def index
@@ -81,4 +83,10 @@ class ServersController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  protected
+  def authorized?
+    current_user.role == ADMIN || not_authorized
+  end
+
 end

@@ -1,5 +1,2 @@
-module IoscansHelper
-  def getlines
-    self.each
-  end
+module IoscansHelper #:nodoc:
 end

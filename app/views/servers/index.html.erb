@@ -1,15 +1,14 @@
 <% content_for :subtitle do %>
   Servers
 <% end %>
-<h1>Listing servers</h1>
-
+<%= render :partial => '/tools/tools_header' %>
 <table>
   <tr>
     <th>Model name</th>
     <th>Server line</th>
     <th>Tier</th>
     <th>Sockets</th>
-    <th valign="center colspan="3"> Options </th>
+    <th valign="center" colspan="3"> Options </th>
   </tr>
 
 <% for server in @servers %>
@@ -20,7 +19,7 @@
     <td><%=h server.sockets %></td>
     <td><%= link_to 'Show', server %></td>
     <td><%= link_to 'Edit', edit_server_path(server) %></td>
-    <td><%= link_to 'Destroy', server, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to_if current_user.role == ADMIN, 'Destroy', server, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

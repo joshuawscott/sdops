@@ -1,5 +1,7 @@
 - content_for :subtitle do
   Tools - IOScan
+= render_partial '/tools/tools_header'
+%p &nbsp;
 %h1
   Processed File
 %h3{:id => "top"}
@@ -43,4 +45,5 @@
           %td= line[:drivername] unless line.nil?
           %td= line[:hw_type] unless line.nil?
           %td= line[:description] unless line.nil?
+  %p &nbsp;
 = link_to 'Process another ioscan', '/ioscans'

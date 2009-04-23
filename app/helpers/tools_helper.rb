@@ -1,2 +1,2 @@
-module ToolsHelper
+module ToolsHelper #:nodoc:
 end

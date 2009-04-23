@@ -1,7 +1,5 @@
 %ul{:id => 'submenu', :class => 'sub_menu'}
   %li
-    = link_to 'IO Scan', reports_path, :class => (@current_tab == 'index' ? 'active' : '')
+    = link_to 'IO Scan', ioscans_path, :class => (@current_tab == 'ioscans' ? 'active' : '')
   %li
-    = link_to 'SW List', {:controller => "reports", :action => "renewals"}, :class => (@current_tab == 'renewals' ? 'active' : '')
-  %li
-    = link_to 'Inventory', {:controller => "reports", :action => "sparesreq"}, :class => (@current_tab == 'sparesreq' ? 'active' : '')
+    = link_to 'SW List', swlists_path, :class => (@current_tab == 'swlists' ? 'active' : '')

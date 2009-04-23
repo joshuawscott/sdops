@@ -1,2 +1,2 @@
-module IoSlotsHelper
+module IoSlotsHelper #:nodoc:
 end

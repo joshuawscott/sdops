@@ -1,4 +1,6 @@
 class SwlistsController < ApplicationController
+  before_filter :login_required
+  before_filter :set_curr_tab
   def index
     @server_names = Server.by_name
   end
@@ -56,4 +58,8 @@ class SwlistsController < ApplicationController
     @unmatched_array ||= ['no products found']
     @blacklist_array ||= ['no products found']
   end #show
+  protected
+  def set_curr_tab
+    @current_tab = 'swlists'
+  end
 end #class
