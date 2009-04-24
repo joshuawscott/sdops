@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090424022731) do
+ActiveRecord::Schema.define(:version => 20090424154445) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -113,6 +113,9 @@ ActiveRecord::Schema.define(:version => 20090424022731) do
     t.decimal  "current_list_price",              :precision => 20, :scale => 3
     t.decimal  "effective_price",                 :precision => 20, :scale => 3
   end
+
+  add_index "line_items", ["product_num"], :name => "index_line_items_on_product_num"
+  add_index "line_items", ["contract_id"], :name => "index_line_items_on_contract_id"
 
   create_table "locations", :force => true do |t|
     t.string   "name"
