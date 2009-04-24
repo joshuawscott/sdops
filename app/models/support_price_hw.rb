@@ -44,4 +44,12 @@ class SupportPriceHw < SupportPricingDb
     SupportPriceHw.getprice(partnumber, Time.now)
   end
 
+  def self.current_list_price(item)
+    self.find_by_sql(["SELECT part_number, description, list_price FROM
+      (SELECT part_number,description,list_price,modified_at FROM hwdb
+        WHERE part_number = ?
+        ORDER BY modified_at DESC) as t2
+        GROUP BY part_number LIMIT 1", item])[0] || self.new
+  end
+
 end

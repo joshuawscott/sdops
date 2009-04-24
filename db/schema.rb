@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090421174554) do
+ActiveRecord::Schema.define(:version => 20090424022731) do
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(:version => 20090421174554) do
     t.string   "po_number"
     t.date     "renewal_sent"
     t.date     "po_received"
+    t.decimal  "renewal_amount",                   :precision => 20, :scale => 3
   end
 
   create_table "dropdowns", :force => true do |t|
@@ -95,20 +96,22 @@ ActiveRecord::Schema.define(:version => 20090421174554) do
   end
 
   create_table "line_items", :force => true do |t|
-    t.integer  "contract_id",      :limit => 8
+    t.integer  "contract_id",        :limit => 8
     t.string   "support_type"
     t.string   "product_num"
     t.string   "serial_num"
     t.string   "description"
     t.date     "begins"
     t.date     "ends"
-    t.integer  "qty",              :limit => 8
-    t.decimal  "list_price",                    :precision => 20, :scale => 3
+    t.integer  "qty",                :limit => 8
+    t.decimal  "list_price",                      :precision => 20, :scale => 3
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "support_provider"
     t.integer  "position"
     t.string   "location"
+    t.decimal  "current_list_price",              :precision => 20, :scale => 3
+    t.decimal  "effective_price",                 :precision => 20, :scale => 3
   end
 
   create_table "locations", :force => true do |t|

@@ -114,7 +114,7 @@ class Contract < ActiveRecord::Base
     if self.renewal?
       'Renewal'
     else
-      
+      'Newbusiness'
     end
   end
 
@@ -243,6 +243,49 @@ class Contract < ActiveRecord::Base
   def period
     @month = self.po_received.month
     self.po_received.year.to_s + @month.to_s
+  end
+
+  def expected_revenue
+    if !renewal_amount.nil?
+      @x = renewal_amount
+    elsif discount_pref_hw > 0.0
+      hw_t = 0.0
+      line_items.each {|l| hw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "HW" }
+      hw_t = hw_t * (1.0 - (discount_pref_hw + (payment_terms == "Annual" ? discount_prepay : 0.0)))
+      
+      sw_t = 0.0
+      line_items.each {|l| sw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SW" }
+      sw_t = sw_t * (1.0 - (discount_pref_sw + (payment_terms == "Annual" ? discount_prepay : 0.0)))
+      
+      srv_t = 0.0
+      line_items.each {|l| srv_t += (l.list_price.nil? ? 0.0 : l.list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SRV" }
+      srv_t = srv_t * (1.0 - (discount_pref_srv + (payment_terms == "Annual" ? discount_prepay : 0.0)))
+      
+      @x = 12 * ((hw_t * hw_support_level_multiplier) + (sw_t * sw_support_level_multiplier) + srv_t)
+      
+    else
+      t = 0.0
+      line_items.each {|l| t += l.current_list_price.nil? ? 0.0 : l.current_list_price * l.qty if l.support_type != "SRV"}
+      @x = t * 12 * 0.5
+    end
+  end
+
+  def hw_support_level_multiplier
+    case hw_support_level_id
+      when "SDC 24x7" then 1
+      when "SDC SD" then BigDecimal.new('0.83')
+      when "SDC ND" then BigDecimal.new('0.65')
+      when "SDC CS" then BigDecimal.new('1.65')
+      else 1
+    end
+  end
+
+  def sw_support_level_multiplier
+    case sw_support_level_id
+      when "SDC SW 24x7" then 1
+      when "SDC SW 13x5" then BigDecimal.new('0.83')
+      else 1
+    end
   end
 
 end

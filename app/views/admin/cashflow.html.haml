@@ -20,8 +20,6 @@
         %th
           %b Sales Office
         %th
-          %b Support Office
-        %th
           %b Terms
         %th
           %b Type
@@ -30,9 +28,7 @@
         %th
           %b Description
         %th
-          %b SAID
-        %th
-          %b Annual Rev
+          %b Expected Rev.
         %th
           %b{:width => '90px'} Start Date
         %th
@@ -41,13 +37,11 @@
       - for x in @contracts
         %tr
           %td= h x.sales_office_name
-          %td= h x.support_office_name
           %td= h x.payment_terms
-          %td= x.predecessor_ids.length > 0 ? 'Renewal' : 'New Business'
+          %td= h x.status
           %td= h x.account_name
           %td= h x.description
-          %td= h x.said
-          %td{:align => 'right'}= h x.total_revenue
+          %td{:align => 'right'}= h x.expected_revenue
           %td= h x.start_date
           %td= h x.end_date
 

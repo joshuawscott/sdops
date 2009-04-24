@@ -14,6 +14,8 @@
 #   support_provider  string
 #   position      integer
 #   location      string
+#   current_list_price  decimal
+#   effective_price     decimal   
 class LineItem < ActiveRecord::Base
   belongs_to :contract
 
@@ -49,5 +51,41 @@ class LineItem < ActiveRecord::Base
       end
     end
     locations
+  end
+
+  def self.update_all_current_prices
+    
+    # Update HW Lines
+    lineitems = LineItem.find(:all, :select => "DISTINCT product_num", :joins => :contract, :conditions => "contracts.expired <> true AND support_type = 'HW' AND product_num IS NOT NULL AND product_num NOT LIKE 'label'")
+    lineitems.each do |l|
+      @cp = SupportPriceHw.current_list_price(l.product_num).list_price
+      LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'HW'", l.product_num] )
+    end
+    
+    # Update SW Lines
+    lineitems = LineItem.find(:all, :select => "DISTINCT product_num", :joins => :contract, :conditions => "contracts.expired <> true AND support_type = 'SW' AND product_num IS NOT NULL AND product_num NOT LIKE 'label'")
+    lineitems.each do |l|
+      @cp = SupportPriceSw.current_list_price(l.product_num).list_price
+      LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'SW'", l.product_num] )
+    end
+    # Update SRV Lines
+    LineItem.update_all("current_list_price = list_price", "support_type = 'SRV'")
+  end
+
+  def update_effective_prices
+    self.effective_price = self.contract.effective_hw_discount * self.list_price unless self.support_type != "HW"
+    self.effective_price = self.contract.effective_sw_discount * self.list_price unless self.support_type != "SW"
+  end
+
+  def ext_list_price
+    list_price.nil? || qty.nil? && nil
+  end
+
+  def ext_current_list_price
+    current_list_price * qty
+  end
+
+  def ext_effective_price
+    effective_price * qty
   end
 end
