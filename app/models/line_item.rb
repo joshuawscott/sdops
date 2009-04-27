@@ -18,7 +18,6 @@
 #   effective_price     decimal   
 class LineItem < ActiveRecord::Base
   belongs_to :contract
-
   # Aggregates the locations in LineItems as an Array Object
   def self.locations(role,teams)
     if role >= MANAGER
@@ -72,20 +71,15 @@ class LineItem < ActiveRecord::Base
     LineItem.update_all("current_list_price = list_price", "support_type = 'SRV'")
   end
 
-  def update_effective_prices
-    self.effective_price = self.contract.effective_hw_discount * self.list_price unless self.support_type != "HW"
-    self.effective_price = self.contract.effective_sw_discount * self.list_price unless self.support_type != "SW"
-  end
-
   def ext_list_price
-    list_price.nil? || qty.nil? && nil
+    (list_price || 0) * (qty || 0)
   end
 
   def ext_current_list_price
-    current_list_price * qty
+    (current_list_price || 0) * (qty || 0)
   end
 
   def ext_effective_price
-    effective_price * qty
+    (effective_list_price || 0) * (qty || 0)
   end
 end

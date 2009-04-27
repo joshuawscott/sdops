@@ -64,6 +64,9 @@ class Contract < ActiveRecord::Base
   #Validate Terms
   validates_presence_of :start_date, :end_date
   validates_presence_of :po_received
+  
+  before_save :update_line_item_effective_prices
+  
   def self.short_list(role, teams)
     if role >= ADMIN
       Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => "expired <> true", :order => 'sales_office, account_name, start_date', :group => 'id')
@@ -108,6 +111,9 @@ class Contract < ActiveRecord::Base
      annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev
   end
 
+  def annual_srv_rev
+    annual_ce_rev + annual_sa_rev + annual_dr_rev
+  end
   # Returns string "Renewal" if the Contract has a predecessor, otherwise returns
   # an empty string.
   def status
@@ -220,14 +226,36 @@ class Contract < ActiveRecord::Base
 
   # Calculates the actual discount of a Contract
   def effective_hw_discount
-    total_list = 0.0
+    total_list = BigDecimal.new('0.0')
     self.line_items.each do |x|
       if x.support_type == 'HW'
-        x.list_price ||= 0.0
-        total_list += x.list_price
+        x.ext_list_price
+        total_list += x.ext_list_price
       end
     end
-    1.0 - (self.annual_hw_rev / (total_list * 12))
+    BigDecimal.new('1.0') - (self.annual_hw_rev / (total_list * BigDecimal.new('12.0')))
+  end
+
+  def effective_sw_discount
+    total_list = BigDecimal.new('0.0')
+    self.line_items.each do |x|
+      if x.support_type == 'SW'
+        x.ext_list_price
+        total_list += x.ext_list_price
+      end
+    end
+    BigDecimal.new('1.0') - (self.annual_sw_rev / (total_list * BigDecimal.new('12.0')))
+  end
+
+  def effective_srv_discount
+    total_list = BigDecimal.new('0.0')
+    self.line_items.each do |x|
+      if x.support_type == 'SRV'
+        x.ext_list_price
+        total_list += x.ext_list_price
+      end
+    end
+    BigDecimal.new('1.0') - (self.annual_srv_rev / (total_list * BigDecimal.new('12.0')))
   end
 
   # For newbusiness report
@@ -285,6 +313,23 @@ class Contract < ActiveRecord::Base
       when "SDC SW 24x7" then 1
       when "SDC SW 13x5" then BigDecimal.new('0.83')
       else 1
+    end
+  end
+
+  def update_line_item_effective_prices
+    logger.debug "********** Contract update_line_item_effective_prices"
+    hw_disc = BigDecimal.new('1.0') - self.effective_hw_discount
+    sw_disc = BigDecimal.new('1.0') - self.effective_sw_discount
+    srv_disc = BigDecimal.new('1.0') - self.effective_srv_discount
+    self.line_items.each do |lineitem|
+      if lineitem.list_price.nil? || lineitem.list_price == BigDecimal.new('0.0')
+        lineitem.list_price, lineitem.effective_price = 0.0, 0.0
+      else
+        lineitem.effective_price = hw_disc * lineitem.list_price if lineitem.support_type == "HW"
+        lineitem.effective_price = sw_disc * lineitem.list_price if lineitem.support_type == "SW"
+        lineitem.effective_price = srv_disc * lineitem.list_price if lineitem.support_type == "SRV"
+      end
+      lineitem.save
     end
   end
 

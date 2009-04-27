@@ -73,6 +73,7 @@ class ImportController < ApplicationController
 
     #if Contract successfully saves then import
     #associated line items
+    error_level = 0
     if @contract.save
       line_items_ary.each do |item|
         @line_item = @contract.line_items.new(item.ivars['attributes'])
@@ -84,13 +85,18 @@ class ImportController < ApplicationController
           logger.error "LineItem failed to import"
           logger.error "for Contract ID # " + @contract.id
           logger.error "*************************"
+          error_level += 1
         end
       end
     else
       logger.error "************************"
       logger.error "*Contract failed import*"
       logger.error "************************"
+      error_level += 1
     end
+
+    # Must reload contract, or update_line_item_effective_prices won't work.
+    Contract.find(@contract).update_line_item_effective_prices if error_level == 0
     
     #Create contract in SugarCRM
     sugar_con = SugarContract.new
