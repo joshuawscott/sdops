@@ -28,7 +28,9 @@
         %th
           %b Description
         %th
-          %b Expected Rev.
+          %b Current Rev.
+        %th
+          %b Projected Rev.
         %th
           %b{:width => '90px'} Start Date
         %th
@@ -41,6 +43,7 @@
           %td= h x.status
           %td= h x.account_name
           %td= h x.description
+          %td= h x.total_revenue
           %td{:align => 'right'}= h x.expected_revenue
           %td= h x.start_date
           %td= h x.end_date
