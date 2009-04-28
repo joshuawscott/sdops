@@ -16,7 +16,7 @@ class SupportPriceSw < SupportPricingDb
   def self.search(partnumber, description, quotedate)
     return [] if partnumber.nil? && description.nil?
     SupportPriceSw.find(:all,
-      :select => "id, part_number, description, phone_price + update_price as list_price, modified_at, confirm_date", 
+      :select => "id, part_number, description, phone_price, update_price, modified_at, confirm_date", 
       :conditions => ["part_number LIKE '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND description like '%#{description.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND modified_at <= ?", quotedate],
       :group => "part_number ASC, confirm_date ASC, modified_at ASC",
       :limit => "1000")
@@ -35,7 +35,7 @@ class SupportPriceSw < SupportPricingDb
   def self.getprice(partnumber, quotedate)
     return [] if partnumber.nil?
     SupportPriceSw.find(:first,
-      :select => "id, part_number, description, phone_price + updates_price as list_price, modified_at, confirm_date", 
+      :select => "id, part_number, description, phone_price, update_price, modified_at, confirm_date", 
       :conditions => ["part_number = '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND modified_at <= ?", quotedate],
       :group => "part_number ASC, confirm_date DESC, modified_at DESC")
   end
@@ -45,4 +45,19 @@ class SupportPriceSw < SupportPricingDb
     SupportPriceSw.getprice(partnumber, Time.now)
   end
 
+  def self.current_list_price(item)
+    self.find_by_sql(["SELECT part_number, description, phone_price, update_price FROM
+      (SELECT part_number,description,phone_price, update_price,modified_at FROM swdb
+        WHERE part_number = ?
+        ORDER BY modified_at DESC) as t2
+        GROUP BY part_number LIMIT 1", item])[0] || self.new
+  end
+
+  def list_price
+    unless phone_price.nil? || update_price.nil?
+      phone_price + update_price
+    else
+      BigDecimal.new('0.0')
+    end
+  end
 end

@@ -47,10 +47,13 @@ ActionController::Routing::Routes.draw do |map|
 
   #Non-Restful Routes
   map.lineitems '/contracts/:id/lineitems.xls', :controller => 'contracts', :action => 'lineitems', :format => 'xls'
+  map.newbusiness '/reports/newbusiness.xls', :controller => 'reports', :action => 'newbusiness', :format => 'xls'
 
   map.refresh '/refresh', :controller => 'users', :action => 'refresh'
 
   map.reports '/reports', :controller => 'reports', :action => 'index'
+  map.xlsreports '/reports/:action.:format', :controller => 'reports'
+  
   map.admin '/admin', :controller => 'admin', :action => 'index'
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
@@ -65,6 +68,6 @@ ActionController::Routing::Routes.draw do |map|
   # See how all your routes lay out with "rake routes"
 
   # Install the default routes as the lowest priority.
-  map.connect ':controller/:action/:id'
   map.connect ':controller/:action/:id.:format'
+  map.connect ':controller/:action/:id'
 end

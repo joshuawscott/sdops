@@ -9,3 +9,5 @@
     = link_to 'Spares Req.', {:controller => "reports", :action => "sparesreq"}, :class => (@current_tab == 'sparesreq' ? 'active' : '')
   %li
     = link_to 'Customers', {:controller => "reports", :action => "customers"}, :class => (@current_tab == 'customers' ? 'active' : '')
+  %li
+    = link_to 'New Contr.', {:controller => "reports", :action => "newbusiness"}, :class => (@current_tab == 'newbusiness' ? 'active' : '')

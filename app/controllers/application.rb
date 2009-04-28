@@ -18,3 +18,4 @@ class ApplicationController < ActionController::Base
   #Hide passwords in logs
   filter_parameter_logging "password"
 end
+
