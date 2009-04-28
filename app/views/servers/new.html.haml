@@ -1,0 +1,13 @@
+- content_for :subtitle do
+  Servers
+= render_partial '/tools/tools_header'
+#section1
+  %h2
+    New server
+#section2 
+  - form_for(@server) do |f|
+    = f.error_messages
+    = render :partial => "form", :locals => { :f => f } 
+    %p
+      = f.submit "Update"
+= link_to 'Back', servers_path

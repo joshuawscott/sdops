@@ -1,10 +1,12 @@
 class SwlistBlacklistsController < ApplicationController
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :set_current_tab
+  layout 'tools'
   # GET /swlist_blacklists
   # GET /swlist_blacklists.xml
   def index
-    @swlist_blacklists = SwlistBlacklist.find(:all)
+    @swlist_blacklists = SwlistBlacklist.find(:all, :order => :pattern)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -64,7 +66,7 @@ class SwlistBlacklistsController < ApplicationController
     respond_to do |format|
       if @swlist_blacklist.update_attributes(params[:swlist_blacklist])
         flash[:notice] = 'SwlistBlacklist was successfully updated.'
-        format.html { redirect_to(@swlist_blacklist) }
+        format.html { redirect_to(swlist_blacklists_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -88,6 +90,10 @@ class SwlistBlacklistsController < ApplicationController
   protected
   def authorized?
     current_user.role == ADMIN || not_authorized
+  end
+
+  def set_current_tab
+    @current_tab = 'admin'
   end
 
 end

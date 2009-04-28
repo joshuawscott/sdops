@@ -1,46 +1,50 @@
 - content_for :subtitle do
-  Tools - SWList
+  Tools - SW List
 = render_partial '/tools/tools_header'
-%p &nbsp;
+#section1
+  %p
+    %b 
+      =link_to 'Parse another swlist', swlists_path
+#section2
+  - if @productslist_array.size > 0
+    %h2 Products to Quote
+    %h3 You can put these product numbers into the quote.  Some lines may have multiple product numbers.
+    %p &nbsp;
+    %table
+      %tr
+        %th Product Number(s)
+        %th Qty
+      - @productslist_array.each do |line|
+        - unless line[0] == ''
+          %tr
+            %td{:font => 'courier'}
+              = line[0]
+            %td{:font => 'courier'}
+              = line[1]
+    %p &nbsp;
 
-%p
-  %b 
-    =link_to 'Parse another swlist', swlists_path
-
-- if @productslist_array.size > 0
-  %h2 Products to Quote
-  %table
-    %tr
-      %th Product Number(s)
-      %th Qty
-    - @productslist_array.each do |line|
-      - unless line[0] == ''
-        %tr
-          %td{:font => 'courier'}
-            = line[0]
-          %td{:font => 'courier'}
-            = line[1]
-  %p &nbsp;
-
-- if @whitelist_array.size > 0
-  %h2 These lines must be manually translated to product numbers
-  %p{:style => 'font-family: courier'}
-    - @whitelist_array.each do |line|
-      %br
-      = line
-  %p &nbsp;
-
-- if @unmatched_array.size > 0
-  %h2 Unknown Entries (please have these added to whitelist or blacklist)
-  %p{:style => 'font-family: courier'}
-    - @unmatched_array.each do |line|
-      %br
-      = line
-  %p &nbsp;
-
-- if @blacklist_array.size > 0
-  %h2 Ignored SWLIST lines
-  %p{:style => 'font-family: courier'}
-    - @blacklist_array.each do |line|
-      %br
-      = line
+  - if @whitelist_array.size > 0
+    %h2 Matched - Not Translated
+    %h3 These lines must be manually translated to product numbers
+    %p{:style => 'font-family: courier'}
+      - @whitelist_array.each do |line|
+        %br
+        = line
+    %p &nbsp;
+  
+  - if @unmatched_array.size > 0
+    %h2 Unknown Entries
+    %h3 Please have these added to whitelist or blacklist
+    %p{:style => 'font-family: courier'}
+      - @unmatched_array.each do |line|
+        %br
+        = line
+    %p &nbsp;
+  
+  - if @blacklist_array.size > 0
+    %h2 Ignored SW List lines
+    %h3 This is a listing of the lines that are known to be bundled with the base OS.
+    %p{:style => 'font-family: courier'}
+      - @blacklist_array.each do |line|
+        %br
+        = line

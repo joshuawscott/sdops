@@ -1,0 +1,27 @@
+-content_for :subtitle do
+  SW List Admin
+= render_partial '/tools/tools_header'
+#section1
+  %b
+    = link_to_if current_user.role == ADMIN, 'Create New Blacklist', new_swlist_blacklist_path
+#section2
+  %table
+    %h2 SW List Blacklist Patterns
+    %tr
+      %th Pattern
+      %th{:colspan => '2'}
+        Options
+    - for swlist_blacklist in @swlist_blacklists
+      %tr
+        %td 
+          =h swlist_blacklist.pattern
+        %td 
+          = link_to_if current_user.role == ADMIN, 'Edit', edit_swlist_blacklist_path(swlist_blacklist)
+        %td 
+          = link_to_if current_user.role == ADMIN, 'Destroy', swlist_blacklist, :confirm => 'Are you sure?', :method => :delete
+  %br
+  = link_to_if current_user.role == ADMIN, 'New swlist_blacklist', new_swlist_blacklist_path
+  %br
+  = link_to 'SWList Processor', swlists_path
+  &nbsp;|&nbsp;
+  = link_to 'Tools', '/tools'

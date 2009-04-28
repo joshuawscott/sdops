@@ -1,0 +1,55 @@
+= f.error_messages
+
+%p
+  %label{:for => 'swproducts_product_number'}
+    Product Number
+  = f.text_field :product_number
+%p
+  %label{:for => 'swproducts_license_type'}
+    License Type
+  = f.select :license_type, @license_types
+%p
+  %label{:for => 'swproducts_server_line'}
+    Server Line
+  = f.select :server_line, [['N/A',nil],'HP9000','Integrity']
+  (N/A if product applies to both)
+%p
+  %label{:for => 'swproducts_tier'}
+    Tier
+  = f.select :tier, @tier_choices
+  %table{:style => 'margin-left: 20px'}
+    %em For HP9000, use the actual tier;
+    %br
+    %em For Integrity, use the following
+    %br
+    %em  tier-to-socket conversion:
+    %tr
+      %th{:style => 'padding: 0px 4px 0px 4px'}
+        Num. Sockets
+      %th{:style => 'padding: 0px 4px 0px 4px'}
+        Tier
+    %tr
+      %td All Blade Svrs.
+      %td 0
+    %tr
+      %td 1-2
+      %td 1
+    %tr
+      %td 3-4
+      %td 2
+    %tr
+      %td 5-8
+      %td 3
+    %tr
+      %td 16+
+      %td 4
+%p
+  %label{:for => 'swproducts_license_product'}
+    License Product
+  = f.text_field :license_product
+%p
+  %label{:for => 'swproducts_explanation'}
+    Explanation
+    %br 
+    %em (used for 'Other' License Types)
+  = f.text_area :explanation

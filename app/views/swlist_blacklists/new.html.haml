@@ -1,0 +1,16 @@
+- content_for :subtitle do
+  Servers
+= render_partial '/tools/tools_header'
+#section1
+  %h2 New Blacklist Pattern
+#section2
+  - form_for(@swlist_blacklist) do |f|
+    = f.error_messages
+    %p
+      %label{:for => 'swlist_blacklist_pattern'}
+        Pattern
+      = f.text_field :pattern
+    %p
+      = f.submit "Create"
+  %p
+    = link_to 'Cancel', swlist_blacklists_path

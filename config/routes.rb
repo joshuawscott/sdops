@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :tools
 
   map.resources :swproducts
 
@@ -53,7 +52,8 @@ ActionController::Routing::Routes.draw do |map|
 
   map.reports '/reports', :controller => 'reports', :action => 'index'
   map.xlsreports '/reports/:action.:format', :controller => 'reports'
-  
+
+  map.tools '/tools/:action', :controller => 'tools'
   map.admin '/admin', :controller => 'admin', :action => 'index'
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil

@@ -1,0 +1,19 @@
+- content_for :subtitle do
+  SW List Admin
+= render_partial '/tools/tools_header'
+#section1
+  %p &nbsp;
+  %h2 Editing swlist_whitelist
+#section2
+  - form_for(@swlist_whitelist) do |f|
+    = f.error_messages
+    %p
+      %label{:for => 'swlist_whitelist_pattern'}
+        Pattern
+      = f.text_field :pattern
+    %p
+      = f.submit "Update"
+  
+  = link_to 'Show', @swlist_whitelist
+  &nbsp;|&nbsp;
+  = link_to 'Back', swlist_whitelists_path

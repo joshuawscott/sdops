@@ -2,6 +2,9 @@ class IoSlotsController < ApplicationController
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :get_server
+  before_filter :set_current_tab
+  layout 'tools'
+=begin
   # GET /io_slots
   # GET /io_slots.xml
   def index
@@ -23,12 +26,10 @@ class IoSlotsController < ApplicationController
       format.xml  { render :xml => @io_slot }
     end
   end
-
-  # GET /io_slots/new
-  # GET /io_slots/new.xml
+=end
+  # GET /servers/:server_id/io_slots/new
   def new
     @io_slot = @server.io_slots.new
-
     
     respond_to do |format|
       format.html # new.html.erb
@@ -41,8 +42,7 @@ class IoSlotsController < ApplicationController
     @io_slot = IoSlot.find(params[:id])
   end
 
-  # POST /io_slots
-  # POST /io_slots.xml
+  # POST /servers/:server_id/io_slots
   def create
     @io_slot = @server.io_slots.new(params[:io_slot])
     
@@ -59,8 +59,7 @@ class IoSlotsController < ApplicationController
     end
   end
 
-  # PUT /io_slots/1
-  # PUT /io_slots/1.xml
+  # PUT /servers/:server_id/io_slots/:id
   def update
     @io_slot = IoSlot.find(params[:id])
 
@@ -76,8 +75,7 @@ class IoSlotsController < ApplicationController
     end
   end
 
-  # DELETE /io_slots/1
-  # DELETE /io_slots/1.xml
+  # DELETE /servers/:server_id/io_slots/:id
   def destroy
     @io_slot = IoSlot.find(params[:id])
     @io_slot.destroy
@@ -95,6 +93,10 @@ class IoSlotsController < ApplicationController
 
   def authorized?
     current_user.role == ADMIN || not_authorized
+  end
+
+  def set_current_tab
+    @current_tab = 'admin'
   end
 
 end

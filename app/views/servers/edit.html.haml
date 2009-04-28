@@ -1,0 +1,18 @@
+- content_for :subtitle do
+  Servers
+= render_partial '/tools/tools_header'
+#section1
+  %h2
+    Editing server
+    =h @server.model_name
+
+#section2 
+  - form_for(@server) do |f|
+    = f.error_messages
+    = render :partial => "form", :locals => { :f => f } 
+    %p
+      = f.submit "Update"
+
+= link_to 'Show', @server 
+&nbsp;|&nbsp;
+= link_to 'Back', servers_path

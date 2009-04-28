@@ -1,10 +1,12 @@
 class SwlistWhitelistsController < ApplicationController
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :set_current_tab
+  layout 'tools'
   # GET /swlist_whitelists
   # GET /swlist_whitelists.xml
   def index
-    @swlist_whitelists = SwlistWhitelist.find(:all)
+    @swlist_whitelists = SwlistWhitelist.find(:all, :order => :pattern)
     
     respond_to do |format|
       format.html # index.html.erb
@@ -91,6 +93,10 @@ class SwlistWhitelistsController < ApplicationController
   protected
   def authorized?
     current_user.role == ADMIN || not_authorized
+  end
+
+  def set_current_tab
+    @current_tab = 'admin'
   end
 
 end

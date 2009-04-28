@@ -1,0 +1,45 @@
+- content_for :subtitle do
+  SW List Admin
+= render_partial '/tools/tools_header'
+#section1
+  %p &nbsp;
+  %h2 Whitelist Information
+  %p
+    %label{:for => 'swlist_whitelist_pattern'}
+      Pattern
+    =h @swlist_whitelist.pattern
+  = link_to 'Edit Pattern', edit_swlist_whitelist_path(@swlist_whitelist)
+  &nbsp;|&nbsp;
+  = link_to 'Back to Whitelists', swlist_whitelists_path
+#section2
+  %h2 
+    SW Products for pattern
+    = "'" + @swlist_whitelist.pattern + "'"
+  %table
+    %tr
+      %th Product Num
+      %th License Type
+      %th Tier
+      %th License Product
+      %th Server Line
+      %th{:colspan => '2'}
+        Options
+    - for swproduct in @swlist_whitelist.swproducts
+      %tr
+        %td
+          =h swproduct.product_number
+        %td
+          =h swproduct.license_type
+        %td
+          =h swproduct.tier.nil? ? 'N/A' : swproduct.tier
+        %td
+          =h swproduct.license_product
+        %td
+          =h swproduct.server_line
+        %td
+          = link_to 'Edit', edit_swlist_whitelist_swproduct_path(@swlist_whitelist,swproduct)
+        %td
+          = link_to 'Destroy', swlist_whitelist_swproduct_path(@swlist_whitelist,swproduct), :confirm => 'Are you sure?', :method => :delete
+#section3
+  %p
+    = link_to 'Add Product', new_swlist_whitelist_swproduct_path(@swlist_whitelist)

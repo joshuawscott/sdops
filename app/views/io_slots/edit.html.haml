@@ -1,11 +1,31 @@
 - content_for :subtitle do
   I/O Slots
-%h1
-  Editing I/O Slot for 
-  = @server.model_name
-
-- form_for(:io_slot, :url => server_io_slot_path(@server.id, @io_slot.id), :html => { :method => :put } ) do |f|
-  = render :partial => "form", :locals => { :f => f } 
-%p
-  = submit_tag "Update"
-= link_to 'Back', server_path(@server)
+= render_partial '/tools/tools_header'
+#section1
+  %p &nbsp;
+  %h2
+    Editing I/O Slot for 
+    = @server.model_name
+#section2
+  - form_for(:io_slot, :url => server_io_slot_path(@server.id, @io_slot.id), :html => { :method => :put } ) do |f|
+    = render :partial => "form", :locals => { :f => f } 
+    %p
+      = submit_tag "Update"
+  = link_to 'Back', server_path(@server)
+#section3
+  %h2
+    Current I/O slots in
+    =h @server.model_name
+  %table
+    %tr
+      %th Slot number
+      %th Path
+      %th Description
+    - for io_slot in @server.io_slots
+      %tr
+        %td
+          =h io_slot.slot_number
+        %td
+          =h io_slot.path
+        %td
+          =h io_slot.description

@@ -1,0 +1,53 @@
+-content_for :subtitle do
+  Servers
+= render_partial '/tools/tools_header'
+#section1
+  %h2 
+    =h @server.model_name
+    Server Information
+#section2
+  #results.boxed{:style => 'width: 200px; padding: 5px 5px 5px 5px'}
+    %p
+      %label{:for => 'server_server_line'}
+        Server line:
+      =h @server.server_line
+    %p
+      %label{:for => 'server_tier'}
+        Tier:
+      =h @server.tier
+    %p
+      %label{:for => 'server_sockets'}
+        Sockets:
+      =h @server.sockets
+    %br
+    = link_to 'Edit Server', edit_server_path(@server)
+    &nbsp;|&nbsp;
+    = link_to 'Back to Server List', servers_path
+#section3
+  %h2
+    IO Slots in
+    =h @server.model_name
+  %table
+    %tr
+      %th{:style => 'width: 40px'}
+        Slot
+      %th Path
+      %th Description
+      %th{:colspan => '2'}
+        Options
+    - for io_slot in @server.io_slots
+      %tr
+        %td{:style => 'valign: center'}
+          =h io_slot.slot_number
+        %td 
+          =h io_slot.path
+        %td 
+          =h io_slot.description
+        %td 
+          = link_to 'Edit', edit_server_io_slot_path(@server, io_slot)
+        %td 
+          = link_to 'Destroy', server_io_slot_path(@server, io_slot), :confirm => 'Are you sure?', :method => :delete
+  %p
+    = link_to 'Add Slot', new_server_io_slot_path(@server)
+      
+

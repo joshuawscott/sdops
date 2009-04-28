@@ -1,0 +1,14 @@
+- content_for :subtitle do
+  SW Products
+= render :partial => 'tools/tools_header'
+#section1
+  %p &nbsp;
+  %h2 
+    Editing swproduct for pattern 
+    = "'" + @swlist_whitelist.pattern + "'"
+#section2
+  - form_for(:swproduct, :url => swlist_whitelist_swproducts_path(@swlist_whitelist.id)) do |f|
+    = render :partial => "form", :locals => { :f => f } 
+    %p
+      = f.submit "Create"
+  = link_to 'Cancel', @swlist_whitelist

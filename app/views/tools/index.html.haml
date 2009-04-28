@@ -10,17 +10,17 @@
 #section1
   %p
     %b
-      =link_to 'IO Scan', ioscans_path
+      IO Scan - 
     This will process the output of the 'ioscan -F' command into a human readable format,
     organized into I/O slots.
   %p
     %b
-      =link_to 'SW List', swlists_path
+      SW List - 
     This will process the output of the 'swlist' command into a listing of products to be quoted.
   %p
     %b
-      =link_to 'Inventory', '/reports/inventory'
-    This is a listing of the inventory at your location.
+      HW/SW Pricing - 
+    Quick support pricing lookup for hardware and software products respectively.
 - if current_user.role >= ADMIN
   #section2
     %h2 Tool administration

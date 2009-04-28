@@ -1,0 +1,17 @@
+- content_for :subtitle do
+  SW List Admin
+= render_partial '/tools/tools_header'
+#section1
+  %p &nbsp;
+  %h2 New Whitelist Pattern
+#section2
+  - form_for(@swlist_whitelist) do |f|
+    = f.error_messages
+    %p
+      %label{:for => 'swlist_whitelist_pattern'}
+        Pattern
+      = f.text_field :pattern
+    %p
+      = f.submit "Create"
+  %p
+    = link_to 'Cancel', swlist_whitelists_path

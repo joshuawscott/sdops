@@ -1,8 +1,8 @@
 - content_for :subtitle do
-  Tools - IOScan
+  Tools - I/O Scan
 = render_partial '/tools/tools_header'
-%p &nbsp;
 #section1
+  %p &nbsp;
   - form_tag '/ioscans/show', :multipart => true do
     %p
       %label{:for => "server_name"}
@@ -13,4 +13,4 @@
         Upload ioscan
       = file_field_tag("ioscan_file")
     %p{:style => "padding-left: 120px"}
-      = submit_tag  :import_file, :value => "Process IOScan"
+      = submit_tag  :import_file, :value => "Process I/O Scan"

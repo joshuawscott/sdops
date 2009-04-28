@@ -2,6 +2,9 @@ class SwproductsController < ApplicationController
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :get_swlist_whitelist
+  before_filter :set_current_tab
+  layout 'tools'
+=begin
   # GET /swproducts
   # GET /swproducts.xml
   def index
@@ -23,7 +26,7 @@ class SwproductsController < ApplicationController
       format.xml  { render :xml => @swproduct }
     end
   end
-
+=end
   # GET /swproducts/new
   # GET /swproducts/new.xml
   def new
@@ -103,6 +106,10 @@ class SwproductsController < ApplicationController
 
   def get_swlist_whitelist
     @swlist_whitelist = SwlistWhitelist.find params[:swlist_whitelist_id]
+  end
+
+  def set_current_tab
+    @current_tab = 'admin'
   end
 
 end
