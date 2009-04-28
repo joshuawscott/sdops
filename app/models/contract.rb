@@ -263,14 +263,14 @@ class Contract < ActiveRecord::Base
     Contract.find(:all, 
       :select => "contracts.*, CONCAT(users.first_name, ' ', users.last_name) AS sales_rep_name",
       :joins => "LEFT JOIN users ON contracts.sales_rep_id = users.id",
-      :conditions => "payment_terms <> 'Bundled'").map { |x|  x unless x.renewal? }
+      :conditions => "payment_terms <> 'Bundled'").map { |x|  x unless x.renewal? }.compact
   end
 
   # String: po_received date translated to YYYYM.
   # Useful for in-place filtering based on date
   def period
-    @month = self.po_received.month
-    self.po_received.year.to_s + @month.to_s
+    month = self.po_received.month
+    self.po_received.year.to_s + month.to_s
   end
 
   def expected_revenue

@@ -2,44 +2,45 @@
 - content_for :subtitle do
   Reports - New Business
 
-= render :partial => "renewal_header"
+= render :partial => "reports_header"
 
 %p &nbsp;
 #section1
-  %table{:class => 'plain_table'}
-    %tr
-      %td{:width => '300px', :style => 'valign:bottom'}
-        %h2{:margin => '0'}
-          Renewals &nbsp;&nbsp;&nbsp;
-          %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
-      %td
-        Filter by Month
-        =select("filter", "period", @periods, {:include_blank => true, :selected => @currperiod },{:onchange => 'return togglePeriods()', :style => "width: 110px"})
-  %h2{:style => 'margin:15px 0px 0px 300px'} New support business for selected month
-  
-  %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}
-    %thead
+  - form_tag '/reports/newbusiness.xls' do
+    %table{:class => 'plain_table'}
       %tr
-        %th{:width => '120px', :ts_type => 'string'}
-          %b CBM
-        %th{:width => '140px', :ts_type => 'string'}
-          %b Account
-        %th{:width => '200px', :ts_type => 'string'}
-          %b Description
-        %th{:width => '70px'}
-          %b PO Received
-        %th{:width => '80px', :ts_type => 'money'}
-          %b Revenue
-        %th{:width => '80px', :ts_type => 'money'}
-          %b Annualized Revenue
-    %tbody
-      - for x in @contracts
-        -if x
+        %td{:width => '300px', :style => 'valign:bottom'}
+          %h2{:margin => '0'}
+            Renewals &nbsp;&nbsp;&nbsp;
+            %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
+        %td
+          Filter by Month
+          =select("filter", "period", @periods, {:include_blank => true, :selected => @currperiod },{:onchange => 'return togglePeriods()', :style => "width: 110px"})
+      %tr
+        %td 
+          = submit_tag 'Export to Excel'
+    %h2{:style => 'margin:15px 0px 0px 300px'} New support business for selected month
+    
+    %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}
+      %thead
+        %tr
+          %th{:width => '70px'}
+            %b PO Received
+          %th{:width => '120px', :ts_type => 'string'}
+            %b CBM
+          %th{:width => '140px', :ts_type => 'string'}
+            %b Account
+          %th{:width => '200px', :ts_type => 'string'}
+            %b Description
+          %th{:width => '80px', :ts_type => 'money'}
+            %b Revenue
+      %tbody
+        - for x in @contracts
           %tr{:id => x.period}
+            %td{:align => 'center'}= h x.po_received
             %td= h x.sales_rep_name
             %td= h x.account_name
             %td= link_to x.description, contract_url(x.id)
-            %td{:align => 'center'}= h x.po_received
             %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
-            %td{:align => 'right'}= number_to_currency(x.total_revenue, :format => '%n')
   %p
+

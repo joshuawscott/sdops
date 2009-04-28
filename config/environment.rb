@@ -12,6 +12,7 @@ require File.join(File.dirname(__FILE__), 'boot')
 
 require 'gruff'
 
+require 'lib/sdops_core_extensions'
 VEIWONLY = 31
 BASIC = 32
 IMPORT = 33

@@ -1,9 +1,9 @@
 class ReportsController < ApplicationController
   before_filter :login_required
+  before_filter :set_current_tab
   #TODO: Add filtering based on role to allow viewing of reports
   # GET /reports
   def index
-    @current_tab = 'index'
 		#Counts
     @contract_counts_by_office = Contract.contract_counts_by_office
     @customer_counts_by_office = Contract.customer_counts_by_office
@@ -29,7 +29,6 @@ class ReportsController < ApplicationController
 
   def renewals
 
-    @current_tab = 'renewals'
     @ref_date = Date.today.strftime("%Y-%m-%d")
     if params[:date_search] != nil
       if params[:date_search][:ref_date] != nil && params[:date_search][:ref_date] != ''
@@ -48,7 +47,6 @@ class ReportsController < ApplicationController
   
   def sparesreq
     
-    @current_tab = 'sparesreq'
     @offices = LineItem.locations(current_user.role, current_user.sugar_team_ids)
     if params[:filter] != nil
       @office = params[:filter][:office_name]
@@ -69,7 +67,6 @@ class ReportsController < ApplicationController
   
   def customers
 		
-    @current_tab = 'customers'
 		if params[:filter] != nil
 			@office = params[:filter][:office_name]
 			@customers = Contract.customer_rev_list_by_support_office(current_user.role, current_user.sugar_team_ids)
@@ -84,6 +81,7 @@ class ReportsController < ApplicationController
   end
 
   def newbusiness
+    logger.debug "************** reports/newbusiness action"
     @contracts = Contract.newbusiness
     
     #generate the filter dropdown:
@@ -94,10 +92,19 @@ class ReportsController < ApplicationController
     end
     @periods = @period_names.zip(@period_ids)
     @currperiod = Date.today.year.to_s + Date.today.month.to_s
+    respond_to do |format|
+      format.html { render :html => @contracts }# index.html.haml
+      format.xls  #Respond as Excel Doc
+    end
   end
 
   def potentialoffices
     @locations = LineItem.hw_revenue_by_location
+  end
+
+  private
+  def set_current_tab
+    @current_tab = self.action_name
   end
 
 end
