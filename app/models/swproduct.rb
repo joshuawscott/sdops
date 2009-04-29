@@ -1,14 +1,14 @@
 # Schema:
-#   id  integer
+#   id              integer
 #   product_number  string
-#   license_type  string
-#   tier  integer
-#   license_product  string
-#   swlist_whitelist_id  integer
-#   created_at  datetime
-#   updated_at  datetime
-#   explanation  text
-#   server_line  string
+#   license_type    string
+#   tier            integer
+#   license_product       string
+#   swlist_whitelist_id   integer
+#   created_at      datetime
+#   updated_at      datetime
+#   explanation     text
+#   server_line     string
 class Swproduct < ActiveRecord::Base
   belongs_to :swlist_whitelists
   validates_uniqueness_of :tier, :scope => [:product_number, :server_line, :swlist_whitelist_id]

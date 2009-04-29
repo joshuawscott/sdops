@@ -1,6 +1,6 @@
 # Schema:
-#   id  integer
-#   pattern  string
+#   id          integer
+#   pattern     string
 #   created_at  datetime
 #   updated_at  datetime
 class SwlistWhitelist < ActiveRecord::Base
