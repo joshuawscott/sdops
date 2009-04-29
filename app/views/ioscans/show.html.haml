@@ -16,6 +16,7 @@
 #section3
   - @io_slots_in_server.each_with_index do |io_slot, i|
     %h2{:id => io_slot.id}
+      = "Chassis " + io_slot.chassis_number.to_s + ", " unless io_slot.chassis_number.nil?
       = "Slot " + io_slot.slot_number.to_s if io_slot.slot_number != 0
       = "(" + io_slot.description + ")" unless io_slot.description.nil? || io_slot.description == ''
     %a{:href => "#top"}

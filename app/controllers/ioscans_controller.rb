@@ -7,6 +7,10 @@ class IoscansController < ApplicationController
     @server_names = Server.by_name
   end
 
+  def new_index
+    @server_names = Server.by_name
+  end
+
   # POST /ioscans/show
   #
   # This is where the ioscan is processed into an Array of Hashes
@@ -19,7 +23,7 @@ class IoscansController < ApplicationController
     @server = Server.find(params[:server_id])
     
     io_slots_by_path = IoSlot.find(:all, :conditions => ["server_id = ?", @server.id], :order => 'path ASC')
-    @io_slots_in_server = IoSlot.find(:all, :conditions => ["server_id = ?", @server.id], :order => 'slot_number ASC')
+    @io_slots_in_server = IoSlot.find(:all, :conditions => ["server_id = ?", @server.id], :order => 'chassis_number ASC, slot_number ASC')
     # Store the lines in the uploaded file into an array of hashes "@ioscan_array"
     @ioscan_array = Array.new
     x = io_slots_by_path.each do |io_slot|
@@ -39,7 +43,7 @@ class IoscansController < ApplicationController
           }
         end #if
         line_num = line_num.succ
-      end #@ioscan_file.each_line
+      end #ioscan_file.each_line
       ioscan_file.pos = 0 #reset to the beginning of the file.
     end #@io_slots_in_server.each
   

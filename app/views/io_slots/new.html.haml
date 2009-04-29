@@ -8,8 +8,8 @@
 #section2
   - form_for(:io_slot, :url => server_io_slots_path(@server.id)) do |f|
     = render :partial => "form", :locals => { :f => f } 
-  %p
-    = submit_tag "Create"
+    %p
+      = submit_tag "Create"
   = link_to 'Back', server_path(@server)
 #section3
   %h2
@@ -17,11 +17,14 @@
     =h @server.model_name
   %table
     %tr
-      %th Slot number
+      %th Chassis
+      %th Slot
       %th Path
       %th Description
-    - for io_slot in @server.io_slots
+    - for io_slot in @server.io_slots.sort_by {|x| x.sort_order}
       %tr
+        %td
+          =h io_slot.chassis_number
         %td
           =h io_slot.slot_number
         %td
