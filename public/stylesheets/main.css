@@ -226,7 +226,7 @@ ul.sub_menu {
 /* Header Styles */
 #header {
   float: left;
-  width: 100%;
+  width: 99%;
   height: 85px;
   margin: 0px 0px 5px 5px;
   background: #fff;
@@ -288,13 +288,13 @@ ul.sub_menu {
       color: #000000;
       background-color: #000000;
       height: 5px;
-      width: 100%; }
+      width: 99%; }
 
 /* Content */
 #content {
   float: left;
   margin: 0px 0px 0px 0px;
-  width: 100%;
+  width: 99%;
   background: #fff; }
 
 #linkbox {
@@ -306,7 +306,7 @@ ul.sub_menu {
 #section1 {
   float: left;
   margin: 0px 5px 0px 5px;
-  width: 100%;
+  width: 99%;
   background: #fff; }
   #section1 #submenu {
     width: 160px;
@@ -316,21 +316,21 @@ ul.sub_menu {
 #section2 {
   float: left;
   margin: 5px 5px 0px 5px;
-  width: 100%;
+  width: 99%;
   background: #fff; }
 
 /* Section3 */
 #section3 {
   float: left;
   margin: 5px 5px 0px 5px;
-  width: 100%;
+  width: 99%;
   background: #fff; }
 
 /* Section4 */
 #section4 {
   float: left;
   margin: 5px 5px 0px 5px;
-  width: 100%;
+  width: 99%;
   background: #fff; }
 
 .label {
