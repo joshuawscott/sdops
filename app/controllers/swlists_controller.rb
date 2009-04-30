@@ -10,6 +10,10 @@ class SwlistsController < ApplicationController
     @license_types = Swproduct.license_types
     swlist_file = params[:swlist_file]
     server_cores = params[:server_cores]
+    if server_cores = nil || server_cores.to_i < 1
+      flash[:notice] = "Invalid number of Active Cores"
+      redirect_to :action => :index and return
+    end
     server = Server.find(params[:server_id])
     whitelist = SwlistWhitelist.find(:all)
     blacklist = SwlistBlacklist.find(:all)
