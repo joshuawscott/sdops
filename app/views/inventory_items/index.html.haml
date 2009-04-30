@@ -4,9 +4,6 @@
 = render :partial => "reports/reports_header"
 
 #section1
-  %p &nbsp;
-  = #render :partial => "maineditor/main"
-#section2
   = link_to 'New Inventory Item', new_inventory_item_path if current_user.role == ADMIN
   | 
   %b 

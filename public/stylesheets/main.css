@@ -190,6 +190,8 @@ ul.sub_menu {
     padding-left: 5px;
     color: #000000;
     background: #a0d55c; }
+    .boxed h2 a:hover {
+      color: #649920; }
   .boxed label {
     float: left;
     width: 120px;

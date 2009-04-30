@@ -30,6 +30,12 @@ class IoscansController < ApplicationController
       #logger.debug "Trying I/O Slot " + io_slot.path
       line_num = 0
       ioscan_file.each_line do |line|
+        if line.match(/Class\s*I\s*H\/W Path\s*Driver/)
+          #short-circuit processing of ioscan -f output
+          flash[:notice] = 'You attempted to upload an ioscan -f, rather than an ioscan -F'
+          redirect_to :action => :index and return
+        end
+        next unless line.match(/(:.*?){17}/) # Filter out any invalid rows
         fields = line.split(':')
         hwpath = fields[10].strip
         if hwpath.slice(0, io_slot.path.length) == io_slot.path
@@ -46,7 +52,6 @@ class IoscansController < ApplicationController
       end #ioscan_file.each_line
       ioscan_file.pos = 0 #reset to the beginning of the file.
     end #@io_slots_in_server.each
-  
   end #def show
 
   def new_show #:nodoc:

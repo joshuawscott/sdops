@@ -47,10 +47,10 @@
 
 
     #content
-    %p &nbsp
-    - if flash[:notice]
-      %p{ :style => "color: green"}
-        = flash[:notice]
+      %p &nbsp
+      - if flash[:notice]
+        %p{ :style => "color: green"}
+          = flash[:notice]
 
     = yield
     
