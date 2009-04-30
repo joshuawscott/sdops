@@ -1,11 +1,22 @@
 - content_for :subtitle do
   Contract List
-
+= javascript_include_tag "contracts.js"
 
 #section1
-  = link_to 'New contract', new_contract_path if current_user.role == ADMIN
-  = link_to 'Export to Excel', formatted_contracts_url(:xls)
-  
+  - form_tag formatted_contracts_path('xls'), {:method => 'get', :name => 'export' } do
+    = link_to 'New contract', new_contract_path if current_user.role == ADMIN
+    = hidden_field 'export', 'sales_office'
+    = hidden_field 'export', 'support_office'
+    = hidden_field 'export', 'account_name'
+    = hidden_field 'export', 'said'
+    = hidden_field 'export', 'description'
+    = hidden_field 'export', 'start_date'
+    = hidden_field 'export', 'end_date'
+    = hidden_field 'export', 'payment_terms'
+    = hidden_field 'export', 'revenue'
+    = hidden_field 'export', 'expired'
+    = submit_tag "Export to Excel", :onclick => "getContractFormData()"
+
 #section2
   %table{:class => 'plain_table'}
     %tr
