@@ -9,6 +9,9 @@
   - if @productslist_array.size > 0
     %h2 Products to Quote
     %h3 You can put these product numbers into the quote.  Some lines may have multiple product numbers.
+    - if @server.server_line == "HP9000"
+      %p
+        %b NOTE: This is an HP9000 server, so you will also need to quote the base server and CPUs in the software section
     %p &nbsp;
     %table
       %tr

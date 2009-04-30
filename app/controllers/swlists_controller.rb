@@ -14,7 +14,7 @@ class SwlistsController < ApplicationController
       flash[:notice] = "Invalid number of Active Cores"
       redirect_to :action => :index and return
     end
-    server = Server.find(params[:server_id])
+    @server = Server.find(params[:server_id])
     whitelist = SwlistWhitelist.find(:all)
     blacklist = SwlistBlacklist.find(:all)
     license_basis = params[:hpux_version].match(/10\.\d\d/) || params[:hpux_version].match(/11\.00/) ? 'per_tier' : 'per_core'
@@ -32,7 +32,7 @@ class SwlistsController < ApplicationController
         if m
           logger.debug "whitelist pattern '" + wpattern.pattern + "' matches"
           #@whitelist_array << ['original line', line]
-          x = Swproduct.find_quotable(wpattern.pattern, license_basis, server_cores, server)
+          x = Swproduct.find_quotable(wpattern.pattern, license_basis, server_cores, @server)
           if x
             @productslist_array << [x.product_number, 1]
             @productslist_array << [x.license_product, x.qty]
