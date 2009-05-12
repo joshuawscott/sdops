@@ -2,7 +2,7 @@ class SugarOppsController < ApplicationController
   # GET /sugar_opps
   # GET /sugar_opps.xml
   def index
-    @sugar_opps = SugarOpp.find(:all)
+    @sugar_opps = SugarOpp.find(:all, :include => [:sugar_team, :sugar_user], :conditions => ['deleted = ?', false])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +13,7 @@ class SugarOppsController < ApplicationController
   # GET /sugar_opps/1
   # GET /sugar_opps/1.xml
   def show
-    @sugar_opp = SugarOpp.find(params[:id])
+    @sugar_opp = SugarOpp.find(params[:id], :include => [:sugar_team, :sugar_user, :sugar_accts])
     #@opportunity = Opportunity.find(@sugar_opp)
 
     respond_to do |format|

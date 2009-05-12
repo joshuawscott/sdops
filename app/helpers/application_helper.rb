@@ -59,4 +59,59 @@ module ApplicationHelper
     html
   end
 
+  # Returns a url containing parameters for executing a search on the contracts/index action.
+  def contract_search_url(search_hash = {})
+    Contract.columns.each do |c|
+      search_hash[c.name] ||= ""
+    end
+    url_for  :controller => "contracts", :action => "index", :commit => "Search", :params => { :search => search_hash }
+  end
+
+  # Renders a simple show view using haml.  Attempts to translate column names ending in '_id' into a
+  # foreign table name, where the value of the remote table's 'name' and 'description' fields are 
+  # substituted for the id value in the table:
+  #   @line_item.contract_id => @line_item.contract.[name|description]
+  # If name or description fields are not available, then the id value prints.
+  # instance should be a single ActiveRecord object
+  # 
+  # options hash:
+  # - exclude => array of column name excluded from the
+  # - ignored_foreign_keys => array of column names that are excluded from the automatic foreign key translation
+  # - prefix => this string will be prepended to the table names when doing a foreign key lookup
+  # 
+  # example:
+  #   - render_simple_show @user, :exclude => [:id, :created_at], :ignored_foreign_keys => [:passport_id], :prefix => ["users"]
+  def render_simple_show(instance, options = {})
+    options.symbolize_keys!
+    options[:exclude] ||= []
+    options[:ignored_foreign_keys] ||= []
+    if options[:prefix]
+      options[:prefix] += '_'
+    else
+      options[:prefix] = ''
+    end
+    instance.class.columns.each do |c|
+      #debugger
+      next if options[:exclude].include? c.name.to_sym
+      haml_tag :p do
+        haml_tag :label, {:for => c.name} do
+          haml_concat h(c.name.humanize)
+        end
+        if((c.name.split('_')[-1] == 'id' && c.name != 'id') && (!options[:ignored_foreign_keys].include?(c.name.to_sym)))
+          # handle foreign key fields
+          foreign_model = (options[:prefix].to_s + c.name.gsub(/_id$/, '')).camelize.constantize
+          if foreign_model.methods.include?('name')
+            haml_concat h(instance.__send__(foreign_model.to_s.underscore).name)
+          elsif foreign_model.methods.include?('description')
+            haml_concat h(instance.__send__(foreign_model.to_s.underscore).description)
+          else
+            haml_concat h(instance.__send__(c.name))
+          end
+        else
+          haml_concat h(instance.__send__(c.name))
+        end
+        haml_tag :br
+      end
+    end
+  end
 end

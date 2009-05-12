@@ -1,7 +1,7 @@
 - content_for :subtitle do
   Opportunity List
-
 #section1
+  %p &nbsp;
 
   %table{:border => "2", :cellpadding => "2", :cellspacing => "2"}
     %tr
@@ -11,17 +11,15 @@
       %th Amount
       %th Team
       %th User
-      %th &nbsp;
     
     - for opp in @sugar_opps
       %tr
-        %td= h opp.name
+        %td= link_to opp.name, sugar_opp_path(opp)
         %td= h opp.acct_name
         %td= h opp.sales_stage
         %td= h opp.amount_usdollar
         %td= h opp.team_name
         %td= h opp.user_name
-        %td= link_to ' Show ', sugar_opp_path(opp)
 
 
 #section2

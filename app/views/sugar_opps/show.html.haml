@@ -1,0 +1,55 @@
+- content_for :subtitle do
+  Opportunities
+= render :partial => "reports/reports_header"
+
+#section1
+  %p &nbsp;
+  %b
+    = link_to('Edit', edit_sugar_opp_path(@sugar_opp)) + ' | '  if current_user.role == ADMIN
+    = link_to('Destroy', sugar_opp_path(@sugar_opp), :confirm => 'Are you sure?', :method => :delete) if current_user.role == ADMIN
+
+#section2{:style => 'width:800px'}
+  %h2 
+    = "Opportunity - " + @sugar_opp.name.to_s
+  #result.boxed
+    %p
+      %label{:for => "sugar_opp_acct_name"}
+        Account Name
+      = link_to @sugar_opp.acct_name.to_s, contract_search_url({:account_name => @sugar_opp.acct_name})
+    %p
+      %label{:for => "sugar_opp_user_name"}
+        Sales Rep
+      =h @sugar_opp.user_name.to_s
+    %p
+      %label{:for => "sugar_opp_team_name"}
+        Team
+      =h @sugar_opp.team_name.to_s
+    %p
+      %label{:for => "sugar_opp_opportunity_type"}
+        Opportunity Type
+      =h @sugar_opp.opportunity_type.to_s
+    %p
+      %label{:for => "sugar_opp_amount"}
+        Total Amount
+      =h number_to_currency(@sugar_opp.amount, :precision => 2)
+    %p
+      %label{:for => "sugar_opp_amount"}
+        Projected Amount
+      =h number_to_currency(@sugar_opp.amount * (@sugar_opp.probability / 100), :precision => 2)
+    %p
+      %label{:for => "sugar_opp_sales_stage"}
+        Sales Stage
+      =h @sugar_opp.sales_stage.to_s
+    %p
+      %label{:for => "sugar_opp_probability"}
+        Probablility
+      =h @sugar_opp.probability.to_s + "%"
+#section3
+  %h2 Description
+  #result.boxed
+    %p
+      =h @sugar_opp.description
+  %br
+#section4
+  %p
+    =link_to "View Opportunity in Sugar", "http://crm1.sourcedirect.com/index.php?module=Opportunities&return_module=Opportunities&action=DetailView&record=" + @sugar_opp.id.to_s

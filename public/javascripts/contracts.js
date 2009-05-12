@@ -8,5 +8,9 @@ function getContractFormData(){
   $('export_end_date').value = $('search_end_date').value;
   $('export_payment_terms').value = $('search_payment_terms').value;
   $('export_revenue').value = $('search_revenue').value;
-  $('export_expired').value = $('search_expired').value;
+  if($('search_expired').checked == true) {
+    $('export_expired').checked = true;
+  } else {
+    $('export_expired').checked = false;
+  }
 }

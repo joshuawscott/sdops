@@ -11,9 +11,7 @@ class ContractsController < ApplicationController
     @support_offices =  @sales_offices
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
     @pay_terms << "Not Bundled"
-    
     if params[:serial_search] != nil
-      #@serial_number = params[:serial_search][:serial_number]
       @contracts = Contract.serial_search(params[:serial_search][:serial_number])
     elsif params[:search] != nil
       #Get search criteria from params object

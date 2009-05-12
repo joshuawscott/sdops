@@ -15,5 +15,6 @@
 #   updated_at    datetime
 class Opportunity < ActiveRecord::Base
   belongs_to :sugar_opp, :foreign_key => :sugar_id
+  belongs_to :sugar_acct, :foreign_key => :account_id
   
 end

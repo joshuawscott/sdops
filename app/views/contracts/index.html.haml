@@ -14,7 +14,7 @@
     = hidden_field 'export', 'end_date'
     = hidden_field 'export', 'payment_terms'
     = hidden_field 'export', 'revenue'
-    = hidden_field 'export', 'expired'
+    = check_box_tag 'export_expired', @expired, @expired, :name=> 'export[expired]', :style => "display: none"
     = submit_tag "Export to Excel", :onclick => "getContractFormData()"
 
 #section2
