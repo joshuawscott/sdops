@@ -223,7 +223,7 @@
         #body.comment{:style => 'width:600px'}
           = h comment.body
         #links.comment{:style => 'width:70px'}
-          - if current_user.role >= ADMIN
+          - if current_user.role >= ADMIN || current_user.login == comment.user
             = link_to 'Edit', edit_comment_path(comment)
             = link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete
 
