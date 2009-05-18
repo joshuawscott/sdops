@@ -57,6 +57,8 @@ class Contract < ActiveRecord::Base
   has_many :predecessors, :through => :succeeds
   
   has_many :comments, :as => :commentable
+
+  belongs_to :sugar_acct, :foreign_key => :account_id
   
   #Validate General Details
   validates_presence_of :account_id, :sales_office, :support_office, :sales_rep_id
@@ -66,7 +68,8 @@ class Contract < ActiveRecord::Base
   validates_presence_of :po_received
   
   before_save :update_line_item_effective_prices
-  
+  after_save :update_account_name_from_sugar
+
   def self.short_list(role, teams)
     if role >= ADMIN
       Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => "expired <> true", :order => 'sales_office, account_name, start_date', :group => 'id')
@@ -316,6 +319,8 @@ class Contract < ActiveRecord::Base
     end
   end
 
+  protected
+  
   def update_line_item_effective_prices
     logger.debug "********** Contract update_line_item_effective_prices"
     hw_disc = BigDecimal.new('1.0') - self.effective_hw_discount
@@ -332,5 +337,11 @@ class Contract < ActiveRecord::Base
       lineitem.save
     end
   end
+
+  # This method updates the account_name field from SugarCRM for all the Contracts with a matching account_id
+  def update_account_name_from_sugar
+    Contract.update_all(["account_name = ?", sugar_acct.name ], ["account_id = ?", account_id])
+  end
+
 
 end
