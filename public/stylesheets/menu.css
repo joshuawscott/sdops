@@ -1,0 +1,106 @@
+body {
+  behavior: url("hover.htc"); }
+
+* {
+  font-family: arial,tahoma,verdana,helvetica;
+  font-size: 12px; }
+
+hr {
+  position: absolute;
+  width: 100%;
+  top: 24px;
+  bottom: 24px;
+  left: 0px; }
+
+div#menu {
+  position: absolute;
+  width: 300px;
+  top: 15px;
+  left: 50px;
+  background-image: url("topNavBg.jpg");
+  background-repeat: repeat-x;
+  z-index: 9; }
+
+ul, li, a {
+  margin: 0;
+  padding: 0; }
+
+ul {
+  position: absolute;
+  width: 300px;
+  top: 0px;
+  left: 0px;
+  list-style: none; }
+
+li {
+  height: 24px; }
+
+div.submenu {
+  position: absolute;
+  padding: 2px;
+  width: 300px;
+  top: 15px;
+  left: 0px;
+  background-color: #cccccc;
+  border-color: black;
+  border-style: solid;
+  border-width: thin;
+  list-style: none;
+  z-index: 9; }
+
+div.submenuHeader {
+  padding: 2px;
+  margin-bottom: 5px;
+  font-family: arial,tahoma,verdana,helvetica;
+  font-size: 13px;
+  font-weight: bold; }
+
+div.menuCol {
+  float: left;
+  display: block;
+  height: 100px;
+  padding: 0px 10px 3px 10px;
+  border-color: black;
+  border-style: none dotted none none;
+  border-width: 1px; }
+
+div.last {
+  border-style: none none none none; }
+
+li {
+  display: inline;
+  z-index: 9; }
+
+a.menu {
+  display: block;
+  float: left;
+  height: 20px;
+  width: 75px;
+  padding-top: 4px;
+  margin-left: 2px;
+  padding: 0px 5px 0px 5px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: bold;
+  background: black;
+  color: white; }
+
+a.submenu {
+  width: auto;
+  background: #cccccc;
+  color: green;
+  font-weight: bold; }
+
+a.menu:hover {
+  background-color: #89be45;
+  color: black; }
+
+a.submenu:hover {
+  color: black; }
+
+ul ul, li:hover ul ul {
+  display: none; }
+
+li:hover ul, li:hover li:hover ul {
+  display: block;
+  background-color: red; }
