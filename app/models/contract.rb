@@ -318,8 +318,6 @@ class Contract < ActiveRecord::Base
       else 1
     end
   end
-
-  protected
   
   def update_line_item_effective_prices
     logger.debug "********** Contract update_line_item_effective_prices"
@@ -337,6 +335,8 @@ class Contract < ActiveRecord::Base
       lineitem.save
     end
   end
+
+  protected
 
   # This method updates the account_name field from SugarCRM for all the Contracts with a matching account_id
   def update_account_name_from_sugar
