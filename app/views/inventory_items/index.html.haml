@@ -2,13 +2,18 @@
   Inventory
 
 #section1
-  = link_to 'New Inventory Item', new_inventory_item_path if current_user.role == ADMIN
-  | 
-  %b 
-    = link_to 'Clear Search', inventory_items_path
   - form_tag inventory_items_path, { :method => :get } do
-    %div{:align => 'right', :style => 'width:980px'}
-      = submit_tag "Search"
+    %div{:style => 'width:764px;padding-bottom:0px;'}
+      %div{:align => 'left'}
+        %h2 Inventory Items
+      %div{:align => 'right', :style => 'padding-bottom:1px;width:764px;'}
+        -if current_user.role == ADMIN
+          = link_to 'New Inventory Item', new_inventory_item_path, :align => 'right'
+          &nbsp;
+        %b
+          = link_to 'Clear Search', inventory_items_path
+          &nbsp;
+        = submit_tag "Search", :style => 'align:right;'
   
     %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
       %thead
