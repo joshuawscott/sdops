@@ -1,8 +1,6 @@
 - content_for :subtitle do
   Inventory
 
-= render :partial => "reports/reports_header"
-
 #section1
   = link_to 'New Inventory Item', new_inventory_item_path if current_user.role == ADMIN
   | 

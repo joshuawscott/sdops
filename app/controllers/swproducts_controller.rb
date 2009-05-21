@@ -3,7 +3,6 @@ class SwproductsController < ApplicationController
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :get_swlist_whitelist
   before_filter :set_current_tab
-  layout 'tools'
 =begin
   # GET /swproducts
   # GET /swproducts.xml

@@ -66,7 +66,6 @@ ActionController::Routing::Routes.draw do |map|
   map.home '', :controller => "contracts"
 
   # See how all your routes lay out with "rake routes"
-  map.test '/hover4.html', :controller => 'admin', :action => 'test'
   # Install the default routes as the lowest priority.
   map.connect ':controller/:action/:id.:format'
   map.connect ':controller/:action/:id'

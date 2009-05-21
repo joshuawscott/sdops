@@ -1,12 +1,108 @@
-%ul
-  %li
-    = link_to 'Contracts', contracts_path
-  %li
-    = link_to 'Reports', reports_path
+#menu
+  %ul#menu
+    %li
+      =link_to 'Contracts', contracts_path, {:class => tabclass('contracts')}
+      %ul.submenu
+        .submenu
+          .submenuHeader Contracts - Contracts Menu
+          .menuCol.last
+            %h2 Contracts
+            =link_to 'Main page', contracts_path, submenuhash('contractsinfo', 'Main Contracts Page')
+            %br/
+            =link_to 'Renewals', {:controller => 'reports', :action => 'renewals'}, submenuhash('contractsinfo', 'Expiring Contracts')
+            %br/
+          .submenuFooter{:id => "contractsinfo"}
+            &nbsp;
+    %li
+      =link_to 'Reports', reports_path, {:class => tabclass('reports')}
+      %ul.submenu
+        .submenu
+          .submenuHeader Reports - Contract and Inventory reports
+          .menuCol
+            %h2 Contracts
+            =link_to 'Renewals', {:controller => 'reports', :action => 'renewals'}, submenuhash('reportsinfo', 'Expiring Contracts')
+            %br/
+          .menuCol
+            %h2 Revenue
+            =link_to 'Dashboard', {:controller => 'reports', :action => 'index'}, submenuhash('reportsinfo', 'Main Reports Page')
+            %br/
+            =link_to 'Customers', {:controller => 'reports', :action => 'customers'}, submenuhash('reportsinfo', 'List of Customers by Revenue')
+            %br/
+            =link_to 'New Business', {:controller => 'reports', :action => 'newbusiness'}, submenuhash('reportsinfo', 'New Business by Month')
+            %br/
+            =link_to 'Locations', {:controller => 'reports', :action => 'potentialoffices'}, submenuhash('reportsinfo', 'Revenue by Physical Location')
+            %br/
+          .menuCol.last
+            %h2 Parts
+            =link_to 'Spares Requirements', {:controller => 'reports', :action => 'sparesreq'}, submenuhash('reportsinfo', 'Supported Parts by Location')
+            %br/
+            =link_to 'Inventory', {:controller => 'inventory_items', :action => 'index'}, submenuhash('reportsinfo', 'Inventory of Parts')
+            %br/
+          .submenuFooter{:id => "reportsinfo"}
+            &nbsp;
+    %li
+      =link_to 'Tools', tools_path, {:class => tabclass('tools')}
+      %ul.submenu
+        .submenu
+          .submenuHeader Tools - Miscellaneous Tools
+          - if current_user.role == ADMIN
+            .menuCol
+              %h2 Admin
+              =link_to 'Servers', servers_path, submenuhash('toolsinfo', 'Edit List of Servers & I/O Slots')
+              %br/
+              =link_to 'Blacklists', swlist_blacklists_path, submenuhash('toolsinfo', 'Edit Blacklisted SWLIST items')
+              %br/
+              =link_to 'Whitelists', swlist_whitelists_path, submenuhash('toolsinfo', 'Edit Whitelisted SWLIST items & SW Products')
+              %br/
+          .menuCol
+            %h2 Gather Configs
+            =link_to 'I/O Scan', ioscans_path, submenuhash('toolsinfo', 'Process an HP-UX I/O Scan')
+            %br/
+            =link_to 'SW List', swlists_path, submenuhash('toolsinfo', 'Process an HP-UX SW Listing')
+            %br/
+          .menuCol.last
+            %h2 Pricing
+            =link_to 'HW Support', {:controller => 'tools', :action => 'hwpricing'}, submenuhash('toolsinfo', 'Quick Hardware Support Pricecheck')
+            %br/
+            =link_to 'SW Support', {:controller => 'tools', :action => 'swpricing'}, submenuhash('toolsinfo', 'Quick Software Support Pricecheck')
+            %br/
+          .submenuFooter{:id => "toolsinfo"}
+            &nbsp;
+    - if current_user.role == ADMIN
+      %li
+        =link_to 'Admin', admin_path, {:class => tabclass('admin')}
+        %ul.submenu
+          .submenu
+            .submenuHeader Admin - Administration Area
+            .menuCol
+              %h2 Edit/Create
+              =link_to 'Users', {:controller => 'users', :action => 'index'}, submenuhash('admininfo', 'User Administration')
+              %br/
+              =link_to 'Dropdowns', {:controller => 'dropdowns', :action => 'index'}, submenuhash('admininfo', 'Edit Application Dropdowns')
+              %br/
+            .menuCol
+              %h2 Tools
+              =link_to 'Import', {:controller => 'import', :action => 'index'}, submenuhash('admininfo', 'Import a new Contract')
+              %br/
+            .menuCol
+              %h2 Admin Reports
+              =link_to 'Admin Page', {:controller => 'admin', :action => 'index'}, submenuhash('admininfo', 'Go to the Main Admin page - for Misc. Reports')
+              %br/
+              =link_to 'Cashflow', {:controller => 'admin', :action => 'cashflow'}, submenuhash('admininfo', 'Support Cashflow Forecast')
+              %br/
+            .submenuFooter{:id => "admininfo"}
+              &nbsp;
+    -if logged_in?
+      %li
+        = link_to 'Logout', "/logout",  :class => "menuUnselected" 
+    -else
+      %li
+        = link_to 'Login', "/login",  :class => "menuUnselected"
+  #userinfo
+    - if current_user != :false
+      %p
+        = h current_user.first_name + ' ' + current_user.last_name
+        = h " - " + Dropdown.find(current_user.role).label
+  
+  
 
-  - if logged_in?
-    %li
-      = link_to 'Logout', "/logout"
-  - else
-    %li
-      = link_to 'Login', "/login"

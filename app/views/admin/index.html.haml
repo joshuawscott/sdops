@@ -1,23 +1,14 @@
 - content_for :subtitle do
   Admin Area
   
-%ul{:class => 'sub_menu'}
-  %li
-    = link_to( 'Dropdowns', dropdowns_path )
-  %li
-    = link_to( 'Users', users_path )
-  %li
-    = link_to 'Import', import_index_path
-
-%p &nbsp;
-
-%h1
-  Reports
-%p
-  = link_to 'Missing Line Items', {:controller => "admin", :action => "lineitems"}
-%p
-  = link_to 'Missing Account', {:controller => "admin", :action => "account_id"}
-%p
-  = link_to 'Support Cash Flow Forecast', {:controller => "admin", :action => "cashflow"}
-%p
-  = link_to 'Potential Office Planning', {:controller => "reports", :action => "potentialoffices"}
+#section1
+  %h1
+    Reports
+  %p
+    = link_to 'Missing Line Items', {:controller => "admin", :action => "lineitems"}
+  %p
+    = link_to 'Missing Account', {:controller => "admin", :action => "account_id"}
+  %p
+    = link_to 'Support Cash Flow Forecast', {:controller => "admin", :action => "cashflow"}
+  %p
+    = link_to 'Potential Office Planning', {:controller => "reports", :action => "potentialoffices"}

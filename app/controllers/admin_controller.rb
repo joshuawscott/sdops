@@ -36,9 +36,6 @@ class AdminController < ApplicationController
     end
   end
 
-  def test
-    AdminController.layout nil
-  end
   protected  
   def authorized?
     if logged_in? && current_user.role == ADMIN

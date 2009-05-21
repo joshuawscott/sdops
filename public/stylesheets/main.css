@@ -1,4 +1,7 @@
 /* General Styles */
+body {
+  behavior: url("/hover.htc"); }
+
 * {
   margin: 0;
   padding: 0;
@@ -227,17 +230,21 @@ ul.sub_menu {
 
 /* Header Styles */
 #header {
-  float: left;
-  width: 99%;
-  height: 85px;
-  margin: 0px 0px 5px 5px;
-  background: #fff;
+  positon: absolute;
+  left: 0px;
+  width: 100%;
+  height: 139px;
+  background-image: url("/images/tabshadow.gif");
+  background-repeat: repeat-x;
+  background-position: center bottom;
+  background-margin-left: -5px;
   /* Header > Logo */
   /* Header > Title */
   /* Header > Menu */ }
   #header #logo {
     float: left;
-    margin-right: 15px; }
+    margin-right: 15px;
+    margin-left: 5px; }
     #header #logo h1 {
       float: left;
       width: 650px;
@@ -250,7 +257,7 @@ ul.sub_menu {
       margin-top: -5px;
       font-size: 1em; }
   #header #title {
-    width: 700px; }
+    min-width: 100px; }
     #header #title h1 {
       font-size: 1.5em;
       margin: 0;
@@ -259,30 +266,101 @@ ul.sub_menu {
   #header #menu {
     /* :float left */
     width: 700px; }
+    #header #menu ul, #header #menu li, #header #menu a {
+      margin: 0; }
     #header #menu ul {
-      margin: 0;
-      padding-top: 15px;
-      list-style: none; }
-    #header #menu li {
-      display: inline; }
-    #header #menu a {
+      position: absolute;
+      width: 700px;
+      top: 69px;
+      left: 270px;
+      list-style: none;
+      z-index: 1; }
+    #header #menu div.submenu {
+      position: absolute;
+      height: 160px;
+      padding: 2px;
+      width: 450px;
+      top: -53px;
+      left: -270px;
+      background-color: #cccccc;
+      border-color: black;
+      border-style: solid;
+      border-width: thin;
+      list-style: none;
+      z-index: 9; }
+    #header #menu div.submenuHeader {
+      padding: 2px;
+      width: 95%;
+      margin-bottom: 5px;
+      font-family: arial,tahoma,verdana,helvetica;
+      font-size: 13px;
+      font-weight: bold;
+      border-color: black;
+      border-style: none none dotted none;
+      border-width: 1px; }
+    #header #menu div.submenuFooter {
       display: block;
       float: left;
-      width: 75px;
-      height: 20px;
-      margin-left: 2px;
-      padding-top: 3px;
-      background: #1e1e1e;
+      width: 95%;
+      padding: 2px;
+      margin-top: 5px;
+      font-family: arial,tahoma,verdana,helvetica;
+      font-weight: bold;
+      font-style: italic; }
+    #header #menu div.menuCol {
+      float: left;
+      display: block;
+      height: 100px;
+      padding: 0px 10px 3px 10px;
+      border-color: black;
+      border-style: none dotted none none;
+      border-width: 1px; }
+    #header #menu div.last {
+      border-style: none none none none; }
+    #header #menu li {
+      display: inline;
+      z-index: 9; }
+    #header #menu a.menuSelected, #header #menu a.menuUnselected {
+      float: left;
+      display: block;
+      width: 90px;
+      padding-right: 2px;
       text-decoration: none;
       text-align: center;
       font-weight: bold;
-      color: #ffffff; }
-    #header #menu a:hover {
-      color: #000000;
-      background: #89be45; }
-    #header #menu a.active {
-      color: #a0d55c;
-      background: #000000; }
+      background: black;
+      color: white;
+      z-index: 10; }
+    #header #menu a.menuSelected {
+      background: url("/images/selected_tab.gif") no-repeat;
+      color: rgb(187, 213, 59); }
+    #header #menu a.menuUnselected {
+      background: url("/images/unselected_tab.gif") no-repeat; }
+    #header #menu a.menuUnselected:hover {
+      background: url("/images/selected_tab.gif") no-repeat;
+      color: rgb(187, 213, 59); }
+    #header #menu a.submenu {
+      width: auto;
+      background: #cccccc;
+      color: green;
+      font-weight: bold; }
+    #header #menu a.menu:hover {
+      background: url("/images/selected_tab.gif") no-repeat;
+      color: black; }
+    #header #menu a.submenu:hover {
+      color: black; }
+    #header #menu ul ul, #header #menu li:hover ul {
+      display: none; }
+    #header #menu li:hover ul, #header #menu li:hover ul {
+      display: block;
+      background-color: red; }
+    #header #menu div.sub1 {
+      width: 100px;
+      background-image: url("/images/selected_tab.gif"); }
+    #header #menu div.sub2 {
+      display: none; }
+    #header #menu div.sub1:hover div.sub2 {
+      display: block; }
     #header #menu hr {
       position: absolute;
       left: 0px;
@@ -290,7 +368,8 @@ ul.sub_menu {
       color: #000000;
       background-color: #000000;
       height: 5px;
-      width: 99%; }
+      width: 99%;
+      z-index: 0; }
 
 /* Content */
 #content {

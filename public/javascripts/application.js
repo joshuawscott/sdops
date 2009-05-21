@@ -62,3 +62,11 @@ function setReplacedBy(box){
   }
 }
 
+function commandDescOn(id, strText){
+  $(id).innerHTML = strText;
+}
+
+function commandDescOff(id){
+  $(id).innerHTML = '&nbsp;';
+}
+

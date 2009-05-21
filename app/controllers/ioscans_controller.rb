@@ -1,7 +1,6 @@
 class IoscansController < ApplicationController
   before_filter :login_required
   before_filter :set_current_tab
-  layout 'tools'
   # GET /ioscans
   def index
     @server_names = Server.by_name
