@@ -9,6 +9,26 @@ class AdminController < ApplicationController
     end
   end
 
+  # GET /admin/appgen
+  def appgen
+    if params[:appgen] != nil
+      @appgen = Appgen.new(params[:appgen])
+      @dir = params[:appgen][:dir]
+      @table = params[:appgen][:table]
+      @field_count = params[:appgen][:field_count]
+      @mv_field_count = params[:appgen][:mv_field_count]
+      @out_file = params[:appgen][:out_file]
+      @fields = params[:appgen][:fields]
+      #@appgen = Appgen.new({:dir => 'AR', :table => 'AR-OPEN.10', :field_count => 2,:mv_field_count => 0, :out_file => 'temp.csv', :fields => 'Key Desc'})
+      @query = @appgen.query
+      @results = @appgen.get_data
+    end
+
+    respond_to do |format|
+      format.html # index.html.haml
+    end
+  end
+
   # GET /admin/lineitems
   def lineitems
     @contracts = Contract.find_by_sql("select c.id, c.account_name, c.description, c.end_date, count(l.id) as line_items FROM `contracts` c left join line_items as l on c.id = l.contract_id where c.expired <> true group by c.id having count(l.id) = 0 ORDER BY c.end_date DESC, c.account_name, c.description")

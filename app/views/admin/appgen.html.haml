@@ -1,0 +1,24 @@
+- content_for :subtitle do
+  Appgen Reports
+
+#section1
+  - form_tag 'appgen', {:method => 'post', :name => 'appgen' } do
+    %p Directoy
+    = text_field 'appgen', 'dir', :size => 11, :value => @dir
+    %p Table
+    = text_field 'appgen', 'table', :size => 11, :value => @table
+    %p Field Count
+    = text_field 'appgen', 'field_count', :size => 11, :value => @field_count
+    %p MV Field Count
+    = text_field 'appgen', 'mv_field_count', :size => 11, :value => @mv_field_count
+    %p Output File
+    = text_field 'appgen', 'out_file', :size => 11, :value => @out_file
+    %p Field List
+    = text_field 'appgen', 'fields', :size => 50, :value => @fields.gsub!(/\|/, " ")
+    %br/
+    = submit_tag "Get Data"
+  
+#section2
+
+  %p= @query
+  %pre= @results
