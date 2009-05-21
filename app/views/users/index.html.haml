@@ -2,14 +2,6 @@
   User List
 = javascript_include_tag "sorttable.js" 
 
-%ul{:class => 'sub_menu'}
-  %li
-    = link_to( 'Dropdowns', dropdowns_path )
-  %li
-    = link_to( 'Users', users_path, :class => 'active' )
-  %li
-    = link_to 'Import', import_index_path
-
 #section2
   %p= link_to 'Update Users from Sugar', refresh_path
 

@@ -1,5 +1,4 @@
 class InventoryItemsController < ApplicationController
-  layout "reports"
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :set_curr_tab

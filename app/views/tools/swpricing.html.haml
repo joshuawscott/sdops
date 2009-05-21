@@ -1,11 +1,9 @@
 - content_for :subtitle do
   SW Pricing
 
-= render :partial => 'tools_header'
-
 #section1
   %h2{:margin => '0'}
-    HW Pricing Lookup
+    SW Pricing Lookup
   %table{:class => 'plain_table'}
     -form_tag url_for(:controller => 'tools', :action => 'swpricing'), {:name => 'search', :method => :get} do
       %tr

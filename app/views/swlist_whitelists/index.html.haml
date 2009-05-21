@@ -1,6 +1,5 @@
 - content_for :subtitle do
   SW List Admin
-= render_partial '/tools/tools_header'
 #section1
   %b
     = link_to_if current_user.role == ADMIN, 'Create New Whitelist', new_swlist_whitelist_path

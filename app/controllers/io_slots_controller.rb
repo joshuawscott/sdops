@@ -3,7 +3,6 @@ class IoSlotsController < ApplicationController
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :get_server
   before_filter :set_current_tab
-  layout 'tools'
 =begin
   # GET /io_slots
   # GET /io_slots.xml

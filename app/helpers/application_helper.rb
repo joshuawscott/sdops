@@ -114,4 +114,41 @@ module ApplicationHelper
       end
     end
   end
+
+  #returns an html options hash for the main submenu
+  def submenuhash(id,description)
+    {:class => 'submenu', :onmouseover => "commandDescOn('#{id}','#{description}');", :onmouseout => "commandDescOff('#{id}');"}
+  end
+
+  #returns the correct css class for the tab by checking the current controller
+  def tabclass(cname)
+    #change cname to the correct selected tab name in exceptional cases:
+    case controller.controller_name
+      when  'inventory_items'
+        rcname = 'reports'
+      when  'comments',
+            'line_items'
+        rcname = 'contracts'
+      when  'dropdowns', 
+            'import',
+            'io_slots',
+            'servers',
+            'swlist_blacklists',
+            'swlists_whitelists',
+            'swproducts'
+        rcname = 'admin'
+      when  'ioscans',
+            'swlists'
+        rcname = 'tools'
+      else
+        rcname = controller.controller_name
+    end
+    #general case
+    if cname == rcname 
+      return("menuSelected")
+    else
+      return("menuUnselected")
+    end
+    
+  end
 end

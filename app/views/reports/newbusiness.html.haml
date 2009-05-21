@@ -2,15 +2,14 @@
 - content_for :subtitle do
   Reports - New Business
 
-= render :partial => "reports_header"
-
 #section1
   - form_tag '/reports/newbusiness.xls' do
     %table{:class => 'plain_table'}
       %tr
         %td{:width => '300px', :style => 'valign:bottom'}
           %h2{:margin => '0'}
-            Renewals &nbsp;&nbsp;&nbsp;
+            New Support Business
+            %br/
             %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
         %td
           Filter by Month
