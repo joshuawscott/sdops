@@ -11,19 +11,21 @@ class AdminController < ApplicationController
 
   # GET /admin/appgen
   def appgen
+    #debugger
     if params[:appgen] != nil
       @appgen = Appgen.new(params[:appgen])
+      @delimited = params[:appgen][:delimited]
       @dir = params[:appgen][:dir]
       @table = params[:appgen][:table]
-      @field_count = params[:appgen][:field_count]
       @mv_field_count = params[:appgen][:mv_field_count]
       @out_file = params[:appgen][:out_file]
+      @sort_str = params[:appgen][:sort_str]
+      @filters = params[:appgen][:filters]
       @fields = params[:appgen][:fields]
-      #@appgen = Appgen.new({:dir => 'AR', :table => 'AR-OPEN.10', :field_count => 2,:mv_field_count => 0, :out_file => 'temp.csv', :fields => 'Key Desc'})
       @query = @appgen.query
       @results = @appgen.get_data
     end
-
+    @fields.gsub!(/\|/, " ") if params[:appgen] != nil
     respond_to do |format|
       format.html # index.html.haml
     end

@@ -5,6 +5,10 @@
   font-family: Arial;
   font-size: 10pt; }
 
+pre {
+  font-family: Courier;
+  font-size: 10pt; }
+
 a {
   text-decoration: underline;
   color: #000000; }

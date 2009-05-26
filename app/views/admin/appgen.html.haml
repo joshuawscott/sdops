@@ -3,18 +3,31 @@
 
 #section1
   - form_tag 'appgen', {:method => 'post', :name => 'appgen' } do
-    %p Directoy
-    = text_field 'appgen', 'dir', :size => 11, :value => @dir
-    %p Table
+    %label{:for => "appgen_delimited"}
+      Delimited
+    = select_tag "appgen[delimited]", options_for_select(["true","false"], @delimited)
+    %label{:for => "appgen_dir"}
+      Directory
+    = select_tag "appgen[dir]", options_for_select(["AP","AR","BR","GL","IV","PO","OE"], @dir)
+    %label{:for => "appgen_table"}
+      Table
     = text_field 'appgen', 'table', :size => 11, :value => @table
-    %p Field Count
-    = text_field 'appgen', 'field_count', :size => 11, :value => @field_count
-    %p MV Field Count
+    %label{:for => "appgen_mv_field_count"}
+      MV Field Count
     = text_field 'appgen', 'mv_field_count', :size => 11, :value => @mv_field_count
-    %p Output File
+    %label{:for => "appgen_out_file"}
+      Output File
     = text_field 'appgen', 'out_file', :size => 11, :value => @out_file
-    %p Field List
-    = text_field 'appgen', 'fields', :size => 50, :value => @fields.gsub!(/\|/, " ")
+    %label{:for => "appgen_filters"}
+      Filters
+    = text_field 'appgen', 'filters', :size => 30, :value => @filters
+    %label{:for => "appgen_sort_str"}
+      Sort String
+    = text_field 'appgen', 'sort_str', :size => 30, :value => @sort_str
+    %label{:for => "appgen_fields"}
+      Field List
+    = text_field 'appgen', 'fields', :size => 50, :value => @fields
+
     %br/
     = submit_tag "Get Data"
   
