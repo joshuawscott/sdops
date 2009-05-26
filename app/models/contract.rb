@@ -50,8 +50,14 @@ class Contract < ActiveRecord::Base
   
   has_many :line_items, :dependent => :destroy
 
-  has_many :succeeds, :foreign_key => :successor_id, :class_name => 'Relationship'
-  has_many :precedes, :foreign_key => :predecessor_id, :class_name => 'Relationship'
+  has_many  :succeeds, 
+            :foreign_key => :successor_id, 
+            :class_name => 'Relationship', 
+            :dependent => :destroy
+  has_many  :precedes, 
+            :foreign_key => :predecessor_id, 
+            :class_name => 'Relationship',
+            :dependent => :destroy
 
   has_many :successors, :through => :precedes
   has_many :predecessors, :through => :succeeds
