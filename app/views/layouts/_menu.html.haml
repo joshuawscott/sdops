@@ -94,6 +94,8 @@
               %br/
               =link_to 'Cashflow', {:controller => 'admin', :action => 'cashflow'}, submenuhash('admininfo', 'Support Cashflow Forecast')
               %br/
+              =link_to 'Appgen', {:controller => 'admin', :action => 'appgen'}, submenuhash('admininfo', 'Run Appgen queries')
+              %br/
             .submenuFooter{:id => "admininfo"}
               &nbsp;
     -if logged_in?

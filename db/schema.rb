@@ -110,14 +110,17 @@ ActiveRecord::Schema.define(:version => 20090522132353) do
   end
 
   create_table "inventory_items", :force => true do |t|
-    t.string "item_code"
-    t.string "description"
-    t.string "serial_number"
-    t.string "warehouse"
-    t.string "location"
+    t.string   "tracking"
+    t.string   "item_code"
+    t.string   "description"
+    t.string   "warehouse"
+    t.string   "location"
+    t.string   "serial_number"
+    t.string   "commited"
+    t.integer  "cost",          :limit => 10, :precision => 10, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "inventory_items", ["id"], :name => "tracking", :unique => true
 
   create_table "io_slots", :force => true do |t|
     t.integer  "server_id"
@@ -157,6 +160,18 @@ ActiveRecord::Schema.define(:version => 20090522132353) do
     t.text     "data"
     t.integer  "resource_id",   :limit => 8
     t.string   "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "mains", :force => true do |t|
+    t.string   "title"
+    t.string   "link"
+    t.integer  "parent_id"
+    t.integer  "position"
+    t.integer  "absolute_position"
+    t.integer  "depth"
+    t.boolean  "published"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
