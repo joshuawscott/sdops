@@ -35,7 +35,7 @@ class AddInvoicesTables < ActiveRecord::Migration
 
     create_table :upfront_orders do |t|
       t.string  :appgen_order_id
-      t.boolean :has_upfront_support, :default => false
+      t.boolean :has_upfront_support, :default => true
       t.boolean :completed, :default => false
       t.integer :contract_id, :default => nil
     end

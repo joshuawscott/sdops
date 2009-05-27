@@ -11,10 +11,12 @@ class AppgenOrderLineitem < ActiveRecord::Base
   belongs_to :contract
   def hwchecked
     # if the first letter is A, then it's checked
-    return true if part_number[0] == 65 || (part_number[0] >= 48 && part_number[0] <= 57)
+    return "true" if part_number[0] == 65 || (part_number[0] >= 48 && part_number[0] <= 57)
+    'false'
   end
   def swchecked
     # if the first letter is B, then it's checked
-    return true if part_number[0] == 66
+    return "true" if part_number[0] == 66
+    'false'
   end
 end

@@ -32,4 +32,3 @@ function unhideAllRows(){
 window.onload = function() {
   toggleRows(5, 'completed_ckbox');
 }
-

@@ -45,6 +45,7 @@ class SupportPriceSw < SupportPricingDb
     SupportPriceSw.getprice(partnumber, Time.now)
   end
 
+  # Returns part_number, description, phone_price, update_price for the current date.
   def self.current_list_price(item)
     self.find_by_sql(["SELECT part_number, description, phone_price, update_price FROM
       (SELECT part_number,description,phone_price, update_price,modified_at FROM swdb
@@ -53,6 +54,7 @@ class SupportPriceSw < SupportPricingDb
         GROUP BY part_number LIMIT 1", item])[0] || self.new
   end
 
+  # Returns phone_price + update_price (convenience method for quoting)
   def list_price
     unless phone_price.nil? || update_price.nil?
       phone_price + update_price

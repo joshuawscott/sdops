@@ -137,12 +137,12 @@
       %tbody
         - @appgen_order_lineitems.each do |line|
           %tr
-            %td= check_box_tag "line_items[][is_hw]", true, line.hwchecked
-            %td= check_box_tag "line_items[][is_sw]", true, line.swchecked
-            %td= text_field_tag 'line_items[][product_num]', line.part_number
+            %td= select_tag 'line_item[][is_hw]', options_for_select(%w(true false), line.hwchecked)
+            %td= select_tag 'line_item[][is_sw]', options_for_select(%w(true false), line.swchecked)
+            %td= text_field_tag 'line_item[][product_num]', line.part_number
             %td= line.description
-            %td= text_field_tag 'line_items[][serial_num]', line.appgen_order_serial.serial_number
-            %td= text_field_tag 'line_items[][qty]', line.quantity, :style => 'width:3em;text-align:center'
-            %td= select_tag 'line_items[][support_provider]', options_from_collection_for_select(@support_providers, :label, :label)
+            %td= text_field_tag 'line_item[][serial_num]', line.appgen_order_serial.serial_number
+            %td= text_field_tag 'line_item[][qty]', line.quantity, :style => 'width:3em;text-align:center'
+            %td= select_tag 'line_item[][support_provider]', options_from_collection_for_select(@support_providers, :label, :label)
             
 

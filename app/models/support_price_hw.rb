@@ -44,6 +44,7 @@ class SupportPriceHw < SupportPricingDb
     SupportPriceHw.getprice(partnumber, Time.now)
   end
 
+  # Returns part_number, description, list_price for the current date.
   def self.current_list_price(item)
     self.find_by_sql(["SELECT part_number, description, list_price FROM
       (SELECT part_number,description,list_price,modified_at FROM hwdb
