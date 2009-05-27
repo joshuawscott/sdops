@@ -37,6 +37,7 @@ class UpfrontOrdersController < ApplicationController
   end
   
   def review_import
+    @contracts = Contract.find(:all)
     @upfront_order = UpfrontOrder.find(params[:id])
     @appgen_order = @upfront_order.appgen_order
     @appgen_order_lineitems = @appgen_order.appgen_order_lineitems

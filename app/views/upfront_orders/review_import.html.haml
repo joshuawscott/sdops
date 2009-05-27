@@ -2,6 +2,7 @@
 = javascript_include_tag "jscalendar-1.0/calendar.js"
 = javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
 = javascript_include_tag "jscalendar-1.0/calendar-setup.js"
+= javascript_include_tag "upfront_orders_review_import.js"
 -content_for :subtitle do
   Upfront Orders
 %h1 Review and Import
@@ -36,7 +37,7 @@
     #results.boxed{:style => 'width: 400px;height: 320px'}
       %h2 New Contract Details
       %label{:for => :account_id} Account ID
-      =select_tag("contract[account_id]", '<option></option>' + options_from_collection_for_select(@sugar_accts, :id, :name), :onchange => "$('contract[account_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
+      =select_tag("contract[account_id]", '<option></option>' + options_from_collection_for_select(@sugar_accts, :id, :name), :onchange => "$('contract[account_name]').value = this.options[this.selectedIndex].text;toggleContracts();", :style => 'width: 200px')
       %br/
       %label{:for => :sales_office} Sales Office
       =select_tag("contract[sales_office]", '<option></option>' + options_from_collection_for_select(@sales_offices, :id, :name), :onchange => "$('contract[sales_office_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
@@ -81,7 +82,25 @@
       =select_tag("contract[contract_type]", '<option></option>' + options_from_collection_for_select(@contract_types, :id, :name), :style => 'width: 200px')
       %br/
   #section1
-    #results.boxed{:style => 'width:400px;height:170px'}
+    %table
+      %thead
+        %tr
+          %th Account Name
+          %th SAID
+          %th Description
+          %th Start Date
+          %th End Date
+      %tbody
+        -@contracts.each do |c|
+          %tr{:id => c.account_id}
+            %td= c.account_name
+            %td= c.said.slice(0..40)
+            %td= c.description.slice(0..40)
+            %td= c.start_date
+            %td= c.end_date
+          
+  #section1
+    #results.boxed{:style => 'width:400px'}
       %h2 Upfront Revenue
       %label Main Discount: 
       =@appgen_order.net_discount.to_s + '%'
