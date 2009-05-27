@@ -64,7 +64,7 @@
         %tr
           %td= line.part_number
           %td= line.description
-          %td= line.appgen_order_serial.serial_number
+          %td= line.appgen_order_serial.serial_number unless line.appgen_order_serial == nil
           %td= line.quantity
           %td= line.price
           %td= line.discount

@@ -160,7 +160,7 @@
             %td= select_tag 'line_item[][is_sw]', options_for_select(%w(true false), line.swchecked)
             %td= text_field_tag 'line_item[][product_num]', line.part_number
             %td= line.description
-            %td= text_field_tag 'line_item[][serial_num]', line.appgen_order_serial.serial_number
+            %td= text_field_tag 'line_item[][serial_num]', line.appgen_order_serial.serial_number unless line.appgen_order_serial == nil
             %td= text_field_tag 'line_item[][qty]', line.quantity, :style => 'width:3em;text-align:center'
             %td= select_tag 'line_item[][support_provider]', options_from_collection_for_select(@support_providers, :label, :label)
             
