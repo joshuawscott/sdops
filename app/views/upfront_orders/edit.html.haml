@@ -7,11 +7,11 @@
       %p
         %label{:for => "upfront_order_has_upfront_support"}
           Upfront Support?
-        = f.select :has_upfront_support, [%w(true false), %w(true false)]
+        = f.select :has_upfront_support, [true, false]
       %p
         %label{:for => "upfront_order_completed"}
           Completed?
-        = f.select :completed, [%w(true false), %w(true false)]
+        = f.select :completed, [true, false]
       %p
         %label{:for => "upfront_order_has_upfront_support"}
           Contract ID
