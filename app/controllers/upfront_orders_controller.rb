@@ -37,10 +37,10 @@ class UpfrontOrdersController < ApplicationController
   end
   
   def review_import
-    @contracts = Contract.find(:all)
+    @contracts = Contract.find(:all, :conditions => {:expired => false})
     @upfront_order = UpfrontOrder.find(params[:id])
     @appgen_order = @upfront_order.appgen_order
-    @appgen_order_lineitems = @appgen_order.appgen_order_lineitems
+    @appgen_order_lineitems = AppgenOrderLineitem.find(:all, :conditions => {:appgen_order_id => @appgen_order.id}, :include => :appgen_order_serial)
     @support_revenue_lines = []
     @srltotal = BigDecimal.new("0.0")
     @appgen_order_lineitems.each do |a|

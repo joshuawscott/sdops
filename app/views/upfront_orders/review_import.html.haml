@@ -93,9 +93,9 @@
       %tbody
         -@contracts.each do |c|
           %tr{:id => c.account_id}
-            %td= c.account_name
-            %td= c.said.slice(0..40)
-            %td= c.description.slice(0..40)
+            %td{:title => c.account_name.length > 30 ? c.account_name : ""}= h c.account_name.length > 30 ? c.account_name.slice(0..29) + "..." : c.account_name
+            %td{:title => c.said.length > 25 ? c.said : ""}= h c.said.length > 25 ? c.said.slice(0..24) + "..." : c.said
+            %td{:title => c.description.length > 30 ? c.description : ""}= h c.description.length > 30 ? c.description.slice(0..29) + "..." : c.description
             %td= c.start_date
             %td= c.end_date
           
