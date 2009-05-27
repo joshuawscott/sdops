@@ -1,0 +1,26 @@
+-content_for :subtitle do
+  Edit Upfront Order
+#section1
+  #results.boxed
+    %h2= "Upfront Order " + @upfront_order.appgen_order_id.to_s
+    -form_for @upfront_order do |f|
+      %p
+        %label{:for => "upfront_order_has_upfront_support"}
+          Upfront Support?
+        = f.select :has_upfront_support, [%w(true false), %w(true false)]
+      %p
+        %label{:for => "upfront_order_completed"}
+          Completed?
+        = f.select :completed, [%w(true false), %w(true false)]
+      %p
+        %label{:for => "upfront_order_has_upfront_support"}
+          Contract ID
+        = f.select :contract_id, Contract.find(:all, :conditions => {:payment_terms => "Bundled"}).collect {|c| [c.said.to_s + " | " + c.description.to_s, c.id]}, { :include_blank => true }
+      %p
+        =submit_tag 'Update'
+#section2
+  #results.boxed
+    %h2 Original Order Info
+    =render_simple_show(@appgen_order)
+#section2
+  =render_simple_index(@appgen_order.appgen_order_lineitems, :ignore_foreign_keys => [:appgen_order_id], :display_show => false, :display_edit => false, :display_destroy => false)

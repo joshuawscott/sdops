@@ -1,5 +1,6 @@
 class UpfrontOrdersController < ApplicationController
   before_filter :set_dropdowns, :only => [:review_import, :save_import]
+  before_filter :authorized?
   def index
     @upfront_orders = UpfrontOrder.find(:all, :joins => :appgen_order, :order => :ship_date)
     
@@ -9,6 +10,10 @@ class UpfrontOrdersController < ApplicationController
     @lineitems = AppgenOrderLineitem.find(:all, :include => :appgen_order_serial, :conditions => ['appgen_order_id = ?', @upfront_order.appgen_order_id])
   end
 
+  def edit
+    @upfront_order = UpfrontOrder.find(params[:id])
+    @appgen_order = @upfront_order.appgen_order
+  end
   def update_from_appgen
     UpfrontOrder.update_from_appgen
     redirect_to upfront_orders_url
@@ -136,6 +141,14 @@ class UpfrontOrdersController < ApplicationController
     @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0 AND name LIKE 'Support - Bundled%'", :order => "list_order")
     #LineItem dropdowns
     @support_providers = Dropdown.support_provider_list
+  end
+    
+  def authorized?
+    if logged_in? && current_user.role == ADMIN
+       true
+    else
+       not_authorized
+    end
   end
 
   
