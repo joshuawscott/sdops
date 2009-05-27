@@ -84,6 +84,10 @@
               %h2 Tools
               =link_to 'Import', {:controller => 'import', :action => 'index'}, submenuhash('admininfo', 'Import a new Contract')
               %br/
+              =link_to 'Upfront Orders', {:controller => 'upfront_orders', :action => 'index'}, submenuhash('admininfo', 'View Pending Upfront Orders')
+              %br/
+              =link_to 'Appgen Orders', {:controller => 'appgen_orders', :action => 'index'}, submenuhash('admininfo', 'View Raw Upfront Orders')
+              %br/
             .menuCol
               %h2 Admin Reports
               =link_to 'Admin Page', {:controller => 'admin', :action => 'index'}, submenuhash('admininfo', 'Go to the Main Admin page - for Misc. Reports')

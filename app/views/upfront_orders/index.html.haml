@@ -1,0 +1,35 @@
+=javascript_include_tag "upfront_orders.js"
+- content_for :subtitle do
+  Upfront Orders
+#section1
+  %p
+    -form_tag update_from_appgen_upfront_orders_path do
+      =submit_tag "Update from Appgen"
+  %p
+    
+    Show Completed?
+    =check_box_tag 'completed_ckbox', 1, false, {:onclick => "toggleRows(5, this)"}
+  %table{:id => "orders_table"}
+    %thead
+      %tr
+        %th Appgen Order #
+        %th Cust Name
+        %th Ship Date
+        %th Support?
+        %th Converted?
+        %th Completed?
+        %th{:colspan => 3}
+    %tbody
+      - @upfront_orders.each do |u|
+        %tr{:id => u.completed}
+          %td=h u.appgen_order_id
+          %td=h u.appgen_order.cust_name
+          %td=h u.appgen_order.ship_date
+          %td=h u.has_upfront_support.to_s
+          %td=h (u.contract_id != nil).to_s
+          %td=h u.completed.to_s
+          %td
+            =link_to("Show", upfront_order_path(u.id))
+          %td
+            =link_to("Original Order", appgen_order_path(u.appgen_order_id))
+          %td=link_to "Process Order", review_import_upfront_order_path(u)

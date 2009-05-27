@@ -9,7 +9,40 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090429175216) do
+ActiveRecord::Schema.define(:version => 20090522132353) do
+
+  create_table "appgen_order_lineitems", :force => true do |t|
+    t.string  "appgen_order_id",                                :null => false
+    t.string  "part_number"
+    t.string  "description"
+    t.integer "quantity"
+    t.decimal "price",           :precision => 20, :scale => 5
+    t.decimal "discount",        :precision => 7,  :scale => 2
+  end
+
+  add_index "appgen_order_lineitems", ["id"], :name => "index_appgen_order_lineitems_on_id", :unique => true
+  add_index "appgen_order_lineitems", ["appgen_order_id"], :name => "index_appgen_order_lineitems_on_appgen_order_id"
+
+  create_table "appgen_order_serials", :force => true do |t|
+    t.string "serial_number"
+  end
+
+  add_index "appgen_order_serials", ["id"], :name => "index_appgen_order_serials_on_id", :unique => true
+
+  create_table "appgen_orders", :force => true do |t|
+    t.integer "cust_code"
+    t.string  "cust_name"
+    t.string  "address2"
+    t.string  "address3"
+    t.string  "address4"
+    t.string  "cust_po_number"
+    t.date    "ship_date"
+    t.decimal "net_discount",   :precision => 7,  :scale => 2
+    t.decimal "sub_total",      :precision => 20, :scale => 5
+    t.string  "sales_rep"
+  end
+
+  add_index "appgen_orders", ["id"], :name => "index_appgen_orders_on_id", :unique => true
 
   create_table "comments", :force => true do |t|
     t.text     "body"
@@ -198,6 +231,15 @@ ActiveRecord::Schema.define(:version => 20090429175216) do
     t.text     "explanation"
     t.string   "server_line"
   end
+
+  create_table "upfront_orders", :force => true do |t|
+    t.string  "appgen_order_id"
+    t.boolean "has_upfront_support", :default => false
+    t.boolean "completed",           :default => false
+    t.integer "contract_id"
+  end
+
+  add_index "upfront_orders", ["appgen_order_id"], :name => "index_upfront_orders_on_appgen_order_id", :unique => true
 
   create_table "users", :force => true do |t|
     t.string   "login"

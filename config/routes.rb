@@ -1,5 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
-
+  map.resources :appgen_orders
+  map.resources :appgen_order_lineitems
+  map.resources :appgen_serials
+  map.resources :upfront_orders, :collection => {:update_from_appgen => :put}, :member => {:save_import => :put, :review_import => :get}
+  
   map.resources :swproducts
 
   map.resources :swlist_whitelists, :has_many => :swproducts

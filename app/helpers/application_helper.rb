@@ -91,7 +91,6 @@ module ApplicationHelper
       options[:prefix] = ''
     end
     instance.class.columns.each do |c|
-      #debugger
       next if options[:exclude].include? c.name.to_sym
       haml_tag :p do
         haml_tag :label, {:for => c.name} do
@@ -100,9 +99,9 @@ module ApplicationHelper
         if((c.name.split('_')[-1] == 'id' && c.name != 'id') && (!options[:ignored_foreign_keys].include?(c.name.to_sym)))
           # handle foreign key fields
           foreign_model = (options[:prefix].to_s + c.name.gsub(/_id$/, '')).camelize.constantize
-          if foreign_model.methods.include?('name')
+          if foreign_model.columns.include?('name')
             haml_concat h(instance.__send__(foreign_model.to_s.underscore).name)
-          elsif foreign_model.methods.include?('description')
+          elsif foreign_model.columns.include?('description')
             haml_concat h(instance.__send__(foreign_model.to_s.underscore).description)
           else
             haml_concat h(instance.__send__(c.name))
@@ -113,7 +112,81 @@ module ApplicationHelper
         haml_tag :br
       end
     end
+    haml_tag :span
   end
+
+  # Creates a table with the supplied aggregation.  Same options as render_simple_show
+  # The table includes show, edit, and destroy links for each line.
+  # additional options, these hide or display the show/edit/destroy links all rows. default is true
+  # - :display_show => true|false
+  # - :display_edit => true|false
+  # - :display_destroy => true|false
+  def render_simple_index(aggregation, options = {})
+    return "<p>No Records Found.</p>" if aggregation[0].class.name == 'NilClass'
+    options.symbolize_keys!
+    options[:exclude] ||= []
+    options[:ignored_foreign_keys] ||= []
+    if options[:prefix]
+      options[:prefix] += '_'
+    else
+      options[:prefix] = ''
+    end
+    linkcols = 0
+    options[:display_show] ||= true
+    options[:display_edit] ||= true
+    options[:display_destroy] ||= true
+    haml_tag :table do
+      haml_tag :thead do
+        aggregation[0].class.columns.each do |c|
+          next if options[:exclude].include? c.name.to_sym
+          linkcols += 1
+          haml_tag :th do
+            haml_concat h(c.name.humanize)
+          end
+        end
+        linkcols > 0 ? haml_tag(:th, "Options", {:colspan => linkcols}) : nil
+      end
+      
+      haml_tag :tbody do
+        aggregation.each do |instance|
+          haml_tag :tr do
+            instance.class.columns.each do |c|
+              haml_tag :td do
+                if((c.name.split('_')[-1] == 'id' && c.name != 'id') && (!options[:ignored_foreign_keys].include?(c.name.to_sym)))
+                  # handle foreign key fields
+                  foreign_model = (options[:prefix].to_s + c.name.gsub(/_id$/, '')).camelize.constantize
+                  if foreign_model.column_names.include?('name')
+                    haml_concat h(instance.__send__(foreign_model.to_s.underscore).name)
+                  elsif foreign_model.column_names.include?('description')
+                    haml_concat h(instance.__send__(foreign_model.to_s.underscore).description)
+                  else
+                    haml_concat h(instance.__send__(c.name))
+                  end
+                else
+                  haml_concat h(instance.__send__(c.name))
+                end # big if
+              end #td
+            end #columns.each
+            if options[:display_show]
+              haml_tag :td do
+                haml_concat link_to('Show', url_for(instance))
+              end
+            end
+            if options[:display_edit]
+              haml_tag :td do
+                haml_concat link_to('Edit', url_for(instance) + "/edit")
+              end
+            end
+            if options[:display_destroy]
+              haml_tag :td do
+                haml_concat link_to('Destroy', url_for(instance), :confirm => "Are You Sure?", :method => :delete)
+              end
+            end
+          end #tr
+        end #aggregation
+      end #tbody
+    end #table
+  end #render_simple_index
 
   #returns an html options hash for the main submenu
   def submenuhash(id,description)
@@ -129,13 +202,16 @@ module ApplicationHelper
       when  'comments',
             'line_items'
         rcname = 'contracts'
-      when  'dropdowns', 
+      when  'appgen_orders',
+            'dropdowns',
             'import',
             'io_slots',
             'servers',
             'swlist_blacklists',
             'swlists_whitelists',
-            'swproducts'
+            'swproducts',
+            'upfront_orders',
+            'users'
         rcname = 'admin'
       when  'ioscans',
             'swlists'

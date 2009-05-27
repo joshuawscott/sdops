@@ -1,0 +1,148 @@
+= stylesheet_link_tag "/javascripts/jscalendar-1.0/calendar-blue.css"
+= javascript_include_tag "jscalendar-1.0/calendar.js"
+= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
+= javascript_include_tag "jscalendar-1.0/calendar-setup.js"
+-content_for :subtitle do
+  Upfront Orders
+%h1 Review and Import
+- form_tag save_import_upfront_order_path(@upfront_order), :method => :put do
+  #section1
+    =submit_tag "Save Contract and Line Items"
+    =hidden_field_tag 'contract[sales_office_name]'
+    =hidden_field_tag 'contract[support_office_name]'
+    =hidden_field_tag 'contract[account_name]'
+    %h2 Contract
+    #results.boxed{:style => 'width: 300px;height: 320px'}
+      %h2 Original Order Information
+      %label{:for => :cust_name} Cust Name
+      =@appgen_order.cust_name
+      %br/
+      %label Address
+      =@appgen_order.address2
+      %br/
+      -if @appgen_order.address3 != ''
+        %label &nbsp;
+        =@appgen_order.address3
+        %br/
+      %label &nbsp;
+      =@appgen_order.address4
+      %br/
+      %label Sales Rep
+      =@appgen_order.sales_rep
+      %br/
+      %label Ship Date
+      =@appgen_order.ship_date
+      %br/
+    #results.boxed{:style => 'width: 400px;height: 320px'}
+      %h2 New Contract Details
+      %label{:for => :account_id} Account ID
+      =select_tag("contract[account_id]", '<option></option>' + options_from_collection_for_select(@sugar_accts, :id, :name), :onchange => "$('contract[account_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
+      %br/
+      %label{:for => :sales_office} Sales Office
+      =select_tag("contract[sales_office]", '<option></option>' + options_from_collection_for_select(@sales_offices, :id, :name), :onchange => "$('contract[sales_office_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
+      %br/
+      %label{:for => :support_office} Support Office
+      =select_tag("contract[support_office]", '<option></option>' + options_from_collection_for_select(@support_offices, :id, :name), :onchange => "$('contract[support_office_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
+      %br/
+      %label{:for => :description} Description
+      =text_field_tag 'contract[description]', '', :size => 35
+      %br/
+      %label{:for => :sales_rep_id} Sales Rep
+      =select_tag("contract[sales_rep_id]", '<option></option>' + options_from_collection_for_select(@reps, :id, :full_name), :style => 'width: 200px')
+      %br/
+      %label{:for => :platform} Platform
+      =select_tag("contract[platform]", '<option></option>' + options_from_collection_for_select(@platform, :label, :label), :style => 'width: 200px')
+      %br/
+      %label{:for => :start_date} Start Date
+      =date_select_tag 'contract[start_date]', (@appgen_order.ship_date. + 1.day).to_s(:local)
+      %br/
+      %label{:for => :end_date} End Date
+      =date_select_tag 'contract[end_date]', (@appgen_order.ship_date + 1.year).to_s(:local)
+      %br/
+      %label{:for => :multiyr_end} Multiyear End Date
+      =date_select_tag 'contract[multiyr_end]', ''
+      %br/
+      %label{:for => :hw_support_level_id} HW Support Level
+      =select_tag("contract[hw_support_level_id]", '<option></option>' + options_from_collection_for_select(@types_hw, :label, :label), :style => 'width: 200px')
+      %br/
+      %label{:for => :sw_support_level_id} SW Support Level
+      =select_tag("contract[sw_support_level_id]", '<option></option>' + options_from_collection_for_select(@types_sw, :label, :label), :style => 'width: 200px')
+      %br/
+      %label{:for => :updates} Updates?
+      =select_tag 'contract[updates]', options_for_select(%w(false true))
+      %br/
+      %label{:for => :ce_days} CE Days
+      =text_field_tag 'contract[ce_days]', 0
+      %br/
+      %label{:for => :sa_days} SA Days
+      =text_field_tag 'contract[sa_days]', 0
+      %br/
+      %label{:for => :contract_type} Contract Type
+      =select_tag("contract[contract_type]", '<option></option>' + options_from_collection_for_select(@contract_types, :id, :name), :style => 'width: 200px')
+      %br/
+  #section1
+    #results.boxed{:style => 'width:400px;height:170px'}
+      %h2 Upfront Revenue
+      %label Main Discount: 
+      =@appgen_order.net_discount.to_s + '%'
+      %table{:class => 'plain'}
+        %tr
+          %th Part#
+          %th Desc.
+          %th list $
+          %th disc%
+        - @support_revenue_lines.each do |srl|
+          %tr
+            %td= srl.part_number
+            %td= srl.description
+            %td= srl.price
+            %td= srl.discount.to_s + '%'
+        %tr
+          %td{:colspan => 2, :border => 'none'} Total
+          %td= @srltotal
+          %td &nbsp;
+        
+    #results.boxed{:style => 'width:300px;height:170px'}
+      %h2 Revenue
+      %label{:for => :revenue} Total
+      =text_field_tag 'contract[revenue]', '0.0'
+      %br/  
+      %label{:for => :annual_hw_rev} Annual HW
+      =text_field_tag 'contract[annual_hw_rev]', '0.0'
+      %br/
+      %label{:for => :annual_sw_rev} Annual SW
+      =text_field_tag 'contract[annual_sw_rev]', '0.0'
+      %br/
+      %label{:for => :annual_ce_rev} Annual CE
+      =text_field_tag 'contract[annual_ce_rev]', '0.0'
+      %br/
+      %label{:for => :annual_sa_rev} Annual SA
+      =text_field_tag 'contract[annual_sa_rev]', '0.0'
+      %br/
+      %label{:for => :annual_dr_rev} Annual DR
+      =text_field_tag 'contract[annual_dr_rev]', '0.0'
+      %br/
+  #section2
+    %h2 Line Items
+    %table
+      %thead
+        %tr
+          %th HW?
+          %th SW?
+          %th Part Number
+          %th Description
+          %th Serial Number
+          %th Qty
+          %th Support Provider
+      %tbody
+        - @appgen_order_lineitems.each do |line|
+          %tr
+            %td= check_box_tag "line_items[][is_hw]", true, line.hwchecked
+            %td= check_box_tag "line_items[][is_sw]", true, line.swchecked
+            %td= text_field_tag 'line_items[][product_num]', line.part_number
+            %td= line.description
+            %td= text_field_tag 'line_items[][serial_num]', line.appgen_order_serial.serial_number
+            %td= text_field_tag 'line_items[][qty]', line.quantity, :style => 'width:3em;text-align:center'
+            %td= select_tag 'line_items[][support_provider]', options_from_collection_for_select(@support_providers, :label, :label)
+            
+

@@ -65,6 +65,8 @@ class Contract < ActiveRecord::Base
   has_many :comments, :as => :commentable
 
   belongs_to :sugar_acct, :foreign_key => :account_id
+
+  has_one :upfront_order, :dependent => :nullify
   
   #Validate General Details
   validates_presence_of :account_id, :sales_office, :support_office, :sales_rep_id
