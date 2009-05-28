@@ -19,6 +19,9 @@ IMPORT = 33
 MANAGER = 34
 ADMIN = 35
 
+ENV['AGHOME'] ||= '/usr/appgen'
+ENV['TERM'] ||= 'xterm'
+
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
   # Application configuration should go into files in config/initializers
