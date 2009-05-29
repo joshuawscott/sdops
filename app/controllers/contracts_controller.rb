@@ -27,7 +27,7 @@ class ContractsController < ApplicationController
       @expired ||= params[:search][:expired]
       #Create and set the scope conditions
       @contracts = Contract.scoped({})
-      @contracts = @contracts.conditions "contracts.sales_office IN (?)", current_user.sugar_team_ids
+      @contracts = @contracts.conditions "(contracts.sales_office IN (?) OR contracts.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
       @contracts = @contracts.conditions "contracts.sales_office = ?", @sales_office unless @sales_office.blank?
       @contracts = @contracts.conditions "contracts.support_office = ?", @support_office unless @support_office.blank?
       @contracts = @contracts.conditions "contracts.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
@@ -61,7 +61,7 @@ class ContractsController < ApplicationController
       @expired ||= params[:export][:expired]
       #Create and set the scope conditions
       @contracts = Contract.scoped({})
-      @contracts = @contracts.conditions "contracts.sales_office IN (?)", current_user.sugar_team_ids
+      @contracts = @contracts.conditions "(contracts.sales_office IN (?) OR contracts.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
       @contracts = @contracts.conditions "contracts.sales_office = ?", @sales_office unless @sales_office.blank?
       @contracts = @contracts.conditions "contracts.support_office = ?", @support_office unless @support_office.blank?
       @contracts = @contracts.conditions "contracts.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?

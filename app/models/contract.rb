@@ -82,7 +82,7 @@ class Contract < ActiveRecord::Base
     if role >= ADMIN
       Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => "expired <> true", :order => 'sales_office, account_name, start_date', :group => 'id')
     else
-      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => ["sales_office IN (?) AND expired <> true", teams], :order => 'sales_office, account_name, start_date', :group => 'id')
+      Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => ["(sales_office IN (?) OR support_office IN(?)) AND expired <> true", teams, teams], :order => 'sales_office, account_name, start_date', :group => 'id')
     end
   end
 
@@ -112,7 +112,7 @@ class Contract < ActiveRecord::Base
     else
       Contract.find(:all, 
 				:select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent, renewal_amount", 
-				:conditions => ["end_date <= '#{plus90}' AND expired <> 1 AND sales_office IN (?)", teams], 
+				:conditions => ["end_date <= '#{plus90}' AND expired <> 1 AND (sales_office IN (?) OR support_office IN (?)", teams, teams], 
 				:order => 'sales_office, days_due')
     end
   end
