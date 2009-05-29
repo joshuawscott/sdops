@@ -52,6 +52,7 @@ class LineItem < ActiveRecord::Base
     locations
   end
 
+  # Updates current_list_price for all the LineItem's in the database.
   def self.update_all_current_prices
     
     # Update HW Lines
@@ -71,15 +72,24 @@ class LineItem < ActiveRecord::Base
     LineItem.update_all("current_list_price = list_price", "support_type = 'SRV'")
   end
 
+  # Extended List Price (list_price * qty)
   def ext_list_price
     (list_price || 0) * (qty || 0)
   end
 
+  # Extended Current List Price (current_list_price * qty)
   def ext_current_list_price
     (current_list_price || 0) * (qty || 0)
   end
 
+  # Extended Effective Price (effective_list_price * qty)
   def ext_effective_price
     (effective_list_price || 0) * (qty || 0)
+  end
+
+  # Returns a SupportPriceHw or SupportPriceSw object, if support_type is 'HW' or 'SW' respectively.
+  # If support_type is 'SRV', returns nil.  This method is for updating from the current pricing DB.
+  def return_current_info
+    ("support_price_" + support_type.downcase).camelize.constantize.current_list_price(product_num) unless support_type == 'SRV'
   end
 end

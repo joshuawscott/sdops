@@ -58,6 +58,17 @@ class LineItemsController < ApplicationController
     logger.debug "******* LineItems controller edit method"
     @line_item = @contract.line_items.find(params[:id])
     @support_providers = Dropdown.support_provider_list
+    respond_to do |format|
+      format.html
+      format.js do
+        render :update do |page|
+          @line_item.product_num = params[:product_num]
+          new_info = @line_item.return_current_info
+          page['line_item_description'].value = new_info.description
+          page['line_item_list_price'].value = new_info.list_price
+        end
+      end
+    end
   end
 
   # POST /line_items
