@@ -22,7 +22,7 @@ ActionController::Routing::Routes.draw do |map|
 
   map.resources :inventory_items
 
-  map.resources :line_items, :collection => { :mass_update => :put }
+  map.resources :line_items, :collection => { :mass_update => :put, :form_pull_pn_data => :post }
 
 	map.resources :opportunities
 

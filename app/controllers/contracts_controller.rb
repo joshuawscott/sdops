@@ -107,6 +107,8 @@ class ContractsController < ApplicationController
     @replaced_by = @contract.successors
     @comment = Comment.new
 		@support_providers = Dropdown.support_provider_list
+    @support_type = SugarContractType.find(:first, :select => :name, :conditions => "id = '#{@contract.contract_type}'").name
+    @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
     respond_to do |format|
       format.html # show.html.haml
       format.xml  { render :xml => @contract }

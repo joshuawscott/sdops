@@ -1,0 +1,3 @@
+page['line_item_description'].value = @new_info.description
+page['line_item_list_price'].value = @new_info.list_price
+

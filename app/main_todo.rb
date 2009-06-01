@@ -9,7 +9,6 @@
 #TODO: import should accept address information
 #TODO: Determine if additional indexes are needed
 #TODO: GUID for Troy & accounting on each contract
-#TODO: function to Re-pull account names from sugar
 #TODO: use account id instead of account name for aggregation, etc.
 =end
 

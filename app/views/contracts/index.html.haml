@@ -82,9 +82,9 @@
         %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"} 
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
-          %td{:title => contract.account_name.length > 18 ? contract.account_name : ""}= h contract.account_name.length > 18 ? contract.account_name.slice(0..18) + "..." : contract.account_name
-          %td{:title => contract.said.length > 13 ? contract.said : ""}= h contract.said.length > 13 ? contract.said.slice(0..12) + "..." : contract.said
-          %td{:title => contract.description.length > 18 ? contract.description : ""}= h contract.description.length > 18 ? contract.description.slice(0..18) + "..." : contract.description
+          %td{:title => contract.account_name.length > 20 ? contract.account_name : ""}= h truncate(contract.account_name, 20)
+          %td{:title => contract.said.length > 15 ? contract.said : ""}= h truncate(contract.said, 15)
+          %td{:title => contract.description.length > 20 ? contract.description : ""}= h truncate(contract.description, 20)
           %td= h contract.start_date
           %td= h contract.end_date
           %td= h contract.payment_terms

@@ -1,7 +1,7 @@
 #require 'ruby-debug'
 class LineItemsController < ApplicationController
   #TODO: Determine if login required
-  before_filter :get_contract
+  before_filter :get_contract, :except => :form_pull_pn_data
   before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy, :mass_update]
 
@@ -36,7 +36,6 @@ class LineItemsController < ApplicationController
   # GET /line_items/new
   # GET /line_items/new.xml
   def new
-    #TODO: JS to Pull description/list price from support price db?
     #TODO: Dropdowns for new/edit form
     logger.debug "******* LineItems controller new method"
     @line_item = @contract.line_items.new
@@ -60,15 +59,11 @@ class LineItemsController < ApplicationController
     @support_providers = Dropdown.support_provider_list
     respond_to do |format|
       format.html
-      format.js do
-        render :update do |page|
-          @line_item.product_num = params[:product_num]
-          new_info = @line_item.return_current_info
-          page['line_item_description'].value = new_info.description
-          page['line_item_list_price'].value = new_info.list_price
-        end
-      end
     end
+  end
+
+  def form_pull_pn_data
+    @new_info = LineItem.new(params[:line_item] || {:product_num => params[:product_num], :support_type => params[:support_type]}).return_current_info
   end
 
   # POST /line_items
@@ -128,19 +123,23 @@ class LineItemsController < ApplicationController
 		logger.debug "******* LineItems controller mass_update method"
 		unless params[:line_item_ids].nil?
 			@line_items = @contract.line_items.find(params[:line_item_ids])
+      updated_count = 0
+      failed_count = 0
 			for x in @line_items do
 				x.support_provider = params[:support_provider] unless params[:support_provider] == ""
 				x.location = params[:location] unless params[:location] == ""
 				x.begins = params[:begins] unless params[:begins] == ""
 				x.ends = params[:ends] unless params[:ends] == ""
-				if x.save
+        if x.save
 					logger.debug "Succesfully performed line items mass update"
-				  flash[:notice] = "Mass update successful."
-				else
+				  updated_count += 1
+          flash[:notice] = "Successfully updated " + updated_count.to_s + " line items"
+        else
+          failed_count += 1
 					logger.error "*******************************"
 					logger.error "*line_items mass update failed*"
 					logger.error "*******************************"
-					flash[:error] = "Mass update failed"
+					flash[:error] = "Failed to update " + failed_count.to_s + " line items"
 				end
 			end
 		end

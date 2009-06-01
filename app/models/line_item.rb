@@ -18,6 +18,9 @@
 #   effective_price     decimal   
 class LineItem < ActiveRecord::Base
   belongs_to :contract
+  validates_presence_of :support_type, :in => ['HW', 'SW', 'SRV']
+  validates_presence_of :location, :position
+
   # Aggregates the locations in LineItems as an Array Object
   def self.locations(role,teams)
     if role >= MANAGER
@@ -92,4 +95,5 @@ class LineItem < ActiveRecord::Base
   def return_current_info
     ("support_price_" + support_type.downcase).camelize.constantize.current_list_price(product_num) unless support_type == 'SRV'
   end
+
 end

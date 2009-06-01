@@ -13,6 +13,7 @@ class UpfrontOrdersController < ApplicationController
   def edit
     @upfront_order = UpfrontOrder.find(params[:id])
     @appgen_order = @upfront_order.appgen_order
+    @contract_dropdown = Contract.find(:all, :conditions => {:payment_terms => "Bundled"}).collect {|c| [c.said.to_s + " | " + c.description.to_s, c.id]}
   end
   def update_from_appgen
     UpfrontOrder.update_from_appgen

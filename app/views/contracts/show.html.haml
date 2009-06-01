@@ -29,11 +29,11 @@
       %label{:for => "contract_description"}
         Description
       %span{:title => @contract.description.length > 30 ? @contract.description : ""}
-        =h @contract.description.blank? ? 'N/A' : @contract.description.length > 30 ? @contract.description.slice(0..30) + "....." : @contract.description
+        =h @contract.description.blank? ? 'N/A' : truncate(@contract.description, 30, ".....")
     %p
       %label{:for => "contract_sales_rep_id"}
         Sales rep
-      = h @contract.sales_rep_id.blank? ? 'N/A' : User.find(@contract.sales_rep_id).full_name
+      = h @contract.sales_rep_id.blank? ? 'N/A' : @sales_rep
       %p
       %label{:for => "contract_sdc_ref"}
         SDC Reference
@@ -57,7 +57,7 @@
     %p
       %label{:for => "contract_type"}
         Type
-      =h @contract.contract_type.blank? ? 'N/A' : SugarContractType.find(:first, :conditions => "id = '#{@contract.contract_type}'").name
+      =h @contract.contract_type.blank? ? 'N/A' : @support_type
     %p
       %label{:for => "contract_renewal_sent"}
         Renewal Sent

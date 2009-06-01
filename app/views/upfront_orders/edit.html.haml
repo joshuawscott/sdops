@@ -15,7 +15,7 @@
       %p
         %label{:for => "upfront_order_has_upfront_support"}
           Contract ID
-        = f.select :contract_id, Contract.find(:all, :conditions => {:payment_terms => "Bundled"}).collect {|c| [c.said.to_s + " | " + c.description.to_s, c.id]}, { :include_blank => true }
+        = f.select :contract_id, @contract_dropdown, { :include_blank => true }
       %p
         =submit_tag 'Update'
 #section2
