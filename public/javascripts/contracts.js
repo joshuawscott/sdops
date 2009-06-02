@@ -14,3 +14,7 @@ function getContractFormData(){
     $('export_expired').checked = false;
   }
 }
+
+function checkAllBoxes(section){
+  
+}

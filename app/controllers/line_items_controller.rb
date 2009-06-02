@@ -121,28 +121,41 @@ class LineItemsController < ApplicationController
   # PUT /line_items/mass_update
 	def mass_update
 		logger.debug "******* LineItems controller mass_update method"
-		unless params[:line_item_ids].nil?
-			@line_items = @contract.line_items.find(params[:line_item_ids])
-      updated_count = 0
-      failed_count = 0
-			for x in @line_items do
-				x.support_provider = params[:support_provider] unless params[:support_provider] == ""
-				x.location = params[:location] unless params[:location] == ""
-				x.begins = params[:begins] unless params[:begins] == ""
-				x.ends = params[:ends] unless params[:ends] == ""
-        if x.save
-					logger.debug "Succesfully performed line items mass update"
-				  updated_count += 1
-          flash[:notice] = "Successfully updated " + updated_count.to_s + " line items"
-        else
-          failed_count += 1
-					logger.error "*******************************"
-					logger.error "*line_items mass update failed*"
-					logger.error "*******************************"
-					flash[:error] = "Failed to update " + failed_count.to_s + " line items"
-				end
+    line_item_ids = params[:HW_line_item_ids].to_a + params[:SW_line_item_ids].to_a + params[:SRV_line_item_ids].to_a
+    unless line_item_ids.nil? || line_item_ids.empty?
+      @line_items = @contract.line_items.find(line_item_ids)
+			if params[:commit] == "Delete Checked Items"
+        @line_items.each {|line| line.destroy}
+      else
+        updated_count = 0
+        failed_count = 0
+			  for x in @line_items do
+			  	x.support_provider = params[:support_provider] unless params[:support_provider] == ""
+			  	x.location = params[:location] unless params[:location] == ""
+			  	x.begins = params[:begins] unless params[:begins] == ""
+			  	x.ends = params[:ends] unless params[:ends] == ""
+          if x.save
+			  		logger.debug "Succesfully performed line items mass update"
+			  	  updated_count += 1
+            flash[:notice] = "Successfully updated " + updated_count.to_s + " line items"
+          else
+            failed_count += 1
+			  		logger.error "*******************************"
+			  		logger.error "*line_items mass update failed*"
+			  		logger.error "*******************************"
+			  		flash[:error] = "Failed to update " + failed_count.to_s + " line items"
+          end
+        end
 			end
-		end
+    end
+    if params[:commit] == "Update Positions"
+      #raise
+      line_items = params[:HW_line_items].to_a + params[:SW_line_items].to_a + params[:SRV_line_items].to_a
+      line_items.each do |line_item|
+        line_to_update = LineItem.find(line_item[:id])
+        line_to_update.update_attribute(:position, line_item[:position])
+      end
+    end
 		redirect_to contract_path(@contract)
 	end
   protected

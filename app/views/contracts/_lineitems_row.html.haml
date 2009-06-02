@@ -1,0 +1,19 @@
+%tr
+  %td= check_box_tag(section + "_line_item_ids[]", line_item.id)
+  =hidden_field_tag section + "_line_items[][id]", line_item.id
+  %td= text_field_tag section + "_line_items[][position]", line_item.position, :size => 2
+  %td= h line_item.support_provider
+  %td= h line_item.location
+  %td= h line_item.product_num
+  %td= h line_item.serial_num
+  %td{:title => line_item.description.length > 25 ? line_item.description : ""}= h truncate(line_item.description, 25)
+  %td= h line_item.begins
+  %td= h line_item.ends
+  %td{:align => 'center'}
+    = h line_item.qty
+  %td{:align => 'right'}
+    = h number_to_currency(line_item.list_price)
+  - if current_user.role == ADMIN
+    %td= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
+    %td= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you sure?', :method => :delete
+

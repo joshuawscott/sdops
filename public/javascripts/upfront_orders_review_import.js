@@ -1,5 +1,4 @@
 function toggleContracts(){
-  //alert("Contracts Toggled");
   var account = $('contract[account_id]').value;
   var a = $('contract[account_id]').options;
   if (account == ""){
@@ -24,6 +23,10 @@ function hideAllContracts(){
     var name = 'tr[id="'+a[i].value+'"]';
     $$(name).invoke('hide');
   }
-  //alert("Contracts Hidden");
 }
+/*
 window.onload = function() {hideAllContracts();}
+*/
+document.observe("dom:loaded", function() {
+  hideAllContracts();
+});

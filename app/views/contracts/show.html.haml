@@ -236,62 +236,53 @@
   %br
   %br
   - form_tag mass_update_line_items_path, :method => :put do
-    %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
-      %tr
-        %th &nbsp;
-        %th &nbsp;Type&nbsp;
-        %th &nbsp;Supp Provider&nbsp;
-        %th &nbsp;Supp Location&nbsp;
-        %th &nbsp;Product num&nbsp;
-        %th &nbsp;Serial num&nbsp;
-        %th &nbsp;Description&nbsp;
-        %th &nbsp;Begins&nbsp;
-        %th &nbsp;Ends&nbsp;
-        %th &nbsp;Qty&nbsp;
-        %th &nbsp;List Price&nbsp;
-        - if current_user.role == ADMIN
-          %th{:colspan => "2"} &nbsp;
-
-      - for line_item in @line_items
-        %tr
-          %td= check_box_tag "line_item_ids[]", line_item.id
-          %td= h line_item.support_type
-          %td= h line_item.support_provider
-          %td= h line_item.location
-          %td= h line_item.product_num
-          %td= h line_item.serial_num
-          %td= h line_item.description
-          %td= h line_item.begins
-          %td= h line_item.ends
-          %td{:align => 'center'}
-            = h line_item.qty
-          %td{:align => 'right'}
-            = h number_to_currency(line_item.list_price)
-          - if current_user.role == ADMIN
-            %td= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
-            %td= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you sure?', :method => :delete
-    %br/
+    - unless @hwlines.empty?
+      %h2 Hardware Line Items
+      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+        =render :partial => 'lineitems_header', :locals => {:section => "HW"}
+        - @hwlines.each do |line_item|
+          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "HW"}
+      %br/
+    - unless @swlines.empty?
+      %h2 Software Line Items
+      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+        =render :partial => 'lineitems_header', :locals => {:section => "SW"}
+        - @swlines.each do |line_item|
+          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SW"}
+      %br/
+    - unless @srvlines.empty?
+      %h2 Services Line Items
+      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+        =render :partial => 'lineitems_header', :locals => {:section => "SRV"}
+        - @srvlines.each do |line_item|
+          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SRV"}
+      %br/
     - if current_user.role == ADMIN
       #results.boxed{:style => 'height:160px', :style => 'width:480px'}
         %h2 Line Items Mass Update
-        %label
-          Supp Provider
-        = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
+        %p= submit_tag "Update Positions"
         %br/
-        %label
-          Supp Location
-        = text_field_tag "location"
+        %p= submit_tag "Delete Checked Items", :confirm => "Are you SURE you want to delete the selected Line Items?"
         %br/
-        %label
-          Begins
-        = text_field_tag "begins"
-        %br/
-        %label
-          Ends
-        = text_field_tag "ends"
-        = hidden_field_tag "contract_id", @contract.id
-        %br/
-        = submit_tag "Update Checked Items"
+        %p 
+          %label
+            Supp Provider
+          = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
+        %p
+          %label
+            Supp Location
+          = text_field_tag "location"
+        %p
+          %label
+            Begins
+          = text_field_tag "begins"
+        %p
+          %label
+            Ends
+          = text_field_tag "ends"
+          = hidden_field_tag "contract_id", @contract.id
+        %p
+          = submit_tag "Update Checked Items"
         %p
         %br/
         = link_to 'New line_item', new_contract_line_item_path(@contract) if current_user.role == ADMIN

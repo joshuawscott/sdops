@@ -102,7 +102,10 @@ class ContractsController < ApplicationController
     logger.debug "******* Contracts controller show method"
     @contract = Contract.find(params[:id])
     @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}
-    @line_items = @contract.line_items
+    @line_items = @contract.line_items.sort_by {|l| l.position}
+    @hwlines = @line_items.find_all {|e| e.support_type == "HW"}
+    @swlines = @line_items.find_all {|e| e.support_type == "SW"}
+    @srvlines = @line_items.find_all {|e| e.support_type == "SRV"}
     @replaces = @contract.predecessors
     @replaced_by = @contract.successors
     @comment = Comment.new
