@@ -28,7 +28,8 @@ class IoscansController < ApplicationController
     x = io_slots_by_path.each do |io_slot|
       #logger.debug "Trying I/O Slot " + io_slot.path
       line_num = 0
-      ioscan_file.each_line do |line|
+      # \n argument is needed to handle dos and unix files
+      ioscan_file.each_line("\n") do |line|
         if line.match(/Class\s*I\s*H\/W Path\s*Driver/)
           #short-circuit processing of ioscan -f output
           flash[:notice] = 'You attempted to upload an ioscan -f, rather than an ioscan -F'
@@ -41,7 +42,7 @@ class IoscansController < ApplicationController
           @ioscan_array[line_num] = {
             :classname => fields[8],
             :drivername => fields[9],
-            :description => fields[17],
+            :description => fields[17].strip,
             :slot_id => io_slot.id,
             :path => hwpath,
             :hw_type => fields[16]
