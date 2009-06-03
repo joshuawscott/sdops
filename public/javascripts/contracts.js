@@ -16,5 +16,17 @@ function getContractFormData(){
 }
 
 function checkAllBoxes(section){
-  
+  var checkboxclass = '.' + section + '_line_item_class';
+  var mainboxid = section + 'checkbox';
+  var cboxes = $$(checkboxclass);
+  var mainbox = $(mainboxid);
+  cboxes.each(function(c){c.checked = mainbox.checked;});
+  /*
+  if(mainbox.checked == true) {
+    cboxes.each(function(c){c.checked = true;});
+  } else {
+    cboxes.each(function(c){c.checked = 0;});
+  }
+  */
+
 }

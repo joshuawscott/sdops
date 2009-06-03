@@ -1,12 +1,14 @@
 %tr
-  %td= check_box_tag(section + "_line_item_ids[]", line_item.id)
-  =hidden_field_tag section + "_line_items[][id]", line_item.id
-  %td= text_field_tag section + "_line_items[][position]", line_item.position, :size => 2
+  - if current_user.role == ADMIN
+    %td
+      =check_box_tag(section + "_line_item_ids[]", line_item.id, false, :class => section + '_line_item_class')
+      =hidden_field_tag section + "_line_items[][id]", line_item.id
+    %td= text_field_tag section + "_line_items[][position]", line_item.position, :size => 2
   %td= h line_item.support_provider
   %td= h line_item.location
   %td= h line_item.product_num
   %td= h line_item.serial_num
-  %td{:title => line_item.description.length > 25 ? line_item.description : ""}= h truncate(line_item.description, 25)
+  %td{:title => line_item.description.length > 30 ? line_item.description : ""}= h truncate(line_item.description, 30)
   %td= h line_item.begins
   %td= h line_item.ends
   %td{:align => 'center'}

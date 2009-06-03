@@ -4,12 +4,12 @@
     %p
       %label{:for => "line_item_support_type"}
         Type
-      = f.text_field :support_type
+      = f.select :support_type, @support_types
 
     %p
       %label{:for => "line_item_support_provider"}
         Support Provider
-      = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label', @line_item.support_provider))
+      = f.select :support_provider, @support_providers
 
     %p
       %label{:for => "line_item_location"}
@@ -27,7 +27,7 @@
     %p
       %label{:for => "line_item_serial_num"}
         Serial num
-      = f.text_field :serial_num
+      = f.text_field :serial_num, :size => 18
 
     %p
       %label{:for => "line_item_description"}
@@ -37,20 +37,25 @@
     %p
       %label{:for => "line_item_begins"}
         Begins
-      = f.text_field :begins
+      = f.text_field :begins, :size => 9
 
     %p
       %label{:for => "line_item_ends"}
         Ends
-      = f.text_field :ends
+      = f.text_field :ends, :size => 9
 
     %p
       %label{:for => "line_item_qty"}
         Qty
-      = f.text_field :qty
+      = f.text_field :qty, :size => 3
 
     %p
-      %label{:for => "line_list_price"}
+      %label{:for => "line_item_list_price"}
         List Price
-      = f.text_field :list_price
+      = f.text_field :list_price, :size => 9
+
+    %p
+      %label{:for => "line_item_position"}
+        Line Item Order
+      = f.text_field :position, :size => 3
       

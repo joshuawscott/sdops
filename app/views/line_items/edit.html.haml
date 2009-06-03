@@ -9,5 +9,7 @@
     %p
       = submit_tag "Update"
 
+
 #section2
+  = render :partial => "basic_line_listing" 
   = link_to('Return to Contract', contract_path(@contract)) + ' | ' + link_to('Contract List', contracts_path)

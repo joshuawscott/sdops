@@ -1,3 +1,4 @@
+= javascript_include_tag "contracts.js"
 - content_for :subtitle do
   Show Contract
 
@@ -239,23 +240,29 @@
     - unless @hwlines.empty?
       %h2 Hardware Line Items
       %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
-        =render :partial => 'lineitems_header', :locals => {:section => "HW"}
-        - @hwlines.each do |line_item|
-          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "HW"}
+        %thead
+          =render :partial => 'lineitems_header', :locals => {:section => "HW"}
+        %tbody
+          - @hwlines.each do |line_item|
+            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "HW"}
       %br/
     - unless @swlines.empty?
       %h2 Software Line Items
       %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
-        =render :partial => 'lineitems_header', :locals => {:section => "SW"}
-        - @swlines.each do |line_item|
-          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SW"}
+        %thead
+          =render :partial => 'lineitems_header', :locals => {:section => "SW"}
+        %tbody
+          - @swlines.each do |line_item|
+            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SW"}
       %br/
     - unless @srvlines.empty?
       %h2 Services Line Items
       %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
-        =render :partial => 'lineitems_header', :locals => {:section => "SRV"}
-        - @srvlines.each do |line_item|
-          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SRV"}
+        %thead
+          =render :partial => 'lineitems_header', :locals => {:section => "SRV"}
+        %tbody
+          - @srvlines.each do |line_item|
+            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SRV"}
       %br/
     - if current_user.role == ADMIN
       #results.boxed{:style => 'height:160px', :style => 'width:480px'}
