@@ -25,7 +25,7 @@
         %th{:width => '120px', :ts_type => 'money'}
           Annual Revenue
     %tbody
-      - for x in @customers
+      - @customers.each do |x|
         %tr{:id => x.support_office_name}
           %td
             = h x.support_office_name

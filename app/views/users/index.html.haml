@@ -13,7 +13,7 @@
       %th Office
       %th{:colspan => "2"} Actions
     
-    - for user in @users
+    - @users.each do |user|
       %tr
         %td= h user.login
         %td= h user.first_name + ' ' + user.last_name

@@ -126,7 +126,7 @@ class LineItemsController < ApplicationController
       else
         updated_count = 0
         failed_count = 0
-			  for x in @line_items do
+			  @line_items.each do |x|
 			  	x.support_provider = params[:support_provider] unless params[:support_provider] == ""
 			  	x.location = params[:location] unless params[:location] == ""
 			  	x.begins = params[:begins] unless params[:begins] == ""

@@ -22,7 +22,7 @@
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
-      - for x in @contracts
+      - @contracts.each do |x|
         - if x.days_due.to_i <= 0
           = render :partial => "renewals_table_content", :locals => { :x => x }
 
@@ -32,7 +32,7 @@
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
-      - for x in @contracts
+      - @contracts.each do |x|
         - if x.days_due.to_i > 0 && x.days_due.to_i <= 30
           = render :partial => "renewals_table_content", :locals => { :x => x }
 
@@ -42,7 +42,7 @@
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
-      - for x in @contracts
+      - @contracts.each do |x|
         - if x.days_due.to_i > 30 && x.days_due.to_i <= 60
           = render :partial => "renewals_table_content", :locals => { :x => x }
 
@@ -52,6 +52,6 @@
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
-      - for x in @contracts
+      - @contracts.each do |x|
         - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
           = render :partial => "renewals_table_content", :locals => { :x => x }

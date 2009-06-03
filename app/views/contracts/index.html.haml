@@ -16,7 +16,6 @@
     = hidden_field 'export', 'revenue'
     = check_box_tag 'export_expired', @expired, @expired, :name=> 'export[expired]', :style => "display: none"
     = submit_tag "Export to Excel", :onclick => "getContractFormData()"
-
 #section2
   %table{:class => 'plain_table'}
     %tr
@@ -36,7 +35,6 @@
       = check_box_tag 'search_expired', @expired, @expired,{:name=> 'search[expired]'}
       Inc. Expired
       = submit_tag "Search"
-  
     %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
       %thead
         %tr
@@ -77,8 +75,8 @@
             = select("search", "payment_terms", @pay_terms, {:selected => @pay_term, :include_blank => true },{:style => "width: 80px"})
           %th{:class => "search"}
             = text_field 'search', 'revenue', :size => 9, :value => @revenue
-      - for contract in @contracts
-        - rowclass = contract.end_date < Date.today ? 'expired' : 'plain' unless contract.end_date.nil?
+      -@contracts.each do |contract|
+        - rowclass = contract.end_date < Date.today ? 'expired' : 'plain'
         %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"} 
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
@@ -89,7 +87,7 @@
           %td= h contract.end_date
           %td= h contract.payment_terms
           %td{:align => 'right'}= h number_to_currency(contract.total_revenue, :precision => 2)
-  
 %script
   function doOnRowDblClicked(rowId){window.location = "contracts/" + rowId}
   function searchForSerialNumber(){document.serial_search.submit;}
+

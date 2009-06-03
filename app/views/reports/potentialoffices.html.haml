@@ -12,7 +12,7 @@
         %th
           Revenue
     %tbody
-      - for x in @locations
+      - @locations.each do |x|
         %tr
           %td
             = x.location

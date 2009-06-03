@@ -22,7 +22,7 @@
       %th Server Line
       %th{:colspan => '2'}
         Options
-    - for swproduct in @swlist_whitelist.swproducts
+    - @swlist_whitelist.swproducts.each do |swproduct|
       %tr
         %td
           =h swproduct.product_number

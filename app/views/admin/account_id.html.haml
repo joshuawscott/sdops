@@ -15,7 +15,7 @@
           %b Contract
     %tbody
       - n = 0
-      - for x in @contracts
+      - @contracts.each do |x|
         %tr
           %td
             = n += 1

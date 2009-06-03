@@ -12,7 +12,7 @@
       %th Team
       %th User
     
-    - for opp in @sugar_opps
+    - @sugar_opps.each do |opp|
       %tr
         %td= link_to opp.name, sugar_opp_path(opp)
         %td= h opp.acct_name

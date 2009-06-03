@@ -25,7 +25,7 @@ xml.Workbook({
       end
 
       # Rows
-      for lineitem in @line_items
+      @line_items.each do |lineitem|
         xml.Row do
             xml.Cell { xml.Data lineitem.support_type, 'ss:Type' => 'String' }
             xml.Cell { xml.Data lineitem.location, 'ss:Type' => 'String' }

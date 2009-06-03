@@ -10,7 +10,7 @@
       %th Pattern
       %th{:colspan => '2'}
         Options
-    - for swlist_blacklist in @swlist_blacklists
+    - @swlist_blacklists.each do |swlist_blacklist|
       %tr
         %td 
           =h swlist_blacklist.pattern

@@ -58,7 +58,7 @@ xml.Workbook({
       end
 
       # Rows
-      for contract in @contracts
+      @contracts.each do |contract|
         if contract.period == params[:filter][:period]
           xml.Row do
             xml.Cell 'ss:StyleID' => 'date' do

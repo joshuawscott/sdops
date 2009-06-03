@@ -20,7 +20,7 @@
       %th Slot
       %th Path
       %th Description
-    - for io_slot in @server.io_slots.sort_by {|x| x.sort_order}
+    - @server.io_slots.sort_by {|x| x.sort_order}.each do |io_slot|
       %tr
         %td
           =h io_slot.chassis_number

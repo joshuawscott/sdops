@@ -25,7 +25,7 @@ xml.Workbook({
       end
 
       # Rows
-      for contract in @contracts
+      @contracts.each do |contract|
         xml.Row do
             xml.Cell { xml.Data contract.sales_office_name, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.support_office_name, 'ss:Type' => 'String' }

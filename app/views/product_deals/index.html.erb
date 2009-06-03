@@ -19,7 +19,7 @@
     <th>Updated at</th>
   </tr>
 
-<% for product_deal in @product_deals %>
+<% @product_deals.each do |product_deal| %>
   <tr>
     <td><%=h product_deal.job_number %></td>
     <td><%=h product_deal.opportunity_id %></td>

@@ -1,0 +1,18 @@
+%h2 Current Line Items
+%table
+  %thead
+    %tr
+      %th Position
+      %th Type
+      %th Product Num
+      %th Description
+      %th Qty
+  %tbody
+    -@contract.line_items.each do |line|
+      %tr
+        %td=line.position
+        %td=line.support_type
+        %td=line.product_num
+        %td=line.description
+        %td=line.qty
+

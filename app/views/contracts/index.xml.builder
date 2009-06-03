@@ -2,7 +2,7 @@
 xml.instruct!
 xml.rows do  
   # rows
-  for contract in @contracts
+  @contracts.each do |contract|
     xml.row :id => contract.id do
       xml.cell contract.sales_office_name
       xml.cell contract.support_office_name

@@ -15,7 +15,7 @@
           %b End Date | Customer | Description
     %tbody
       - n = 0
-      - for x in @contracts
+      - @contracts.each do |x|
         %tr
           %td
             = n += 1

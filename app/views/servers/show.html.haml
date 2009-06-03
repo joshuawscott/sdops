@@ -35,7 +35,7 @@
       %th Description
       %th{:colspan => '2'}
         Options
-    - for io_slot in @server.io_slots.sort_by {|x| x.sort_order}
+    - @server.io_slots.sort_by {|x| x.sort_order}.each do |io_slot|
       %tr
         %td{:style => 'valign: center'}
           =h io_slot.chassis_number.nil? ? 'N/A' : io_slot.chassis_number

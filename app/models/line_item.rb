@@ -25,7 +25,7 @@ class LineItem < ActiveRecord::Base
   # Aggregates the locations in LineItems as an Array Object
   def self.locations(role,teams)
     if role >= MANAGER
-      LineItem.find(:all, :select => 'location', :joins => :contract, :conditions => ['contracts.expired = ?', false]).map {|x| x.location}.uniq!.sort!
+      LineItem.find(:all, :select => 'location', :joins => :contract, :conditions => ['contracts.expired = ?', false]).map {|x| x.location.to_s}.uniq!.sort!
     else
       SugarTeam.dropdown_list(role,teams).map {|x| x.name}
     end

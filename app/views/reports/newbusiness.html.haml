@@ -33,7 +33,7 @@
           %th{:width => '80px', :ts_type => 'money'}
             %b Revenue
       %tbody
-        - for x in @contracts
+        - @contracts.each do |x|
           %tr{:id => x.period}
             %td{:align => 'center'}= h x.po_received
             %td= h x.sales_rep_name

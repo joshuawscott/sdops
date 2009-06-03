@@ -30,7 +30,7 @@
         %th{:width => '60px', :ts_type => 'number'}
           %b Count
     %tbody
-      - for x in @lineitems
+      - @lineitems.each do |x|
         %tr
           %td= h x.product_num
           %td= h x.description

@@ -21,7 +21,7 @@
       %th Sales Stage
       %th &nbsp;
 
-    - for opportunity in @opportunities
+    - @opportunities.each do |opportunity|
       %tr
         %td= h opportunity.acct_name
         %td= h opportunity.opportunity_type

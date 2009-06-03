@@ -194,13 +194,13 @@
     %p
       %b Replaced By
       %br
-      - for x in @replaced_by
+      - @replaced_by.each do |x|
         = link_to x.sdc_ref, contract_path(x.id)
     %p &nbsp;
     %p
       %b Replaces
       %br
-      - for x in @replaces
+      - @replaces.each do |x|
         = link_to x.sdc_ref, contract_path(x.id)
 
 #section4
@@ -216,7 +216,7 @@
   #results.boxed{:style => 'width:900px;margin-top:5px'}
     %h2 Comments
     
-    - for comment in @comments
+    - @comments.each do |comment|
       %p
         #date.comment{:style => 'width:200px'}
           = h comment.created_at.strftime("%m/%d/%y %I:%M %p") + " - "

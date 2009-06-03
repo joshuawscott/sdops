@@ -34,7 +34,7 @@
         %th{:width => '80px', :ts_type => 'date'}
           %b Confirmation Date
     %tbody
-      - for x in @items
+      - @items.each do |x|
         %tr
           %td= h x.part_number
           %td= h x.description

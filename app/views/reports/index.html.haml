@@ -89,7 +89,7 @@
           %th{:width => '95', :ts_type => 'money'}
             %b Total
       %tbody
-        - for x in @revenue_by_office_by_type
+        - @revenue_by_office_by_type.each do |x|
           %tr
             %td= x.sales_office_name
             %td{:align => 'right'}= number_to_currency(x.hw, :format => '%n')
