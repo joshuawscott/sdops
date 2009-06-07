@@ -33,4 +33,11 @@ namespace :deploy do
     desc "#{t} task is a no-op with mod_rails"
     task t, :roles => :app do ; end
   end
+  namespace :data do
+    desc "Load static data from db/data"
+    task :roles do
+      run("cd #{deploy_to}/current/ && /usr/bin/rake data:load RAILS_ENV=production DB_STATIC_TABLES=roles")
+    end
+  end
 end
+
