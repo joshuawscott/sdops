@@ -1,7 +1,6 @@
 # This controller handles processing of an uploaded YAML file to create a new Contract.
 class ImportController < ApplicationController
-  before_filter :login_required
-  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :authorized?, :only => [:index, :create]
   before_filter :set_dropdowns, :only => [:index, :create]
   # GET /import
   def index

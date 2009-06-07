@@ -1,6 +1,4 @@
 class ToolsController < ApplicationController
-  before_filter :login_required
-  before_filter :set_current_tab
   def index
   end
 
@@ -22,11 +20,6 @@ class ToolsController < ApplicationController
       @productnumber ||= params[:productnumber]
       @description ||= params[:description]
     end
-  end
-
-  private
-  def set_current_tab
-    @current_tab = self.action_name
   end
 
 end

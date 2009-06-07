@@ -1,37 +1,8 @@
 #require 'ruby-debug'
 class LineItemsController < ApplicationController
-  #TODO: Determine if login required
   before_filter :get_contract, :except => :form_pull_pn_data
-  before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy, :mass_update]
   before_filter :set_dropdowns, :only => [:new, :edit]
-=begin
-  # GET /line_items
-  # GET /line_items.xml
-  def index
-    logger.debug "******* LineItems controller index method"
-    @line_items = @contract.line_items.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @line_items }
-    end
-  end
-
-
-# GET /line_items/1
-  # GET /line_items/1.xml
-  def show
-    logger.debug "******* LineItems controller show method"
-    @line_item = @contract.line_items.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @line_item }
-    end
-  end
-
-=end
 
   # GET /line_items/new
   # GET /line_items/new.xml
@@ -117,7 +88,8 @@ class LineItemsController < ApplicationController
   
   # PUT /line_items/mass_update
 	def mass_update
-		logger.debug "******* LineItems controller mass_update method"
+		#TODO: check filtering based on submit button clicked.
+    logger.debug "******* LineItems controller mass_update method"
     line_item_ids = params[:HW_line_item_ids].to_a + params[:SW_line_item_ids].to_a + params[:SRV_line_item_ids].to_a
     unless line_item_ids.nil? || line_item_ids.empty?
       @line_items = @contract.line_items.find(line_item_ids)

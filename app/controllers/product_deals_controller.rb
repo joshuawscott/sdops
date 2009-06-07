@@ -1,5 +1,4 @@
 class ProductDealsController < ApplicationController
-  #TODO: Determine if login required
   # GET /product_deals
   # GET /product_deals.xml
   def index

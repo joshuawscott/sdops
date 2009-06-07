@@ -146,11 +146,7 @@ class UpfrontOrdersController < ApplicationController
   end
     
   def authorized?
-    if logged_in? && current_user.role == ADMIN
-       true
-    else
-       not_authorized
-    end
+    current_user.role == ADMIN || not_authorized
   end
 
   

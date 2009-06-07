@@ -23,9 +23,10 @@
           =h server.sockets
         %td
           = link_to 'Show', server
-        %td
-          = link_to_if current_user.role == ADMIN, 'Edit', edit_server_path(server)
-        %td
-          = link_to_if current_user.role == ADMIN, 'Destroy', server, :confirm => 'Are you sure?', :method => :delete
+        -if current_user.has_role?('config_tool_admin')
+          %td
+            = link_to_if current_user.has_role?('config_tool_admin'), 'Edit', edit_server_path(server)
+          %td
+            = link_to_if current_user.has_role?('config_tool_admin'), 'Destroy', server, :confirm => 'Are you sure?', :method => :delete
   %br
-  = link_to_if current_user.role == ADMIN, 'New server', new_server_path
+  = link_to('New server', new_server_path) if current_user.has_role?('config_tool_admin')

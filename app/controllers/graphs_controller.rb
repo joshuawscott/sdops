@@ -1,5 +1,5 @@
 class GraphsController < ApplicationController
-  before_filter :login_required
+  skip_before_filter :login_required
   
   def sales_by_office_mini_bar
     # Prepare data and labels for the graph

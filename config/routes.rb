@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :roles
+
   map.resources :appgen_orders
   map.resources :appgen_order_lineitems
   map.resources :appgen_serials

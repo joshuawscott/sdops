@@ -15,8 +15,10 @@
 #   remember_token_expires_at  datetime
 require 'digest/md5'
 class User < ActiveRecord::Base
-  
+
   #has_many :sugar_team_memberships, :foreign_key => :user_id
+  has_many :permissions
+  has_many :roles, :through => :permissions
 
   # Virtual attribute for the unencrypted password
   attr_accessor :password
@@ -30,10 +32,10 @@ class User < ActiveRecord::Base
   validates_length_of       :email,    :within => 3..100
   validates_uniqueness_of   :login, :email, :case_sensitive => false
   before_save :encrypt_password
-  
+
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation, :first_name, :last_name, :office, :role
+  attr_accessible :login, :email, :password, :password_confirmation, :first_name, :last_name, :office, :role, :role_ids
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
@@ -57,7 +59,7 @@ class User < ActiveRecord::Base
   end
 
   def remember_token?
-    remember_token_expires_at && Time.now.utc < remember_token_expires_at 
+    remember_token_expires_at && Time.now.utc < remember_token_expires_at
   end
 
   # These create and unset the fields required for remembering users between browser closes
@@ -88,9 +90,14 @@ class User < ActiveRecord::Base
   def self.user_list
      User.find(:all, :order => "last_name")
   end
-  
+
   def sugar_team_ids
-    if self.role >= ADMIN
+    if self.role >= ADMIN || roles.include?('admin')
+      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0 AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
+    else
+      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
+    end
+    if roles.include?('admin')
       SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0 AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
     else
       SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
@@ -135,6 +142,12 @@ class User < ActiveRecord::Base
     end
     failures
   end
+
+  # Takes any number of Role names, returning true if the user has any of the supplied role(s)
+  def has_role?(*args)
+    (roles.map {|r| r.name} &(args)).length > 0
+  end
+
   protected
     # before filter 
     def encrypt_password
@@ -146,6 +159,6 @@ class User < ActiveRecord::Base
     def password_required?
       crypted_password.blank? || !password.blank?
     end
-    
+
 
 end

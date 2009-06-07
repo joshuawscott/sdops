@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090522132353) do
+ActiveRecord::Schema.define(:version => 20090605031037) do
 
   create_table "appgen_order_lineitems", :force => true do |t|
     t.string  "appgen_order_id",                                :null => false
@@ -177,6 +177,16 @@ ActiveRecord::Schema.define(:version => 20090522132353) do
     t.datetime "updated_at"
   end
 
+  create_table "permissions", :id => false, :force => true do |t|
+    t.integer  "role_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "permissions", ["role_id"], :name => "index_permissions_on_role_id"
+  add_index "permissions", ["user_id"], :name => "index_permissions_on_user_id"
+
   create_table "product_deals", :force => true do |t|
     t.string   "job_number"
     t.integer  "sugar_opp_id",   :limit => 8
@@ -195,6 +205,13 @@ ActiveRecord::Schema.define(:version => 20090522132353) do
   create_table "relationships", :force => true do |t|
     t.integer  "successor_id",   :limit => 8
     t.integer  "predecessor_id", :limit => 8
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "roles", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

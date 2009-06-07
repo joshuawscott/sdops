@@ -1,31 +1,6 @@
 class IoSlotsController < ApplicationController
-  before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :get_server
-  before_filter :set_current_tab
-=begin
-  # GET /io_slots
-  # GET /io_slots.xml
-  def index
-    @io_slots = IoSlot.find(:all)
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @io_slots }
-    end
-  end
-
-  # GET /io_slots/1
-  # GET /io_slots/1.xml
-  def show
-    @io_slot = IoSlot.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @io_slot }
-    end
-  end
-=end
   # GET /servers/:server_id/io_slots/new
   def new
     @io_slot = @server.io_slots.new
@@ -92,10 +67,6 @@ class IoSlotsController < ApplicationController
 
   def authorized?
     current_user.role == ADMIN || not_authorized
-  end
-
-  def set_current_tab
-    @current_tab = 'admin'
   end
 
 end

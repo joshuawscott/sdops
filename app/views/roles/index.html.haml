@@ -1,0 +1,16 @@
+-content_for :subtitle do
+  Roles
+#section1
+  %h2 Currently Defined Roles
+  %table
+    %thead
+      %tr
+        %th Name
+        %th Description
+        %th{:colspan => 3}
+    %tbody
+      - @roles.each do |role|
+        %tr
+          %td=h role.name
+          %td=h role.description
+          %td= link_to 'Add/Remove Users', edit_role_path(role)

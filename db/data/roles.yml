@@ -1,0 +1,44 @@
+admin:
+  id: 1
+  name: 'admin'
+  description: 'Administrative Users'
+call_screener:
+  id: 2
+  name: 'call_screener'
+  description: 'Can view all contracts for call screening purposes'
+commenter:
+  id: 3
+  name: 'commenter'
+  description: 'Allowed to comment'
+renewals_manager:
+  id: 4
+  name: 'renewals_manager'
+  description: 'Manages renewal processing'
+importer:
+  id: 5
+  name: 'importer'
+  description: 'Allowed to import new contracts'
+quoter:
+  id: 6
+  name: 'quoter'
+  description: 'Can create quotes'
+contract_editor:
+  id: 7
+  name: 'contract_editor'
+  description: 'Allowed to edit some contract data'
+config_tool_admin:
+  id: 8
+  name: 'config_tool_admin'
+  description: 'Administers configuration gathering tools'
+pricing_manager:
+  id: 9
+  name: 'pricing_manager'
+  description: 'Allowed to set support pricing'
+pricing_admin:
+  id: 10
+  name: 'pricing_admin'
+  description: 'Full control over support pricing'
+contract_admin:
+  id: 11
+  name: 'contract_admin'
+  description: 'Full control over contracts'

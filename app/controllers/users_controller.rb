@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy, :refresh]
 
   # GET /users
@@ -59,7 +58,7 @@ class UsersController < ApplicationController
   def edit
     @user = User.find(params[:id])
     @team = SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
-    @roles = Dropdown.role_list
+    @roles = Role.find(:all)
   end
   
   # POST /users

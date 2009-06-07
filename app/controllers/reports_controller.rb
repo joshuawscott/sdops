@@ -1,6 +1,4 @@
 class ReportsController < ApplicationController
-  before_filter :login_required
-  before_filter :set_current_tab
   #TODO: Add filtering based on role to allow viewing of reports
   # GET /reports
   def index
@@ -100,11 +98,6 @@ class ReportsController < ApplicationController
 
   def potentialoffices
     @locations = LineItem.hw_revenue_by_location
-  end
-
-  private
-  def set_current_tab
-    @current_tab = self.action_name
   end
 
 end

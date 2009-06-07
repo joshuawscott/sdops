@@ -1,5 +1,4 @@
 class ContractsController < ApplicationController
-  before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
 	before_filter :manager?, :only => [:sentrenewal, :backtorenewals]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
@@ -244,7 +243,7 @@ class ContractsController < ApplicationController
   end
 
 	def manager?
-		current_user.role >= MANAGER || not_manager
+		current_user.role >= MANAGER || not_authorized
 	end
 
   def set_dropdowns

@@ -1,31 +1,7 @@
 class SwproductsController < ApplicationController
-  before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
   before_filter :get_swlist_whitelist
-  before_filter :set_current_tab
-=begin
-  # GET /swproducts
-  # GET /swproducts.xml
-  def index
-    @swproducts = Swproduct.find(:all)
 
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @swproducts }
-    end
-  end
-
-  # GET /swproducts/1
-  # GET /swproducts/1.xml
-  def show
-    @swproduct = Swproduct.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @swproduct }
-    end
-  end
-=end
   # GET /swproducts/new
   # GET /swproducts/new.xml
   def new
@@ -105,10 +81,6 @@ class SwproductsController < ApplicationController
 
   def get_swlist_whitelist
     @swlist_whitelist = SwlistWhitelist.find params[:swlist_whitelist_id]
-  end
-
-  def set_current_tab
-    @current_tab = 'admin'
   end
 
 end

@@ -3,7 +3,7 @@
 class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   before_filter :set_default_format
-  
+  before_filter :login_required
   #To overcome IE7 Accept-Header Issue
   def set_default_format
     params[:format] ||= 'html'

@@ -1,0 +1,21 @@
+- content_for :subtitle do
+  Roles
+
+#section1
+  %h2
+    Choose Users for
+    =@role.name + " (" + @role.description + ")"
+#section2
+  -form_for(@role) do |f|
+    %p
+      = submit_tag 'Update'
+      &nbsp;
+      = link_to 'Cancel', roles_path
+    #results.boxed
+      %h2 User Roles
+      %ul
+        - @users.each do |user|
+          %li{:style => 'list-style:none;'}
+            = check_box_tag 'role[user_ids][]', user.id, @role.users.include?(user)
+            = user.full_name + " (#{user.email})"
+

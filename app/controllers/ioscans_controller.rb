@@ -1,6 +1,4 @@
 class IoscansController < ApplicationController
-  before_filter :login_required
-  before_filter :set_current_tab
   # GET /ioscans
   def index
     @server_names = Server.by_name
@@ -14,6 +12,8 @@ class IoscansController < ApplicationController
   #
   # This is where the ioscan is processed into an Array of Hashes
   # for the view.
+  # --
+  # TODO: move work to an Ioscan model
   def show
     unless request.post?
       redirect_to :action => :index and return
@@ -65,9 +65,5 @@ class IoscansController < ApplicationController
     # Store the lines in the uploaded file into an array of hashes "@ioscan_array"
     @ioscan_array = Array.new
     
-  end
-  protected
-  def set_current_tab
-    @current_tab = 'ioscans'
   end
 end

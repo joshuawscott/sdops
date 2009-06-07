@@ -29,7 +29,7 @@
     %p
       %label{:for => "user_role"}
         Role
-      = f.collection_select(:role, @roles, :id, :label)
+      = f.text_field :role
 
     %p
       %label{:for => "user_email"}
@@ -40,3 +40,13 @@
       %label{:for => "user_crypted_password"}
         Crypted Password
       = f.text_field :crypted_password
+#section2
+  #results.boxed
+    %h2 User Roles
+    %ul
+      - @roles.each do |role|
+        %li{:style => 'list-style:none;'}
+          = check_box_tag 'user[role_ids][]', role.id, @user.roles.include?(role)
+          = role.name + ' - ' + role.description
+
+

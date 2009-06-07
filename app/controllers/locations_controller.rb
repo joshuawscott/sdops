@@ -1,5 +1,4 @@
 class LocationsController < ApplicationController
-  #TODO: Determine if login required
   # GET /locations
   # GET /locations.xml
   def index

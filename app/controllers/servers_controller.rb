@@ -1,7 +1,5 @@
 class ServersController < ApplicationController
-  before_filter :login_required
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
-  before_filter :set_current_tab
   # GET /servers
   # GET /servers.xml
   def index
@@ -88,10 +86,6 @@ class ServersController < ApplicationController
   protected
   def authorized?
     current_user.role == ADMIN || not_authorized
-  end
-
-  def set_current_tab
-    @current_tab = 'admin'
   end
 
 end
