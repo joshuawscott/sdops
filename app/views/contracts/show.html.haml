@@ -29,7 +29,7 @@
     %p
       %label{:for => "contract_description"}
         Description
-      %span{:title => @contract.description.length > 30 ? @contract.description : ""}
+      %span{:title => @contract.description.to_s.length > 30 ? @contract.description : ""}
         =h @contract.description.blank? ? 'N/A' : truncate(@contract.description, 30, ".....")
     %p
       %label{:for => "contract_sales_rep_id"}

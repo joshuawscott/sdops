@@ -69,7 +69,7 @@ class Contract < ActiveRecord::Base
   has_one :upfront_order, :dependent => :nullify
   
   #Validate General Details
-  validates_presence_of :account_id, :sales_office, :support_office, :sales_rep_id
+  validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id
   
   #Validate Terms
   validates_presence_of :start_date, :end_date

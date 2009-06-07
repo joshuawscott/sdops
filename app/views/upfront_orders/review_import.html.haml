@@ -94,8 +94,8 @@
         -@contracts.each do |c|
           %tr{:id => c.account_id}
             %td{:title => c.account_name.length > 30 ? c.account_name : ""}= h truncate (c.account_name, 30)
-            %td{:title => c.said.length > 25 ? c.said : ""}= h truncate(c.said, 25)
-            %td{:title => c.description.length > 30 ? c.description : ""}= h truncate(c.description, 30)
+            %td{:title => c.said.to_s.length > 25 ? c.said : ""}= h truncate(c.said, 25)
+            %td{:title => c.description.to_s.length > 30 ? c.description : ""}= h truncate(c.description, 30)
             %td= c.start_date
             %td= c.end_date
           
