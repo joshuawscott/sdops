@@ -1,5 +1,5 @@
 %tr
-  - if current_user.role == ADMIN
+  - if current_user.has_role?(:contract_admin, :contract_editor, :quoter)
     %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}=check_box_tag section.to_s + "checkbox", 1 , false, {:onclick => "checkAllBoxes('" + section.to_s + "');"}
     %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Order
   %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
@@ -26,6 +26,6 @@
     List
     %br/
     Price
-  - if current_user.role == ADMIN
+  - if current_user.has_role?(:contract_admin)
     %th{:colspan => "2"} &nbsp;
 

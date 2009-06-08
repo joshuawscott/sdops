@@ -1,5 +1,5 @@
 %tr
-  - if current_user.role == ADMIN
+  - if current_user.has_role?(:admin)
     %td
       =check_box_tag(section + "_line_item_ids[]", line_item.id, false, :class => section + '_line_item_class')
       =hidden_field_tag section + "_line_items[][id]", line_item.id
@@ -15,7 +15,7 @@
     = h line_item.qty
   %td{:align => 'right'}
     = h number_to_currency(line_item.list_price)
-  - if current_user.role == ADMIN
+  - if current_user.has_role?(:admin)
     %td= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
     %td= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you sure?', :method => :delete
 

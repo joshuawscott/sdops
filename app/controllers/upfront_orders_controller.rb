@@ -130,10 +130,10 @@ class UpfrontOrdersController < ApplicationController
   end
 
   protected
+  # Set Contract dropdowns - these are used in several forms.
   def set_dropdowns
-    #Contract dropdowns
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
-    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
+    @sales_offices = SugarTeam.dropdown_list(current_user.sugar_team_ids)
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list
@@ -146,7 +146,7 @@ class UpfrontOrdersController < ApplicationController
   end
     
   def authorized?
-    current_user.role == ADMIN || not_authorized
+    current_user.has_role?(:admin) || not_authorized
   end
 
   

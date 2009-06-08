@@ -92,12 +92,7 @@ class User < ActiveRecord::Base
   end
 
   def sugar_team_ids
-    if self.role >= ADMIN || roles.include?('admin')
-      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0 AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
-    else
-      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
-    end
-    if roles.include?('admin')
+    if has_role?(:admin, :manager)
       SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0 AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
     else
       SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}' AND deleted = 0  AND team_id NOT LIKE '%private%'", :group => "team_id").map {|x| x.team_id}
@@ -143,9 +138,15 @@ class User < ActiveRecord::Base
     failures
   end
 
-  # Takes any number of Role names, returning true if the user has any of the supplied role(s)
+  # Takes any number of Role names as symbols or strings, returning true if the user has any of the supplied role(s)
   def has_role?(*args)
-    (roles.map {|r| r.name} &(args)).length > 0
+    # The first part of this compiles an array of common elements between the passed args and
+    # the roles of this User instance.  If the length is > 0, then we have a match.
+    (roles.map {|r| r.name} &(args.map{|a| a.to_s})).length > 0
+  end
+
+  def role_names
+    roles.map {|r| r.name}
   end
 
   protected

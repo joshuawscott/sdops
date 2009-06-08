@@ -6,7 +6,7 @@ class ContractsController < ApplicationController
   # GET /contracts
   # GET /contracts.xml
   def index
-    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids).map {|x| [x.name, x.id]}
+    @sales_offices =  SugarTeam.dropdown_list(current_user.sugar_team_ids).map {|x| [x.name, x.id]}
     @support_offices =  @sales_offices
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
     @pay_terms << "Not Bundled"
@@ -82,7 +82,7 @@ class ContractsController < ApplicationController
       @contracts
       
     else
-      @contracts = Contract.short_list(current_user.role, current_user.sugar_team_ids)
+      @contracts = Contract.short_list(current_user.sugar_team_ids)
     end
     respond_to do |format|
       store_location
@@ -164,7 +164,7 @@ class ContractsController < ApplicationController
     params[:contract][:successor_ids] ||= []
     @contract = Contract.find(params[:id])
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
-    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
+    @sales_offices =  SugarTeam.dropdown_list(current_user.sugar_team_ids)
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list
@@ -239,16 +239,16 @@ class ContractsController < ApplicationController
 
   protected
   def authorized?
-    current_user.role == ADMIN || not_authorized
+    current_user.has_role?(:admin, :contract_admin) || not_authorized
   end
 
 	def manager?
-		current_user.role >= MANAGER || not_authorized
+		current_user.has_role?(:renewals_manager) || not_authorized
 	end
 
   def set_dropdowns
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
-    @sales_offices =  SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
+    @sales_offices =  SugarTeam.dropdown_list(current_user.sugar_team_ids)
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list

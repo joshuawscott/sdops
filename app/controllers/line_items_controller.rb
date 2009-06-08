@@ -134,7 +134,7 @@ class LineItemsController < ApplicationController
   end
   
   def authorized?
-    current_user.role == ADMIN || not_authorized
+    current_user.has_role?(:admin) || not_authorized
   end
 
   def set_dropdowns

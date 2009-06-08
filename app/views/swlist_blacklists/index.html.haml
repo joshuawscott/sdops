@@ -2,7 +2,7 @@
   SW List Admin
 #section1
   %b
-    = link_to_if current_user.role == ADMIN, 'Create New Blacklist', new_swlist_blacklist_path
+    = link_if current_user.has_role?(:admin, :config_tools_admin), 'Create New Blacklist', new_swlist_blacklist_path
 #section2
   %table
     %h2 SW List Blacklist Patterns
@@ -12,15 +12,15 @@
         Options
     - @swlist_blacklists.each do |swlist_blacklist|
       %tr
-        %td 
+        %td
           =h swlist_blacklist.pattern
-        %td 
-          = link_to_if current_user.role == ADMIN, 'Edit', edit_swlist_blacklist_path(swlist_blacklist)
-        %td 
-          = link_to_if current_user.role == ADMIN, 'Destroy', swlist_blacklist, :confirm => 'Are you sure?', :method => :delete
+        - if current_user.has_role? :admin, :config_tools_admin
+          %td
+            = link_to 'Edit', edit_swlist_blacklist_path(swlist_blacklist)
+          %td
+            = link_to 'Destroy', swlist_blacklist, :confirm => 'Are you sure?', :method => :delete
   %br
-  = link_to_if current_user.role == ADMIN, 'New swlist_blacklist', new_swlist_blacklist_path
+  = link_if current_user.has_role?(:admin, :config_tools_admin), 'New swlist_blacklist', new_swlist_blacklist_path
   %br
-  = link_to 'SWList Processor', swlists_path
-  &nbsp;|&nbsp;
+  = link_to 'SWList Processor', swlists_path + " | "
   = link_to 'Tools', '/tools'

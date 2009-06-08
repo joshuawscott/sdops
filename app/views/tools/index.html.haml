@@ -6,18 +6,18 @@
     Please select a tool above.
   %p
     %b
-      IO Scan - 
+      IO Scan -
     This will process the output of the 'ioscan -F' command into a human readable format,
     organized into I/O slots.
   %p
     %b
-      SW List - 
+      SW List -
     This will process the output of the 'swlist' command into a listing of products to be quoted.
   %p
     %b
-      HW/SW Pricing - 
+      HW/SW Pricing -
     Quick support pricing lookup for hardware and software products respectively.
-- if current_user.role >= ADMIN
+- if current_user.has_role?(:admin)
   #section2
     %h2 Tool administration
     %p

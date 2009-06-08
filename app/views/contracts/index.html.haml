@@ -4,7 +4,7 @@
 
 #section1
   - form_tag formatted_contracts_path('xls'), {:method => 'get', :name => 'export' } do
-    = link_to 'New contract', new_contract_path if current_user.role == ADMIN
+    = link_to 'New contract', new_contract_path if current_user.has_role?(:contract_admin)
     = hidden_field 'export', 'sales_office'
     = hidden_field 'export', 'support_office'
     = hidden_field 'export', 'account_name'

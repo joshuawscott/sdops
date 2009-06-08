@@ -86,6 +86,7 @@ module AuthenticatedSystem
     def not_authorized
       respond_to do |format|
         format.html do
+          flash[:error] = "You are not authorized to perform that action"
           redirect_back_or_default(home_path)
         end
       end

@@ -36,7 +36,7 @@ class RolesController < ApplicationController
   end
   protected
   def authorized?
-    (current_user.role == ADMIN || current_user.has_role('admin')) || not_authorized
+    current_user.has_role?(:admin) || not_authorized
   end
 
 

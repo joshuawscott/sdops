@@ -3,8 +3,9 @@
 
 #section1
   %b
-    = link_to('Edit', edit_inventory_item_path(@inventory_item)) + ' | '  if current_user.role == ADMIN
-    = link_to('Destroy', inventory_item_path(@inventory_item), :confirm => 'Are you sure?', :method => :delete) if current_user.role == ADMIN
+    - if current_user.has_role?(:admin)
+      = link_to('Edit', edit_inventory_item_path(@inventory_item)) + ' | '
+      = link_to('Destroy', inventory_item_path(@inventory_item), :confirm => 'Are you sure?', :method => :delete)
 
 #section2{:style => 'width:800px'}
   %p

@@ -140,7 +140,7 @@ class ImportController < ApplicationController
   
   protected  
   def authorized?
-    current_user.role >= IMPORT || not_authorized
+    current_user.has_role?(:importer) || not_authorized
   end
 
   def create_guid()

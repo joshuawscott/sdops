@@ -7,7 +7,7 @@
       %div{:align => 'left'}
         %h2 Inventory Items
       %div{:align => 'right', :style => 'padding-bottom:1px;width:764px;'}
-        -if current_user.role == ADMIN
+        -if current_user.has_role?(:admin)
           = link_to 'New Inventory Item', new_inventory_item_path, :align => 'right'
           &nbsp;
         %b

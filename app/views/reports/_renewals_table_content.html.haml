@@ -4,7 +4,7 @@
   %td= link_to x.description, contract_url(x.id)
   %td{:align => 'center'}= h x.start_date
   %td{:align => 'center'}= h x.end_date
-  - if @userrole >= MANAGER 
+  - if current_user.has_role?(:renewals_manager)
     %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
       = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
   -else

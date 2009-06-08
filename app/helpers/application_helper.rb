@@ -205,16 +205,16 @@ module ApplicationHelper
       when  'appgen_orders',
             'dropdowns',
             'import',
-            'io_slots',
-            'servers',
-            'swlist_blacklists',
-            'swlists_whitelists',
-            'swproducts',
             'upfront_orders',
             'users'
         rcname = 'admin'
-      when  'ioscans',
-            'swlists'
+      when  'io_slots',
+            'ioscans',
+            'servers',
+            'swlist_blacklists',
+            'swlist_whitelists',
+            'swlists',
+            'swproducts'
         rcname = 'tools'
       else
         rcname = controller.controller_name
@@ -227,4 +227,18 @@ module ApplicationHelper
     end
     
   end
+
+  # Similar to link_to_if, but returns "" rather than name when condition is false.
+  def link_if(condition, name, options = {}, html_options ={}, &block)
+    if !condition
+      if block_given?
+        block.arity <= 1 ? yield(name) : yield(name, options, html_options)
+      else
+        ""
+      end
+    else
+      link_to(name, options, html_options)
+    end
+  end
+
 end

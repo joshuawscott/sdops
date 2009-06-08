@@ -25,6 +25,9 @@
 
 
     #content
+      - if flash[:error]
+        %p{ :style => "color: red"}
+          = flash[:error]
       - if flash[:notice]
         %p{ :style => "color: green"}
           = flash[:notice]

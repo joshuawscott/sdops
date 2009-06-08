@@ -1,5 +1,5 @@
 class CommentsController < ApplicationController
-  #before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
+  before_filter :authorized?
 
   before_filter :find_commenter, :only => [:new, :create, :update,  :destroy] 
 
@@ -86,7 +86,7 @@ class CommentsController < ApplicationController
   
   protected  
   def authorized?
-    current_user.role == ADMIN || not_authorized
+    current_user.has_role?(:commenter) || not_authorized
   end
   
   private

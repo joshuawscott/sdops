@@ -42,3 +42,11 @@ contract_admin:
   id: 11
   name: 'contract_admin'
   description: 'Full control over contracts'
+purchasing:
+  id: 12
+  name: 'purchasing'
+  description: 'Access to purchasing reports'
+manager:
+  id: 13
+  name: 'manager'
+  description: 'Access to all teams and management reports'

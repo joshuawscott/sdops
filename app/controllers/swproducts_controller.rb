@@ -76,7 +76,7 @@ class SwproductsController < ApplicationController
   
   protected
   def authorized?
-    current_user.role == ADMIN || not_authorized
+    current_user.has_role?(:config_tool_admin) || not_authorized
   end
 
   def get_swlist_whitelist

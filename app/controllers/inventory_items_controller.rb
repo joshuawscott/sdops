@@ -28,7 +28,6 @@ class InventoryItemsController < ApplicationController
     @locations = @inventory_items.map {|x| x.location}.uniq.sort
     @warehouses = @inventory_items.map {|x| x.warehouse}.uniq.sort
     respond_to do |format|
-      store_location
       format.html { render :html => @inventory_items }# index.html.haml
       format.xml  { render :xml => @inventory_items }
       format.xls  #Respond as Excel Doc
@@ -115,7 +114,7 @@ class InventoryItemsController < ApplicationController
 
   # :before_filter
   def authorized?
-    current_user.role == ADMIN || not_authorized
+    current_user.has_role?(:admin) || not_authorized
   end
 
 end

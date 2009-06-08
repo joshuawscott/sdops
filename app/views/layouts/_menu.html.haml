@@ -76,9 +76,11 @@
             .submenuHeader Admin - Administration Area
             .menuCol
               %h2 Edit/Create
-              =link_to 'Users', {:controller => 'users', :action => 'index'}, submenuhash('admininfo', 'User Administration')
+              =link_to 'Users', {:controller => 'users', :action => 'index'}, submenuhash('admininfo', 'Edit Users and Select Roles for a User')
               %br/
               =link_to 'Dropdowns', {:controller => 'dropdowns', :action => 'index'}, submenuhash('admininfo', 'Edit Application Dropdowns')
+              %br/
+              =link_to 'Roles', {:controller => 'roles', :action => 'index'}, submenuhash('admininfo', 'Select Users for a particular Role')
               %br/
             .menuCol
               %h2 Tools

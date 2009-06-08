@@ -1,4 +1,5 @@
 class OpportunitiesController < ApplicationController
+  before_filter :authorized?, :only => [:new, :edit, :create, :update, :destroy]
   # GET /opportunities
   # GET /opportunities.xml
   def index
@@ -88,12 +89,7 @@ class OpportunitiesController < ApplicationController
   
   protected
   def authorized?
-    logged_in?
-    if logged_in? && current_user.role >= BASIC
-       true
-    else
-       false
-    end
+    current_user.has_role?(:admin)
   end
 
   

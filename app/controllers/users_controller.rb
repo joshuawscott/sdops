@@ -45,7 +45,7 @@ class UsersController < ApplicationController
   # GET /users/new.xml
   def new
     @user = User.new
-    @team = SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
+    @team = SugarTeam.dropdown_list(current_user.sugar_team_ids)
     @roles = Dropdown.role_list
     
     respond_to do |format|
@@ -57,7 +57,7 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
-    @team = SugarTeam.dropdown_list(current_user.role, current_user.sugar_team_ids)
+    @team = SugarTeam.dropdown_list(current_user.sugar_team_ids)
     @roles = Role.find(:all)
   end
   
@@ -117,7 +117,7 @@ class UsersController < ApplicationController
   
   protected  
   def authorized?
-    current_user.role == ADMIN || not_authorized
+    current_user.has_role?(:admin) || not_authorized
   end
 
 

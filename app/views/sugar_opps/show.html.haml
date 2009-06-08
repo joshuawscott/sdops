@@ -4,11 +4,12 @@
 #section1
   %p &nbsp;
   %b
-    = link_to('Edit', edit_sugar_opp_path(@sugar_opp)) + ' | '  if current_user.role == ADMIN
-    = link_to('Destroy', sugar_opp_path(@sugar_opp), :confirm => 'Are you sure?', :method => :delete) if current_user.role == ADMIN
+    - if current_user.has_role? :admin
+      = link_to('Edit', edit_sugar_opp_path(@sugar_opp)) + ' | '
+      = link_to('Destroy', sugar_opp_path(@sugar_opp), :confirm => 'Are you sure?', :method => :delete)
 
 #section2{:style => 'width:800px'}
-  %h2 
+  %h2
     = "Opportunity - " + @sugar_opp.name.to_s
   #result.boxed
     %p

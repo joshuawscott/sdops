@@ -33,19 +33,16 @@ class ReportsController < ApplicationController
         @ref_date = params[:date_search][:ref_date]
       end
     end
-    
-    @contracts = Contract.renewals_next_90_days(current_user.role, current_user.sugar_team_ids, @ref_date)
+    @contracts = Contract.renewals_next_90_days(current_user.sugar_team_ids, @ref_date)
     @offices = @contracts.map{|x| x.sales_office_name}
     @offices.uniq!.sort!
-    @userrole = current_user.role
     respond_to do |format|
       format.html # renewals.html.haml
     end
   end
   
   def sparesreq
-    
-    @offices = LineItem.locations(current_user.role, current_user.sugar_team_ids)
+    @offices = current_user.has_role?(:admin, :manager, :purchasing) ? LineItem.locations : SugarTeam.dropdown_list(current_user.sugar_team_ids).map {|x| x.name}
     if params[:filter] != nil
       @office = params[:filter][:office_name]
       @lineitems = LineItem.find(:all,
@@ -64,14 +61,8 @@ class ReportsController < ApplicationController
   end
   
   def customers
-		
-		if params[:filter] != nil
-			@office = params[:filter][:office_name]
-			@customers = Contract.customer_rev_list_by_support_office(current_user.role, current_user.sugar_team_ids)
-		else
-			@customers = Contract.customer_rev_list_by_support_office(current_user.role, current_user.sugar_team_ids)
-		end
-		
+    @office = params[:filter][:office_name] unless params[:filter].nil?
+    @customers = Contract.customer_rev_list_by_support_office(current_user.sugar_team_ids)
 		@offices = @customers.map{|x| x.support_office_name}
 		@offices.uniq!.sort!
 		@all_revenue = Contract.all_revenue
