@@ -16,6 +16,9 @@
 require 'digest/md5'
 class User < ActiveRecord::Base
 
+  # Uncomment the next line to get access to see the audited changes to the User model:
+  #has_many :changes, :class_name => 'Audit', :as => :user
+  acts_as_audited :except => [:password]
   #has_many :sugar_team_memberships, :foreign_key => :user_id
   has_many :permissions
   has_many :roles, :through => :permissions

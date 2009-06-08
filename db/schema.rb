@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090605031037) do
+ActiveRecord::Schema.define(:version => 20090608212720) do
 
   create_table "appgen_order_lineitems", :force => true do |t|
     t.string  "appgen_order_id",                                :null => false
@@ -43,6 +43,22 @@ ActiveRecord::Schema.define(:version => 20090605031037) do
   end
 
   add_index "appgen_orders", ["id"], :name => "index_appgen_orders_on_id", :unique => true
+
+  create_table "audits", :force => true do |t|
+    t.integer  "auditable_id"
+    t.string   "auditable_type"
+    t.integer  "user_id"
+    t.string   "user_type"
+    t.string   "username"
+    t.string   "action"
+    t.text     "changes"
+    t.integer  "version",        :default => 0
+    t.datetime "created_at"
+  end
+
+  add_index "audits", ["auditable_id", "auditable_type"], :name => "auditable_index"
+  add_index "audits", ["user_id", "user_type"], :name => "user_index"
+  add_index "audits", ["created_at"], :name => "index_audits_on_created_at"
 
   create_table "comments", :force => true do |t|
     t.text     "body"
