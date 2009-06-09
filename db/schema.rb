@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090608212720) do
+ActiveRecord::Schema.define(:version => 20090609193539) do
 
   create_table "appgen_order_lineitems", :force => true do |t|
     t.string  "appgen_order_id",                                :null => false
@@ -114,6 +114,13 @@ ActiveRecord::Schema.define(:version => 20090608212720) do
     t.date     "renewal_sent"
     t.date     "po_received"
     t.decimal  "renewal_amount",                   :precision => 20, :scale => 3
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "address3"
+    t.string   "contact_name"
+    t.string   "contact_phone"
+    t.string   "contact_email"
+    t.string   "contact_note"
   end
 
   create_table "dropdowns", :force => true do |t|
@@ -162,6 +169,7 @@ ActiveRecord::Schema.define(:version => 20090608212720) do
     t.string   "location"
     t.decimal  "current_list_price",              :precision => 20, :scale => 3
     t.decimal  "effective_price",                 :precision => 20, :scale => 3
+    t.string   "note"
   end
 
   add_index "line_items", ["product_num"], :name => "index_line_items_on_product_num"

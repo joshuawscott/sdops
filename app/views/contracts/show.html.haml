@@ -8,7 +8,7 @@
     = link_to('Destroy', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete) + ' | '  if current_user.role == ADMIN
     = link_to('Import Line Items', '/import?contract=' + @contract.id.to_s) if current_user.role == ADMIN
 #section2{:style => 'width:800px'}
-  #results.boxed{:style => 'height:320px'}
+  #general.boxed{:style => 'width:450px;height:260px'}
     %h2 General Details
     %p
       %label{:for => "contract_id"}
@@ -27,22 +27,22 @@
         Support Office
       =h @contract.support_office_name.blank? ? 'N/A' : @contract.support_office_name
     %p
-      %label{:for => "contract_description"}
-        Description
-      %span{:title => @contract.description.to_s.length > 30 ? @contract.description : ""}
-        =h @contract.description.blank? ? 'N/A' : truncate(@contract.description, 30, ".....")
-    %p
       %label{:for => "contract_sales_rep_id"}
         Sales rep
       = h @contract.sales_rep_id.blank? ? 'N/A' : @sales_rep
-      %p
-      %label{:for => "contract_sdc_ref"}
-        SDC Reference
-      =h @contract.sdc_ref ||= 'N/A'
     %p
       %label{:for => "contract_said"}
         SAID
       =h @contract.said ||= 'N/A'
+    %p
+      %label{:for => "contract_sdc_ref"}
+        SDC Reference
+      =h @contract.sdc_ref ||= 'N/A'
+    %p
+      %label{:for => "contract_description"}
+        Description
+      %span{:title => @contract.description.to_s.length > 30 ? @contract.description : ""}
+        =h @contract.description.blank? ? 'N/A' : truncate(@contract.description, 30, ".....")
     %p
       %label{:for => "contract_cust_po_num"}
         Customer PO
@@ -68,7 +68,7 @@
         Renewal Amount
       =h @contract.renewal_amount.nil? ? 'N/A' : @contract.renewal_amount
 
-  #results.boxed{:style => 'height:320px'}
+  #terms.boxed{:style => 'width:280px;height:260px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
@@ -123,7 +123,7 @@
         Expired
       =h @contract.expired.blank? ? 'N/A' : @contract.expired
 
-  #results.boxed{:style => 'width:200px'}
+  #revenue.boxed{:style => 'width:240px;height:160px'}
     %h2 Revenue
     %p
       %label{:for => "contract_revenue"}
@@ -156,7 +156,7 @@
       - @tmp = number_to_currency(@contract.annual_dr_rev)
       =h @tmp ||= 'N/A'
 
-  #results.boxed{:style => 'width:200px'}
+  #discounts.boxed{:style => 'width:240px;height:160px'}
     %h2 Discounts
     %p
       %label{:for => "contract_discount_pref_hw"}
@@ -187,8 +187,39 @@
         SA Days Disct %
       =h sprintf("%d%", (@contract.discount_sa_day ||= 0.0) * 100)
 
+  #contactinfo.boxed{:style => 'width:240px;height:160px'}
+    %h2 Contact Details
+    %p
+      %label{:for => "contract_address1"}
+        Address
+      =h @contract.address1.blank? ? 'N/A' : @contract.address1
+    %p
+      %label{:for => "contract_address2"}
+        &nbsp;
+      =h @contract.address2.blank? ? 'N/A' : @contract.address2
+    %p
+      %label{:for => "contract_address3"}
+        &nbsp;
+      =h @contract.address3.blank? ? 'N/A' : @contract.address3
+    %p
+      %label{:for => "contract_contact_name"}
+        Contact Name
+      =h @contract.contact_name.blank? ? 'N/A' : @contract.contact_name
+    %p
+      %label{:for => "contract_contact_phone"}
+        Contact Phone
+      =h @contract.contact_phone.blank? ? 'N/A' : @contract.contact_phone
+    %p
+      %label{:for => "contract_contact_email"}
+        Contact email
+      =h @contract.contact_email.blank? ? 'N/A' : @contract.contact_email
+    %p
+      %label{:for => "contract_contact_note"}
+        Contact Note
+      =h @contract.contact_note.blank? ? 'N/A' : @contract.contact_note
+
 #section3
-  #results.boxed{:style => 'width:600px'}
+  #results.boxed{:style => 'width:900px'}
     %h2 Relationships
 
     %p
@@ -204,18 +235,17 @@
         = link_to x.sdc_ref, contract_path(x.id)
 
 #section4
-  - if current_user.role >= BASIC
-    %label{:for => "comment_body"}
-      New Comment
-    - form_for @comment, :url => comments_path do |f|
-      = f.hidden_field "commentable_id", {:value => @contract.id}
-      = f.hidden_field "commentable_type", {:value => 'Contract'}
-      = f.hidden_field :user, {:value => current_user.login}
-      = f.text_field :body
-      
   #results.boxed{:style => 'width:900px;margin-top:5px'}
     %h2 Comments
-    
+    - if current_user.role >= BASIC
+      %label{:for => "comment_body"}
+        New Comment
+      - form_for @comment, :url => comments_path do |f|
+        = f.hidden_field "commentable_id", {:value => @contract.id}
+        = f.hidden_field "commentable_type", {:value => 'Contract'}
+        = f.hidden_field :user, {:value => current_user.login}
+        = f.text_field :body
+      %p &nbsp;
     - @comments.each do |comment|
       %p
         #date.comment{:style => 'width:200px'}

@@ -3,8 +3,8 @@
 = javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
 = javascript_include_tag "jscalendar-1.0/calendar-setup.js"
 
-#section1{:style => 'width:900px'}
-  #results.boxed{:style => 'width:300px;height:371px'}
+#section1{:style => 'width:800px'}
+  #general.boxed{:style => 'width:450px;height:320px'}
     %h2 General Details
     = f.hidden_field :sales_office_name
     = f.hidden_field :support_office_name
@@ -61,12 +61,8 @@
       %label{:for => "contract_renewal_sent"}
         Renewal Sent
       = f.date_select :renewal_sent
-    %p
-      %label{:for => "contract_po_received"}
-        PO Received
-      = f.date_select :po_received
 
-  #results.boxed{:style => 'width:300px;height:371px'}
+  #terms.boxed{:style => 'width:300px;height:320px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
@@ -113,11 +109,15 @@
         Replaced By
       = f.text_field :replacement_sdc_ref, :class => 'textbox'
     %p
+      %label{:for => "contract_po_received"}
+        PO Received
+      = f.date_select :po_received
+    %p
       %label{:for => "contract_expired"}
         Expired
       = f.check_box :expired
 
-  #results.boxed{:style => 'width:260px'}
+  #revenue.boxed{:style => 'width:240px;height:200px'}
     %h2 Revenue
     %p
       %label{:for => "contract_revenue"}
@@ -147,7 +147,7 @@
       %b &nbsp
     %p Example: Enter $100,000 as 100000
 
-  #results.boxed{:style => 'width:260px'}
+  #discounts.boxed{:style => 'width:240px;height:200px'}
     %h2 Discounts
     %p
       %label{:for => "contract_discount_pref_hw"}
@@ -181,8 +181,40 @@
       %b &nbsp
     %p Example: Enter 35% as .35
 
+  #contactinfo.boxed{:style => 'width:240px;height:200px'}
+    %h2 Contact Details
+    %p
+      %label{:for => "contract_address1"}
+        Address
+      = f.text_field :address1, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "contract_address2"}
+        &nbsp;
+      = f.text_field :address2, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "contract_address3"}
+        &nbsp;
+      = f.text_field :address3, :class => 'textbox', :style => 'width:8em'
+    %br/
+    %p
+      %label{:for => "contract_contact_name"}
+        Contact Name
+      = f.text_field :contact_name, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "contract_contact_phone"}
+        Contact Phone
+      = f.text_field :contact_phone, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "contract_contact_email"}
+        Contact Email
+      = f.text_field :contact_email, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "contract_contact_note"}
+        Contact Note
+      = f.text_field :contact_note, :class => 'textbox', :style => 'width:8em'
+
 #section2
-  #results.boxed{:style => 'width:650px'}
+  #results.boxed{:style => 'width:800px'}
     %h2 Relationships &nbsp;
     
     %p
