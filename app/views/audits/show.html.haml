@@ -1,0 +1,35 @@
+-content_for :subtitle do
+  Auditing
+#section1
+  %p= link_to 'Audits Menu', url_for(:action => :index)
+  %p= link_to 'Other ' + @audit.auditable_type + ' Changes', url_for(:action => :focus, :params => {:model => @audit.auditable_type})
+  %p= link_to 'Other Changes by ' + @user.full_name, url_for(:action => :user, :params => {:user => @user.login})
+  #results.boxed{:width => "400px"}
+    -if @audit.action == "destroy"
+      %h2
+        = "Destroyed " + @audit.auditable_type.to_s + " #" + @audit.auditable_id.to_s
+      - @audit.changes.map do |key, val|
+        %p
+          %label{:style => 'width:200px'}
+            =h key
+          =val.to_s
+          &nbsp;
+    -if @audit.action == "update"
+      %h2
+        = "Updates to " + @audit.auditable_type.to_s + " #" + @audit.auditable_id.to_s
+      - @audit.changes.map do |key, val|
+        %p
+          %label{:style => 'width:200px'}
+            =h key
+          =val[0].to_s
+          &nbsp;=>&nbsp;
+          =val[1].to_s
+    -if @audit.action == "create"
+      %h2
+        = "New " + @audit.auditable_type.to_s + " #" + @audit.auditable_id.to_s
+      - @audit.changes.map do |key, val|
+        %p
+          %label{:style => 'width:200px'}
+            =h key
+          =val.to_s
+          &nbsp;

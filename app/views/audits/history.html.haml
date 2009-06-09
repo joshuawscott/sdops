@@ -1,0 +1,26 @@
+-content_for :subtitle do
+  = "Auditing " + @audit.auditable_type.to_s + " " + @audit.auditable_id.to_s
+#section1
+  %p= link_to 'Audits Menu', url_for(:action => :index)
+  %p
+    %h2= "Change history for " + @audit.auditable_type.to_s + " " + @audit.auditable_id.to_s
+  %table
+    %thead
+      %tr
+        %th User
+        %th Action
+        %th Time
+        %th Preview
+        %th &nbsp;
+    %tbody
+      -@audits.each do |audit|
+        %tr
+          %td=audit.user && audit.user.login
+          %td=audit.action
+          %td=audit.created_at
+          -if audit.action == 'update'
+            %td= audit.changes.map {|k,v| k.to_s + " - '" + v[0].to_s + "' => '" + v[1].to_s + "'<br/>"}
+          -else
+            %td{:style => 'text-align:right'}
+              %em Zoom in to See Data =>&nbsp;
+          %td= link_to "Zoom in", url_for(:action => :show, :id => audit.id, :params => {:model => @model})

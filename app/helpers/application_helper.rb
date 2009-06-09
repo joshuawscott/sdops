@@ -205,6 +205,7 @@ module ApplicationHelper
       when  'appgen_orders',
             'dropdowns',
             'import',
+            'roles',
             'upfront_orders',
             'users'
         rcname = 'admin'

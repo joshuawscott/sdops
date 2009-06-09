@@ -98,6 +98,8 @@
               %br/
               =link_to 'Appgen', {:controller => 'admin', :action => 'appgen'}, submenuhash('admininfo', 'Run Appgen queries')
               %br/
+              =link_if current_user.has_role?(:auditor), 'Audit Trail', {:controller => 'audits'}, submenuhash('admininfo', 'Audit Changes by user or model')
+              %br/
             .submenuFooter{:id => "admininfo"}
               &nbsp;
     -if logged_in?

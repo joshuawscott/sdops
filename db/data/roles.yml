@@ -50,3 +50,7 @@ manager:
   id: 13
   name: 'manager'
   description: 'Access to all teams and management reports'
+auditor:
+  id: 14
+  name: 'auditor'
+  description: 'Access to auditing functions'
