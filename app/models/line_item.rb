@@ -22,6 +22,7 @@ class LineItem < ActiveRecord::Base
   validates_presence_of :support_type, :in => @@support_types
   validates_presence_of :location, :position
   acts_as_audited :except => :effective_price
+  acts_as_list :scope => :contract
   # Aggregates the locations in LineItems as an Array Object
   def self.locations
     LineItem.find(:all, :select => 'location', :joins => :contract, :conditions => ['contracts.expired = ?', false], :group => 'location').map {|x| x.location.to_s}.sort!

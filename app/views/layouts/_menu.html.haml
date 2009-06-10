@@ -45,7 +45,7 @@
       %ul.submenu
         .submenu
           .submenuHeader Tools - Miscellaneous Tools
-          - if current_user.role == ADMIN
+          - if current_user.has_role?(:config_tool_admin)
             .menuCol
               %h2 Admin
               =link_to 'Servers', servers_path, submenuhash('toolsinfo', 'Edit List of Servers & I/O Slots')
@@ -68,7 +68,7 @@
             %br/
           .submenuFooter{:id => "toolsinfo"}
             &nbsp;
-    - if current_user.role == ADMIN
+    - if current_user.has_role?(:admin)
       %li
         =link_to 'Admin', admin_path, {:class => tabclass('admin')}
         %ul.submenu
