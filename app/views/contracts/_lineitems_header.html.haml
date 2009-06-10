@@ -1,7 +1,8 @@
 %tr
-  - if current_user.has_role?(:contract_admin, :contract_editor, :quoter)
+  - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
+    -if section != 'SRV'
+      %th
     %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}=check_box_tag section.to_s + "checkbox", 1 , false, {:onclick => "checkAllBoxes('" + section.to_s + "');"}
-    %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Order
   %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
     Supp
     %br/
@@ -23,10 +24,11 @@
   %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Begins
   %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Ends
   %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Qty
-  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
-    List
-    %br/
-    Price
-  - if current_user.has_role?(:contract_admin)
+  -if @restricted_user.nil?
+    %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
+      List
+      %br/
+      Price
+  - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
     %th{:colspan => "2"} &nbsp;
 

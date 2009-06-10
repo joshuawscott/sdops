@@ -1,7 +1,10 @@
 class ContractsController < ApplicationController
+  #only contract_admin's can make changes:
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
-	before_filter :manager?, :only => [:sentrenewal, :backtorenewals]
+	# contract_manager's can make some changes:
+  before_filter :manager?, :only => [:sentrenewal, :backtorenewals]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
+
 	#TODO: show current contracts, including those marked expired
   # GET /contracts
   # GET /contracts.xml
@@ -110,7 +113,12 @@ class ContractsController < ApplicationController
     @support_type = SugarContractType.find(:first, :select => :name, :conditions => "id = '#{@contract.contract_type}'").name
     @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
     respond_to do |format|
-      format.html # show.html.haml
+      format.html do
+        unless current_user.has_role?(:contract_admin) || (current_user.sugar_team_ids & [@contract.sales_office, @contract.support_office]).length > 0
+          @restricted_user = true
+          render :action => 'simple_show'
+        end
+      end
       format.xml  { render :xml => @contract }
       format.xls  #Respond as Excel Doc
     end

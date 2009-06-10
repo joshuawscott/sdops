@@ -1,7 +1,7 @@
 #require 'ruby-debug'
 class LineItemsController < ApplicationController
-  before_filter :get_contract, :except => :form_pull_pn_data
-  before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy, :mass_update]
+  before_filter :get_contract, :except => [:form_pull_pn_data, :sort]
+  before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :destroy, :mass_update]
   before_filter :set_dropdowns, :only => [:new, :edit]
 
   # GET /line_items/new
@@ -13,7 +13,8 @@ class LineItemsController < ApplicationController
       :location => @contract.support_office_name,
       :begins => @contract.start_date,
       :ends => @contract.end_date,
-      :position => last_position + 1
+      :position => last_position + 1,
+      :support_type => params[:support_type]
       )
 
     respond_to do |format|
@@ -127,6 +128,17 @@ class LineItemsController < ApplicationController
     end
 		redirect_to contract_path(@contract)
 	end
+
+  def sort
+    sorted_type = params[:hwlines].nil? ? "SW" : "HW"
+    sorted_table = sorted_type == 'HW' ? 'hwlines' : 'swlines'
+    @line_items = LineItem.find(:all, :conditions => {:contract_id => params[:id], :support_type => sorted_type}, :order => 'position ASC')
+    @line_items.each do |line_item|
+      line_item.position = params[sorted_table].index(line_item.id.to_s)
+      line_item.save(false)
+    end
+    render :nothing => true
+  end
   protected
   
   def get_contract
@@ -134,7 +146,7 @@ class LineItemsController < ApplicationController
   end
   
   def authorized?
-    current_user.has_role?(:admin) || not_authorized
+    current_user.has_role?(:admin, :contract_admin, :contract_editor) || not_authorized
   end
 
   def set_dropdowns

@@ -1,15 +1,7 @@
 = javascript_include_tag "contracts.js"
-= javascript_include_tag "effects.js"
-= javascript_include_tag "controls.js"
-= javascript_include_tag "dragdrop.js"
 - content_for :subtitle do
   Show Contract
 
-#section1
-  %b
-    = link_to('Edit', edit_contract_path(@contract)) + ' | '  if current_user.has_role?(:contract_admin)
-    = link_to('Destroy', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete) + ' | '  if current_user.has_role?(:contract_admin)
-    = link_to('Import Line Items', '/import?contract=' + @contract.id.to_s) if current_user.has_role?(:contract_admin)
 #section2{:style => 'width:800px'}
   #general.boxed{:style => 'width:450px;height:260px'}
     %h2 General Details
@@ -126,70 +118,6 @@
         Expired
       =h @contract.expired.blank? ? 'N/A' : @contract.expired
 
-  #revenue.boxed{:style => 'width:240px;height:160px'}
-    %h2 Revenue
-    %p
-      %label{:for => "contract_revenue"}
-        Amount Paid
-      - @tmp = number_to_currency(@contract.revenue)
-      =h @tmp ||= 'N/A'
-    %p
-      %label{:for => "contract_annual_hw_rev"}
-        Ann. HW Rev
-      - @tmp = number_to_currency(@contract.annual_hw_rev)
-      =h @tmp ||= 'N/A'
-    %p
-      %label{:for => "contract_annual_sw_rev"}
-        Ann. SW Rev
-      - @tmp = number_to_currency(@contract.annual_sw_rev)
-      =h @tmp ||= 'N/A'
-    %p
-      %label{:for => "contract_annual_ce_rev"}
-        Ann. CE Rev
-      - @tmp = number_to_currency(@contract.annual_ce_rev)
-      =h @tmp ||= 'N/A'
-    %p
-      %label{:for => "contract_annual_sa_rev"}
-        Ann. SA Rev
-      - @tmp = number_to_currency(@contract.annual_sa_rev)
-      =h @tmp ||= 'N/A'
-    %p
-      %label{:for => "contract_annual_dr_rev"}
-        Ann. DR Rev
-      - @tmp = number_to_currency(@contract.annual_dr_rev)
-      =h @tmp ||= 'N/A'
-
-  #discounts.boxed{:style => 'width:240px;height:160px'}
-    %h2 Discounts
-    %p
-      %label{:for => "contract_discount_pref_hw"}
-        HW Disct %
-      =h sprintf("%d%", (@contract.discount_pref_hw ||= 0.0) * 100)
-    %p
-      %label{:for => "contract_discount_pref_sw"}
-        SW Disct %
-      =h sprintf("%d%", (@contract.discount_pref_sw ||= 0.0) * 100)
-    %p
-      %label{:for => "contract_discount_pref_srv"}
-        SRV Disct %
-      =h sprintf("%d%", (@contract.discount_pref_srv ||= 0.0) * 100)
-      %p
-      %label{:for => "contract_discount_prepay"}
-        Prepay Disct %
-      =h sprintf("%d%", (@contract.discount_prepay ||= 0.0) * 100)
-    %p
-      %label{:for => "contract_discount_multiyear"}
-        Multi-year Disct %
-      =h sprintf("%d%", (@contract.discount_multiyear ||= 0.0) * 100)
-    %p
-      %label{:for => "contract_discount_ce_day"}
-        CE Days Disc % 
-      =h sprintf("%d%", (@contract.discount_ce_day ||= 0.0) * 100)
-    %p
-      %label{:for => "contract_discount_sa_day"}
-        SA Days Disct %
-      =h sprintf("%d%", (@contract.discount_sa_day ||= 0.0) * 100)
-
   #contact.boxed{:style => 'width:240px;height:160px'}
     %h2 Contact Details
     %p
@@ -261,74 +189,33 @@
             = link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete
 
 %p &nbsp
-      
-#section4
-  %b 
-    = link_to 'Export Line Items to Excel', :id => @contract.id, :action => 'lineitems', :format => 'xls'
-  %br
-  %br
-  - form_tag mass_update_line_items_path, :method => :put do
-    - unless @hwlines.empty?
-      - @i = 0
-      %h2
-        Hardware Line Items
-        %span{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'HW') if current_user.has_role?(:contract_admin, :contract_editor)
-      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
-        %thead
-          =render :partial => 'lineitems_header', :locals => {:section => "HW"}
-        %tbody#hwlines
-          - @hwlines.each do |line_item|
-            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "HW"}
-      %br/
-    - unless @swlines.empty?
-      %h2
-        Software Line Items
-        %span{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'SW') if current_user.has_role?(:contract_admin, :contract_editor)
-      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
-        %thead
-          =render :partial => 'lineitems_header', :locals => {:section => "SW"}
-        %tbody#swlines
-          - @swlines.each do |line_item|
-            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SW"}
-      %br/
-    - unless @srvlines.empty?
-      %h2
-        Services Line Items
-        %span{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'SRV') if current_user.has_role?(:contract_admin, :contract_editor)
-      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
-        %thead
-          =render :partial => 'lineitems_header', :locals => {:section => "SRV"}
-        %tbody
-          - @srvlines.each do |line_item|
-            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SRV"}
-      %br/
-    - if current_user.has_role?(:contract_admin, :contract_editor)
-      #results.boxed{:style => 'height:160px', :style => 'width:480px'}
-        %h2 Line Items Mass Update
-        - if current_user.has_role?(:contract_admin)
-          %p= submit_tag "Delete Checked Items", :confirm => "Are you SURE you want to delete the selected Line Items?"
-          %br/
-        %p 
-          %label
-            Supp Provider
-          = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
-        %p
-          %label
-            Supp Location
-          = text_field_tag "location"
-        %p
-          %label
-            Begins
-          = text_field_tag "begins"
-        %p
-          %label
-            Ends
-          = text_field_tag "ends"
-          = hidden_field_tag "contract_id", @contract.id
-        %p
-          = submit_tag "Update Checked Items"
 
--if current_user.has_role?(:contract_editor, :contract_admin)
-  = sortable_element('hwlines', :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
-  = sortable_element('swlines', :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
+#section4
+  - unless @hwlines.empty?
+    %h2 Hardware Line Items
+    %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+      %thead
+        =render :partial => 'lineitems_header', :locals => {:section => "HW"}
+      %tbody#hwlines
+        - @hwlines.each do |line_item|
+          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "HW"}
+    %br/
+  - unless @swlines.empty?
+    %h2 Software Line Items
+    %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+      %thead
+        =render :partial => 'lineitems_header', :locals => {:section => "SW"}
+      %tbody#swlines
+        - @swlines.each do |line_item|
+          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SW"}
+    %br/
+  - unless @srvlines.empty?
+    %h2 Services Line Items
+    %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+      %thead
+        =render :partial => 'lineitems_header', :locals => {:section => "SRV"}
+      %tbody
+        - @srvlines.each do |line_item|
+          =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SRV"}
+    %br/
 
