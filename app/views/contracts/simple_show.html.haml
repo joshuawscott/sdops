@@ -41,7 +41,7 @@
     %p
       %label{:for => "contract_cust_po_num"}
         Customer PO
-      =h @contract.cust_po_num ||= 'N/A'
+      =h @contract.cust_po_num.blank? ? 'N/A' : @contract.cust_po_num
     %p
       %label{:for => "contract_payment_terms"}
         Payment Terms

@@ -20,7 +20,7 @@ class LineItem < ActiveRecord::Base
   @@support_types = ['HW', 'SW', 'SRV']
   belongs_to :contract
   validates_presence_of :support_type, :in => @@support_types
-  validates_presence_of :location, :position
+  validates_presence_of :location, :position, :product_num
   acts_as_audited :except => :effective_price
   acts_as_list :scope => :contract
   # Aggregates the locations in LineItems as an Array Object

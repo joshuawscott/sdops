@@ -47,7 +47,8 @@
 class Contract < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate
-  
+  HW_SUPPORT_LEVEL_IDS = Dropdown.find(:all, :select => 'label', :conditions => {:filter => 'hardware'}).map {|d| d.label}
+  SW_SUPPORT_LEVEL_IDS = Dropdown.find(:all, :select => 'label', :conditions => {:filter => 'software'}).map {|d| d.label}
   has_many :line_items, :dependent => :destroy
 
   has_many  :succeeds, 
@@ -69,11 +70,15 @@ class Contract < ActiveRecord::Base
   has_one :upfront_order, :dependent => :nullify
   
   #Validate General Details
-  validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id
-  
+  validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id, :contract_type
+  validates_presence_of :said, :sdc_ref, :payment_terms, :platform
+  #Validate Revenue
+  validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev
   #Validate Terms
-  validates_presence_of :start_date, :end_date
-  validates_presence_of :po_received
+  validates_presence_of :start_date, :end_date, :po_received
+  validates_inclusion_of :hw_support_level_id, :in => ["", HW_SUPPORT_LEVEL_IDS].flatten
+  validates_inclusion_of :sw_support_level_id, :in => ["", SW_SUPPORT_LEVEL_IDS].flatten
+  validates_presence_of :updates, :in => [true, false]
   
   before_save :update_line_item_effective_prices
   after_save :update_account_name_from_sugar
