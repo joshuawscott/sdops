@@ -185,6 +185,18 @@ ActiveRecord::Schema.define(:version => 20090609193539) do
     t.datetime "updated_at"
   end
 
+  create_table "mains", :force => true do |t|
+    t.string   "title"
+    t.string   "link"
+    t.integer  "parent_id"
+    t.integer  "position"
+    t.integer  "absolute_position"
+    t.integer  "depth"
+    t.boolean  "published"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "opportunities", :force => true do |t|
     t.string   "sugar_id"
     t.string   "account_id"
