@@ -115,6 +115,10 @@ class ContractsController < ApplicationController
     respond_to do |format|
       format.html do
         unless current_user.has_role?(:contract_admin, :manager) || (current_user.sugar_team_ids & [@contract.sales_office, @contract.support_office]).length > 0
+          unless current_user.has_role?(:call_screener)
+            flash[:error] = 'You are not allowed access to that contract!'
+            redirect_to url_for(:action => 'index') and return
+          end
           @restricted_user = true
           render :action => 'simple_show'
         end
