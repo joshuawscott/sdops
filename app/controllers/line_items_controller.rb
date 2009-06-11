@@ -2,18 +2,18 @@
 class LineItemsController < ApplicationController
   before_filter :get_contract, :except => [:form_pull_pn_data, :sort]
   before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :destroy, :mass_update]
-  before_filter :set_dropdowns, :only => [:new, :edit]
+  before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
 
   # GET /line_items/new
   # GET /line_items/new.xml
   def new
     logger.debug "******* LineItems controller new method"
-    last_position = LineItem.find(:last, :conditions => {:contract_id => @contract.id}, :order => "position ASC").position
+    last_position = LineItem.find(:last, :conditions => {:contract_id => @contract.id}, :order => "position ASC").position unless @contract.line_items.size == 0
     @line_item = @contract.line_items.new(:support_provider => 'Sourcedirect', 
       :location => @contract.support_office_name,
       :begins => @contract.start_date,
       :ends => @contract.end_date,
-      :position => last_position + 1,
+      :position => (last_position || 0) + 1,
       :support_type => params[:support_type]
       )
 

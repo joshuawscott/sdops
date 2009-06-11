@@ -54,10 +54,7 @@
         List Price
       = f.text_field :list_price, :size => 9
 
-    %p
-      %label{:for => "line_item_position"}
-        Line Item Order
-      = f.text_field :position, :size => 3
+      = f.hidden_field :position
 
     %p
       %label{:for => "line_item_note"}
