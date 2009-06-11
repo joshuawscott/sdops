@@ -3,6 +3,7 @@
 
 #section1
   #general.boxed
+    %h2 Query Details
     - form_tag 'appgen', {:method => 'post', :name => 'appgen' } do
       %p
         %label{:for => "appgen_delimited"}
@@ -11,7 +12,7 @@
       %p
         %label{:for => "appgen_dir"}
           Directory
-        = select_tag "appgen[dir]", options_for_select(["AP","AR","BR","GL","IV","PO","OE"], @dir)
+        = select_tag "appgen[dir]", options_for_select(["AP","AR","BI","BR","GL","IV","PO","OE"], @dir)
       %p
         %label{:for => "appgen_table"}
           Table
