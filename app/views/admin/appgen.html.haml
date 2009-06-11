@@ -2,7 +2,7 @@
   Appgen Reports
 
 #section1
-  #general.boxed
+  #general.boxed{:style => 'width:800px'}
     %h2 Query Details
     - form_tag 'appgen', {:method => 'post', :name => 'appgen' } do
       %p
@@ -36,7 +36,7 @@
       %p
         %label{:for => "appgen_fields"}
           Field List
-        = text_field 'appgen', 'fields', :size => 50, :value => @fields
+        = text_field 'appgen', 'fields', :size => 105, :value => @fields
       %br/
       = submit_tag "Get Data"
   
