@@ -6,11 +6,8 @@
   Import
 
 #section2
-  %p &nbsp;
+  %p= error_messages_for 'contract'
   %h2 Import data from Excel Quoter Tool
-  - if flash[:error]
-    %h2{ :style => "color: red"}
-      = flash[:error]
   - form_tag '/import', :multipart => true do
     %p
       %label{:for => "account_id"}
@@ -19,7 +16,7 @@
     %p
       %label{:for => "contract"}
         Contract
-      = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label', @contract.to_i))
+      = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label', @contractid.to_i))
     %p
       %label{:for => "sales_rep_id", :style => 'color:red'}
         Sales Rep

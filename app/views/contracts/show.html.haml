@@ -11,7 +11,7 @@
     = link_to('Destroy', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete) + ' | '  if current_user.has_role?(:contract_admin)
     = link_to('Import Line Items', '/import?contract=' + @contract.id.to_s) if current_user.has_role?(:contract_admin)
 #section2{:style => 'width:800px'}
-  #general.boxed{:style => 'width:450px;height:260px'}
+  #general.boxed{:style => 'width:430px;height:260px'}
     %h2 General Details
     %p
       %label{:for => "contract_id"}
@@ -71,7 +71,7 @@
         Renewal Amount
       =h @contract.renewal_amount.nil? ? 'N/A' : @contract.renewal_amount
 
-  #terms.boxed{:style => 'width:280px;height:260px'}
+  #terms.boxed{:style => 'width:300px;height:260px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
@@ -126,7 +126,7 @@
         Expired
       =h @contract.expired.blank? ? 'N/A' : @contract.expired
 
-  #revenue.boxed{:style => 'width:240px;height:160px'}
+  #revenue.boxed{:style => 'width:230px;height:160px'}
     %h2 Revenue
     %p
       %label{:for => "contract_revenue"}
@@ -159,7 +159,7 @@
       - @tmp = number_to_currency(@contract.annual_dr_rev)
       =h @tmp ||= 'N/A'
 
-  #discounts.boxed{:style => 'width:240px;height:160px'}
+  #discounts.boxed{:style => 'width:190px;height:160px'}
     %h2 Discounts
     %p
       %label{:for => "contract_discount_pref_hw"}
@@ -190,7 +190,7 @@
         SA Days Disct %
       =h sprintf("%d%", (@contract.discount_sa_day ||= 0.0) * 100)
 
-  #contact.boxed{:style => 'width:240px;height:160px'}
+  #contact.boxed{:style => 'width:300px;height:160px'}
     %h2 Contact Details
     %p
       %label{:for => "contract_address1"}

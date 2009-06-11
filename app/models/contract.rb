@@ -76,9 +76,8 @@ class Contract < ActiveRecord::Base
   validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev
   #Validate Terms
   validates_presence_of :start_date, :end_date, :po_received
-  validates_inclusion_of :hw_support_level_id, :in => ["", HW_SUPPORT_LEVEL_IDS].flatten
-  validates_inclusion_of :sw_support_level_id, :in => ["", SW_SUPPORT_LEVEL_IDS].flatten
-  validates_presence_of :updates, :in => [true, false]
+  validates_inclusion_of :hw_support_level_id, :in => ["", HW_SUPPORT_LEVEL_IDS].flatten, :message => "is not a valid value"
+  validates_inclusion_of :sw_support_level_id, :in => ["", SW_SUPPORT_LEVEL_IDS].flatten, :message => "is not a valid value"
   
   before_save :update_line_item_effective_prices
   after_save :update_account_name_from_sugar
