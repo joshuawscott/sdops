@@ -98,7 +98,6 @@ class ContractsController < ApplicationController
   # GET /contracts/1
   # GET /contracts/1.xml
   def show
-    #TODO: make line item list narrower
     logger.debug "******* Contracts controller show method"
     @contract = Contract.find(params[:id])
     @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}

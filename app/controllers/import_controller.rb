@@ -11,7 +11,6 @@ class ImportController < ApplicationController
 
   # POST /import
   def create()
-    #TODO: javascript form checking?
     #because the import processing is so complex, we must do form checking in the controller
     #to avoid nils and NoMethodErrors
     if params["importfile"] == ""
