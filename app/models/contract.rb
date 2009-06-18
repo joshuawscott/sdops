@@ -44,6 +44,13 @@
 #   renewal_sent          date
 #   po_received           date
 #   renewal_amount        decimal
+#   address1              string
+#   address2              string
+#   address3              string
+#   contact_name          string
+#   contact_phone         string
+#   contact_email         string
+#   contact_note          string
 class Contract < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate
