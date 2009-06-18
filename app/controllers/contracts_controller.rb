@@ -35,7 +35,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "contracts.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
       @contracts = @contracts.conditions "contracts.said like ?", "%"+@said+"%" unless @said.blank?
       op, val = @revenue.split(" ")
-      @contracts = @contracts.conditions "contracts.total_revenue #{op} ?", val unless @revenue.blank?
+      @contracts = @contracts.conditions "(contracts.annual_hw_rev + contracts.annual_sw_rev + contracts.annual_ce_rev + contracts.annual_sa_rev + contracts.annual_dr_rev) #{op} ?", val.to_f unless @revenue.blank?
     
       if @pay_term =~ /^Not/
         @contracts = @contracts.conditions "contracts.payment_terms <> 'bundled'"
