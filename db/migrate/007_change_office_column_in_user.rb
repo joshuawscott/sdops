@@ -6,6 +6,6 @@ class ChangeOfficeColumnInUser < ActiveRecord::Migration
 
   def self.down
      rename_column :users, :office, :office_id     
-     change_column :users, :office, :string, :null => false
+     change_column :users, :office, :string
   end
 end
