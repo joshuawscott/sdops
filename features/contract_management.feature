@@ -18,7 +18,7 @@ Feature: Manage Contracts
     Given I have created a contract
     And I am viewing that contract
     When I follow "Edit"
-    And I change a detail
+    And I change a contract detail
     Then I should see the new details
     And I should not see "problem"
 

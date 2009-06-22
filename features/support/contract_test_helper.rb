@@ -46,6 +46,7 @@ module ContractTestHelper
 
   def create_contract
     visit contracts_path
+    response.should contain("SD Ops - Contract List")
     click_link "New Contract"
     fill_in_contract_form
     click_button "Create"

@@ -13,13 +13,10 @@ When /^I enter login "([^\"]*)" and password "([^\"]*)"$/ do |login, password|
 end
 
 When /^I am logged in as a "([^\"]*)"$/ do |user_role|
-  @sugar_user = SugarUser.find(:first, :conditions => "user_name = 'mroberts'")
-  @role = Role.new(:name => user_role)
-  @role.save(false)
-  @current_user = User.new(:first_name => "bob", :last_name => "smith", :login => "bob", :password => "secret")
-  @current_user.sugar_id = @sugar_user.id
-  @current_user.roles << @role
+  @current_user = Factory(:user)
+  @current_user.roles << Role.find_by_name(user_role)
   @current_user.save(false)
+  User.count.should == 1
   visit login_path
   fill_in "Login", :with => @current_user.login
   fill_in "Password", :with => @current_user.password

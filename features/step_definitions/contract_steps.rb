@@ -10,6 +10,7 @@ end
 Given /^I am viewing that contract$/ do
   @contract = Contract.find(:first)
   visit contract_path(@contract)
+  response.should contain("New Line Item")
 end
 
 When /^I create a new contract$/ do
@@ -18,7 +19,7 @@ When /^I create a new contract$/ do
   click_button "Create"
 end
 
-When /^I change a detail$/ do
+When /^I change a contract detail$/ do
   fill_in "Description", :with => "My New Description"
   click_button "Update"
 end

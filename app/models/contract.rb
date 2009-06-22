@@ -122,7 +122,7 @@ class Contract < ActiveRecord::Base
     annual_ce_rev + annual_sa_rev + annual_dr_rev
   end
   # Returns string "Renewal" if the Contract has a predecessor, otherwise returns
-  # an empty string.
+  # 'Newbusiness'
   def status
     if self.renewal?
       'Renewal'
@@ -133,11 +133,7 @@ class Contract < ActiveRecord::Base
 
   # Returns true if the Contract has predecessor(s), otherwise false
   def renewal?
-    if self.predecessor_ids.size > 0
-      true
-    else
-      false
-    end
+    self.predecessor_ids.size > 0
   end
 
   # Pulls just the revenue fields (for reports)
@@ -274,7 +270,7 @@ class Contract < ActiveRecord::Base
   def expected_revenue
     if !renewal_amount.nil?
       @x = renewal_amount
-    elsif discount_pref_hw > 0.0
+    elsif discount_pref_hw && discount_pref_hw > 0.0
       hw_t = 0.0
       line_items.each {|l| hw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "HW" }
       hw_t = hw_t * (1.0 - (discount_pref_hw + (payment_terms == "Annual" ? discount_prepay : 0.0)))
