@@ -190,7 +190,11 @@ ul.sub_menu {
   background: #eeeeee;
   border-width: 0px;
   border-style: solid;
-  border-color: #000000; }
+  border-color: #000000;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-box-shadow: 4px 4px 6px #999999;
+  -webkit-box-shadow: 4px 4px 6px #999999; }
   .boxed p {
     margin: 0;
     padding: 0; }
@@ -198,6 +202,13 @@ ul.sub_menu {
     text-transform: uppercase;
     padding-left: 5px;
     color: #000000;
+    border-width: 0px;
+    border-style: solid;
+    border-color: #a0d55c;
+    -moz-border-radius-topleft: 8px;
+    -moz-border-radius-topright: 8px;
+    -webkit-border-top-left-radius: 8px;
+    -webkit-border-top-right-radius: 8px;
     background: #a0d55c; }
     .boxed h2 a:hover {
       color: #649920; }
