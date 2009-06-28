@@ -3,7 +3,7 @@
     -if section != 'SRV'
       %td.drag_handle [drag]
     %td
-      =check_box_tag(section + "_line_item_ids[]", line_item.id, false, :class => section + '_line_item_class')
+      =check_box_tag(section + "_line_item_ids[]", line_item.id, false, :class => section + '_line_item_class', :id => "licheckbox#{line_item.id.to_s}")
       =hidden_field_tag section + "_line_items[][id]", line_item.id
   %td= h line_item.support_provider
   %td= h line_item.location

@@ -57,6 +57,8 @@ module ContractTestHelper
     Dropdown.create(:dd_name => 'platform', :label => 'HP9000/Integrity')
     Dropdown.create(:dd_name => 'support_type', :filter => 'hardware', :label => 'SDC 24x7')
     Dropdown.create(:dd_name => 'support_type', :filter => 'software', :label => 'SDC SW 24x7')
+    Dropdown.create(:dd_name => 'support_providers', :label => 'Sourcedirect')
+    Dropdown.create(:dd_name => 'support_providers', :label => 'DecisionOne')
   end
 
 end

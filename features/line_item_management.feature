@@ -31,7 +31,25 @@ Feature: Line Item Management
     Then I should be see its contract
     And I should not see that line item
 
-  Scenario: Mass Delete line items
-  Scenario: Mass Update line items
   Scenario Outline: Try to create an incomplete line item
+    When I follow "New Line Item"
+    And I create a line item missing "<field>"
+    Then I should see "<message>"
+
+    Examples:
+    | field       | message                     |
+    | location    | Location can't be blank     |
+    | position    | Position can't be blank     |
+    | product_num | Product num can't be blank  |
+
   Scenario Outline: Try to enter incorrect values for fields
+    When I follow "New Line Item"
+    And I create a line item with "<field>" set to "<value>"
+    Then I should see "<message>"
+
+    Examples:
+    | field         | value | message                             |
+    | support_type  | HW    | Line Item was successfully created. |
+    | support_type  | SW    | Line Item was successfully created. |
+    | support_type  | SRV   | Line Item was successfully created. |
+    | support_type  | AA    | Line Item was successfully created. |

@@ -34,20 +34,20 @@ Feature: Manage Contracts
     Then I should see "<message>"
 
     Examples:
-    | field | message |
-    | account_id | Account can't be blank |
-    | account_name | Account name can't be blank |
-    | sales_office | Sales office can't be blank |
-    | support_office | Support office can't be blank |
-    | sales_rep_id | Sales rep can't be blank |
-    | contract_type | Contract type can't be blank |
-    | said | Said can't be blank |
-    | sdc_ref | Sdc ref can't be blank |
-    | payment_terms | Payment terms can't be blank |
-    | platform | Platform can't be blank |
-    | start_date | Start date can't be blank |
-    | end_date | End date can't be blank |
-    | po_received | Po received can't be blank |
+    | field           | message                       |
+    | account_id      | Account can't be blank        |
+    | account_name    | Account name can't be blank   |
+    | sales_office    | Sales office can't be blank   |
+    | support_office  | Support office can't be blank |
+    | sales_rep_id    | Sales rep can't be blank      |
+    | contract_type   | Contract type can't be blank  |
+    | said            | Said can't be blank           |
+    | sdc_ref         | Sdc ref can't be blank        |
+    | payment_terms   | Payment terms can't be blank  |
+    | platform        | Platform can't be blank       |
+    | start_date      | Start date can't be blank     |
+    | end_date        | End date can't be blank       |
+    | po_received     | Po received can't be blank    |
 
   Scenario Outline: Entering incorrect values for fields
     Given I am on the new contracts page
@@ -55,11 +55,11 @@ Feature: Manage Contracts
     Then I should see "<message>"
 
     Examples:
-    | field | value | message |
-    | revenue | abc | Revenue is not a number |
-    | annual_hw_rev | abc | Annual hw rev is not a number |
-    | annual_sw_rev | abc | Annual sw rev is not a number |
-    | annual_sa_rev | abc | Annual sa rev is not a number |
-    | annual_ce_rev | abc | Annual ce rev is not a number |
-    | annual_dr_rev | abc | Annual dr rev is not a number |
+    | field         | value | message                       |
+    | revenue       | abc   | Revenue is not a number       |
+    | annual_hw_rev | abc   | Annual hw rev is not a number |
+    | annual_sw_rev | abc   | Annual sw rev is not a number |
+    | annual_sa_rev | abc   | Annual sa rev is not a number |
+    | annual_ce_rev | abc   | Annual ce rev is not a number |
+    | annual_dr_rev | abc   | Annual dr rev is not a number |
 

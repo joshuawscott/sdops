@@ -311,19 +311,19 @@
           %p= submit_tag "Delete Checked Items", :confirm => "Are you SURE you want to delete the selected Line Items?"
           %br/
         %p 
-          %label
+          %label{:for => 'support_provider'}
             Supp Provider
           = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
         %p
-          %label
+          %label{:for => 'location'}
             Supp Location
           = text_field_tag "location"
         %p
-          %label
+          %label{:for => 'begins'}
             Begins
           = text_field_tag "begins"
         %p
-          %label
+          %label{:for => 'ends'}
             Ends
           = text_field_tag "ends"
           = hidden_field_tag "contract_id", @contract.id

@@ -10,4 +10,5 @@ class InventoryItem < ActiveRecord::Base
   def tracking
     self.id
   end
+  #TODO: add MFR field
 end
