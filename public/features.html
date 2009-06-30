@@ -246,6 +246,216 @@ I should see &quot;<span class="param">Password</span>&quot;                </sp
       </div>
       <div class="feature">
         <h2>
+          <span class="val">Feature: Comments</span>
+        </h2>
+        <p>
+As a commenter          <br/>
+I want to be able to add comments to a contract          <br/>
+So I can add additional information where needed.          <br/>
+        </p>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Add a comment</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_comments_feature_7">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">commenter</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_8">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+a contract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_9">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am viewing that contract                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_10">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I fill in &quot;<span class="param">New Comment</span>&quot; with &quot;<span class="param">I have now commented on this contract</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_11">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I hit enter to save the comment                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_12">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should see &quot;<span class="param">I have now commented on this contract</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Fail to add a comment</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_comments_feature_15">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+I am logged in without a role                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_16">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+a contract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_17">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I am viewing that contract                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_18">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should not see &quot;<span class="param">New Comment</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Edit my comment</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_comments_feature_21">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">commenter</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_22">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+a contract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_23">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I have created a comment &quot;<span class="param">I have now commented on this contract</span>&quot; on a <span class="param">contract</span>                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_24">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am viewing that contract                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_25">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I click &quot;<span class="param">edit</span>&quot; in the comment area                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_26">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I change my comment to &quot;<span class="param">My Comment has now changed</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_27">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I press &quot;<span class="param">Update</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_28">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should see &quot;<span class="param">My Comment has now changed</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Delete my comment</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_comments_feature_31">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">commenter</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_32">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+a contract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_33">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I have created a comment &quot;<span class="param">I have now commented on this contract</span>&quot; on a <span class="param">contract</span>                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_34">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am viewing that contract                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_35">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I click &quot;<span class="param">delete</span>&quot; in the comment area                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_comments_feature_36">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should not see &quot;<span class="param">I have now commented on this contract</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="feature">
+        <h2>
           <span class="val">Feature: Manage Contracts</span>
         </h2>
         <p>
@@ -798,21 +1008,21 @@ I should see &quot;&lt;message&gt;&quot;                </span>
              <span class="val">Try to enter incorrect values for fields</span>
           </h3>
           <ol>
-            <li class="step skipped" id="features_line_item_management_feature_47">
+            <li class="step skipped" id="features_line_item_management_feature_46">
               <div>
                 <span class="keyword">When</span>
                  <span class="step val">
 I follow &quot;New Line Item&quot;                </span>
               </div>
             </li>
-            <li class="step skipped" id="features_line_item_management_feature_48">
+            <li class="step skipped" id="features_line_item_management_feature_47">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
 I create a line item with &quot;&lt;field&gt;&quot; set to &quot;&lt;value&gt;&quot;                </span>
               </div>
             </li>
-            <li class="step skipped" id="features_line_item_management_feature_49">
+            <li class="step skipped" id="features_line_item_management_feature_48">
               <div>
                 <span class="keyword">Then</span>
                  <span class="step val">
@@ -826,30 +1036,30 @@ I should see &quot;&lt;message&gt;&quot;                </span>
                <span class="val"></span>
             </h4>
             <table>
+              <tr id="row_51">
+                <th class="val skipped_param" id="row_51_0">field</th>
+                <th class="val skipped_param" id="row_51_1">value</th>
+                <th class="val skipped_param" id="row_51_2">message</th>
+              </tr>
               <tr id="row_52">
-                <th class="val skipped_param" id="row_52_0">field</th>
-                <th class="val skipped_param" id="row_52_1">value</th>
-                <th class="val skipped_param" id="row_52_2">message</th>
+                <td class="val passed" id="row_52_0">support_type</td>
+                <td class="val passed" id="row_52_1">HW</td>
+                <td class="val passed" id="row_52_2">Line Item was successfully created.</td>
               </tr>
               <tr id="row_53">
                 <td class="val passed" id="row_53_0">support_type</td>
-                <td class="val passed" id="row_53_1">HW</td>
+                <td class="val passed" id="row_53_1">SW</td>
                 <td class="val passed" id="row_53_2">Line Item was successfully created.</td>
               </tr>
               <tr id="row_54">
                 <td class="val passed" id="row_54_0">support_type</td>
-                <td class="val passed" id="row_54_1">SW</td>
+                <td class="val passed" id="row_54_1">SRV</td>
                 <td class="val passed" id="row_54_2">Line Item was successfully created.</td>
               </tr>
               <tr id="row_55">
                 <td class="val passed" id="row_55_0">support_type</td>
-                <td class="val passed" id="row_55_1">SRV</td>
+                <td class="val passed" id="row_55_1">AA</td>
                 <td class="val passed" id="row_55_2">Line Item was successfully created.</td>
-              </tr>
-              <tr id="row_56">
-                <td class="val passed" id="row_56_0">support_type</td>
-                <td class="val passed" id="row_56_1">AA</td>
-                <td class="val passed" id="row_56_2">Line Item was successfully created.</td>
               </tr>
             </table>
           </div>
@@ -1105,7 +1315,7 @@ I should see &quot;<span class="param">Sourcedirect</span>&quot; in the line ite
           </ol>
         </div>
       </div>
-      <div class="duration">0m57.728s</div>
+      <div class="duration">0m59.761s</div>
     </div>
   </body>
 </html>

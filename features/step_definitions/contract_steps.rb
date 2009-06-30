@@ -10,7 +10,9 @@ end
 Given /^I am viewing that contract$/ do
   @contract = Contract.find(:first)
   visit contract_path(@contract)
-  response.should contain("New Line Item")
+  response.should contain("Contract ID")
+  response.should contain("General Details")
+  response.should contain("Show Contract")
 end
 
 When /^I create a new contract$/ do

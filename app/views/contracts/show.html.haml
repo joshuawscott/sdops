@@ -238,16 +238,17 @@
         = link_to x.sdc_ref, contract_path(x.id)
 
 #section4
-  #results.boxed{:style => 'width:900px;margin-top:5px'}
+  #comments.boxed{:style => 'width:900px;margin-top:5px'}
     %h2 Comments
-    %label{:for => "comment_body"}
-      New Comment
-    - form_for @comment, :url => comments_path do |f|
-      = f.hidden_field "commentable_id", {:value => @contract.id}
-      = f.hidden_field "commentable_type", {:value => 'Contract'}
-      = f.hidden_field :user, {:value => current_user.login}
-      = f.text_field :body
-    %p &nbsp;
+    -if current_user.has_role? :commenter
+      %label{:for => "comment_body"}
+        New Comment
+      - form_for @comment, :url => comments_path do |f|
+        = f.hidden_field "commentable_id", {:value => @contract.id}
+        = f.hidden_field "commentable_type", {:value => 'Contract'}
+        = f.hidden_field :user, {:value => current_user.login}
+        = f.text_field :body
+      %p &nbsp;
     - @comments.each do |comment|
       %p
         #date.comment{:style => 'width:200px'}
@@ -257,8 +258,8 @@
           = h comment.body
         #links.comment{:style => 'width:70px'}
           - if current_user.has_role?(:admin) || current_user.login == comment.user
-            = link_to 'Edit', edit_comment_path(comment)
-            = link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete
+            = link_to 'Edit', edit_comment_path(comment), :id => "edit_comment_" + comment.id.to_s
+            = link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete, :id => "delete_comment_" + comment.id.to_s
 
 %p &nbsp
       

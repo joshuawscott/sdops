@@ -23,3 +23,14 @@ When /^I am logged in as a "([^\"]*)"$/ do |user_role|
   click_button "Log in"
   response.should contain(@current_user.full_name)
 end
+
+Given /^I am logged in without a role$/ do
+  @current_user = Factory(:user)
+  User.count.should == 1
+  visit login_path
+  fill_in "Login", :with => @current_user.login
+  fill_in "Password", :with => @current_user.password
+  click_button "Log in"
+  response.should contain(@current_user.full_name)
+end
+

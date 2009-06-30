@@ -51,3 +51,6 @@ Factory.define :line_item do |l|
   l.location 'Dallas'
   l.support_type 'HW'
 end
+
+Factory.define :comment do |c|
+end
