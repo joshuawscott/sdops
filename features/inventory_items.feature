@@ -18,6 +18,7 @@ Feature: Viewing and Searching the Inventory list
     And I should see "Serial Number"
     And I should see "Warehouse"
     And I should see "Location"
+    But I should not see "ID1001"
 
   Scenario Outline: Search in dropdowns
     Given I should see "<value>"
@@ -36,7 +37,7 @@ Feature: Viewing and Searching the Inventory list
     | MFG2        | Manufacturer | ID1002 | ID1001 |
 
   Scenario Outline: Search in other fields
-    Given I should see "<value>"
+    Given I should not see "<value>"
     When I fill in "<field>" with "<value>"
     And I press "Search"
     Then I should see "<value>"

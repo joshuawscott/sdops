@@ -24,11 +24,11 @@ class InventoryItemsController < ApplicationController
       @inventory_items = @inventory_items.conditions "inventory_items.location = ?", @location unless @location.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.manufacturer = ?", @manufacturer unless @manufacturer.blank?
     else
-      @inventory_items = InventoryItem.find(:all)
+      @inventory_items = []
     end
-    @locations = @inventory_items.map {|x| x.location}.uniq.sort
+    @locations = InventoryItem.find(:all, :select => 'DISTINCT location', :order => 'location ASC').map {|x| x.location}
     @warehouses = InventoryWarehouse.all.map {|x| x.description}.sort
-    @manufacturers = @inventory_items.map {|x| x.manufacturer}.uniq.sort
+    @manufacturers = InventoryItem.find(:all, :select => 'DISTINCT manufacturer', :order => 'manufacturer ASC').map {|x| x.manufacturer}
     respond_to do |format|
       format.html { render :html => @inventory_items }# index.html.haml
       format.xml  { render :xml => @inventory_items }

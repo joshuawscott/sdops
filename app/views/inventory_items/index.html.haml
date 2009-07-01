@@ -15,7 +15,7 @@
           &nbsp;
         = submit_tag "Search", :style => 'align:right;'
   
-    %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
+    %table{:class => 'plain', :border => "2", :cellpadding => "2", :cellspacing => "2"}
       %thead
         %tr
           %th{:width => '88px'}
@@ -28,25 +28,25 @@
             %label{:for => 'search_serial_number'}Serial Number
           %th{:width => '110px'}
             %label{:for => 'search_warehouse'}Warehouse
-          %th{:width => '80px'}
+          %th{:width => '100px'}
             %label{:for => 'search_location'}Location
-          %th{:width => '80px'}
+          %th{:width => '100px'}
             %label{:for => 'search_manufacturer'}Manufacturer
         %tr
           %th{:class => "search"}
-            = text_field 'search', 'tracking', :size => 8, :value => @tracking
+            = text_field 'search', 'tracking', :size => 13, :value => @tracking
           %th{:class => "search"}
             = text_field 'search', 'item_code', :size => 15, :value => @item_code
           %th{:class => "search"}
             = text_field 'search', 'description', :size => 33, :value => @description
           %th{:class => "search"}
-            = text_field 'search', 'serial_number', :size => 12, :value => @serial_number
+            = text_field 'search', 'serial_number', :size => 13, :value => @serial_number
           %th{:class => "search"}
             = select("search", "warehouse", @warehouses, {:selected => @warehouse, :include_blank => true },{:style => "width: 104px"})
           %th{:class => "search"}
-            = select("search", "location", @locations, {:selected => @location, :include_blank => true },{:style => "width: 74px"})
+            = select("search", "location", @locations, {:selected => @location, :include_blank => true },{:style => "width: 94px"})
           %th{:class => "search"}
-            = select("search", "manufacturer", @manufacturers, {:selected => @manufacturer, :include_blank => true },{:style => "width: 74px"})
+            = select("search", "manufacturer", @manufacturers, {:selected => @manufacturer, :include_blank => true },{:style => "width: 94px"})
       - @inventory_items.each do |inventory_item|
         %tr 
           %td= h inventory_item.tracking
