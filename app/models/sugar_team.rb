@@ -9,12 +9,12 @@
 #   description       text
 #   deleted           boolean
 class SugarTeam < SugarDb
-  set_table_name "teams"
+  set_table_name "team"
   
   belongs_to :sugar_team_membership
   belongs_to :user
   
   def self.dropdown_list(teams)
-    SugarTeam.find(:all, :select => "id, name", :conditions => ["private = 0 AND deleted = 0 AND id IN (?)", teams], :order => 'name')
+    SugarTeam.find(:all, :select => "id, name", :conditions => ["deleted = 0 AND id IN (?)", teams], :order => 'name')
   end
 end

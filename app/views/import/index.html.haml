@@ -34,10 +34,6 @@
         Platform
       = select_tag('platform', "<option value=''/>" + options_from_collection_for_select(@platform, 'label', 'label'))
     %p
-      %label{:for => "contract_type", :style => 'color:red'}
-        Contract Type
-      = select_tag('contract_type', "<option value=''/>" + options_from_collection_for_select(@types, 'id', 'name'))
-    %p
       %label{:for => "po_received", :style => 'color:red'}
         PO Received
       = date_select_tag (:po_received, nil, {}, {})

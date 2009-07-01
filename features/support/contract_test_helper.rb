@@ -34,7 +34,6 @@ module ContractTestHelper
     fill_in "contract_discount_multiyear", :with => ".05"
     fill_in "contract_discount_ce_day", :with => ".2"
     fill_in "contract_discount_sa_day", :with => "0.2"
-    select "Support - Annual", :from => "contract_contract_type"
     fill_in "contract_po_received", :with => "2008-12-15"
     fill_in "contract_address1", :with => "1234 Main St."
     fill_in "contract_address2", :with => "Suite 100"

@@ -42,7 +42,6 @@ Factory.define :contract do |c|
   c.said 'foo'
   c.revenue 150
   c.sdc_ref 'bar'
-  c.contract_type { SugarContractType.find(:first, :conditions => {:name => 'Support - Annual'}).id }
 end
 
 Factory.define :line_item do |l|

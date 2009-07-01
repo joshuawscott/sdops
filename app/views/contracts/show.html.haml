@@ -59,10 +59,6 @@
         Platform
       =h @contract.platform.blank? ? 'N/A' : @contract.platform
     %p
-      %label{:for => "contract_type"}
-        Type
-      =h @contract.contract_type.blank? ? 'N/A' : @support_type
-    %p
       %label{:for => "contract_renewal_sent"}
         Renewal Sent
       =h @contract.renewal_sent.blank? ? 'N/A' : @contract.renewal_sent

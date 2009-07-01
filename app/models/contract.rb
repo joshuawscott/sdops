@@ -75,7 +75,7 @@ class Contract < ActiveRecord::Base
   has_one :upfront_order, :dependent => :nullify
   
   #Validate General Details
-  validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id, :contract_type
+  validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id
   validates_presence_of :said, :sdc_ref, :payment_terms, :platform
   #Validate Revenue
   validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev

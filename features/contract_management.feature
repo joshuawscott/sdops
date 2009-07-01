@@ -40,7 +40,6 @@ Feature: Manage Contracts
     | sales_office    | Sales office can't be blank   |
     | support_office  | Support office can't be blank |
     | sales_rep_id    | Sales rep can't be blank      |
-    | contract_type   | Contract type can't be blank  |
     | said            | Said can't be blank           |
     | sdc_ref         | Sdc ref can't be blank        |
     | payment_terms   | Payment terms can't be blank  |
