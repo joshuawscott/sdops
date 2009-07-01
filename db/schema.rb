@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090609193539) do
+ActiveRecord::Schema.define(:version => 20090701194308) do
 
   create_table "appgen_order_lineitems", :force => true do |t|
     t.string  "appgen_order_id",                                :null => false
@@ -138,9 +138,17 @@ ActiveRecord::Schema.define(:version => 20090609193539) do
     t.string "serial_number"
     t.string "warehouse"
     t.string "location"
+    t.string "manufacturer"
   end
 
   add_index "inventory_items", ["id"], :name => "tracking", :unique => true
+
+  create_table "inventory_warehouses", :id => false, :force => true do |t|
+    t.string "code"
+    t.string "description"
+  end
+
+  add_index "inventory_warehouses", ["code"], :name => "index_inventory_warehouses_on_code", :unique => true
 
   create_table "io_slots", :force => true do |t|
     t.integer  "server_id"

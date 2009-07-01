@@ -53,3 +53,9 @@ end
 
 Factory.define :comment do |c|
 end
+
+Factory.define :inventory_item do |i|
+end
+
+Factory.define :inventory_warehouse do |i|
+end

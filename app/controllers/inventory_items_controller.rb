@@ -4,8 +4,6 @@ class InventoryItemsController < ApplicationController
   # GET /inventory_items
   # GET /inventory_items.xml
   def index
-    #@warehouses =  %w[A1 C1 D1 DL H1 I1 N1 ON P1 T1 U1 X1]
-    #TODO: grab warehouses from ProDealer
     if params[:search] != nil
       #Get search criteria from params object
       @tracking ||= params[:search][:tracking]
@@ -13,20 +11,24 @@ class InventoryItemsController < ApplicationController
       @description ||= params[:search][:description]
       @serial_number ||= params[:search][:serial_number]
       @warehouse ||= params[:search][:warehouse]
+      @warehouse_obj ||= InventoryWarehouse.find_by_description(@warehouse)
       @location ||= params[:search][:location]
+      @manufacturer ||= params[:search][:manufacturer]
       #Create and set the scope conditions
       @inventory_items = InventoryItem.scoped({})
       @inventory_items = @inventory_items.conditions "inventory_items.id = ?", @tracking unless @tracking.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.item_code like ?", @item_code+"%" unless @item_code.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.description like ?", "%"+@description+"%" unless @description.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.serial_number = ?", @serial_number unless @serial_number.blank?
-      @inventory_items = @inventory_items.conditions "inventory_items.warehouse = ?", @warehouse unless @warehouse.blank?
+      @inventory_items = @inventory_items.conditions "inventory_items.warehouse = ?", @warehouse_obj.code unless @warehouse_obj.blank?
       @inventory_items = @inventory_items.conditions "inventory_items.location = ?", @location unless @location.blank?
+      @inventory_items = @inventory_items.conditions "inventory_items.manufacturer = ?", @manufacturer unless @manufacturer.blank?
     else
       @inventory_items = InventoryItem.find(:all)
     end
     @locations = @inventory_items.map {|x| x.location}.uniq.sort
-    @warehouses = @inventory_items.map {|x| x.warehouse}.uniq.sort
+    @warehouses = InventoryWarehouse.all.map {|x| x.description}.sort
+    @manufacturers = @inventory_items.map {|x| x.manufacturer}.uniq.sort
     respond_to do |format|
       format.html { render :html => @inventory_items }# index.html.haml
       format.xml  { render :xml => @inventory_items }
