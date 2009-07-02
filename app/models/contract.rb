@@ -287,7 +287,7 @@ class Contract < ActiveRecord::Base
       
     else
       t = 0.0
-      line_items.each {|l| t += l.current_list_price.nil? ? 0.0 : l.current_list_price * l.qty if l.support_type != "SRV"}
+      line_items.each {|l| t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SRV"}
       @x = t * 12 * 0.5
     end
   end
