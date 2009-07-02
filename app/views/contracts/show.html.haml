@@ -173,7 +173,7 @@
       %label{:for => "contract_discount_pref_srv"}
         SRV Disct %
       =h sprintf("%d%", (@contract.discount_pref_srv ||= 0.0) * 100)
-      %p
+    %p
       %label{:for => "contract_discount_prepay"}
         Prepay Disct %
       =h sprintf("%d%", (@contract.discount_prepay ||= 0.0) * 100)
@@ -313,7 +313,7 @@
         %p 
           %label
             Supp Provider
-          = select_tag('support_provider', "<option value=''/>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
+          = select_tag('support_provider', "<option value=''></option>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
         %p
           %label
             Supp Location
