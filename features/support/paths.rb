@@ -10,7 +10,8 @@ module NavigationHelpers
     
     when /the homepage/
       '/'
-    
+    when /the new contracts page/
+      '/contracts/new'
     # Add more mappings here.
     # Here is a more fancy example:
     #

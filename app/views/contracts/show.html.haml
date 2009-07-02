@@ -59,10 +59,6 @@
         Platform
       =h @contract.platform.blank? ? 'N/A' : @contract.platform
     %p
-      %label{:for => "contract_type"}
-        Type
-      =h @contract.contract_type.blank? ? 'N/A' : @support_type
-    %p
       %label{:for => "contract_renewal_sent"}
         Renewal Sent
       =h @contract.renewal_sent.blank? ? 'N/A' : @contract.renewal_sent
@@ -238,16 +234,17 @@
         = link_to x.sdc_ref, contract_path(x.id)
 
 #section4
-  #results.boxed{:style => 'width:900px;margin-top:5px'}
+  #comments.boxed{:style => 'width:900px;margin-top:5px'}
     %h2 Comments
-    %label{:for => "comment_body"}
-      New Comment
-    - form_for @comment, :url => comments_path do |f|
-      = f.hidden_field "commentable_id", {:value => @contract.id}
-      = f.hidden_field "commentable_type", {:value => 'Contract'}
-      = f.hidden_field :user, {:value => current_user.login}
-      = f.text_field :body
-    %p &nbsp;
+    -if current_user.has_role? :commenter
+      %label{:for => "comment_body"}
+        New Comment
+      - form_for @comment, :url => comments_path do |f|
+        = f.hidden_field "commentable_id", {:value => @contract.id}
+        = f.hidden_field "commentable_type", {:value => 'Contract'}
+        = f.hidden_field :user, {:value => current_user.login}
+        = f.text_field :body
+      %p &nbsp;
     - @comments.each do |comment|
       %p
         #date.comment{:style => 'width:200px'}
@@ -257,8 +254,8 @@
           = h comment.body
         #links.comment{:style => 'width:70px'}
           - if current_user.has_role?(:admin) || current_user.login == comment.user
-            = link_to 'Edit', edit_comment_path(comment)
-            = link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete
+            = link_to 'Edit', edit_comment_path(comment), :id => "edit_comment_" + comment.id.to_s
+            = link_to 'Delete', comment_path(comment, :commentable_id => @contract.id, :commentable_type => 'Contract'), :confirm => 'Are you sure?', :method => :delete, :id => "delete_comment_" + comment.id.to_s
 
 %p &nbsp
       
@@ -311,19 +308,19 @@
           %p= submit_tag "Delete Checked Items", :confirm => "Are you SURE you want to delete the selected Line Items?"
           %br/
         %p 
-          %label
+          %label{:for => 'support_provider'}
             Supp Provider
           = select_tag('support_provider', "<option value=''></option>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
         %p
-          %label
+          %label{:for => 'location'}
             Supp Location
           = text_field_tag "location"
         %p
-          %label
+          %label{:for => 'begins'}
             Begins
           = text_field_tag "begins"
         %p
-          %label
+          %label{:for => 'ends'}
             Ends
           = text_field_tag "ends"
           = hidden_field_tag "contract_id", @contract.id

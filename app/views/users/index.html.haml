@@ -16,7 +16,7 @@
     - @users.each do |user|
       %tr
         %td= h user.login
-        %td= h user.first_name + ' ' + user.last_name
+        %td= h user.first_name.to_s + ' ' + user.last_name.to_s
         %td= h @roles_labels[user.role]
         %td= h user.office
         %td= link_to ' Edit ', edit_user_path(user)

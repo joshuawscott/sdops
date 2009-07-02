@@ -111,5 +111,5 @@
   #userinfo
     - if current_user != :false
       %p
-        = h current_user.first_name + ' ' + current_user.last_name
+        = h current_user.first_name.to_s + ' ' + current_user.last_name.to_s
 

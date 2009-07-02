@@ -140,7 +140,6 @@ class UpfrontOrdersController < ApplicationController
     @reps = User.user_list
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
-    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0 AND name LIKE 'Support - Bundled%'", :order => "list_order")
     #LineItem dropdowns
     @support_providers = Dropdown.support_provider_list
   end

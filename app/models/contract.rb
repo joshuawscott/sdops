@@ -54,8 +54,6 @@
 class Contract < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate
-  HW_SUPPORT_LEVEL_IDS = Dropdown.find(:all, :select => 'label', :conditions => {:filter => 'hardware'}).map {|d| d.label}
-  SW_SUPPORT_LEVEL_IDS = Dropdown.find(:all, :select => 'label', :conditions => {:filter => 'software'}).map {|d| d.label}
   has_many :line_items, :dependent => :destroy
 
   has_many  :succeeds, 
@@ -77,14 +75,12 @@ class Contract < ActiveRecord::Base
   has_one :upfront_order, :dependent => :nullify
   
   #Validate General Details
-  validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id, :contract_type
+  validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id
   validates_presence_of :said, :sdc_ref, :payment_terms, :platform
   #Validate Revenue
   validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev
   #Validate Terms
   validates_presence_of :start_date, :end_date, :po_received
-  validates_inclusion_of :hw_support_level_id, :in => ["", HW_SUPPORT_LEVEL_IDS].flatten, :message => "is not a valid value"
-  validates_inclusion_of :sw_support_level_id, :in => ["", SW_SUPPORT_LEVEL_IDS].flatten, :message => "is not a valid value"
   
   before_save :update_line_item_effective_prices
   after_save :update_account_name_from_sugar
@@ -126,7 +122,7 @@ class Contract < ActiveRecord::Base
     annual_ce_rev + annual_sa_rev + annual_dr_rev
   end
   # Returns string "Renewal" if the Contract has a predecessor, otherwise returns
-  # an empty string.
+  # 'Newbusiness'
   def status
     if self.renewal?
       'Renewal'
@@ -137,11 +133,7 @@ class Contract < ActiveRecord::Base
 
   # Returns true if the Contract has predecessor(s), otherwise false
   def renewal?
-    if self.predecessor_ids.size > 0
-      true
-    else
-      false
-    end
+    self.predecessor_ids.size > 0
   end
 
   # Pulls just the revenue fields (for reports)
@@ -278,7 +270,7 @@ class Contract < ActiveRecord::Base
   def expected_revenue
     if !renewal_amount.nil?
       @x = renewal_amount
-    elsif discount_pref_hw > 0.0
+    elsif discount_pref_hw && discount_pref_hw > 0.0
       hw_t = 0.0
       line_items.each {|l| hw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "HW" }
       hw_t = hw_t * (1.0 - (discount_pref_hw + (payment_terms == "Annual" ? discount_prepay : 0.0)))

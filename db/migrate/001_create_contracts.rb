@@ -4,8 +4,8 @@ class CreateContracts < ActiveRecord::Migration
       t.string :sdc_ref
       t.string :description
       t.integer :sales_rep_id
-      t.integer :sales_office
-      t.integer :support_office
+      t.string :sales_office
+      t.string :support_office
       t.string :account_id
       t.string :cust_po_num
       t.integer :payment_terms

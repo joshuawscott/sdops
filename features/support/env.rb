@@ -15,6 +15,7 @@ Cucumber::Rails.use_transactional_fixtures
 Cucumber::Rails.bypass_rescue
 
 require 'webrat'
+require 'factory_girl'
 
 Webrat.configure do |config|
   config.mode = :rails

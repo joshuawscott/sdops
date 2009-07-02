@@ -78,9 +78,6 @@
       %label{:for => :sa_days} SA Days
       =text_field_tag 'contract[sa_days]', 0
       %br/
-      %label{:for => :contract_type} Contract Type
-      =select_tag("contract[contract_type]", '<option></option>' + options_from_collection_for_select(@contract_types, :id, :name), :style => 'width: 200px')
-      %br/
   #section1
     %table
       %thead

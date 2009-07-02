@@ -109,7 +109,6 @@ class ContractsController < ApplicationController
     @replaced_by = @contract.successors
     @comment = Comment.new
 		@support_providers = Dropdown.support_provider_list
-    @support_type = SugarContractType.find(:first, :select => :name, :conditions => "id = '#{@contract.contract_type}'").name
     @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
     respond_to do |format|
       format.html do
@@ -182,7 +181,6 @@ class ContractsController < ApplicationController
     @reps = User.user_list
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
-    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
     @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND start_date <= '#{@contract.start_date}'")
     @replaced_by = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND end_date >= '#{@contract.end_date}'")
 
@@ -266,6 +264,5 @@ class ContractsController < ApplicationController
     @reps = User.user_list
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
-    @contract_types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
   end
 end

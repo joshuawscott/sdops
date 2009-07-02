@@ -96,34 +96,6 @@ class ImportController < ApplicationController
     if error_level == 0
       @contract.reload
       @contract.update_line_item_effective_prices
-    
-      #Create contract in SugarCRM
-      sugar_con = SugarContract.new
-      sugar_con.id = create_guid
-
-      sugar_con.name = @contract.description
-      sugar_con.reference_code = @contract.said
-      sugar_con.account_id = @contract.account_id
-      sugar_con.start_date = @contract.start_date
-      sugar_con.end_date = @contract.end_date
-      sugar_con.currency_id = '-99'
-      sugar_con.total_contract_value = @contract.annual_hw_rev + @contract.annual_sw_rev + @contract.annual_ce_rev + @contract.annual_sa_rev + @contract.annual_dr_rev
-      sugar_con.total_contract_value_usdollar = sugar_con.total_contract_value
-      sugar_con.status = 'signed'
-      sugar_con.expiration_notice = @contract.end_date
-      sugar_con.description = "https://sdops/contracts/#{@contract.id}\n" + "Customer PO: #{@contract.cust_po_num}\n"
-      sugar_con.assigned_user_id = User.find(@contract.sales_rep_id).sugar_id
-      sugar_con.created_by = @contract.sales_rep_id
-      sugar_con.date_entered = DateTime.now
-      sugar_con.date_modified = DateTime.now
-      sugar_con.modified_user_id = @contract.sales_rep_id
-      sugar_con.team_id = @contract.sales_office
-      sugar_con.type = @contract.contract_type
-
-      if sugar_con.save == false
-        flash[:error] ||= "Sugar Contract was not created"
-        logger.error "Failed to create Sugar Contract for Contract ID# " + @contract.id
-      end
     end
 
     respond_to do |format|
@@ -200,10 +172,9 @@ class ImportController < ApplicationController
     @contracts = Contract.find(:all, :select => "id, concat(account_name,' | ',IF(LENGTH(said)>29,CONCAT(LEFT(said,30),'...'),said),' | ',start_date,' | ', IF(LENGTH(description)>29,CONCAT(LEFT(description,30),'...'),description)) as label", :order => 'account_name, said')
     @contractid ||= params[:contract]
     @sales_reps = User.user_list
-    @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "private = 0 AND deleted = 0 AND id <> 1", :order => "name")
+    @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0 AND id <> 1", :order => "name")
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list
-    @types = SugarContractType.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "list_order")
   end
 end
