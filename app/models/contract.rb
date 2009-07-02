@@ -270,7 +270,7 @@ class Contract < ActiveRecord::Base
   def expected_revenue
     if !renewal_amount.nil?
       @x = renewal_amount
-    elsif discount_pref_hw && discount_pref_hw > 0.0
+    elsif payment_terms != "Bundled"
       hw_t = 0.0
       line_items.each {|l| hw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "HW" }
       hw_t = hw_t * (1.0 - (discount_pref_hw + (payment_terms == "Annual" ? discount_prepay : 0.0)))
@@ -287,7 +287,7 @@ class Contract < ActiveRecord::Base
       
     else
       t = 0.0
-      line_items.each {|l| t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SRV"}
+      line_items.each {|l| t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) }
       @x = t * 12 * 0.5
     end
   end

@@ -33,8 +33,8 @@
           %td= h x.status
           %td= h x.account_name
           %td= h x.description
-          %td{:align => 'right'}= h x.total_revenue
-          %td{:align => 'right'}= h x.expected_revenue
+          %td{:align => 'right'}= h number_to_currency(x.total_revenue, :precision => 2)
+          %td{:align => 'right'}= h number_to_currency(x.expected_revenue, :precision => 2)
           %td= h x.start_date
           %td= h x.end_date
 
