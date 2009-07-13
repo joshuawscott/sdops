@@ -27,35 +27,35 @@
       %td{:valign => "bottom"}
         - form_tag contracts_path, {:method => 'get', :name => 'serial_search' } do
           = text_field 'serial_search', 'serial_number', :size => 11, :value => @serial_number
-          = submit_tag "Search"
+          = submit_tag "Find Serial Num"
       %td{:valign => "bottom", :align => 'right', :width => '200px'}
         = link_to "Clear Filter & Search", contracts_url
   - form_tag contracts_path, { :method => :get } do
     %div{:align => 'right', :style => 'width:980px'}
       = check_box_tag 'search_expired', @expired, @expired,{:name=> 'search[expired]'}
-      Inc. Expired
+      %label.plain{:for => 'search_expired'}Inc. Expired
       = submit_tag "Search"
     %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
       %thead
         %tr
           %th{:width => '80px', :ts_type => 'string'}
-            Sales Office
+            %label.table_header{:for => 'search_sales_office'}Sales Office
           %th{:width => '80px', :ts_type => 'string'}
-            Supp. Office
+            %label.table_header{:for => 'search_support_office'}Supp. Office
           %th{:width => '149px', :ts_type => 'string'}
-            Account Name
+            %label.table_header{:for => 'search_account_name'}Account Name
           %th{:width => '100px', :ts_type => 'string'}
-            SAID
+            %label.table_header{:for => 'search_said'}SAID
           %th{:width => '150px', :ts_type => 'string'}
-            Description
+            %label.table_header{:for => 'search_description'}Description
           %th{:width => '90px'}
-            Start Date
+            %label.table_header{:for => 'search_start_date'}Start Date
           %th{:width => '90px'}
-            End Date
+            %label.table_header{:for => 'search_end_date'}End Date
           %th{:width => '80px', :ts_type => 'string'}
-            Terms
+            %label.table_header{:for => 'search_payment_terms'}Terms
           %th{:width => '85px', :ts_type => 'money'}
-            Annual Rev
+            %label.table_header{:for => 'search_revenue'}Annual Rev
         %tr
           %th{:class => "search"}
             = select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 82px"})

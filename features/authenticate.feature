@@ -28,3 +28,4 @@ Feature: Authentication
     And I follow "Logout"
     Then I should see "Login"
     And I should see "Password"
+

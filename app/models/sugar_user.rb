@@ -39,6 +39,8 @@
 #   is_group            boolean
 class SugarUser < SugarDb
   set_table_name "users"
+  has_many :sugar_team_memberships, :foreign_key => 'user_id'
+  has_many :sugar_teams, :through => :sugar_team_memberships
 
   # The email1 and email2 fields in this model are deprecated, so you should use getuserinfo rather than
   # a normal find in order to pull complete user information.  This gets an additional field 'email' that

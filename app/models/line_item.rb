@@ -30,7 +30,7 @@ class LineItem < ActiveRecord::Base
 
   # OPTIMIZE: hw_revenue_by_location is VERY slow (>15 seconds)
   # Returns a collection of LineItem Objects with the total revenue for each location
-  def self.hw_revenue_by_location
+  def self.hw_revenue_by_location(effective_time = Time.now)
     locations = LineItem.find(:all, 
       :select => 'DISTINCT location, 0.0 as revenue', 
       :joins => :contract, 
@@ -41,7 +41,7 @@ class LineItem < ActiveRecord::Base
       :joins => :contract,
       :conditions =>
         ['contracts.expired = :expired AND line_items.begins <= :begins AND line_items.ends >= :ends AND support_type = "HW"',
-        {:expired => false, :begins => Time.now, :ends => Time.now}])
+        {:expired => false, :begins => effective_time, :ends => effective_time}])
     locations.each do |l|
       rawlist.each  do |i|
         if l.location == i.location && i.revenue != nil && i.revenue.to_i > 0

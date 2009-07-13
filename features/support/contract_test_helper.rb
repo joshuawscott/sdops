@@ -53,6 +53,7 @@ module ContractTestHelper
 
   def populate_dropdowns
     Dropdown.create(:dd_name => 'payment_terms', :label => "Annual")
+    Dropdown.create(:dd_name => 'payment_terms', :label => "Monthly")
     Dropdown.create(:dd_name => 'platform', :label => 'HP9000/Integrity')
     Dropdown.create(:dd_name => 'support_type', :filter => 'hardware', :label => 'SDC 24x7')
     Dropdown.create(:dd_name => 'support_type', :filter => 'software', :label => 'SDC SW 24x7')
