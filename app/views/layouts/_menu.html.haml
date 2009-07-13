@@ -60,6 +60,7 @@
             %br/
             =link_to 'SW List', swlists_path, submenuhash('toolsinfo', 'Process an HP-UX SW Listing')
             %br/
+            =link_to 'Dell Svc Tags', {:controller => 'tools', :action => 'dell_service_tag'}, submenuhash('toolsinfo', 'Find Dell Warranty information')
           .menuCol.last
             %h2 Pricing
             =link_to 'HW Support', {:controller => 'tools', :action => 'hwpricing'}, submenuhash('toolsinfo', 'Quick Hardware Support Pricecheck')

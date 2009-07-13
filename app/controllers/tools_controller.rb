@@ -22,4 +22,12 @@ class ToolsController < ApplicationController
     end
   end
 
+  def dell_service_tag
+    @warranty_info = []
+    if params[:service_tags]
+      st_list = params[:service_tags].strip.split("\r\n").reject  {|x| x.nil? || x.strip.blank?}
+      @warranty_info = st_list.map { |service_tag| DellServiceTag.find_warranty(service_tag.strip)}
+    end
+  end
+
 end

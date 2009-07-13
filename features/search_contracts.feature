@@ -28,7 +28,7 @@
 #    And I press "Search"
 #    Then I should see "<result>"
 #    But I should not see "<hidden>"
-#    
+#
 #    Examples:
 #    | value | dropdown | result | hidden |
 #    | Dallas | Sales Office | contract the first | contract the third |
@@ -36,7 +36,7 @@
 #    | Dallas | Supp. Office | contract the first | contract the third |
 #    | Annual | Terms | contract the first | contract the second |
 #    | Monthly | Terms | contract the second | contract the first |
-#    
+#
 #  Scenario Outline: Search in text fields
 #    When I fill in "<field>" with "<value>"
 #    And I press "Search"

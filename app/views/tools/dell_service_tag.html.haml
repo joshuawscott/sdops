@@ -1,0 +1,38 @@
+- content_for :subtitle do
+  Dell Service Tag Lookup
+
+#section1
+  %h2{:margin => '0'}
+    Dell Service Tag Lookup
+  %table{:class => 'plain_table'}
+    -form_tag url_for(:controller => 'tools', :action => 'dell_service_tag'), {:name => 'search', :method => :get} do
+      %tr
+        %td{:style => 'padding-right:5px'}
+          = text_area_tag :service_tags, @service_tags, :cols => 15, :rows => 10
+        %td
+          %b
+            Please paste the Dell Service Tags<br>into this box, each on it's own line.<br><br>
+            Each service tag takes about 2-3<br>seconds to look up, so you should<br>enter them in sets of 10 or less.<br>
+            A set of 10 will fit exactly into<br>this box.
+      %tr
+        %td
+          = submit_tag "Search"
+        %td
+  %table{:padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th{:width => '70px', :ts_type => 'string'}
+          %b Service Tag
+        %th{:width => '150px', :ts_type => 'string'}
+          %b Server Model
+        %th{:width => '100px', :ts_type => 'string'}
+          %b Warr. End Date
+        %th{:width => '250px', :ts_type => 'string'}
+          %b Current Dell Support Level
+    %tbody
+      - @warranty_info.each do |x|
+        %tr
+          %td= h x.service_tag
+          %td= h x.model_number
+          %td= h x.end_date
+          %td= h x.support_level
