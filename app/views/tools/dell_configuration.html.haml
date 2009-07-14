@@ -1,0 +1,33 @@
+- content_for :subtitle do
+  Dell Configuration
+
+#section1
+  %h2{:margin => '0'}
+    Dell Original Configuration Lookup
+  %table{:class => 'plain_table'}
+    -form_tag url_for(:controller => 'tools', :action => 'dell_configuration'), {:name => 'search', :method => :get} do
+      %tr
+        %td
+          %b Dell Service Tag
+        %td{:style => 'padding-left:5px'}
+          = text_field_tag :service_tag, @service_tag
+      %tr
+        %td
+          = submit_tag "Search"
+        %td
+  - if @configuration
+    %table{:padding => '2', :border => '1'}
+      %thead
+        %tr
+          %th{:width => '30px', :ts_type => 'string'}
+            %b Qty
+          %th{:width => '100px', :ts_type => 'string'}
+            %b Part Number
+          %th{:width => '400px', :ts_type => 'string'}
+            %b Description
+      %tbody
+        - @configuration.line_items.each do |x|
+          %tr
+            %td= h x.quantity
+            %td= h x.part_number
+            %td= h x.description

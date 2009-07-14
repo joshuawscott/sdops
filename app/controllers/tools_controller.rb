@@ -30,4 +30,11 @@ class ToolsController < ApplicationController
     end
   end
 
+  def dell_configuration
+    if params[:service_tag]
+      @service_tag = params[:service_tag].strip if params
+      @configuration = DellServiceTag.find_configuration(@service_tag)
+    end
+  end
+
 end

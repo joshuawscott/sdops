@@ -1,4 +1,3 @@
-#require 'ruby-debug'
 class LineItemsController < ApplicationController
   before_filter :get_contract, :except => [:form_pull_pn_data, :sort]
   before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :destroy, :mass_update]
