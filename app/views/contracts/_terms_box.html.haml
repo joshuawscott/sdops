@@ -1,0 +1,54 @@
+#terms.boxed{:style => 'width:300px;height:260px'}
+  %h2 Terms
+  %p
+    %label{:for => "contract_hw_support_level_id"}
+      HW Support Level
+    =h @contract.hw_support_level_id.blank? ? 'N/A' : @contract.hw_support_level_id
+  %p
+    %label{:for => "contract_sw_support_level_id"}
+      SW Support Level
+    =h @contract.sw_support_level_id.blank? ? 'N/A' : @contract.sw_support_level_id
+  %p
+    %label{:for => "contract_updates"}
+      SW Updates
+    =h @contract.updates.blank? ? 'N/A' : @contract.updates
+  %p
+    %label{:for => "contract_ce_days"}
+      Num. CE Days
+    =h @contract.ce_days.blank? ? 'N/A' : @contract.ce_days
+  %p
+    %label{:for => "contract_sa_days"}
+      Num. SA Days
+    =h @contract.sa_days.blank? ? 'N/A' : @contract.sa_days
+  %p
+    %label{:for => "contract_start_date"}
+      Start Date
+    =h @contract.start_date ||= 'N/A'
+  %p
+    %label{:for => "contract_end_date"}
+      End Date
+    =h @contract.end_date ||= 'N/A'
+  %p
+    %label{:for => "contract_multiyr_end"}
+      Multi-Year End
+    =h @contract.multiyr_end.blank? ? 'N/A' : @contract.multiyr_end
+  %p
+    %label{:for => "contract_so_number"}
+      SD Sales Order
+    =h @contract.so_number.blank? ? 'N/A' : @contract.so_number
+  %p
+    %label{:for => "contract_po_number"}
+      SD Purch. Order
+    =h @contract.po_number.blank? ? 'N/A' : @contract.po_number
+  %p
+    %label{:for => "contract_replacement_sdc_ref"}
+      Replacement Ref
+    =h @contract.replacement_sdc_ref.blank? ? 'N/A' : @contract.replacement_sdc_ref
+  %p
+    %label{:for => "contract_renewal_sent"}
+      PO Received
+    =h @contract.po_received.blank? ? 'N/A' : @contract.po_received
+  %p
+    %label{:for => "contract_expired"}
+      Expired
+    =h @contract.expired.blank? ? 'N/A' : @contract.expired

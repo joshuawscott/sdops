@@ -1,0 +1,56 @@
+#general.boxed{:style => 'width:430px;height:260px'}
+  %h2 General Details
+  %p
+    %label{:for => "contract_id"}
+      Contract ID
+    =h @contract.id.to_s
+  %p
+    %label{:for => "contract_account_name"}
+      Account
+    =h @contract.account_name.blank? ? 'N/A' : @contract.account_name
+  %p
+    %label{:for => "contract_sales_office_name"}
+      Sales Office
+    =h @contract.sales_office_name.blank? ? 'N/A' : @contract.sales_office_name
+  %p
+    %label{:for => "contract_support_office_name"}
+      Support Office
+    =h @contract.support_office_name.blank? ? 'N/A' : @contract.support_office_name
+  %p
+    %label{:for => "contract_sales_rep_id"}
+      Sales rep
+    = h @contract.sales_rep_id.blank? ? 'N/A' : @sales_rep
+  %p
+    %label{:for => "contract_said"}
+      SAID
+    =h @contract.said ||= 'N/A'
+  %p
+    %label{:for => "contract_sdc_ref"}
+      SDC Reference
+    =h @contract.sdc_ref ||= 'N/A'
+  %p
+    %label{:for => "contract_description"}
+      Description
+    %span{:title => @contract.description.to_s.length > 30 ? @contract.description : ""}
+      =h @contract.description.blank? ? 'N/A' : truncate(@contract.description, 30, ".....")
+  %p
+    %label{:for => "contract_cust_po_num"}
+      Customer PO
+    =h @contract.cust_po_num.blank? ? 'N/A' : @contract.cust_po_num
+  %p
+    %label{:for => "contract_payment_terms"}
+      Payment Terms
+    =h @contract.payment_terms ||= 'N/A'
+  %p
+    %label{:for => "contract_platform"}
+      Platform
+    =h @contract.platform.blank? ? 'N/A' : @contract.platform
+  %p
+    %label{:for => "contract_renewal_sent"}
+      Renewal Sent
+    =h @contract.renewal_sent.blank? ? 'N/A' : @contract.renewal_sent
+  %p
+    %label{:for => "contract_renewal_sent"}
+      Renewal Amount
+    =h @contract.renewal_amount.nil? ? 'N/A' : @contract.renewal_amount
+

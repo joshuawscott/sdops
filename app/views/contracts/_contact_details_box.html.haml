@@ -1,0 +1,31 @@
+#contact.boxed{:style => 'width:300px;height:160px'}
+  %h2 Contact Details
+  %p
+    %label{:for => "contract_address1"}
+      Address
+    =h @contract.address1.blank? ? 'N/A' : @contract.address1
+  %p
+    %label{:for => "contract_address2"}
+      &nbsp;
+    =h @contract.address2.blank? ? 'N/A' : @contract.address2
+  %p
+    %label{:for => "contract_address3"}
+      &nbsp;
+    =h @contract.address3.blank? ? 'N/A' : @contract.address3
+  %p
+    %label{:for => "contract_contact_name"}
+      Contact Name
+    =h @contract.contact_name.blank? ? 'N/A' : @contract.contact_name
+  %p
+    %label{:for => "contract_contact_phone"}
+      Contact Phone
+    =h @contract.contact_phone.blank? ? 'N/A' : @contract.contact_phone
+  %p
+    %label{:for => "contract_contact_email"}
+      Contact email
+    =h @contract.contact_email.blank? ? 'N/A' : @contract.contact_email
+  %p
+    %label{:for => "contract_contact_note"}
+      Contact Note
+    =h @contract.contact_note.blank? ? 'N/A' : @contract.contact_note
+

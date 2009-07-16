@@ -1,0 +1,31 @@
+#discounts.boxed{:style => 'width:190px;height:160px'}
+  %h2 Discounts
+  %p
+    %label{:for => "contract_discount_pref_hw"}
+      HW Disct %
+    =h sprintf("%d%", (@contract.discount_pref_hw ||= 0.0) * 100)
+  %p
+    %label{:for => "contract_discount_pref_sw"}
+      SW Disct %
+    =h sprintf("%d%", (@contract.discount_pref_sw ||= 0.0) * 100)
+  %p
+    %label{:for => "contract_discount_pref_srv"}
+      SRV Disct %
+    =h sprintf("%d%", (@contract.discount_pref_srv ||= 0.0) * 100)
+  %p
+    %label{:for => "contract_discount_prepay"}
+      Prepay Disct %
+    =h sprintf("%d%", (@contract.discount_prepay ||= 0.0) * 100)
+  %p
+    %label{:for => "contract_discount_multiyear"}
+      Multi-year Disct %
+    =h sprintf("%d%", (@contract.discount_multiyear ||= 0.0) * 100)
+  %p
+    %label{:for => "contract_discount_ce_day"}
+      CE Days Disc %
+    =h sprintf("%d%", (@contract.discount_ce_day ||= 0.0) * 100)
+  %p
+    %label{:for => "contract_discount_sa_day"}
+      SA Days Disct %
+    =h sprintf("%d%", (@contract.discount_sa_day ||= 0.0) * 100)
+

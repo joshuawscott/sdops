@@ -1,0 +1,33 @@
+#revenue.boxed{:style => 'width:230px;height:160px'}
+  %h2 Revenue
+  %p
+    %label{:for => "contract_revenue"}
+      Amount Paid
+    - @tmp = number_to_currency(@contract.revenue)
+    =h @tmp ||= 'N/A'
+  %p
+    %label{:for => "contract_annual_hw_rev"}
+      Ann. HW Rev
+    - @tmp = number_to_currency(@contract.annual_hw_rev)
+    =h @tmp ||= 'N/A'
+  %p
+    %label{:for => "contract_annual_sw_rev"}
+      Ann. SW Rev
+    - @tmp = number_to_currency(@contract.annual_sw_rev)
+    =h @tmp ||= 'N/A'
+  %p
+    %label{:for => "contract_annual_ce_rev"}
+      Ann. CE Rev
+    - @tmp = number_to_currency(@contract.annual_ce_rev)
+    =h @tmp ||= 'N/A'
+  %p
+    %label{:for => "contract_annual_sa_rev"}
+      Ann. SA Rev
+    - @tmp = number_to_currency(@contract.annual_sa_rev)
+    =h @tmp ||= 'N/A'
+  %p
+    %label{:for => "contract_annual_dr_rev"}
+      Ann. DR Rev
+    - @tmp = number_to_currency(@contract.annual_dr_rev)
+    =h @tmp ||= 'N/A'
+

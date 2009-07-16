@@ -32,19 +32,19 @@
     %p
       %label{:for => "contract_sdc_ref"}
         SDC Reference
-      = f.text_field :sdc_ref, :class => 'textbox'
+      = f.text_field :sdc_ref, :class => 'textbox', :style => 'width: 18em'
     %p
       %label{:for => "contract_said"}
         SAID
-      = f.text_field :said, :class => 'textbox'
+      = f.text_field :said, :class => 'textbox', :style => 'width: 18em'
     %p
       %label{:for => "contract_description"}
         Description
-      = f.text_field :description, :class => 'textbox'
+      = f.text_field :description, :class => 'textbox', :style => 'width: 18em'
     %p
       %label{:for => "contract_cust_po_num"}
         Customer PO
-      = f.text_field :cust_po_num, :class => 'textbox'
+      = f.text_field :cust_po_num, :class => 'textbox', :style => 'width: 18em'
     %p
       %label{:for => "contract_payment_terms"}
         Payment Terms
@@ -56,7 +56,11 @@
     %p
       %label{:for => "contract_renewal_sent"}
         Renewal Sent
-      = f.date_select :renewal_sent
+      = f.date_select :renewal_sent, :class => 'textbox'
+    %p
+      %label{:for => "contract_renewal_amount"}
+        Renewal Amount
+      = f.text_field :renewal_amount, :class => 'textbox'
 
   #terms.boxed{:style => 'width:300px;height:320px'}
     %h2 Terms
@@ -75,23 +79,23 @@
     %p
       %label{:for => "contract_ce_days"}
         Num. CE Days
-      = f.text_field :ce_days, :class => 'textbox'
+      = f.text_field :ce_days, :class => 'textbox', :style => 'width: 5em'
     %p
       %label{:for => "contract_sa_days"}
         Num. SA Days
-      = f.text_field :sa_days, :class => 'textbox'
+      = f.text_field :sa_days, :class => 'textbox', :style => 'width: 5em'
     %p
       %label{:for => "contract_start_date"}
         Start Date
-      = f.date_select :start_date
+      = f.date_select :start_date, :class => 'textbox'
     %p
       %label{:for => "contract_end_date"}
         End Date
-      = f.date_select :end_date
+      = f.date_select :end_date, :class => 'textbox'
     %p
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
-      = f.date_select :multiyr_end
+      = f.date_select :multiyr_end, :class => 'textbox'
     %p
       %label{:for => "contract_so_number"}
         SD Sales Order
@@ -107,7 +111,7 @@
     %p
       %label{:for => "contract_po_received"}
         PO Received
-      = f.date_select :po_received
+      = f.date_select :po_received, :class => 'textbox'
     %p
       %label{:for => "contract_expired"}
         Expired
