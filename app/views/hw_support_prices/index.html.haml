@@ -1,0 +1,45 @@
+- content_for :subtitle do
+  HW Support Pricing
+
+#section1
+  %h2{:margin => '0'}
+    HW Pricing Lookup
+  %table{:class => 'plain_table'}
+    -form_tag url_for(:controller => 'hw_support_prices', :action => 'index'), {:name => 'search', :method => :get} do
+      %tr
+        %td
+          %label{:for => 'part_number'}Part Number:&nbsp;
+        %td
+          = text_field_tag :part_number, @part_number
+      %tr
+        %td
+          %label{:for => 'description'}Description:
+        %td
+          = text_field_tag :description, @description
+      %tr
+        %td
+          = submit_tag "Search"
+        %td
+  %table{:padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th{:width => '70px', :ts_type => 'string'}
+          %b Part Number
+        %th{:width => '300px', :ts_type => 'string'}
+          %b Description
+        %th{:width => '60px', :ts_type => 'number'}
+          %b List Price
+        %th{:width => '80px', :ts_type => 'date'}
+          %b Effective Date
+        %th{:width => '80px', :ts_type => 'date'}
+          %b Confirmation Date
+    %tbody
+      -if @items
+        - @items.each do |item|
+          %tr
+            %td= item.part_number
+            %td= item.description
+            %td= number_to_currency(item.list_price, :precision => 2)
+            %td= item.modified_at
+            %td= item.confirm_date
+

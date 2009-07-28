@@ -109,3 +109,8 @@ end
 Factory.define :inventory_warehouse do |i|
 end
 
+Factory.define :hw_support_price do |h|
+end
+Factory.define :sw_support_price do |h|
+end
+

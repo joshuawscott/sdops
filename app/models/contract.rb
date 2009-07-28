@@ -85,6 +85,8 @@ class Contract < ActiveRecord::Base
   before_save :update_line_item_effective_prices
   after_save :update_account_name_from_sugar
 
+  # accepts an array of team ids, and returns contracts where support_office or sales_office
+  # matches the passed array of ids.
   def self.short_list(teams)
     Contract.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => ["(sales_office IN (?) OR support_office IN(?)) AND expired <> true", teams, teams], :order => 'sales_office, account_name, start_date', :group => 'id')
   end
@@ -331,7 +333,7 @@ class Contract < ActiveRecord::Base
 
   # This method updates the account_name field from SugarCRM for all the Contracts with a matching account_id
   def update_account_name_from_sugar
-    Contract.update_all(["account_name = ?", sugar_acct.name ], ["account_id = ?", account_id])
+    Contract.update_all(["account_name = ?", sugar_acct && sugar_acct.name ], ["account_id = ?", account_id])
   end
 
 

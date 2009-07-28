@@ -1,0 +1,2 @@
+module HwSupportPricesHelper
+end

@@ -88,7 +88,7 @@ class UpfrontOrdersController < ApplicationController
       position = 1
       params[:line_item].each do |l|
         if l[:is_hw] == "true"
-          currinfo = SupportPriceHw.current_list_price(l[:product_num])
+          currinfo = HwSupportPrice.current_list_price(l[:product_num])
           l[:list_price] = currinfo.list_price
           l[:description] = currinfo.description
           l[:support_type] = 'HW'
@@ -106,7 +106,7 @@ class UpfrontOrdersController < ApplicationController
       position = 1
       params[:line_item].each do |l|
         if l[:is_sw] == "true"
-          currinfo = SupportPriceSw.current_list_price(l[:product_num])
+          currinfo = SwSupportPrice.current_list_price(l[:product_num])
           l[:list_price] = currinfo.list_price
           l[:description] = currinfo.description
           l[:support_type] = 'SW'

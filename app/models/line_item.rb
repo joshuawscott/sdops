@@ -59,14 +59,14 @@ class LineItem < ActiveRecord::Base
     # Update HW Lines
     lineitems = LineItem.find(:all, :select => "DISTINCT product_num", :joins => :contract, :conditions => "contracts.expired <> true AND support_type = 'HW' AND product_num IS NOT NULL AND product_num NOT LIKE 'label'")
     lineitems.each do |l|
-      @cp = SupportPriceHw.current_list_price(l.product_num).list_price
+      @cp = HwSupportPrice.current_list_price(l.product_num).list_price
       LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'HW'", l.product_num] )
     end
     
     # Update SW Lines
     lineitems = LineItem.find(:all, :select => "DISTINCT product_num", :joins => :contract, :conditions => "contracts.expired <> true AND support_type = 'SW' AND product_num IS NOT NULL AND product_num NOT LIKE 'label'")
     lineitems.each do |l|
-      @cp = SupportPriceSw.current_list_price(l.product_num).list_price
+      @cp = SwSupportPrice.current_list_price(l.product_num).list_price
       LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'SW'", l.product_num] )
     end
     # Update SRV Lines
@@ -88,7 +88,7 @@ class LineItem < ActiveRecord::Base
     (effective_list_price || 0) * (qty || 0)
   end
 
-  # Returns a SupportPriceHw or SupportPriceSw object, if support_type is 'HW' or 'SW' respectively.
+  # Returns a HwSupportPrice or SwSupportPrice object, if support_type is 'HW' or 'SW' respectively.
   # If support_type is 'SRV', returns nil.  This method is for updating from the current pricing DB.
   def return_current_info
     ("support_price_" + support_type.downcase).camelize.constantize.current_list_price(product_num) unless support_type == 'SRV'

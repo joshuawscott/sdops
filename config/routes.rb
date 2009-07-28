@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :hw_support_prices
+  map.resources :sw_support_prices
+
   map.resources :roles
 
   map.resources :appgen_orders

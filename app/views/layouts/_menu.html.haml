@@ -54,7 +54,7 @@
               %br/
               =link_to 'Whitelists', swlist_whitelists_path, submenuhash('toolsinfo', 'Edit Whitelisted SWLIST items & SW Products')
               %br/
-          .menuCol
+          .menuCol.last
             %h2 Gather Configs
             =link_to 'I/O Scan', ioscans_path, submenuhash('toolsinfo', 'Process an HP-UX I/O Scan')
             %br/
@@ -63,13 +63,27 @@
             =link_to 'Dell Warranty', {:controller => 'tools', :action => 'dell_service_tag'}, submenuhash('toolsinfo', 'Find Dell Warranty information')
             %br/
             =link_to 'Dell Configuration', {:controller => 'tools', :action => 'dell_configuration'}, submenuhash('toolsinfo', 'Find Dell Original Configuration information')
-          .menuCol.last
-            %h2 Pricing
-            =link_to 'HW Support', {:controller => 'tools', :action => 'hwpricing'}, submenuhash('toolsinfo', 'Quick Hardware Support Pricecheck')
-            %br/
-            =link_to 'SW Support', {:controller => 'tools', :action => 'swpricing'}, submenuhash('toolsinfo', 'Quick Software Support Pricecheck')
-            %br/
           .submenuFooter{:id => "toolsinfo"}
+            &nbsp;
+    %li
+      =link_to 'Prices', '/prices', {:class => tabclass('prices')}
+      %ul.submenu
+        .submenu
+          .submenuHeader Quotes and Pricing
+          .menuCol
+            %h2 Pricing
+            =link_to 'HW Support Pricing', {:controller => 'hw_support_prices'}, submenuhash('pricesinfo', 'Quick Hardware Support Pricecheck')
+            %br/
+            =link_to 'SW Support Pricing', {:controller => 'sw_support_prices'}, submenuhash('pricesinfo', 'Quick Software Support Pricecheck')
+            %br/
+          -if current_user.has_role?(:pricing_manager)
+            .menuCol.last
+              %h2 Change Prices
+              =link_to 'HW Support Add', {:controller => 'hw_support_prices', :action => 'new'}, submenuhash('pricesinfo', 'Add a new HW Support Price')
+              %br/
+              =link_to 'SW Support Add', {:controller => 'sw_support_prices', :action => 'new'}, submenuhash('pricesinfo', 'Add a new SW Support Price')
+              %br/
+          .submenuFooter{:id => "pricesinfo"}
             &nbsp;
     - if current_user.has_role?(:admin)
       %li
