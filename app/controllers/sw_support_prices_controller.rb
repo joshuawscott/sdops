@@ -2,7 +2,7 @@ class SwSupportPricesController < ApplicationController
   def index
     @productnumber = params[:productnumber]
     @description = params[:description]
-    @items = SwSupportPrice.search(@productnumber, @description, Time.now.to_date)
+    @items = SwSupportPrice.search(@productnumber, @description)
   end
   def new
     @sw_support_price ||= SwSupportPrice.new

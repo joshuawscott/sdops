@@ -29,7 +29,7 @@ describe SwSupportPricesController, "GET index" do
     end
 
     it "should find by productnumber" do
-      SwSupportPrice.should_receive(:search).with('A6144', '', Time.now.to_date)
+      SwSupportPrice.should_receive(:search).with('A6144', '')
       get :index, :productnumber => 'A6144', :description => ''
     end
 

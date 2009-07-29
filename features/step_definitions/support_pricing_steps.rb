@@ -4,6 +4,8 @@ Given /^some support products exist$/ do
   Factory(:sw_support_price, :part_number => 'A6144A', :description => 'L3000')
   Factory(:hw_support_price, :part_number => 'A5522A', :description => 'Processor')
   Factory(:sw_support_price, :part_number => 'A5522A', :description => 'Processor')
+  HwSupportPrice.count.should == 3
+  SwSupportPrice.count.should == 2
 end
 
 Then /^I should see the HW support price add form$/ do

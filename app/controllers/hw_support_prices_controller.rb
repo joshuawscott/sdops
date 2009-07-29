@@ -2,7 +2,7 @@ class HwSupportPricesController < ApplicationController
   def index
     @part_number = params[:part_number]
     @description = params[:description]
-    @items = HwSupportPrice.search(@part_number, @description, Time.now.to_date)
+    @items = HwSupportPrice.search(@part_number, @description)
   end
 
   def new

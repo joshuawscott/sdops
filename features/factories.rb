@@ -109,8 +109,14 @@ end
 Factory.define :inventory_warehouse do |i|
 end
 
+Factory.sequence(:date) {|n| Date.today + n.days }
+
 Factory.define :hw_support_price do |h|
+  h.modified_at { Factory.next(:date) }
+  h.confirm_date { Factory.next(:date) }
 end
-Factory.define :sw_support_price do |h|
+Factory.define :sw_support_price do |s|
+  s.modified_at { Factory.next(:date) }
+  s.confirm_date { Factory.next(:date) }
 end
 

@@ -11,5 +11,4 @@ class HwSupportPrice < SupportPricingDb
 
   set_table_name "hwdb"
   validates_presence_of :part_number
-
 end

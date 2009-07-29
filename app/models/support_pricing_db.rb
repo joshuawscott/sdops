@@ -4,14 +4,16 @@ class SupportPricingDb < ActiveRecord::Base
   self.abstract_class = true
 
   validates_presence_of :modified_at
+  validates_uniqueness_of :modified_at, :scope => :part_number
   before_validation :fix_date
+  before_save :prevent_old_pricing
 
   # Returns many product records for searching purposes.  partnumber has a wildcard added to the end
   # and description has wildcards added to each side.
-  def self.search(partnumber, description, quotedate)
+  def self.search(partnumber, description)
     return [] if partnumber == nil && description == nil
     self.find(:all,
-      :conditions => ["part_number LIKE '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND description like '%#{description.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND modified_at <= ?", quotedate],
+      :conditions => "part_number LIKE '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND description like '%#{description.gsub(/\\/, '\&\&').gsub(/'/, "''")}%'",
       :group => "part_number ASC, confirm_date DESC, modified_at DESC",
       :limit => "1000")
   end
@@ -29,5 +31,10 @@ class SupportPricingDb < ActiveRecord::Base
   protected
   def fix_date
     self.modified_at = Date.parse('1970-01-01') if modified_at.nil?
+    self.confirm_date = Date.parse('1970-01-01') if confirm_date.nil?
+  end
+
+  def prevent_old_pricing
+    0 == HwSupportPrice.count(:conditions => ["part_number = ? AND confirm_date >= ? AND confirm_date <> '1970-01-01'", self.part_number, self.confirm_date])
   end
 end

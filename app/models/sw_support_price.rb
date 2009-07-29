@@ -11,6 +11,7 @@
 class SwSupportPrice < SupportPricingDb
 
   set_table_name "swdb"
+  validates_presence_of :part_number
 
   # Returns phone_price + update_price (convenience method for quoting)
   def list_price
