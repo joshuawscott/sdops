@@ -91,7 +91,7 @@ class LineItem < ActiveRecord::Base
   # Returns a HwSupportPrice or SwSupportPrice object, if support_type is 'HW' or 'SW' respectively.
   # If support_type is 'SRV', returns nil.  This method is for updating from the current pricing DB.
   def return_current_info
-    ("support_price_" + support_type.downcase).camelize.constantize.current_list_price(product_num) unless support_type == 'SRV'
+    (support_type.downcase + "_support_price").camelize.constantize.current_list_price(product_num) unless support_type == 'SRV'
   end
 
   def self.support_types

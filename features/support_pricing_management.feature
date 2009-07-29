@@ -15,15 +15,13 @@ Feature: Maintain pricing information
     Then I should see "The price was saved successfully."
     And I should see the HW support price add form
 
-#  Scenario: Add a SW support price
-#    Given I follow "SW Support Add"
-#    When I fill in "Product Number" with "A6144A"
-#    And I fill in "Description" with "L3000 Server"
-#    And I fill in "Phone Price" with "75.00"
-#    And I fill in "Update Price" with "25.00"
-#    And I press "Create"
-#    Then I should see "A6144A"
-#    And I should see "L3000 Server"
-#    And I should see "$75.00"
-#    And I should see "$25.00"
+  Scenario: Add a SW support price
+    Given I follow "SW Support Add"
+    When I fill in "Product Number" with "A6144A"
+    And I fill in "Description" with "L3000 Server"
+    And I fill in "Phone Price" with "100.00"
+    And I fill in "Update Price" with "100.00"
+    And I press "Create"
+    Then I should see "The price was saved successfully."
+    And I should see the SW support price add form
 

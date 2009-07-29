@@ -1,0 +1,29 @@
+-content_for :subtitle do
+  Add SW Support Price
+#section1
+  #sw_price.boxed
+    %h2 New SW Support Price
+    - form_for :sw_support_price, :url => sw_support_prices_path do |f|
+      %p
+        %label{:for => "sw_support_price_part_number"}
+          Product Number
+        = f.text_field :part_number
+      %p
+        %label{:for => "sw_support_price_description"}
+          Description
+        = f.text_field :description
+      %p
+        %label{:for => "sw_support_price_phone_price"}
+          Phone Price
+        = f.text_field :phone_price
+      %p
+        %label{:for => "sw_support_price_update_price"}
+          Update Price
+        = f.text_field :update_price
+      %p
+        %label{:for => "sw_support_price_confirm_date"}
+          Confirmation Date
+        = f.text_field :confirm_date
+      %p
+        = f.submit "Create"
+

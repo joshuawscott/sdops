@@ -26,10 +26,9 @@ Feature: Search for Support Pricing information
     | HW Support Pricing  | Description | L3000   | A6144A  | A5522A    |
     | HW Support Pricing  | Part Number | A614    | L3000   | Processor |
     | HW Support Pricing  | Description | L3      | A6144A  | A5522A    |
+    | HW Support Pricing  | Description | L3000   | A6144B  | A5522A    |
     | SW Support Pricing  | Part Number | A6144A  | L3000   | Processor |
     | SW Support Pricing  | Description | L3000   | A6144A  | A5522A    |
     | SW Support Pricing  | Part Number | A614    | L3000   | Processor |
     | SW Support Pricing  | Description | L3      | A6144A  | A5522A    |
 
-  Scenario: Search for a product that has 1 entry
-  Scenario: Search for a product that has 2 entries
