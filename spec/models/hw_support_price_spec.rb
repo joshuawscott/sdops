@@ -1,13 +1,4 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-#   id            integer
-#   part_number   string
-#   description   string
-#   list_price    decimal
-#   modified_by   string
-#   modified_at   date
-#   confirm_date  date
-#   notes         text
-
 describe HwSupportPrice do
 
   before(:each) do
@@ -83,6 +74,16 @@ describe HwSupportPrice do
       price.save
       HwSupportPrice.count.should_not == price_count + 2
     end
+
+    it "should still save an updated record" do
+      #regression test for a bug that prevented a record from updating because the date
+      #already exists.
+      price = HwSupportPrice.find(@initial_item.id)
+      price.update_attributes(:description => "new description")
+      price = HwSupportPrice.find(@initial_item.id)
+      price.description.should == "new description"
+    end
+
   end
 
 end

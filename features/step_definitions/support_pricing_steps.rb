@@ -45,3 +45,25 @@ Then /^I should see the SW support price add form$/ do
   end
 end
 
+Then /^I should see "([^\"]*)" inside the support search results$/ do |text|
+  response.should have_tag("table") do |table|
+    table.should have_tag("tbody") do |tbody|
+      tbody.should contain(text)
+    end
+  end
+end
+
+When /^I follow "([^\"]*)" next to the support search results$/ do |link|
+  response.should have_tag("table") do |table|
+    table.should have_tag("tbody") do |tbody|
+      click_link link
+    end
+  end
+end
+
+When /^I search for (.*) Support Price "([^\"]*)"$/ do |type,part_number|
+  click_link "#{type} Support Pricing"
+  fill_in "Part Number", :with => part_number
+  click_button "Search"
+end
+

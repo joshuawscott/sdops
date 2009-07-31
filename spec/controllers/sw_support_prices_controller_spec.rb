@@ -97,3 +97,91 @@ describe SwSupportPricesController, "POST create" do
   end
 
 end
+
+describe SwSupportPricesController, "POST destroy" do
+  before(:each) do
+    controller.stub!(:login_required)
+    @sw_support_price = mock_model(SwSupportPrice)
+    @sw_support_price.stub!(:id).and_return(1)
+    SwSupportPrice.stub!(:find).and_return(@sw_support_price)
+    @sw_support_price.should_receive(:destroy).and_return(true)
+  end
+  it "should destroy the instance" do
+    post :destroy, :id => @sw_support_price.id
+  end
+  it "should redirect to the index page" do
+    post :destroy, :id => @sw_support_price.id
+    response.should redirect_to("sw_support_prices")
+  end
+
+end
+
+describe SwSupportPricesController, "GET edit" do
+
+  before(:each) do
+    controller.stub!(:login_required)
+    @sw_support_price = mock_model(SwSupportPrice)
+    @sw_support_price.stub!(:id).and_return(1)
+    SwSupportPrice.stub!(:find).and_return(@sw_support_price)
+  end
+
+  it "should render the edit page" do
+    get :edit, :id => @sw_support_price.id
+    response.should render_template("edit")
+  end
+  it "should find the SwSupportPrice to edit" do
+    get :edit, :id => @sw_support_price.id
+    assigns[:sw_support_price].should == @sw_support_price
+  end
+end
+
+describe SwSupportPricesController, "POST update" do
+
+  before(:each) do
+    controller.stub!(:login_required)
+    @sw_support_price = mock_model(SwSupportPrice)
+    @sw_support_price.stub!(:id).and_return(1)
+    SwSupportPrice.should_receive(:find).and_return(@sw_support_price)
+  end
+
+  it "should update the SwSupportPrice" do
+    @sw_support_price.should_receive(:update_attributes)
+    post :update, :id => @sw_support_price
+  end
+
+  context "when the update is successful" do
+    before(:each) { @sw_support_price.stub!(:update_attributes).and_return(true) }
+
+    it "should redirect to the index page" do
+      post :update, :id => @sw_support_price
+      response.should redirect_to(sw_support_prices_path)
+    end
+
+    it "should give a success message" do
+      post :update, :id => @sw_support_price
+      flash[:notice].should == "Price successfully updated"
+    end
+
+  end
+
+  context "when the update fails" do
+    before(:each) { @sw_support_price.stub!(:update_attributes).and_return(false) }
+
+    it "should assign @sw_support_price for re-editing" do
+      post :update, :id => @sw_support_price
+      assigns[:sw_support_price].should == @sw_support_price
+    end
+
+    it "should render the edit page" do
+      post :update, :id => @sw_support_price
+      response.should render_template("edit")
+    end
+
+    it "should put a failure message" do
+      post :update
+    end
+
+  end
+
+end
+

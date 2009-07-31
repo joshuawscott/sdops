@@ -1,5 +1,8 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 describe 'sw_support_prices/index.html.haml' do
+  before(:each) do
+    template.stub!(:current_user).and_return(mock_model(User, :has_role? => true))
+  end
   context "first viewing the page" do
     before(:each) do
       render "sw_support_prices/index.html.haml"

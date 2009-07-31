@@ -18,4 +18,28 @@ class SwSupportPricesController < ApplicationController
       render :action => "new"
     end
   end
+
+  def destroy
+    @sw_support_price = SwSupportPrice.find(params[:id])
+    @sw_support_price.destroy
+    respond_to do |format|
+      format.html {redirect_to(sw_support_prices_url)}
+    end
+  end
+
+  def edit
+    @sw_support_price = SwSupportPrice.find(params[:id])
+  end
+
+  def update
+    @sw_support_price = SwSupportPrice.find(params[:id])
+    if @sw_support_price.update_attributes(params[:sw_support_price])
+      flash[:notice] = "Price successfully updated"
+      redirect_to sw_support_prices_path
+    else
+      flash[:notice] = "FAILURE!"
+      render :action => "edit"
+    end
+  end
+
 end

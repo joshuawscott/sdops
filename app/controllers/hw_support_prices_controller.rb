@@ -19,4 +19,27 @@ class HwSupportPricesController < ApplicationController
       render :action => "new"
     end
   end
+
+  def destroy
+    @hw_support_price = HwSupportPrice.find(params[:id])
+    @hw_support_price.destroy
+    respond_to do |format|
+      format.html {redirect_to(hw_support_prices_url)}
+    end
+  end
+
+  def edit
+    @hw_support_price = HwSupportPrice.find(params[:id])
+  end
+
+  def update
+    @hw_support_price = HwSupportPrice.find(params[:id])
+    if @hw_support_price.update_attributes(params[:hw_support_price])
+      flash[:notice] = "Price successfully updated"
+      redirect_to hw_support_prices_path
+    else
+      flash[:notice] = "FAILURE!"
+      render :action => "edit"
+    end
+  end
 end

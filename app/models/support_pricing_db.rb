@@ -6,7 +6,7 @@ class SupportPricingDb < ActiveRecord::Base
   validates_presence_of :modified_at
   validates_uniqueness_of :modified_at, :scope => :part_number
   before_validation :fix_date
-  before_save :prevent_old_pricing
+  before_create :prevent_old_pricing
 
   # Returns many product records for searching purposes.  partnumber has a wildcard added to the end
   # and description has wildcards added to each side.
@@ -35,6 +35,8 @@ class SupportPricingDb < ActiveRecord::Base
   end
 
   def prevent_old_pricing
-    0 == HwSupportPrice.count(:conditions => ["part_number = ? AND confirm_date >= ? AND confirm_date <> '1970-01-01'", self.part_number, self.confirm_date])
+    similar_records = self.class.count(:conditions => ["part_number = ? AND confirm_date >= ? AND confirm_date <> '1970-01-01'", self.part_number, self.confirm_date])
+    logger.debug "number of similar records is #{similar_records}"
+    similar_records == 0
   end
 end

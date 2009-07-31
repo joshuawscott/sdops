@@ -37,6 +37,8 @@
           %b Effective Date
         %th{:width => '80px', :ts_type => 'date'}
           %b Confirmation Date
+        -if current_user.has_role?(:pricing_admin)
+          %th{:colspan => 2}
     %tbody
       - if @items
         - @items.each do |item|
@@ -48,4 +50,7 @@
             %td= number_to_currency(item.list_price, :precision => 2)
             %td=item.modified_at
             %td=item.confirm_date
+            -if current_user.has_role?(:pricing_admin)
+              %td= link_to 'Edit', edit_sw_support_price_path(item)
+              %td= link_to 'Delete', item, :confirm => 'Are you sure?', :method => :delete
 

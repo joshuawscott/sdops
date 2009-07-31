@@ -2,10 +2,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe SwSupportPrice do
 
   before(:each) do
-    item_hash = {:part_number => "A6144A", :description => "L3000"}
-    @initial_item = SwSupportPrice.create!(item_hash.merge(:phone_price => 150.0, :update_price => 150.0, :modified_at => '0000-00-00'))
-    @first_item = SwSupportPrice.create!(item_hash.merge(:phone_price => 250.0, :update_price => 150.0, :modified_at => '2009-01-01'))
-    @second_item = SwSupportPrice.create!(item_hash.merge(:phone_price => 300.0, :update_price => 200.0, :modified_at => '2009-06-01'))
+    SwSupportPrice.count.should == 0
+    @initial_item = Factory(:sw_support_price, :phone_price => 200.00, :update_price => 100.0, :modified_at => Date.parse('1970-01-01'), :confirm_date => Date.parse('1970-01-01'))
+    @first_item   = Factory(:sw_support_price, :phone_price => 200.00, :update_price => 200.0, :modified_at => Date.parse('2009-01-01'), :confirm_date => Date.parse('2008-01-01'))
+    @second_item  = Factory(:sw_support_price, :phone_price => 300.00, :update_price => 200.0, :modified_at => Date.parse('2009-06-01'), :confirm_date => Date.parse('2008-06-01'))
   end
 
   describe "quote" do
@@ -34,6 +34,7 @@ describe SwSupportPrice do
       item = SwSupportPrice.getprice("A6144A", Date.parse("2010-01-01"))
       item.list_price.should == BigDecimal.new("500.0")
     end
+
   end
 
   describe "validations" do
@@ -57,22 +58,32 @@ describe SwSupportPrice do
 
   describe "Prevent price regression" do
     it "should not save the price when another exists with a later confirmation date" do
-      price_count = HwSupportPrice.count
-      old_price = Factory(:hw_support_price, :confirm_date => Date.parse('2010-01-01'))
-      HwSupportPrice.count.should == price_count + 1
-      price = Factory.build(:hw_support_price, :confirm_date => Date.parse('2009-01-01'))
+      price_count = SwSupportPrice.count
+      old_price = Factory(:sw_support_price, :confirm_date => Date.parse('2010-01-01'))
+      SwSupportPrice.count.should == price_count + 1
+      price = Factory.build(:sw_support_price, :confirm_date => Date.parse('2009-01-01'))
       price.save
-      HwSupportPrice.count.should_not == price_count + 2
+      SwSupportPrice.count.should_not == price_count + 2
     end
 
     it "should not save the price when another exists with the same modified_at date" do
-      price_count = HwSupportPrice.count
-      old_price = Factory(:hw_support_price, :modified_at => Date.parse('2011-01-01'))
-      HwSupportPrice.count.should == price_count + 1
-      price = Factory.build(:hw_support_price, :modified_at => Date.parse('2011-01-01'))
+      price_count = SwSupportPrice.count
+      old_price = Factory(:sw_support_price, :modified_at => Date.parse('2011-01-01'))
+      SwSupportPrice.count.should == price_count + 1
+      price = Factory.build(:sw_support_price, :modified_at => Date.parse('2011-01-01'))
       price.save
-      HwSupportPrice.count.should_not == price_count + 2
+      SwSupportPrice.count.should_not == price_count + 2
     end
+
+    it "should still save an updated record" do
+      #regression test for a bug that prevented a record from updating because the date
+      #already exists.
+      price = SwSupportPrice.find(@initial_item.id)
+      price.update_attributes(:description => "new description")
+      price = SwSupportPrice.find(@initial_item.id)
+      price.description.should == "new description"
+    end
+
   end
 
 end

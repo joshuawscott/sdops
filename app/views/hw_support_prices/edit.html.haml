@@ -1,0 +1,16 @@
+-content_for :subtitle do
+  Edit HW Support Price
+#section1
+  =error_messages_for :hw_support_price
+  #hw_price.boxed
+    %h2 Edit HW Support Price
+    - form_for(:hw_support_price, :url => hw_support_price_path(@hw_support_price), :html => { :method => :put }) do |f|
+      =render :partial => "form", :locals => {:f => f}
+      %p
+        %label{:for => "hw_support_price_modified_at"}
+          Effective Date
+        = f.text_field :modified_at
+      %p
+        = f.submit "Update"
+      %p= link_to "Cancel", hw_support_prices_path
+
