@@ -49,11 +49,20 @@ describe HwSupportPrice do
       price.should_not be_valid
     end
 
-    it "should change modified at to 1970-01-01 when null" do
+    it "should change modified at to today when null" do
       price = Factory.build(:hw_support_price, :modified_at => nil)
       price.save
-      price.modified_at.should == Date.parse('1970-01-01')
+      price.modified_at.should == Date.today
     end
+
+    it "should allow modified_at to be set to something else on save" do
+      price = Factory.build(:hw_support_price, :modified_at => nil)
+      price.save
+      price.modified_at = Date.parse('2001-01-01')
+      price.save
+      price.modified_at.should == Date.parse('2001-01-01')
+    end
+
   end
 
   describe "Prevent price regression" do

@@ -14,7 +14,6 @@ class SupportPricingDb < ActiveRecord::Base
     return [] if partnumber == nil && description == nil
     self.find(:all,
       :conditions => "part_number LIKE '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND description like '%#{description.gsub(/\\/, '\&\&').gsub(/'/, "''")}%'",
-      :group => "part_number ASC, confirm_date DESC, modified_at DESC",
       :limit => "1000")
   end
 
@@ -29,14 +28,24 @@ class SupportPricingDb < ActiveRecord::Base
   end
 
   protected
+  # modified_at date is set to 1970 if this is the first time that part number
+  # has been added.  Otherwise set to today's date.
   def fix_date
-    self.modified_at = Date.parse('1970-01-01') if modified_at.nil?
-    self.confirm_date = Date.parse('1970-01-01') if confirm_date.nil?
+    if self.class.count(:conditions => {:part_number => self.part_number}) > 0
+      self.modified_at ||= Date.today
+    end
+    self.modified_at ||= Date.parse('1970-01-01')
+    self.confirm_date ||= Date.parse('1970-01-01')
   end
 
   def prevent_old_pricing
     similar_records = self.class.count(:conditions => ["part_number = ? AND confirm_date >= ? AND confirm_date <> '1970-01-01'", self.part_number, self.confirm_date])
     logger.debug "number of similar records is #{similar_records}"
     similar_records == 0
+  end
+
+  def set_modified_at_to_today
+    #TODO: Timezone checks
+    self.modified_at = 5.hours.ago
   end
 end
