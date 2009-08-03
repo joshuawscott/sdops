@@ -35,6 +35,9 @@
       = check_box_tag 'search_expired', @expired, @expired,{:name=> 'search[expired]'}
       %label.plain{:for => 'search_expired'}Inc. Expired
       = submit_tag "Search"
+      - if @sn_warning
+        %p{ :style => "color: red"}
+          =@sn_warning
     %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
       %thead
         %tr

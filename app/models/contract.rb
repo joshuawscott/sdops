@@ -85,6 +85,8 @@ class Contract < ActiveRecord::Base
   before_save :update_line_item_effective_prices
   after_save :update_account_name_from_sugar
 
+  attr_accessor :sn_approximated
+
   # accepts an array of team ids, and returns contracts where support_office or sales_office
   # matches the passed array of ids.
   def self.short_list(teams)
@@ -93,10 +95,27 @@ class Contract < ActiveRecord::Base
 
   # Returns Contracts where Contracts.LineItem.serial_num matches serial_num
   def self.serial_search(serial_num)
-		#TODO: Use passed parameters to determine if expired are shown.
-      Contract.find(:all, :select => "DISTINCT contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
+		return [] if serial_num.strip == ''
+    serial_num.upcase!
+    #TODO: Use passed parameters to determine if expired are shown.
+    contracts = Contract.find(:all, :select => "DISTINCT contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
+      :joins => :line_items,
+			:conditions => ['expired <> 1 AND UPPER(line_items.serial_num) = ?', serial_num])
+    if contracts.size == 0
+      possible_serial_nums = self.find_substituted_sn_chars(serial_num)
+      contracts = Contract.find(:all, :select => "DISTINCT contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
         :joins => :line_items,
-				:conditions => ['expired <> 1 AND line_items.serial_num = ?', serial_num])
+        :conditions => ['expired <> 1 AND UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', possible_serial_nums])
+      contracts[0].sn_approximated = true if contracts.size>0
+    end
+    if contracts.size == 0
+      possible_serial_nums = self.insert_missing_sn_chars(serial_num)
+      contracts = Contract.find(:all, :select => "DISTINCT contracts.id, sales_office_name, support_office_name, said, contracts.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name",
+        :joins => :line_items,
+        :conditions => ['expired <> 1 AND UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', possible_serial_nums])
+      contracts[0].sn_approximated = true if contracts.size>0
+    end
+    contracts
   end
 
   # Returns Contracts with end_date in the next 90 days, unless Contract.expired = 1
@@ -336,5 +355,53 @@ class Contract < ActiveRecord::Base
     Contract.update_all(["account_name = ?", sugar_acct && sugar_acct.name ], ["account_id = ?", account_id])
   end
 
+  def self.find_substituted_sn_chars(serial_num)
+    #check for similar serial numbers
+    possible_serial_nums = []
+    patterns = [
+      ["0","O"],
+      ["O","0"],
+      ["1","I"],
+      ["I","1"],
+      ["S","5"],
+      ["5","S"],
+      ["O","Q"],
+      ["Q","O"],
+      ["0","Q"],
+      ["Q","0"],
+      ["B","8"],
+      ["8","B"],
+      ["U","V"],
+      ["V","U"]
+      ]
+    sn_arr = serial_num.split(//)
+    patterns.each do |pattern|
+      sn_arr = serial_num.split(//)
+      sn_arr.each_with_index do |letter,position|
+        sn_arr = serial_num.split(//)
+        if letter == pattern[0]
+          sn_arr[position] = pattern[1]
+          possible_serial_nums << sn_arr.to_s
+        end
+      end
+    end
+    logger.debug "POSSIBLE SERIAL NUMBERS: #{possible_serial_nums.inspect}"
+    possible_serial_nums
+  end
 
+  def self.insert_missing_sn_chars(serial_num)
+    #check for missing characters...
+    possible_serial_nums = []
+    chars = ("A".."Z").to_a + (0..9).to_a
+    sn_arr = serial_num.split(//)
+    chars.each do |char|
+      sn_arr.each_index do |position|
+        sn_arr = serial_num.split(//)
+        sn_arr.insert(position,char)
+        possible_serial_nums << sn_arr.to_s
+      end
+    end
+    logger.debug "POSSIBLE SERIAL NUMBERS: (inserting) #{possible_serial_nums.inspect}"
+    possible_serial_nums
+  end
 end

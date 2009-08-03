@@ -15,6 +15,7 @@ class ContractsController < ApplicationController
     @pay_terms << "Not Bundled"
     if params[:serial_search] != nil
       @contracts = Contract.serial_search(params[:serial_search][:serial_number])
+      @sn_warning = "NOTE: Serial Number search found approximate matches." if @contracts[0] && @contracts[0].sn_approximated == true
     elsif params[:search] != nil
       #Get search criteria from params object
       @sales_office ||= params[:search][:sales_office]
