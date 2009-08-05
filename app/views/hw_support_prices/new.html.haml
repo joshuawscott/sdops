@@ -8,5 +8,65 @@
       =render :partial => "form", :locals => {:f => f}
       %p
         = f.submit "Create"
-      %p= link_to "Cancel", hw_support_prices_path
+      %p
+        = link_to "Cancel", hw_support_prices_path
+        |
+        %a{:href=> 'http://torch.sourcedirect.com/sps/index.html'}SPS
+  #extra_info.boxed{:style => 'width:800px'}
+    %h2
+      Other information
+      %span{:style => 'font-size:8pt;text-transform:lowercase'}
+        = " - "
+        = link_to_remote 'refresh', :url => pull_pricing_helps_hw_support_prices_path(:format => :js), :method => :post, :failure => 'alert(request.status)', :with => "'part_number=' + $('hw_support_price_part_number').value", :before => "Element.show('spinner')", :complete => "Element.hide('spinner')"
+        %span#spinner{:style => 'display:none'}
+          %img{:src => '/images/spinner_green.gif'}
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('current','hw')", :title => "Copy this"
+      %b Current Description:
+      %span#current_description
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('sun','hw')", :title => "Copy this"
+      %b Sun Description:
+      %span#sun_description
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('hp','hw')", :title => "Copy this"
+      %b HP description:
+      %span#hp_description
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('current','hw')", :title => "Copy this"
+      %b Current Price:
+      %span#current_price
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('sun','hw')", :title => "Copy this"
+      %b Sun price:
+      %span#sun_price
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('ibm_gsa','hw')", :title => "Copy this"
+      %b IBM GSA pricing:
+      %span#ibm_gsa_price
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('hp_option','hw')", :title => "Copy this"
+      %b HP monthly option pricing:
+      %span#hp_option_price
+  #search_current_info.boxed{:style => 'width:800px'}
+    %h2 current pricing search
+    - form_remote_tag :url => {:action => 'index', :format => :js}, :method => :get, :failure => 'alert(request.status)', :before => "Element.show('search_spinner')", :complete => "Element.hide('search_spinner')" do
+      %p
+        %label{:for => 'part_number'} Part Number
+        =text_field_tag 'part_number'
+      %p
+        %label{:for => 'description'} Description
+        =text_field_tag 'description'
+      %h3
+        = submit_tag 'Search'
+        %span#search_spinner{:style => 'display:none'}
+          %img{:src => '/images/spinner_green.gif'}
+    %table
+      %thead
+        %th Part Number
+        %th Description
+        %th List Price
+      %tbody#search_results
+
+= javascript_include_tag "support_pricing.js"
 

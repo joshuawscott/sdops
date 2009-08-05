@@ -63,8 +63,8 @@ class ReportsController < ApplicationController
   def customers
     @office = params[:filter][:office_name] unless params[:filter].nil?
     @customers = Contract.customer_rev_list_by_support_office(current_user.sugar_team_ids)
-		@offices = @customers.map{|x| x.support_office_name}
-		@offices.uniq!.sort!
+		@offices = @customers.map{|x| x.support_office_name}.uniq.sort
+		#@offices.uniq!.sort!
 		@all_revenue = Contract.all_revenue
 	
   end

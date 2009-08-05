@@ -3,6 +3,10 @@ class HwSupportPricesController < ApplicationController
     @part_number = params[:part_number]
     @description = params[:description]
     @items = HwSupportPrice.search(@part_number, @description)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def new
@@ -41,5 +45,12 @@ class HwSupportPricesController < ApplicationController
       flash[:notice] = "FAILURE!"
       render :action => "edit"
     end
+  end
+
+  def pull_pricing_helps
+    part_number = params[:part_number]
+    @current_info = HwSupportPrice.current_list_price(part_number)
+    @sun_info = PricingDb.find_sun_pn(part_number)
+    @hp_info = PricingDb.find_hp_pn(part_number, :type => :hw)
   end
 end

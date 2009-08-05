@@ -28,7 +28,7 @@ describe 'sw_support_prices/index.html.haml' do
         form.should have_tag("input[type=text]",
           :name => "description")
         form.should have_tag("input[type=text]",
-          :name => "productnumber")
+          :name => "part_number")
       end
     end
   end

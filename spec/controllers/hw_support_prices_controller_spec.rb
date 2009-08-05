@@ -184,4 +184,47 @@ describe HwSupportPricesController, "POST update" do
   end
 
 end
+describe HwSupportPricesController, "POST pull_pricing_helps" do
+  before(:each) do
+    controller.stub!(:login_required)
+    @hw_support_price = mock_model(HwSupportPrice, :part_number => 'A6144A', :description => 'L3000', :list_price => 500.0)
+  end
+  it "should succeed" do
+    post :pull_pricing_helps, :part_number => 'A6144A'
+    response.should be_success
+  end
+
+  it "should find current pricing for the current part number" do
+    HwSupportPrice.stub(:current_list_price).and_return(@hw_support_price)
+    post :pull_pricing_helps, :part_number => 'A6144A'
+    assigns[:current_info].description.should contain('L3000')
+    assigns[:current_info].list_price.should == 500.0
+  end
+
+  it "should search for a Sun product" do
+    PricingDb.should_receive(:find_sun_pn)
+    post :pull_pricing_helps
+  end
+
+  it "should find Sun pricing for the current part number" do
+    sun_item = mock_model(PricingDb, :list_price => 500.0, :description => 'sample description')
+    PricingDb.stub!(:find_sun_pn).and_return(sun_item)
+    post :pull_pricing_helps, :part_number => 'ASDF1234'
+    assigns[:sun_info].list_price.should == 500.0
+    assigns[:sun_info].description.should == "sample description"
+  end
+
+  it "should search for an HP product" do
+    PricingDb.should_receive(:find_hp_pn)
+    post :pull_pricing_helps
+  end
+
+  it "should find HP pricing for the current part number" do
+    hp_item = mock_model(PricingDb, :list_price => 500.0, :description => 'sample description')
+    PricingDb.stub!(:find_hp_pn).and_return(hp_item)
+    post :pull_pricing_helps, :part_number => 'ASDF1234'
+    assigns[:hp_info].should == hp_item
+  end
+
+end
 

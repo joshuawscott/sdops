@@ -5,3 +5,10 @@ end
 When /^I visit (.+)$/ do |url|
   visit url
 end
+
+Then /^I should still see the menu$/ do
+  %w(Contracts Reports Tools Prices Logout).each do |value|
+    response.should contain(value)
+  end
+end
+

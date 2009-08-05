@@ -12,6 +12,7 @@ class SupportPricingDb < ActiveRecord::Base
   # and description has wildcards added to each side.
   def self.search(partnumber, description)
     return [] if partnumber == nil && description == nil
+    description ||= ""
     self.find(:all,
       :conditions => "part_number LIKE '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND description like '%#{description.gsub(/\\/, '\&\&').gsub(/'/, "''")}%'",
       :limit => "1000")
@@ -24,7 +25,7 @@ class SupportPricingDb < ActiveRecord::Base
 
   # Returns a pricing object for the current date.
   def self.current_list_price(partnumber)
-    self.getprice(partnumber, Time.now)
+    self.getprice(partnumber, Date.today)
   end
 
   protected

@@ -1,8 +1,12 @@
 class SwSupportPricesController < ApplicationController
   def index
-    @productnumber = params[:productnumber]
+    @part_number = params[:part_number]
     @description = params[:description]
-    @items = SwSupportPrice.search(@productnumber, @description)
+    @items = SwSupportPrice.search(@part_number, @description)
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
   def new
     @sw_support_price ||= SwSupportPrice.new
@@ -40,6 +44,13 @@ class SwSupportPricesController < ApplicationController
       flash[:notice] = "FAILURE!"
       render :action => "edit"
     end
+  end
+
+  def pull_pricing_helps
+    part_number = params[:part_number]
+    @current_info = SwSupportPrice.current_list_price(part_number)
+    @sun_info = PricingDb.find_sun_pn(part_number)
+    @hp_info = PricingDb.find_hp_pn(part_number, :type => :sw)
   end
 
 end

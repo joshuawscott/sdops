@@ -8,9 +8,9 @@
     -form_tag url_for(:controller => 'sw_support_prices', :action => 'index'), {:name => 'search', :method => :get} do
       %tr
         %td
-          %label{:for => 'productnumber'}Part Number:&nbsp;
+          %label{:for => 'part_number'}Part Number:&nbsp;
         %td
-          = text_field_tag :productnumber, @productnumber
+          = text_field_tag :part_number, @part_number
       %tr
         %td
           %label{:for => 'description'}Description:
