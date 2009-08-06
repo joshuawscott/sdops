@@ -1,5 +1,6 @@
-table_content = ''
+table_content = '<table><thead><th>Part Number</th><th>Description</th><th>List Price</th></tr></thead><tbody>'
 @items.each do |item|
   table_content += "<tr><td>" + item.part_number + "</td><td>" + item.description + "</td><td>" + number_to_currency(item.list_price, :precision => 2) + "</td></tr>"
 end
+table_content += '</tbody></table>'
 page['search_results'].innerHTML = table_content

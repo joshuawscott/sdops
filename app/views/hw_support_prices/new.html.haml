@@ -61,12 +61,13 @@
         = submit_tag 'Search'
         %span#search_spinner{:style => 'display:none'}
           %img{:src => '/images/spinner_green.gif'}
-    %table
-      %thead
-        %th Part Number
-        %th Description
-        %th List Price
-      %tbody#search_results
+    #search_results
+      %table
+        %thead
+          %th Part Number
+          %th Description
+          %th List Price
+        %tbody
 
 = javascript_include_tag "support_pricing.js"
 
