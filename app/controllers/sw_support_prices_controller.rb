@@ -49,8 +49,8 @@ class SwSupportPricesController < ApplicationController
   def pull_pricing_helps
     part_number = params[:part_number]
     @current_info = SwSupportPrice.current_list_price(part_number)
-    @sun_info = PricingDb.find_sun_pn(part_number)
-    @hp_info = PricingDb.find_hp_pn(part_number, :type => :sw)
+    @sun_info = PricingDbSunService.find_pn(part_number)
+    @hp_info = PricingDbHpPrice.find_sw_pn(part_number)
   end
 
 end
