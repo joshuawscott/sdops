@@ -1,6 +1,17 @@
-table_content = '<table><thead><th>Part Number</th><th>Description</th><th>List Price</th></tr></thead><tbody>'
+table_content = "<table>"
+table_content << "<thead><tr>"
+table_content << "<th>Part Number</th>"
+table_content << "<th>Description</th>"
+table_content << "<th>List Price</th>"
+table_content << "<th>Confirm Date</th>"
+table_content << "</tr></thead><tbody>"
 @items.each do |item|
-  table_content += "<tr><td>" + item.part_number + "</td><td>" + item.description + "</td><td>" + number_to_currency(item.list_price, :precision => 2) + "</td></tr>"
+  table_content << "<tr>"
+  table_content << "<td>" << item.part_number << "</td>"
+  table_content << "<td>" << item.description << "</td>"
+  table_content << "<td>" << number_to_currency(item.list_price, :precision => 2) << "</td>"
+  table_content << "<td>" << item.confirm_date.to_s << "</td>"
+  table_content << "</tr>"
 end
-table_content += '</tbody></table>'
+table_content << "</tbody></table>"
 page['search_results'].innerHTML = table_content
