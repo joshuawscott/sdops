@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :subcontractors
+
   map.resources :hw_support_prices, :collection => {:pull_pricing_helps => :post}
   map.resources :sw_support_prices, :collection => {:pull_pricing_helps => :post}
 

@@ -1,0 +1,45 @@
+#general_information.boxed{:style => 'height:160px;width:350px'}
+  %h2 Company Information
+  %p
+    %label{:style => 'width:110px',:for => 'subcontractor_name'}Name
+    =f.text_field :name
+  %p
+    %label{:style => 'width:110px',:for => 'subcontractor_phone'}Support Phone
+    =f.text_field :phone, :style => 'width:10em'
+  %p
+    %label{:style => 'width:70px',:for => 'subcontractor_address1'}Address 1
+    =f.text_field :address1, :style => 'width:20em'
+  %p
+    %label{:style => 'width:70px',:for => 'subcontractor_address2'}Address 2
+    =f.text_field :address2, :style => 'width:20em'
+  %p
+    %label{:style => 'width:70px',:for => 'subcontractor_city'}City
+    =f.text_field :city, :style => 'width:139px'
+    %label.nopad{:for => 'subcontractor_state'} ST
+    =f.text_field :state, :style => 'width:2em'
+    %label.nopad{:for => 'subcontractor_postalcode'} ZIP
+    =f.text_field :postalcode, :style => 'width:40px'
+  %p
+    %label{:style => 'width:70px',:for => 'subcontractor_country'}Country
+    =f.text_field :country
+%div{:style => 'height:180px;width:100%'}
+#contact_information.boxed{:style => 'height:170px;width:350px;display:block'}
+  %h2 Contact Information
+  %p
+    %label{:for => 'subcontractor_contact_name'}Contact Name
+    =f.text_field :contact_name
+  %p
+    %label{:for => 'subcontractor_contact_phone_work'} Office Phone
+    =f.text_field :contact_phone_work
+  %p
+    %label{:for => 'subcontractor_contact_phone_mobile'} Mobile Phone
+    =f.text_field :contact_phone_mobile
+  %p
+    %label{:for => 'subcontractor_contact_email'} Email
+    =f.text_field :contact_email
+#notes.boxed{:style=>'margin-top:-180px'}
+  %label.h2{:for => 'subcontractor_note', :style => 'width:287px'}
+    notes
+  %p
+    =f.text_area :note, :style => 'height:326px'
+

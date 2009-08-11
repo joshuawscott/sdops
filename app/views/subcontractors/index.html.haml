@@ -1,0 +1,26 @@
+- content_for :subtitle do
+  Subcontractor List
+#section2
+  %p= link_to_if current_user.has_role?(:contract_admin), 'New Subcontractor', new_subcontractor_path
+  %table#subcontractors{:class => 'main_table'}
+    %thead
+      %tr
+        %th Company name
+        %th Contact
+        %th Contact email
+        %th Phone number
+        %th
+        - if current_user.has_role?(:contract_admin)
+          %th{:colspan => 2}
+    %tbody
+      - @subcontractors.each do |subcontractor|
+        %tr
+          %td= subcontractor.name
+          %td= subcontractor.contact_name
+          %td= subcontractor.contact_email
+          %td= subcontractor.phone
+          %td= link_to 'Show', subcontractor
+          - if current_user.has_role?(:contract_admin)
+            %td= link_to 'Edit', edit_subcontractor_path(subcontractor)
+            %td= link_to 'Delete', subcontractor, :confirm => 'Are you sure?', :method => :delete
+

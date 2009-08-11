@@ -1,0 +1,56 @@
+- content_for :subtitle do
+  Subcontractor
+#section1
+  = link_to 'Edit', edit_subcontractor_path(@subcontractor)
+  &nbsp;|
+  = link_to 'Back', subcontractors_path
+#section2
+  #general_information.boxed{:style => 'height:160px;width:350px'}
+    %h2 Company Information
+    %p
+      %label{:style => 'width:110px',:for => 'subcontractor_name'}Name
+      =@subcontractor.name
+      %br/
+    %p{:style => 'margin-bottom:1em'}
+      %label{:style => 'width:110px',:for => 'subcontractor_phone'}Support Phone
+      =@subcontractor.phone
+      %br/
+    %p
+      %label{:style => 'width:70px',:for => 'subcontractor_address1'}Address
+      =@subcontractor.address1
+      %br/
+    %p
+      %label{:style => 'width:70px'} &nbsp;
+      =@subcontractor.address2
+      %br/
+    %p
+      %label{:style => 'width:70px'} &nbsp;
+      =@subcontractor.city << ', ' << @subcontractor.state << '&nbsp;&nbsp;' << @subcontractor.postalcode
+      %br/
+    %p
+      %label{:style => 'width:70px',:for => 'subcontractor_country'}Country
+      =@subcontractor.country
+  %div{:style => 'height:180px;width:100%'}
+  #contact_information.boxed{:style => 'height:170px;width:350px;display:block'}
+    %h2 Contact Information
+    %p
+      %label{:for => 'subcontractor_contact_name'}Contact Name
+      =@subcontractor.contact_name
+      %br/
+    %p
+      %label{:for => 'subcontractor_contact_phone_work'} Office Phone
+      =@subcontractor.contact_phone_work
+      %br/
+    %p
+      %label{:for => 'subcontractor_contact_phone_mobile'} Mobile Phone
+      =@subcontractor.contact_phone_mobile
+      %br/
+    %p
+      %label{:for => 'subcontractor_contact_email'} Email
+      =@subcontractor.contact_email
+  #notes.boxed{:style=>'margin-top:-180px'}
+    %label.h2{:for => 'subcontractor_note', :style => 'width:287px'}
+      notes
+    %p
+      =simple_format(@subcontractor.note.to_s, :style => 'margin-top:1em;padding:3')
+

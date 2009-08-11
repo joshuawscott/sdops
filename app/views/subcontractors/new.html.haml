@@ -1,0 +1,9 @@
+-content_for :subtitle do
+  New Subcontractor
+#section2
+  - form_for(@subcontractor) do |f|
+    = f.error_messages
+    %p
+      = f.submit "Create"
+      = link_to 'Back/Cancel', subcontractors_path
+    = render :partial => 'form', :locals => {:f => f}

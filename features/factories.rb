@@ -120,3 +120,5 @@ Factory.define :sw_support_price do |s|
   s.confirm_date { Factory.next(:date) }
 end
 
+Factory.define :subcontractor do |s|
+end

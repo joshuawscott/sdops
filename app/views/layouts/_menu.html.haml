@@ -5,11 +5,15 @@
       %ul.submenu
         .submenu
           .submenuHeader Contracts - Contracts Menu
-          .menuCol.last
+          .menuCol
             %h2 Contracts
             =link_to 'Main page', contracts_path, submenuhash('contractsinfo', 'Main Contracts Page')
             %br/
             =link_to 'Renewals', {:controller => 'reports', :action => 'renewals'}, submenuhash('contractsinfo', 'Expiring Contracts')
+            %br/
+          .menuCol.last
+            %h2 SubContracts
+            =link_to 'Partners', {:controller => 'subcontractors', :action => 'index'}, submenuhash('contractsinfo', 'View and Manage Subcontractor Partners')
             %br/
           .submenuFooter{:id => "contractsinfo"}
             &nbsp;
