@@ -95,6 +95,9 @@ class LineItemsController < ApplicationController
       @line_items = @contract.line_items.find(line_item_ids)
 			if params[:commit] == "Delete Checked Items"
         @line_items.each {|line| line.destroy}
+			elsif params[:commit] == "Add to Subcontract"
+        @subcontractors = Subcontractor.find(:all)
+        render(:action => "add_to_subcontract") and return
       else
         updated_count = 0
         failed_count = 0

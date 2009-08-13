@@ -64,9 +64,6 @@
     - if current_user.has_role?(:contract_admin, :contract_editor)
       #results.boxed{:style => 'height:160px', :style => 'width:480px'}
         %h2 Line Items Mass Update
-        - if current_user.has_role?(:contract_admin)
-          %p= submit_tag "Delete Checked Items", :confirm => "Are you SURE you want to delete the selected Line Items?"
-          %br/
         %p 
           %label{:for => 'support_provider'}
             Supp Provider
@@ -86,7 +83,11 @@
           = hidden_field_tag "contract_id", @contract.id
         %p
           = submit_tag "Update Checked Items"
-
+        - if current_user.has_role?(:contract_admin)
+          %br/
+          %p= submit_tag "Delete Checked Items", :confirm => "Are you SURE you want to delete the selected Line Items?"
+          %br/
+          %p= submit_tag "Add to Subcontract"
 -if current_user.has_role?(:contract_editor, :contract_admin)
   = sortable_element('hwlines', :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
   = sortable_element('swlines', :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)

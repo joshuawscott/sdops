@@ -122,3 +122,5 @@ end
 
 Factory.define :subcontractor do |s|
 end
+Factory.define :subcontract do |s|
+end

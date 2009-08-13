@@ -1,5 +1,6 @@
 Given /^a contract exists$/ do
   populate_dropdowns if Dropdown.count == 0
+  Factory(:user) if User.count == 0
   @contract = Factory(:contract)
   Contract.count.should == 1
 end
