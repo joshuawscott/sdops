@@ -1,0 +1,73 @@
+- content_for :subtitle do
+  Add Line items to a subcontract
+#section1
+  = link_to 'Cancel', contract_path(@line_items[0].contract_id)
+#section2
+  #subcontractor_search.boxed{:style => 'display:block'}
+    %h2 Find Subcontracts
+    -form_remote_tag :url => {:action => 'index', :format => :js, :controller => 'subcontracts'}, :method => :get, :before => "Element.show('search_spinner')", :complete => "Element.hide('search_spinner')" do
+      %p
+        %label{:for => 'subcontractor'} Subcontractor
+        =select_tag 'subcontractor', options_from_collection_for_select(@subcontractors, :id, :name)
+      %p
+        =submit_tag 'Find Subcontracts'
+        %span#search_spinner{:style => 'display:none'}
+          %img{:src => '/images/spinner_green.gif'}
+  %div{:style => 'display:block;width:100%;height:100px'}
+  %br/
+  %h2 Subcontracts
+  #search_results{:style => 'display:inline;float:left'}
+    %table
+      %thead
+        %tr
+          %th Name
+          %th Description
+          %th
+      %tbody#search_results_body
+  #subcontract.boxed
+    %h2 
+      Subcontract Detail
+      %span#show_spinner{:style => 'display:none'}
+        %img{:src => '/images/spinner_green.gif'}
+    %p
+      %label Name
+      %span#subcontractor_name
+    %p
+      %label Description
+      %span#subcontract_description
+    %p
+      %label Cost
+      %span#subcontract_cost
+  %div{:style => 'display:block;width:100%;height:100px'}
+  %br/
+  %h2 Line Items
+  #line_items{:style => 'display:block'}
+    -form_tag add_line_items_subcontracts_path, :method => :post do
+      %table
+        %thead
+          %tr
+            %th Location
+            %th Product num
+            %th Note
+            %th Description
+            %th Serial num
+            %th qty
+            %th List Price
+            %th Cost
+            %th included?
+        %tbody
+          - @line_items.each do |line_item|
+            %tr
+              %td= line_item.location
+              %td= line_item.product_num
+              %td= line_item.note
+              %td= line_item.description
+              %td= line_item.serial_num
+              %td= line_item.qty
+              %td= line_item.list_price
+              %td= text_field_tag 'line_items[][subcontract_cost]'
+              %td
+                = check_box_tag 'line_items[][id]', line_item.id, true
+      = hidden_field_tag 'id', "", :class => 'subcontract_id'
+      = submit_tag "Add to Selected Subcontract", :id => 'add_lines_submit', :disabled => true
+=javascript_include_tag 'subcontracts.js'

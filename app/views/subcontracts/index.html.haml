@@ -1,0 +1,22 @@
+- content_for :subtitle do
+  Subcontracts Listing
+#section1
+  = link_to 'New subcontract', new_subcontract_path
+#section2
+  %table#subcontracts
+    %thead
+      %tr
+        %th Partner
+        %th Description
+        %th Cost
+    %tbody
+      - @subcontracts.each do |s|
+        %tr
+          %td= h s.subcontractor.name if s.subcontractor
+          %td= h s.description
+          %td= h s.cost
+          %td= link_to 'Show', s
+          %td= link_to 'Edit', edit_subcontract_path(s)
+          %td= link_to 'Delete', s, :confirm => 'Are you sure?', :method => :delete
+
+

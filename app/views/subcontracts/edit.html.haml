@@ -1,0 +1,13 @@
+- content_for :subtitle do
+  Editing Subcontract
+#section1
+  = link_to 'Show', @subcontract
+  |
+  = link_to 'Back', subcontracts_path
+#section2
+  - form_for(@subcontract) do |f|
+    = f.error_messages
+    = render :partial => 'form', :locals => {:f => f}
+    %p
+      = f.submit "Update"
+

@@ -1,0 +1,6 @@
+table_content = '<table><thead><th>Name</th><th>Description</th><th></th></thead><tbody id="search_results_body">'
+@subcontracts.each do |s|
+  table_content += "<tr><td>#{s.subcontractor.name}</td><td>#{s.description}</td><td><a href=\"#\" onclick=\"Element.show('show_spinner');$A($('search_results_body').rows).each(clear_background);this.parentNode.parentNode.style.backgroundColor='#cccccc'; new Ajax.Request('/subcontracts/show/#{s.id}.js', {asynchronous:true, evalScripts:true, method:'get', onComplete:function(request){Element.hide('show_spinner');$('add_lines_submit').disabled = false;}, parameters:'authenticity_token=' + encodeURIComponent('#{form_authenticity_token}')}); return false;\">Show</a></td></tr>"
+end
+table_content += '</tbody></table>'
+page.replace_html('search_results', table_content)

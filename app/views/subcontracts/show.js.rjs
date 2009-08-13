@@ -1,0 +1,5 @@
+page.replace_html('subcontractor_name', @subcontract.subcontractor.name)
+page.replace_html('subcontract_description', @subcontract.description.to_s)
+page.replace_html('subcontract_cost', @subcontract.cost.to_s)
+page['id'].value = @subcontract.id
+

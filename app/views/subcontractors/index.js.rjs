@@ -1,0 +1,6 @@
+table_content = '<table>'
+table_content += @subcontracts.map do |s|
+  "<tr><td>#{s.name}</td><td>#{s.description}</td><td><a href=\"#\" onclick=\"Element.show('show_spinner'); new Ajax.Request('/subcontracts/show/#{s.id}?format=js', {asynchonous:true, evalScripts:true, method:'post', onComplete:function(request){Element.hide('spinner')}, parameters:'authenticity_token='+encodeURIComponent(#{form_authenticity_token})};return false;\">Show</a></td></tr>"
+end
+table_content += '</table>'
+replace_html('search_results', table_content)
