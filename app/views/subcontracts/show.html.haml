@@ -10,45 +10,57 @@
     %p
       %label{:for => 'subcontract_subcontractor_id'} Subcontractor
       =h @subcontract.subcontractor.name
+      %br/
     %p
       %label{:for => 'subcontract_customer_number'} Customer Number
       =h @subcontract.customer_number
+      %br/
     %p
       %label{:for => 'subcontract_site_number'} Site Number
       =h @subcontract.site_number
+      %br/
     %p
       %label{:for => 'subcontract_sales_order_number'} Sales Order #
       =h @subcontract.sales_order_number
+      %br/
     %p
       %label{:for => 'subcontract_description'} Description
       =h @subcontract.description
+      %br/
     %p
       %label{:for => 'subcontract_quote_number'} Quote Number
       =h @subcontract.quote_number
+      %br/
     %p
       %label{:for => 'subcontract_sourcedirect_po_number'} SD PO Number
       =h @subcontract.sourcedirect_po_number
+      %br/
     %p
       %label{:for => 'subcontract_cost'} Cost
       =h @subcontract.cost
   %div{:style => 'width:100%;height:218px'}
-  #hw_coverage_level.boxed{:style => 'display:block'}
+  #hw_coverage_level.boxed{:style => 'display:block;width:300px'}
     %h2 Hardware Coverage Level
     %p
       %label{:for => 'subcontract_hw_response_time'} Response Time
       =h @subcontract.hw_response_time
+      %br/
     %p
       %label{:for => 'subcontract_hw_repair_time'} Repair Time
       =h @subcontract.hw_repair_time
+      %br/
     %p
       %label{:for => 'subcontract_hw_coverage_days'} Covered Days
       =h @subcontract.hw_coverage_days
+      %br/
     %p
       %label{:for => 'subcontract_hw_coverage_hours'} Covered Hours
       =h @subcontract.hw_coverage_hours
+      %br/
     %p
       %label{:for => 'subcontract_parts_provided'} Parts Provided?
       =h @subcontract.parts_provided
+      %br/
     %p
       %label{:for => 'subcontract_labor_provided'} Labor Covered?
       =h @subcontract.labor_provided
@@ -57,10 +69,31 @@
     %p
       %label{:for => 'subcontract_sw_response_time'} Response Time
       =h @subcontract.sw_response_time
+      %br/
     %p
       %label{:for => 'subcontract_sw_coverage_days'} Covered Days
       =h @subcontract.sw_coverage_days
+      %br/
     %p
       %label{:for => 'subcontract_sw_coverage_hours'} Covered Hours
       =h @subcontract.sw_coverage_hours
+
+#section3
+  %h2 Current Line Items
+  %table
+    %thead
+      %tr
+        %th Type
+        %th Product Num
+        %th Description
+        %th Qty
+        %th Cost
+    %tbody
+      -@subcontract.line_items.each do |line|
+        %tr
+          %td=line.support_type
+          %td=line.product_num
+          %td=line.description
+          %td=line.qty
+          %td=line.subcontract_cost
 
