@@ -18,4 +18,17 @@ describe LineItemsController, "pull_pn_form_data" do
   end
 
 end
+describe LineItemsController, "show" do
+  before(:each) do
+    controller.stub!(:login_required)
+    @contract = mock("contract")
+    @line_item = mock("line_item")
+  end
+  it "should assign the line item to @line_item" do
+    Contract.stub!(:find).and_return(@contract)
+    LineItem.stub!(:find).and_return(@line_item)
+    get :show
+    assigns[:line_item].should == @line_item
+  end
+end
 

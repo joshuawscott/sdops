@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090720132405) do
+ActiveRecord::Schema.define(:version => 20090811172226) do
 
   create_table "appgen_order_lineitems", :force => true do |t|
     t.string  "appgen_order_id",                                :null => false
@@ -190,6 +190,8 @@ ActiveRecord::Schema.define(:version => 20090720132405) do
     t.decimal  "current_list_price",              :precision => 20, :scale => 3
     t.decimal  "effective_price",                 :precision => 20, :scale => 3
     t.string   "note"
+    t.integer  "subcontract_id"
+    t.decimal  "subcontract_cost",                :precision => 20, :scale => 2
   end
 
   add_index "line_items", ["product_num"], :name => "index_line_items_on_product_num"
@@ -265,6 +267,46 @@ ActiveRecord::Schema.define(:version => 20090720132405) do
     t.string   "server_line"
     t.integer  "tier"
     t.integer  "sockets"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "subcontractors", :force => true do |t|
+    t.string   "name"
+    t.string   "contact_name"
+    t.string   "contact_email"
+    t.string   "contact_phone_work"
+    t.string   "contact_phone_mobile"
+    t.string   "phone"
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "postalcode"
+    t.string   "country"
+    t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "subcontracts", :force => true do |t|
+    t.integer  "subcontractor_id"
+    t.string   "customer_number"
+    t.string   "site_number"
+    t.string   "sales_order_number"
+    t.string   "description"
+    t.string   "quote_number"
+    t.string   "sourcedirect_po_number"
+    t.decimal  "cost",                   :precision => 20, :scale => 2
+    t.string   "hw_response_time"
+    t.string   "sw_response_time"
+    t.string   "hw_repair_time"
+    t.string   "hw_coverage_days"
+    t.string   "sw_coverage_days"
+    t.string   "hw_coverage_hours"
+    t.string   "sw_coverage_hours"
+    t.boolean  "parts_provided"
+    t.boolean  "labor_provided"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

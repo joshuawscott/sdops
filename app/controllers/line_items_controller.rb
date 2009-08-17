@@ -3,6 +3,9 @@ class LineItemsController < ApplicationController
   before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :destroy, :mass_update]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
 
+  def show
+    @line_item = LineItem.find params[:id]
+  end
   # GET /line_items/new
   # GET /line_items/new.xml
   def new
@@ -152,7 +155,8 @@ class LineItemsController < ApplicationController
   end
 
   def set_dropdowns
-    @support_providers = Dropdown.support_provider_list.map {|s| s.label}
+    @support_providers = Subcontractor.find(:all).map {|s| s.name}
+    @support_providers.insert 0, "Sourcedirect"
     @support_types = LineItem.support_types
   end
 

@@ -22,7 +22,8 @@
       = f.text_field :product_num
     %p{:style => 'text-align:left'}
       %label &nbsp;
-      = link_to_remote 'Update Description & Price', :url => form_pull_pn_data_line_items_path(:format => :js), :method => :post, :failure => 'alert(request.status)', :with => "'product_num=' + $('line_item_product_num').value + '&support_type=' + $('line_item_support_type').value"
+      = link_to_remote 'Update Description & Price', :url => form_pull_pn_data_line_items_path(:format => :js), :method => :post, :failure => 'alert(request.status)', :with => "'product_num=' + $('line_item_product_num').value + '&support_type=' + $('line_item_support_type').value", :before => "Element.show('spinner')", :complete => "Element.hide('spinner')"
+      %span#spinner{:style => 'display:none'}= image_tag '/images/spinner_gray.gif'
     %br/
     %p
       %label{:for => "line_item_serial_num"}

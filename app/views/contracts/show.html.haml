@@ -67,7 +67,7 @@
         %p 
           %label{:for => 'support_provider'}
             Supp Provider
-          = select_tag('support_provider', "<option value=''></option>" + options_from_collection_for_select(@support_providers, 'label', 'label'))
+          = select_tag('support_provider', "<option value=''></option>" + options_for_select(@support_providers))
         %p
           %label{:for => 'location'}
             Supp Location

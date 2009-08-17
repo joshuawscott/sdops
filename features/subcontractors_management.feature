@@ -8,7 +8,7 @@ Feature: Manage Subcontractors
     When I follow "Partners"
     And I follow "New subcontractor"
     And I fill in "Name" with "subkspecial"
-    And I fill in "Notes" with "This is a note"
+    And I fill in "subcontractor_note" with "This is a note"
     And I press "Create"
     Then I should see "subkspecial"
     And I should see "This is a note"

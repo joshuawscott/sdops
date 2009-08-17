@@ -19,6 +19,7 @@
 class LineItem < ActiveRecord::Base
   @@support_types = ['HW', 'SW', 'SRV']
   belongs_to :contract
+  belongs_to :subcontract
   validates_presence_of :support_type, :in => @@support_types
   validates_presence_of :location, :position, :product_num
   acts_as_audited :except => :effective_price
@@ -96,5 +97,10 @@ class LineItem < ActiveRecord::Base
 
   def self.support_types
     @@support_types
+  end
+
+  def remove_from(associated_model)
+    self.send(associated_model.class.to_s.foreign_key + '=', nil)
+    save(false)
   end
 end

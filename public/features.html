@@ -1577,10 +1577,17 @@ a contract exists                </span>
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
-I have created 2 line items for that contract                </span>
+a subcontractor exists                </span>
               </div>
             </li>
             <li class="step passed" id="features_line_item_mass_update_feature_11">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I have created 2 line items for that contract                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_mass_update_feature_12">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
@@ -1595,35 +1602,35 @@ I am viewing that contract                </span>
              <span class="val">Mass Update all line items</span>
           </h3>
           <ol>
-            <li class="step passed" id="features_line_item_mass_update_feature_14">
+            <li class="step passed" id="features_line_item_mass_update_feature_15">
               <div>
                 <span class="keyword">When</span>
                  <span class="step val">
 I check 2 of the line item checkboxes                </span>
               </div>
             </li>
-            <li class="step passed" id="features_line_item_mass_update_feature_15">
+            <li class="step passed" id="features_line_item_mass_update_feature_16">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
-I select &quot;<span class="param">DecisionOne</span>&quot; from &quot;<span class="param">Supp Provider</span>&quot;                </span>
+I select &quot;<span class="param">subkspecial</span>&quot; from &quot;<span class="param">Supp Provider</span>&quot;                </span>
               </div>
             </li>
-            <li class="step passed" id="features_line_item_mass_update_feature_16">
+            <li class="step passed" id="features_line_item_mass_update_feature_17">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
 I press &quot;<span class="param">Update Checked Items</span>&quot;                </span>
               </div>
             </li>
-            <li class="step passed" id="features_line_item_mass_update_feature_17">
+            <li class="step passed" id="features_line_item_mass_update_feature_18">
               <div>
                 <span class="keyword">Then</span>
                  <span class="step val">
-I should see &quot;<span class="param">DecisionOne</span>&quot; in the line items                </span>
+I should see &quot;<span class="param">subkspecial</span>&quot; in the line items                </span>
               </div>
             </li>
-            <li class="step passed" id="features_line_item_mass_update_feature_18">
+            <li class="step passed" id="features_line_item_mass_update_feature_19">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
@@ -1638,39 +1645,141 @@ I should not see &quot;<span class="param">Sourcedirect</span>&quot; in the line
              <span class="val">Mass Update one line item</span>
           </h3>
           <ol>
-            <li class="step passed" id="features_line_item_mass_update_feature_21">
+            <li class="step passed" id="features_line_item_mass_update_feature_22">
               <div>
                 <span class="keyword">When</span>
                  <span class="step val">
 I check 1 of the line item checkboxes                </span>
               </div>
             </li>
-            <li class="step passed" id="features_line_item_mass_update_feature_22">
+            <li class="step passed" id="features_line_item_mass_update_feature_23">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
-I select &quot;<span class="param">DecisionOne</span>&quot; from &quot;<span class="param">Supp Provider</span>&quot;                </span>
+I select &quot;<span class="param">subkspecial</span>&quot; from &quot;<span class="param">Supp Provider</span>&quot;                </span>
               </div>
             </li>
-            <li class="step passed" id="features_line_item_mass_update_feature_23">
+            <li class="step passed" id="features_line_item_mass_update_feature_24">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
 I press &quot;<span class="param">Update Checked Items</span>&quot;                </span>
               </div>
             </li>
-            <li class="step passed" id="features_line_item_mass_update_feature_24">
+            <li class="step passed" id="features_line_item_mass_update_feature_25">
               <div>
                 <span class="keyword">Then</span>
                  <span class="step val">
-I should see &quot;<span class="param">DecisionOne</span>&quot; in the line items                </span>
+I should see &quot;<span class="param">subkspecial</span>&quot; in the line items                </span>
               </div>
             </li>
-            <li class="step passed" id="features_line_item_mass_update_feature_25">
+            <li class="step passed" id="features_line_item_mass_update_feature_26">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
 I should see &quot;<span class="param">Sourcedirect</span>&quot; in the line items                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="feature">
+        <h2>
+          <span class="val">Feature: View Subcontract information for a line item</span>
+        </h2>
+        <p>
+As a Call Screener, I want to be able to view the subcontract information for a line item.          <br/>
+When I receive a call, I should be able to click a link by the line item that the customer          <br/>
+is calling for, and view the subcontract information.          <br/>
+        </p>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Line items are subcontracted</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_7">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+the contract dropdowns are populated                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_8">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">call_screener</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_9">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+a contract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_10">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I have created a line item                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_11">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+a subcontract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_12">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+the line item is subcontracted                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_13">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am viewing that contract                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_14">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I follow &quot;<span class="param">subkspecial</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_15">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should see &quot;<span class="param">Subcontractor</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_16">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I should see &quot;<span class="param">subkspecial</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_17">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I should see &quot;<span class="param">Line Item subcontract information</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_line_item_subcontract_information_feature_18">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I should see &quot;<span class="param">A6144A</span>&quot;                </span>
               </div>
             </li>
           </ol>
@@ -1944,6 +2053,7 @@ I should not see &quot;contract the &lt;other&gt;&quot;                </span>
         </h2>
         <p>
 This will log in as various roles, and visit pages to check for application errors.          <br/>
+Except for Cashflow          <br/>
         </p>
         <div class="scenario outline">
           <h3>
@@ -1951,35 +2061,35 @@ This will log in as various roles, and visit pages to check for application erro
              <span class="val">Admin</span>
           </h3>
           <ol>
-            <li class="step skipped" id="features_smoke_tests_feature_5">
+            <li class="step skipped" id="features_smoke_tests_feature_6">
               <div>
                 <span class="keyword">Given</span>
                  <span class="step val">
 I am logged in as a &quot;admin&quot;                </span>
               </div>
             </li>
-            <li class="step skipped" id="features_smoke_tests_feature_6">
+            <li class="step skipped" id="features_smoke_tests_feature_7">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
 the contract dropdowns are populated                </span>
               </div>
             </li>
-            <li class="step skipped" id="features_smoke_tests_feature_7">
+            <li class="step skipped" id="features_smoke_tests_feature_8">
               <div>
                 <span class="keyword">And</span>
                  <span class="step val">
 some contracts exist to search on                </span>
               </div>
             </li>
-            <li class="step skipped" id="features_smoke_tests_feature_8">
+            <li class="step skipped" id="features_smoke_tests_feature_9">
               <div>
                 <span class="keyword">When</span>
                  <span class="step val">
 I follow &quot;&lt;link&gt;&quot;                </span>
               </div>
             </li>
-            <li class="step skipped" id="features_smoke_tests_feature_9">
+            <li class="step skipped" id="features_smoke_tests_feature_10">
               <div>
                 <span class="keyword">Then</span>
                  <span class="step val">
@@ -1993,98 +2103,86 @@ I should still see the menu                </span>
                <span class="val"></span>
             </h4>
             <table>
-              <tr id="row_11">
-                <th class="val skipped_param" id="row_11_0">link</th>
-              </tr>
               <tr id="row_12">
-                <td class="val passed" id="row_12_0">Main Page</td>
+                <th class="val skipped_param" id="row_12_0">link</th>
               </tr>
               <tr id="row_13">
-                <td class="val passed" id="row_13_0">Renewals</td>
+                <td class="val passed" id="row_13_0">Main Page</td>
               </tr>
               <tr id="row_14">
-                <td class="val passed" id="row_14_0">Contracts</td>
+                <td class="val passed" id="row_14_0">Renewals</td>
               </tr>
               <tr id="row_15">
-                <td class="val passed" id="row_15_0">Reports</td>
+                <td class="val passed" id="row_15_0">Contracts</td>
               </tr>
               <tr id="row_16">
-                <td class="val passed" id="row_16_0">Dashboard</td>
+                <td class="val passed" id="row_16_0">Reports</td>
               </tr>
               <tr id="row_17">
-                <td class="val passed" id="row_17_0">Customers</td>
+                <td class="val passed" id="row_17_0">Dashboard</td>
               </tr>
               <tr id="row_18">
-                <td class="val passed" id="row_18_0">New Business</td>
+                <td class="val passed" id="row_18_0">Customers</td>
               </tr>
               <tr id="row_19">
-                <td class="val passed" id="row_19_0">Locations</td>
+                <td class="val passed" id="row_19_0">New Business</td>
               </tr>
               <tr id="row_20">
-                <td class="val passed" id="row_20_0">Spares Requirements</td>
+                <td class="val passed" id="row_20_0">Locations</td>
               </tr>
               <tr id="row_21">
-                <td class="val passed" id="row_21_0">Inventory</td>
+                <td class="val passed" id="row_21_0">Spares Requirements</td>
               </tr>
               <tr id="row_22">
-                <td class="val passed" id="row_22_0">Tools</td>
+                <td class="val passed" id="row_22_0">Inventory</td>
               </tr>
               <tr id="row_23">
-                <td class="val passed" id="row_23_0">I/O Scan</td>
+                <td class="val passed" id="row_23_0">Tools</td>
               </tr>
               <tr id="row_24">
-                <td class="val passed" id="row_24_0">SW List</td>
+                <td class="val passed" id="row_24_0">I/O Scan</td>
               </tr>
               <tr id="row_25">
-                <td class="val passed" id="row_25_0">Dell Warranty</td>
+                <td class="val passed" id="row_25_0">SW List</td>
               </tr>
               <tr id="row_26">
-                <td class="val passed" id="row_26_0">Dell Configuration</td>
+                <td class="val passed" id="row_26_0">Dell Warranty</td>
               </tr>
               <tr id="row_27">
-                <td class="val passed" id="row_27_0">Prices</td>
+                <td class="val passed" id="row_27_0">Dell Configuration</td>
               </tr>
               <tr id="row_28">
-                <td class="val passed" id="row_28_0">HW Support Pricing</td>
+                <td class="val passed" id="row_28_0">Prices</td>
               </tr>
               <tr id="row_29">
-                <td class="val passed" id="row_29_0">SW Support Pricing</td>
+                <td class="val passed" id="row_29_0">HW Support Pricing</td>
               </tr>
               <tr id="row_30">
-                <td class="val passed" id="row_30_0">Admin</td>
+                <td class="val passed" id="row_30_0">SW Support Pricing</td>
               </tr>
               <tr id="row_31">
-                <td class="val passed" id="row_31_0">Users</td>
+                <td class="val passed" id="row_31_0">Admin</td>
               </tr>
               <tr id="row_32">
-                <td class="val passed" id="row_32_0">Dropdowns</td>
+                <td class="val passed" id="row_32_0">Users</td>
               </tr>
               <tr id="row_33">
-                <td class="val passed" id="row_33_0">Roles</td>
+                <td class="val passed" id="row_33_0">Dropdowns</td>
               </tr>
               <tr id="row_34">
-                <td class="val passed" id="row_34_0">Import</td>
+                <td class="val passed" id="row_34_0">Roles</td>
               </tr>
               <tr id="row_35">
-                <td class="val passed" id="row_35_0">Upfront Orders</td>
+                <td class="val passed" id="row_35_0">Import</td>
               </tr>
               <tr id="row_36">
-                <td class="val passed" id="row_36_0">Appgen Orders</td>
+                <td class="val passed" id="row_36_0">Upfront Orders</td>
               </tr>
               <tr id="row_37">
-                <td class="val passed" id="row_37_0">Admin Page</td>
+                <td class="val passed" id="row_37_0">Appgen Orders</td>
               </tr>
               <tr id="row_38">
-                <td class="val failed" id="row_38_0">Cashflow</td>
-              </tr>
-              <tr>
-                <td colspan="1" class="failed">
-                  <pre>
-You have a nil object when you didn't expect it!
-You might have expected an instance of Array.
-The error occurred while evaluating nil.+ (ActionView::TemplateError)
-features/smoke_tests.feature:8:in `When I follow "<link>"'                  </pre>
-                </td>
+                <td class="val passed" id="row_38_0">Admin Page</td>
               </tr>
               <tr id="row_39">
                 <td class="val passed" id="row_39_0">Appgen</td>
@@ -2186,6 +2284,485 @@ I should still see the menu                </span>
               </tr>
             </table>
           </div>
+        </div>
+      </div>
+      <div class="feature">
+        <h2>
+          <span class="val">Feature: Manage Subcontractors</span>
+        </h2>
+        <p>
+As a contract_admin          <br/>
+I want to be able to manage subcontractors          <br/>
+So that I can maintain an accurate list and accurate information about them.          <br/>
+        </p>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Add a Subcontractor</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontractors_management_feature_7">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">contract_admin</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_8">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Partners</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_9">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I follow &quot;<span class="param">New subcontractor</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_10">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I fill in &quot;<span class="param">Name</span>&quot; with &quot;<span class="param">subkspecial</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_11">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I fill in &quot;<span class="param">subcontractor_note</span>&quot; with &quot;<span class="param">This is a note</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_12">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I press &quot;<span class="param">Create</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_13">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should see &quot;<span class="param">subkspecial</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_14">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I should see &quot;<span class="param">This is a note</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Delete a Subcontractor</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontractors_management_feature_17">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a subcontractor exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_18">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">contract_admin</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_19">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Partners</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_20">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Delete</span>&quot; in the subcontractors table                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_21">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should not see &quot;<span class="param">subkspecial</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Modify a Subcontractor</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontractors_management_feature_24">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a subcontractor exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_25">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">contract_admin</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_26">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Partners</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_27">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Edit</span>&quot; in the subcontractors table                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_28">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I fill in &quot;<span class="param">Name</span>&quot; with &quot;<span class="param">anothersubcontractor</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_29">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I press &quot;<span class="param">Update</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_30">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should see &quot;<span class="param">anothersubcontractor</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_31">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I should see &quot;<span class="param">Subcontractor was successfully updated</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontractors_management_feature_32">
+              <div>
+                <span class="keyword">But</span>
+                 <span class="step val">
+I should not see &quot;<span class="param">subkspecial</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="feature">
+        <h2>
+          <span class="val">Feature:</span>
+        </h2>
+        <p>
+Subcontracts should belong to a Subcontractor, and each subcontract          <br/>
+should have multiple line items.          <br/>
+        </p>
+        <div class="background">
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontract_has_lineitems_feature_6">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">contract_admin</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Add line items to a subcontract</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontract_has_lineitems_feature_9">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a subcontract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_has_lineitems_feature_10">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+a contract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_has_lineitems_feature_11">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I have created 2 line items for that contract                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_has_lineitems_feature_12">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am viewing that contract                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_has_lineitems_feature_13">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I check 2 of the line item checkboxes                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_has_lineitems_feature_14">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I press &quot;<span class="param">Add to Subcontract</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_has_lineitems_feature_15">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should see the subcontract form                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="feature">
+        <h2>
+          <span class="val">Feature: Manage Subcontracts</span>
+        </h2>
+        <p>
+As a contract_admin          <br/>
+I want to be able to manage subcontracts          <br/>
+So that I can maintain an accurate list and accurate information about them.          <br/>
+        </p>
+        <div class="background">
+          <h3>
+            <span class="keyword">Background:</span>
+             <span class="val"></span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontract_management_feature_7">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a subcontractor exists                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Add a Subcontract</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontract_management_feature_10">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">contract_admin</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_11">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Subcontracts</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_12">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I follow &quot;<span class="param">New subcontract</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_13">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I select &quot;<span class="param">subkspecial</span>&quot; from &quot;<span class="param">Subcontractor</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_14">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I fill in &quot;<span class="param">Description</span>&quot; with &quot;<span class="param">MySubcontract</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_15">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I press &quot;<span class="param">Create</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_16">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should see &quot;<span class="param">subkspecial</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_17">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I should see &quot;<span class="param">MySubcontract</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_18">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I should see &quot;<span class="param">Subcontract was successfully created.</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Delete a Subcontract</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontract_management_feature_21">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a subcontract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_22">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">contract_admin</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_23">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Subcontracts</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_24">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Delete</span>&quot; in the subcontracts table                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_25">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should not see &quot;<span class="param">subkspecial</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="scenario">
+          <h3>
+            <span class="keyword">Scenario:</span>
+             <span class="val">Modify a Subcontract</span>
+          </h3>
+          <ol>
+            <li class="step passed" id="features_subcontract_management_feature_28">
+              <div>
+                <span class="keyword">Given</span>
+                 <span class="step val">
+a subcontract exists                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_29">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I am logged in as a &quot;<span class="param">contract_admin</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_30">
+              <div>
+                <span class="keyword">When</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Subcontracts</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_31">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I follow &quot;<span class="param">Edit</span>&quot; in the subcontracts table                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_32">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I fill in &quot;<span class="param">Description</span>&quot; with &quot;<span class="param">AnotherSubcontract</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_33">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I press &quot;<span class="param">Update</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_34">
+              <div>
+                <span class="keyword">Then</span>
+                 <span class="step val">
+I should see &quot;<span class="param">AnotherSubcontract</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_35">
+              <div>
+                <span class="keyword">And</span>
+                 <span class="step val">
+I should see &quot;<span class="param">Subcontract was successfully updated</span>&quot;                </span>
+              </div>
+            </li>
+            <li class="step passed" id="features_subcontract_management_feature_36">
+              <div>
+                <span class="keyword">But</span>
+                 <span class="step val">
+I should not see &quot;<span class="param">MySubcontract</span>&quot;                </span>
+              </div>
+            </li>
+          </ol>
         </div>
       </div>
       <div class="feature">
@@ -2775,7 +3352,7 @@ I should not see &quot;&lt;unseen&gt;&quot;                </span>
           </div>
         </div>
       </div>
-      <div class="duration">2m11.550s</div>
+      <div class="duration">2m6.141s</div>
     </div>
   </body>
 </html>

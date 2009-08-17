@@ -88,6 +88,7 @@
         %th Description
         %th Qty
         %th Cost
+        %th
     %tbody
       -@subcontract.line_items.each do |line|
         %tr
@@ -96,4 +97,6 @@
           %td=line.description
           %td=line.qty
           %td=line.subcontract_cost
+          -if current_user.has_role?(:contract_admin)
+            %td= link_to "Remove", url_for(:controller => 'subcontracts', :action => 'remove_line_item', :id => @subcontract, :line_item_id => line.id), :confirm => 'Remove this item from this subcontract?', :method => :delete
 

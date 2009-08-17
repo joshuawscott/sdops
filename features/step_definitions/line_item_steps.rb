@@ -19,6 +19,12 @@ Given /^I am viewing its contract$/ do
   visit contract_path(@line_item.contract)
 end
 
+Given /^the line item is subcontracted$/ do
+  @line_item.subcontract_id = @subcontract.id
+  @line_item.save(false)
+  @subcontract.line_items.count.should == 1
+end
+
 When /^I fill out the line item form$/ do
   fill_in 'Product num', :with => 'A6144A'
   fill_in 'Description', :with => 'STRANGE BREW'

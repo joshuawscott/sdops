@@ -1,0 +1,101 @@
+-content_for :subtitle do
+  Line Item subcontract information
+#section1
+  =link_to "Back", contract_path(@contract)
+#section2
+  #details.boxed
+    %h2 Line item details
+    %p
+      %label{:for => "support_type"} Support Type
+      = @line_item.support_type
+      %br/
+    %p
+      %label{:for => "product_num"} Product Number
+      = @line_item.product_num
+      %br/
+    %p
+      %label{:for => "description"} Description
+      = @line_item.description
+      %br/
+    %p
+      %label{:for => "serial_num"} Serial Num
+      %b= @line_item.serial_num
+      %br/
+    %p
+      %label{:for => "note"} Note
+      %b= @line_item.note
+      %br/
+    %p
+      %label{:for => "dates"} Covered
+      = @line_item.begins
+      = " - "
+      =@line_item.ends
+      %br/
+  -if @line_item.subcontract
+    #subcontractor.boxed
+      %h2 Subcontractor contact details
+      %p
+        %label{:for => "name"} Partner
+        %b= @line_item.subcontract.subcontractor.name
+        %br/
+      %p
+        %label{:for => "phone"} Phone num
+        %b= @line_item.subcontract.subcontractor.phone
+        %br/
+      %p
+        %label{:for => "customer_number"} Customer Number
+        %b= @line_item.subcontract.customer_number
+        %br/
+      %p
+        %label{:for => "site_number"} Site Number
+        %b= @line_item.subcontract.site_number
+        %br/
+      %p
+        %label{:for => "sales_order_number"} Sales Order Num
+        %b= @line_item.subcontract.sales_order_number
+        %br/
+      %p
+        %label{:for => "quote_number"} Quote Number
+        %b= @line_item.subcontract.quote_number
+        %br/
+    #subcontractor.boxed
+      %h2 Coverage Level
+      -if @line_item.support_type == "HW"
+        %p
+          %label{:for => "hw_response_time"} Response Time
+          = @line_item.subcontract.hw_response_time
+          %br/
+        %p
+          %label{:for => "hw_repair_time"} Call-to-repair time
+          = @line_item.subcontract.hw_repair_time
+          %br/
+        %p
+          %label{:for => "hw_coverage_days"} Covered Days
+          = @line_item.subcontract.hw_coverage_days
+          %br/
+        %p
+          %label{:for => "hw_coverage_hours"} Covered hours
+          = @line_item.subcontract.hw_coverage_hours
+          %br/
+        %p
+          %label{:for => "parts_provided"} Parts Covered?
+          = @line_item.subcontract.parts_provided
+          %br/
+        %p
+          %label{:for => "labor_provided"} Labor Covered?
+          = @line_item.subcontract.labor_provided
+          %br/
+      -if @line_item.support_type == "SW"
+        %p
+          %label{:for => "sw_response_time"} Response Time
+          = @line_item.subcontract.sw_response_time
+          %br/
+        %p
+          %label{:for => "sw_coverage_days"} Covered Days
+          = @line_item.subcontract.sw_coverage_days
+          %br/
+        %p
+          %label{:for => "sw_coverage_hours"} Covered hours
+          = @line_item.subcontract.sw_coverage_hours
+          %br/
+

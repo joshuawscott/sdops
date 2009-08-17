@@ -1,5 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :subcontracts, :collection => {:add_line_items => :post}
+  map.resources :subcontracts, :has_many => :line_items, :collection => {:add_line_items => :post}
 
   map.resources :subcontractors
 

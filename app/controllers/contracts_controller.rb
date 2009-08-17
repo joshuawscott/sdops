@@ -109,7 +109,8 @@ class ContractsController < ApplicationController
     @replaces = @contract.predecessors
     @replaced_by = @contract.successors
     @comment = Comment.new
-		@support_providers = Dropdown.support_provider_list
+    @support_providers = Subcontractor.find(:all, :select => :name).map {|s| s.name}
+    @support_providers.insert 0, "Sourcedirect"
     @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
     respond_to do |format|
       format.html do

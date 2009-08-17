@@ -110,4 +110,11 @@ class SubcontractsController < ApplicationController
     flash[:notice] << "<br>Failed to update #{failed_line_items} line items" if failed_line_items > 0
     redirect_to subcontract_path(@subcontract)
   end
+
+  def remove_line_item
+    @subcontract = Subcontract.find params[:id]
+    @line_item = LineItem.find(params[:line_item_id])
+    @line_item.remove_from @subcontract
+    redirect_to subcontract_path(@subcontract)
+  end
 end

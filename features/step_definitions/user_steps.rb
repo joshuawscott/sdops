@@ -13,6 +13,7 @@ When /^I enter login "([^\"]*)" and password "([^\"]*)"$/ do |login, password|
 end
 
 When /^I am logged in as a "([^\"]*)"$/ do |user_role|
+  User.count.should == 0
   @current_user = Factory(:user)
   @current_user.roles << Role.find_by_name(user_role)
   @current_user.save(false)
