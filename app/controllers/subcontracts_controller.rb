@@ -56,6 +56,7 @@ class SubcontractsController < ApplicationController
         format.html { redirect_to(@subcontract) }
         format.xml  { render :xml => @subcontract, :status => :created, :location => @subcontract }
       else
+        @subcontractors = Subcontractor.find(:all)
         format.html { render :action => "new" }
         format.xml  { render :xml => @subcontract.errors, :status => :unprocessable_entity }
       end
@@ -73,6 +74,7 @@ class SubcontractsController < ApplicationController
         format.html { redirect_to(@subcontract) }
         format.xml  { head :ok }
       else
+        @subcontractors = Subcontractor.find(:all)
         format.html { render :action => "edit" }
         format.xml  { render :xml => @subcontract.errors, :status => :unprocessable_entity }
       end

@@ -37,3 +37,12 @@ Feature: Manage Subcontracts
     And I should see "Subcontract was successfully updated"
     But I should not see "MySubcontract"
 
+  Scenario: Create incomplete Subcontract
+    Given I am logged in as a "contract_admin"
+    When I follow "Subcontracts"
+    And I follow "New subcontract"
+    And I select "subkspecial" from "Subcontractor"
+    And I press "Create"
+    Then I should see "subkspecial"
+    And I should see "problems"
+    But I should not see "Subcontract was successfully created."
