@@ -47,10 +47,10 @@
     =f.select :hw_coverage_hours, ['', '24 hours', '8AM - 9PM', '8AM - 5PM']
   %p
     %label{:for => 'subcontract_parts_provided'} Parts Provided?
-    =f.select :parts_provided, ['Yes', 'No', 'Additional']
+    =f.select :parts_provided, [['Yes',true],["No",false]]
   %p
     %label{:for => 'subcontract_labor_provided'} Labor Covered?
-    =f.select :labor_provided, ['Yes', 'No', 'Additional']
+    =f.select :labor_provided, [['Yes',true],["No",false]]
 #sw_coverage_level.boxed
   %h2 Software Coverage Level
   %p

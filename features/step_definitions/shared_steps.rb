@@ -12,3 +12,10 @@ Then /^I should still see the menu$/ do
   end
 end
 
+Then /^I should see "([^\"]*)" within "([^\"]*)"$/ do |value, field|
+  response.should have_selector(field) do |f|
+    f.should contain(value)
+  end
+end
+
+
