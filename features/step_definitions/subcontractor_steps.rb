@@ -20,7 +20,6 @@ When /^I follow "([^\"]*)" in the subcontractors table$/ do |link|
 end
 
 Given /^a subcontract exists$/ do
-  @subcontractor = Factory :subcontractor, :name => "subkspecial"
   @subcontract = Factory :subcontract, :subcontractor_id => @subcontractor.id
   Subcontract.count.should == 1
 end

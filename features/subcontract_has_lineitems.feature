@@ -6,7 +6,8 @@ Feature:
     Given I am logged in as a "contract_admin"
 
   Scenario: Add line items to a subcontract
-    Given a subcontract exists
+    Given a subcontractor exists
+    And a subcontract exists
     And a contract exists
     And I have created 2 line items for that contract
     And I am viewing that contract

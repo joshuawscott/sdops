@@ -8,15 +8,21 @@
       %tr
         %th Partner
         %th Description
+        %th Start Date
+        %th End Date
         %th Cost
+        %th{:colspan => current_user.has_role?(:contract_admin) ? 3 : 1}
     %tbody
       - @subcontracts.each do |s|
         %tr
           %td= h s.subcontractor.name if s.subcontractor
           %td= h s.description
+          %td= h s.start_date
+          %td= h s.end_date
           %td= h s.cost
           %td= link_to 'Show', s
-          %td= link_to 'Edit', edit_subcontract_path(s)
-          %td= link_to 'Delete', s, :confirm => 'Are you sure?', :method => :delete
+          -if current_user.has_role?(:contract_admin)
+            %td= link_to 'Edit', edit_subcontract_path(s)
+            %td= link_to 'Delete', s, :confirm => 'Are you sure?', :method => :delete
 
 

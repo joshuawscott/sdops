@@ -12,6 +12,8 @@ Feature: Manage Subcontracts
     And I follow "New subcontract"
     And I select "subkspecial" from "Subcontractor"
     And I fill in "Description" with "MySubcontract"
+    And I fill in "Start Date" with "2009-01-01"
+    And I fill in "End Date" with "2009-12-31"
     And I press "Create"
     Then I should see "subkspecial"
     And I should see "MySubcontract"

@@ -8,6 +8,7 @@ Feature: View Subcontract information for a line item
     And I am logged in as a "call_screener"
     And a contract exists
     And I have created a line item
+    And a subcontractor exists
     And a subcontract exists
     And the line item is subcontracted
     And I am viewing that contract

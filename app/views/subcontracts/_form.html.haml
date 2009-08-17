@@ -1,4 +1,4 @@
-#general_information.boxed{:style => 'height:200px'}
+#general_information.boxed{:style => 'height:230px'}
   %h2 General Information
   %p
     %label{:for => 'subcontract_subcontractor_id'} Subcontractor
@@ -22,9 +22,15 @@
     %label{:for => 'subcontract_sourcedirect_po_number'} SD PO Number
     =f.text_field :sourcedirect_po_number
   %p
+    %label{:for => 'subcontract_start_date'} Start Date
+    =f.text_field :start_date
+  %p
+    %label{:for => 'subcontract_end_date'} End Date
+    =f.text_field :end_date
+  %p
     %label{:for => 'subcontract_cost'} Cost
     =f.text_field :cost
-%div{:style => 'width:100%;height:218px'}
+%div{:style => 'width:100%;height:248px'}
 #hw_coverage_level.boxed{:style => 'display:block'}
   %h2 Hardware Coverage Level
   %p
