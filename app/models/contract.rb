@@ -133,7 +133,7 @@ class Contract < ActiveRecord::Base
       :conditions => ["end_date <= '#{plus90}' AND expired <> 1 AND (sales_office IN (?) OR support_office IN (?))", teams, teams],
       :order => 'sales_office, days_due')
     end
-  
+
   # Total Annual Revenue
   def total_revenue
      annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev
@@ -157,11 +157,19 @@ class Contract < ActiveRecord::Base
     self.predecessor_ids.size > 0
   end
 
-  # Pulls just the revenue fields (for reports)
-  def self.all_revenue
-    Contract.find(:all, 
-			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev', 
-			:conditions => "expired <> true")
+  # Pulls just the revenue fields (for reports).  Without the date parameter, it returns totals
+  # regardless of start and end dates.  An optional date parameter will return historical
+  # revenue amounts for that date, which ignores the expired field, only looking at start & end dates.
+  def self.all_revenue(date = nil)
+    if date.nil?
+      Contract.find(:first,
+        :select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev',
+        :conditions => "expired <> true")
+    else
+      Contract.find(:first,
+        :select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev',
+        :conditions => ["start_date <= ? AND end_date >= ?", date, date])
+    end
   end
 
   # For Dashboard report
@@ -177,7 +185,7 @@ class Contract < ActiveRecord::Base
     ce = Contract.count(:account_name, {:conditions => "annual_ce_rev > 0 AND expired <> true", :group => 'sales_office_name'})
     dr = Contract.count(:account_name, {:conditions => "annual_dr_rev > 0 AND expired <> true", :group => 'sales_office_name'})
     total = Contract.count(:account_name, {:conditions => "expired <> 1", :group => 'sales_office_name'})
-   
+
     offices.each do |x|
       hash[x.sales_office_name]['hw'] = hw[x.sales_office_name] ||= 0
       hash[x.sales_office_name]['sw'] = sw[x.sales_office_name] ||= 0
@@ -215,11 +223,18 @@ class Contract < ActiveRecord::Base
   end
 
   # For Dashboard report
-  def self.revenue_by_office_by_type
-    Contract.find(:all, 
-			:select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr', 
-			:conditions => 'expired <> true', 
-			:group => 'sales_office_name')
+  def self.revenue_by_office_by_type(date = nil)
+    if date.nil?
+      Contract.find(:all,
+        :select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr',
+        :conditions => 'expired <> true',
+        :group => 'sales_office_name')
+    else
+      Contract.find(:all,
+        :select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr',
+        :conditions => ["start_date <= ? AND end_date >= ?", date, date],
+        :group => 'sales_office_name')
+    end
   end
 
 	def self.customer_rev_list_by_sales_office

@@ -1,8 +1,19 @@
+= stylesheet_link_tag "/javascripts/jscalendar-1.0/calendar-blue.css"
+= javascript_include_tag "jscalendar-1.0/calendar.js"
+= javascript_include_tag "jscalendar-1.0/lang/calendar-en.js"
+= javascript_include_tag "jscalendar-1.0/calendar-setup.js"
 - content_for :subtitle do
   Reports - Dashboard
-
 #section1
-  %div{:class=>'boxed', :style=>'background:white'}
+  -form_tag reports_path, :method => :get do
+    %p
+      %div{:style => 'width:200px;height:50px;display:inline;float:left'} Find Historical Revenue
+      = date_select_tag (:date, @date.to_s(:local), {}, {})
+      %br/
+      =submit_tag 'Search'
+      =link_to 'clear search', reports_path
+#section2
+  .boxed{:style=>'background:white'}
     %h2
       Counts By Office &nbsp;&nbsp;&nbsp;
       %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
@@ -69,7 +80,7 @@
           %td{:colspan => '6', :align => 'right'}
             %b= @total_customers
   %br/
-  %div{:class=>'boxed', :style=>'background:white'}
+  .boxed{:style=>'background:white'}
     %h2 Revenues By Office
     %table{:class => 'sortable', :padding => '2', :border => '1'}
       %thead
@@ -102,20 +113,20 @@
         %tr
           %td Total
           %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[0][:annual_hw_rev], :format => '%u%n')
+            %b= number_to_currency(@all_revenue[:annual_hw_rev], :format => '%u%n')
           %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[0][:annual_sw_rev], :format => '%u%n')
+            %b= number_to_currency(@all_revenue[:annual_sw_rev], :format => '%u%n')
           %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[0][:annual_sa_rev], :format => '%u%n')
+            %b= number_to_currency(@all_revenue[:annual_sa_rev], :format => '%u%n')
           %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[0][:annual_ce_rev], :format => '%u%n')
+            %b= number_to_currency(@all_revenue[:annual_ce_rev], :format => '%u%n')
           %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[0][:annual_dr_rev], :format => '%u%n')
+            %b= number_to_currency(@all_revenue[:annual_dr_rev], :format => '%u%n')
           %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[0][:total_revenue], :format => '%u%n')
+            %b= number_to_currency(@all_revenue[:total_revenue], :format => '%u%n')
 
   %br &nbsp;
-#section2
+#section3
   %p{:style=>"page-break-before: always"}
     - @url1 = url_for :controller => 'graphs', :action => 'sales_by_office'
     %img{'src' => @url1, 'style' => "border:1px solid #111111;"}

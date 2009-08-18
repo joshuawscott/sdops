@@ -19,6 +19,7 @@ describe LineItem do
 
   describe "#remove_from" do
     it "should remove the line item from subcontract" do
+      @subcontractor = Factory :subcontractor
       @subcontract = Factory :subcontract
       @line_item = Factory :line_item, :subcontract_id => @subcontract.id
       @subcontract.line_items.count.should == 1

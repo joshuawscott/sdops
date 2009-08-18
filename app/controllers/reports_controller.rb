@@ -15,11 +15,15 @@ class ReportsController < ApplicationController
       n = n+1
     end
     @offices.sort!
-    
     #Revenue totals
-    @all_revenue = Contract.all_revenue
-    @revenue_by_office_by_type = Contract.revenue_by_office_by_type
-    
+    begin
+      @date = Date.parse(params[:date]) if params[:date]
+    rescue ArgumentError
+      flash[:notice] = 'Invalid Date!'
+    end
+    @all_revenue = Contract.all_revenue(@date)
+    @revenue_by_office_by_type = Contract.revenue_by_office_by_type(@date)
+    @date ||= Date.today
     respond_to do |format|
       format.html # index.html.haml
     end
@@ -72,7 +76,7 @@ class ReportsController < ApplicationController
   def newbusiness
     logger.debug "************** reports/newbusiness action"
     @contracts = Contract.newbusiness
-    
+    #TODO: Change to AJAX requests for report?
     #generate the filter dropdown:
     @period_names = []
     @period_ids = []
