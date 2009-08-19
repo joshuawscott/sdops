@@ -19,7 +19,8 @@
   = render :partial => "contract_relationships"
 #section4
   = render :partial => "comments_box"
-#section5{:style => 'padding-top: 20px;page-break-before:always'}
+.pagebreak
+#section5{:style => 'padding-top: 20px'}
   %b.hideforprint
     = link_to 'Export Line Items to Excel', :id => @contract.id, :action => 'lineitems', :format => 'xls'
   %br/
@@ -42,7 +43,7 @@
     - unless @swlines.empty?
       %h2
         Software Line Items
-        %span{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'SW') if current_user.has_role?(:contract_admin, :contract_editor)
+        %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'SW') if current_user.has_role?(:contract_admin, :contract_editor)
       %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
         %thead
           =render :partial => 'lineitems_header', :locals => {:section => "SW"}
@@ -53,7 +54,7 @@
     - unless @srvlines.empty?
       %h2
         Services Line Items
-        %span{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'SRV') if current_user.has_role?(:contract_admin, :contract_editor)
+        %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'SRV') if current_user.has_role?(:contract_admin, :contract_editor)
       %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
         %thead
           =render :partial => 'lineitems_header', :locals => {:section => "SRV"}

@@ -427,37 +427,17 @@ ul.sub_menu {
 #section1 {
   float: left;
   margin: 0px 5px 0px 5px;
-  width: 99%;
+  width: 100%;
   background: #fff; }
   #section1 #submenu {
     width: 160px;
     margin: 0 0 5px 300px; }
 
-/* Section2 */
-#section2 {
+/* Sections 2-6 */
+#section2, #section3, #section4, #section5, #section6 {
   float: left;
   margin: 5px 5px 0px 5px;
-  width: 99%;
-  background: #fff; }
-
-/* Section3 */
-#section3 {
-  float: left;
-  margin: 5px 5px 0px 5px;
-  width: 99%;
-  background: #fff; }
-
-/* Section4 */
-#section4 {
-  float: left;
-  margin: 5px 5px 0px 5px;
-  width: 99%;
-  background: #fff; }
-
-#section5 {
-  float: left;
-  margin: 5px 5px 0px 5px;
-  width: 99%;
+  width: 100%;
   background: #fff; }
 
 .label {
@@ -472,16 +452,14 @@ ul.sub_menu {
   background-color: #ddd; }
 
 @media print {
+  .pagebreak {
+    page-break-before: always; }
+
   .hideforprint {
     display: none; }
 
   #header {
     display: none; }
 
-  table th {
-    background: #cccccc; }
-
-  .boxed {
-    background: none; }
-    .boxed p {
-      margin-top: 1px; } }
+  .boxed p {
+    margin-top: 1px; } }
