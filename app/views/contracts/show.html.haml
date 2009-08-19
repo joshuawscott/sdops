@@ -4,7 +4,7 @@
 = javascript_include_tag "dragdrop.js"
 - content_for :subtitle do
   Show Contract
-#section1
+#section1.hideforprint
   %b
     = link_to('Edit', edit_contract_path(@contract)) + ' | '  if current_user.has_role?(:contract_admin)
     = link_to('Destroy', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete) + ' | '  if current_user.has_role?(:contract_admin)
@@ -19,19 +19,19 @@
   = render :partial => "contract_relationships"
 #section4
   = render :partial => "comments_box"
-#section4{:style => 'padding-top: 20px'}
-  %b 
+#section5{:style => 'padding-top: 20px;page-break-before:always'}
+  %b.hideforprint
     = link_to 'Export Line Items to Excel', :id => @contract.id, :action => 'lineitems', :format => 'xls'
-  %br
-  %b
+  %br/
+  %b.hideforprint
     = link_to 'New Line Item', new_contract_line_item_path(@contract) if current_user.has_role?(:contract_admin, :contract_editor) && @hwlines.empty? && @swlines.empty? && @srvlines.empty?
-  %br
+  %br/
   - form_tag mass_update_line_items_path, :method => :put do
     - unless @hwlines.empty?
       - @i = 0
       %h2
         Hardware Line Items
-        %span{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'HW') if current_user.has_role?(:contract_admin, :contract_editor)
+        %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'HW') if current_user.has_role?(:contract_admin, :contract_editor)
       %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
         %thead
           =render :partial => 'lineitems_header', :locals => {:section => "HW"}
@@ -62,7 +62,7 @@
             =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SRV"}
       %br/
     - if current_user.has_role?(:contract_admin, :contract_editor)
-      #results.boxed{:style => 'height:160px', :style => 'width:480px'}
+      #results.boxed.hideforprint{:style => 'height:160px', :style => 'width:480px'}
         %h2 Line Items Mass Update
         %p 
           %label{:for => 'support_provider'}

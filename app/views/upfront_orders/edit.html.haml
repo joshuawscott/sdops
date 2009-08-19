@@ -22,5 +22,5 @@
   #results.boxed
     %h2 Original Order Info
     =render_simple_show(@appgen_order)
-#section2
+#section3
   =render_simple_index(@appgen_order.appgen_order_lineitems, :ignore_foreign_keys => [:appgen_order_id], :display_show => false, :display_edit => false, :display_destroy => false)

@@ -7,7 +7,6 @@
       %td{:width => '300px'}
         %h2{:margin => '0'}
           Spares Requirements &nbsp;&nbsp;&nbsp;
-          %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
       %td
         %b Filter by Office&nbsp;
       %td
@@ -16,6 +15,8 @@
           = hidden_field "filter", "office_name"
           = submit_tag "Search"
 
+#section2
+  %span{:style => 'font-size:8pt;text-transform:lowercase;float:left'}= link_to_function 'Format for print', "toggleHeaderStuff()"
   %h2{:style => 'margin:15px 0px 0px 200px'}
     Products Under Support - 
     = @office

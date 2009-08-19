@@ -1,8 +1,8 @@
 %tr{:id => "lineitem_" + line_item.id.to_s}
   - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
     -if section != 'SRV'
-      %td.drag_handle [drag]
-    %td
+      %td.drag_handle.hideforprint [drag]
+    %td.hideforprint
       =check_box_tag(section + "_line_item_ids[]", line_item.id, false, :class => section + '_line_item_class', :id => "licheckbox#{line_item.id.to_s}")
       =hidden_field_tag section + "_line_items[][id]", line_item.id
   %td= support_provider(line_item)
@@ -19,6 +19,6 @@
     %td{:align => 'right'}
       = h number_to_currency(line_item.list_price)
   - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
-    %td= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
-    %td= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you SURE you want to permanently delete this Line Item?', :method => :delete
+    %td.hideforprint= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
+    %td.hideforprint= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you SURE you want to permanently delete this Line Item?', :method => :delete
 

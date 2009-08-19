@@ -35,7 +35,7 @@ function showAll(){
 // ************************************************
 function toggleHeaderStuff(){
   $('header').toggle();
-  $('submenu').toggle();
+  $('section1').toggle();
 }
 
 // ************************************************

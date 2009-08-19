@@ -8,7 +8,7 @@
   -form_tag reports_path, :method => :get do
     %p
       %div{:style => 'width:200px;height:50px;display:inline;float:left'} Find Historical Revenue
-      = date_select_tag (:date, @date.to_s(:local), {}, {})
+      = date_select_tag(:date, @date.to_s(:local), {}, {})
       %br/
       =submit_tag 'Search'
       =link_to 'clear search', reports_path
@@ -81,7 +81,12 @@
             %b= @total_customers
   %br/
   .boxed{:style=>'background:white'}
-    %h2 Revenues By Office
+    %h2
+      Revenues By Office
+      %span{:style => 'font-size:8pt;text-transform:lowercase'}
+        -if @date.class == Date
+          as of
+          =@date.to_s(:local)
     %table{:class => 'sortable', :padding => '2', :border => '1'}
       %thead
         %tr

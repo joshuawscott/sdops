@@ -1,4 +1,4 @@
-#comments.boxed{:style => 'width:900px;margin-top:5px'}
+#comments.boxed{:style => 'display:block;float:left;margin-top:5px'}
   %h2 Comments
   -if current_user.has_role? :commenter
     %label{:for => "comment_body"}

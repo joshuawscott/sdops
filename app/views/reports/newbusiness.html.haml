@@ -2,7 +2,7 @@
 - content_for :subtitle do
   Reports - New Business
 
-#section1
+#section2
   - form_tag '/reports/newbusiness.xls' do
     %table{:class => 'plain_table'}
       %tr
@@ -10,15 +10,14 @@
           %h2{:margin => '0'}
             New Support Business
             %br/
-            %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
+            %span.hideforprint{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
         %td
           Filter by Month
           =select("filter", "period", @periods, {:include_blank => true, :selected => @currperiod },{:onchange => 'return togglePeriods()', :style => "width: 110px"})
-      %tr
-        %td 
+      %tr.hideforprint
+        %td
           = submit_tag 'Export to Excel'
     %h2{:style => 'margin:15px 0px 0px 300px'} New support business for selected month
-    
     %table{:class => "sortable", :padding => '2', :border => '1', :width => '800px'}
       %thead
         %tr

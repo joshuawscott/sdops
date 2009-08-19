@@ -5,7 +5,8 @@
     %meta{ 'http-equiv'=>"content-type", 'content'=>"text/html;charset=UTF-8"}/
     %title
       = 'SD Ops:' + controller.controller_name.camelcase + ':' + controller.action_name.camelcase
-    = stylesheet_link_tag 'main'
+    = stylesheet_link_tag 'main', :media => 'screen'
+    = stylesheet_link_tag 'main', :media => 'print'
     = javascript_include_tag "application.js"
     = javascript_include_tag "prototype.js"
     = javascript_include_tag "lowpro.js"

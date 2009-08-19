@@ -2,19 +2,13 @@
   Reports - Customers
 
 #section1
-  %table{:class => 'plain_table'}
-    %tr
-      %td{:width => '300px', :style => 'valign:bottom'}
-        %h2{:margin => '0'}
-          Customers &nbsp;&nbsp;&nbsp;
-          %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
-      %td
-        Filter by Office
-        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices()', :style => "width: 82px"})
-      %td{:width => '325px', :align => 'right'}
-          
+  %p.center{:style => 'padding-right:50%'}
+    %b
+      Filter by Office
+    =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices()', :style => "width: 82px"})
+#section2
+  %span.hideforprint{:style => 'margin-top:-50px;padding-top:-50px'}= link_to_function 'format for print', "toggleHeaderStuff()"
   %h2{:style => 'margin:15px 0px 0px 90px'} Revenue by Customer and Support Office
-  
   %table{:class => "sortable", :padding => '2', :border => '1'}
     %thead
       %tr
