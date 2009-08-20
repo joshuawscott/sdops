@@ -18,7 +18,7 @@
 #section3
   = render :partial => "contract_relationships"
 #section4
-  = render :partial => "comments_box"
+  = render :partial => "/shared_views/comments_box", :locals => {:object => @contract}
 .pagebreak
 #section5{:style => 'padding-top: 20px'}
   %b.hideforprint

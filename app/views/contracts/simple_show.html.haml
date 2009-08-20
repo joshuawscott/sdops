@@ -8,7 +8,7 @@
 #section3
   = render :partial => "contract_relationships"
 #section4
-  = render :partial => "comments_box"
+  = render :partial => "/shared_views/comments_box" :locals => {:object => @contract}
 %p &nbsp
 #section4
   - unless @hwlines.empty?

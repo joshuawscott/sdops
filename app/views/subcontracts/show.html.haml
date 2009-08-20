@@ -85,8 +85,9 @@
     %p
       %label{:for => 'subcontract_sw_coverage_hours'} Covered Hours
       =h @subcontract.sw_coverage_hours
-
 #section3
+  = render :partial => "/shared_views/comments_box", :locals => {:object => @subcontract}
+#section4
   %h2 Current Line Items
   %table
     %thead

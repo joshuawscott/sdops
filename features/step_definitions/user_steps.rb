@@ -52,3 +52,8 @@ Given /^I am logged in without a role$/ do
   response.should contain(@current_user.full_name)
 end
 
+Given /^I have the "([^\"]*)" role$/ do |role|
+  @current_user.roles << Role.find_by_name(role)
+  @current_user.has_role?(role.to_sym).should == true
+end
+

@@ -4,6 +4,7 @@ describe SubcontractsController do
 
   before(:each) do
     controller.stub!(:login_required)
+    controller.stub!(:authorized?)
   end
 
   def mock_subcontract(stubs={})
@@ -25,10 +26,18 @@ describe SubcontractsController do
   end
 
   describe "GET show" do
+    before(:each) do
+      @comments = [mock(Comment)]
+      Subcontract.stub!(:find).with("37").and_return(mock_subcontract(:comments => @comments))
+    end
     it "assigns the requested subcontract as @subcontract" do
-      Subcontract.stub!(:find).with("37").and_return(mock_subcontract)
       get :show, :id => "37"
       assigns[:subcontract].should equal(mock_subcontract)
+    end
+
+    it "assigns the subcontract's comments as @comments" do
+      get :show, :id => "37"
+      assigns(:comments).should == @comments
     end
   end
 

@@ -1,4 +1,5 @@
 class SubcontractsController < ApplicationController
+  before_filter :authorized?, :except => [:show, :index]
   # GET /subcontracts
   # GET /subcontracts.xml
   def index
@@ -19,7 +20,8 @@ class SubcontractsController < ApplicationController
   # GET /subcontracts/1.xml
   def show
     @subcontract = Subcontract.find(params[:id])
-
+    @comments = @subcontract.comments.sort {|x,y| y.created_at <=> x.created_at}
+    @comment = Comment.new
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @subcontract }
@@ -118,5 +120,9 @@ class SubcontractsController < ApplicationController
     @line_item = LineItem.find(params[:line_item_id])
     @line_item.remove_from @subcontract
     redirect_to subcontract_path(@subcontract)
+  end
+
+  def authorized?
+    current_user && current_user.has_role?(:contract_admin)
   end
 end

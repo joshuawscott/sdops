@@ -4,4 +4,5 @@ class Subcontract < ActiveRecord::Base
   validates_presence_of :subcontractor_id
   validates_presence_of :start_date
   validates_presence_of :end_date
+  has_many :comments, :as => :commentable
 end

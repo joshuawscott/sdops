@@ -64,3 +64,14 @@ Feature: Manage Subcontracts
     | No    | subcontract_labor_provided  | false            |
     | Yes   | subcontract_parts_provided  | true             |
     | No    | subcontract_parts_provided  | false            |
+
+  Scenario: Comment on a Subcontract
+    Given a subcontract exists
+    And I am logged in as a "contract_admin"
+    And I have the "commenter" role
+    When I follow "Subcontracts"
+    And I follow "Show"
+    And I fill in "New Comment" with "TestCommentHere"
+    And I hit enter to save the comment
+    Then I should see "TestCommentHere"
+
