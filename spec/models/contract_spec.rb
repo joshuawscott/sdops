@@ -2,10 +2,10 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe Contract do
   describe "self.short_list" do
 
-    before(:each) do
-      Factory(:contract, :sales_office => 1, :support_office => 11)
-      Factory(:contract, :sales_office => 2, :support_office => 12)
-      Factory(:contract, :sales_office => 3, :support_office => 13)
+    before(:all) do
+      @contract1 = Factory(:contract, :sales_office => 1, :support_office => 11)
+      @contract2 = Factory(:contract, :sales_office => 2, :support_office => 12)
+      @contract3 = Factory(:contract, :sales_office => 3, :support_office => 13)
     end
 
     it "returns an array of contracts" do
@@ -35,12 +35,15 @@ describe Contract do
       Contract.short_list([13,5]).size.should == 1
     end
 
+    after(:all) do
+      Contract.delete_all
+    end
   end
 
   describe "Contract.serial_search" do
 
     context "exact matches" do
-      before(:each) do
+      before(:all) do
         @contract1 = Factory :contract
         @contract2 = Factory :contract
         @contract1.line_items << Factory(:line_item, :serial_num => "sn11")
@@ -60,12 +63,16 @@ describe Contract do
         Contract.serial_search("sn21").size.should == 2
       end
 
+      after(:all) do
+        Contract.delete_all
+        LineItem.delete_all
+      end
       # For the purposes of this spec, we won't check all the possible transforms, just the 5/S transform.
       context "approximate matches" do
         def mk_line(sn)
           @contract.line_items << Factory(:line_item, :serial_num => sn)
         end
-        before(:each) do
+        before(:all) do
           @contract = Factory :contract
         end
         context "character transforms" do
@@ -90,7 +97,6 @@ describe Contract do
             results.size.should_not == 1
           end
         end
-
         context "character drops" do
           it "should match when a character is dropped from the beginning" do
             mk_line("ACEG")
@@ -112,6 +118,10 @@ describe Contract do
             results = Contract.serial_search("AG")
             results.size.should_not == 1
           end
+        end
+        after(:all) do
+          Contract.delete_all
+          LineItem.delete_all
         end
       end
     end
@@ -181,11 +191,7 @@ describe Contract do
       end
     end
     after(:all) do
-      @current_contract.destroy
-      @expired_current_contract.destroy
-      @expired_ended_contract.destroy
-      @ended_unexpired_contract.destroy
-      @future_contract.destroy
+      Contract.delete_all
     end
   end
 
@@ -276,16 +282,68 @@ describe Contract do
       end
     end
     after(:all) do
-      @dallas_current_contract.destroy
-      @dallas_expired_current_contract.destroy
-      @dallas_expired_ended_contract.destroy
-      @dallas_ended_unexpired_contract.destroy
-      @dallas_future_contract.destroy
-      @phoenix_current_contract.destroy
-      @phoenix_expired_current_contract.destroy
-      @phoenix_expired_ended_contract.destroy
-      @phoenix_ended_unexpired_contract.destroy
-      @phoenix_future_contract.destroy
+      Contract.delete_all
+    end
+  end
+
+  describe "Contract.missing_subcontracts" do
+    before(:all) do
+      @found1    = Factory :contract
+      @found2    = Factory :contract
+      @notfound1 = Factory :contract
+      @notfound2 = Factory :contract
+      @notfound3 = Factory :contract
+      @notfound4 = Factory :contract, :start_date => Date.parse('2007-01-01'), :end_date => Date.parse('2007-12-31')
+
+      Date.stub!(:today).and_return(Date.parse('2009-01-01'))
+
+      @found1.line_items    << Factory(:line_item, :support_provider => 'subkspecial', :subcontract_id => 1)
+      @found1.line_items    << Factory(:line_item, :support_provider => 'subkspecial')
+      @found2.line_items    << Factory(:line_item, :support_provider => 'Sourcedirect')
+      @found2.line_items    << Factory(:line_item, :support_provider => 'subkspecial')
+      @notfound1.line_items << Factory(:line_item, :support_provider => 'Sourcedirect')
+      @notfound1.line_items << Factory(:line_item, :support_provider => 'Sourcedirect')
+      @notfound2.line_items << Factory(:line_item, :support_provider => 'subkspecial', :subcontract_id => 1)
+      @notfound2.line_items << Factory(:line_item, :support_provider => 'subkspecial', :subcontract_id => 1)
+      @notfound3.line_items << Factory(:line_item, :support_provider => 'Sourcedirect')
+      @notfound3.line_items << Factory(:line_item, :support_provider => 'subkspecial', :subcontract_id => 1)
+      @notfound4.line_items << Factory(:line_item, :support_provider => 'subkspecial')
+      @contracts = Contract.missing_subcontracts
+    end
+
+    it "finds contracts that are incomplete" do
+      @contracts.include?(@found1).should be_true
+    end
+
+    it "finds contracts that are mixed and incomplete" do
+      @contracts.include?(@found2).should be_true
+    end
+
+    it "finds current contracts" do
+      @contracts.each do |c|
+        c.end_date.should >= Date.today
+      end
+    end
+
+    it "doesn't find contracts that only have Sourcedirect line items" do
+      @contracts.include?(@notfound1).should be_false
+    end
+
+    it "doesn't find contracts that are completely subcontracted and completed" do
+      @contracts.include?(@notfound2).should be_false
+    end
+
+    it "doesn't find contracts that have all the applicable lines subcontracted already" do
+      @contracts.include?(@notfound3).should be_false
+    end
+
+    it "doesn't find contracts that are old" do
+      @contracts.include?(@notfound4).should be_false
+    end
+
+    after(:all) do
+      Contract.delete_all
+      LineItem.delete_all
     end
   end
 end

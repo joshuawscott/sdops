@@ -1,0 +1,18 @@
+-content_for :subtitle do
+  Contracts without a subcontractor
+#section1
+  %h2 Contracts needing a subcontract
+  %table
+    %thead
+      %tr
+        %th Customer
+        %th Description
+        %th Start Date
+        %th End Date
+    %tbody
+      -@contracts.each do |contract|
+        %tr
+          %td= link_to(contract.account_name, url_for(contract))
+          %td= contract.description
+          %td= contract.start_date
+          %td= contract.end_date

@@ -73,7 +73,7 @@ class Contract < ActiveRecord::Base
   belongs_to :sugar_acct, :foreign_key => :account_id
 
   has_one :upfront_order, :dependent => :nullify
-  
+
   #Validate General Details
   validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id
   validates_presence_of :said, :sdc_ref, :payment_terms, :platform
@@ -81,12 +81,17 @@ class Contract < ActiveRecord::Base
   validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev
   #Validate Terms
   validates_presence_of :start_date, :end_date, :po_received
-  
+
   before_save :update_line_item_effective_prices
   after_save :update_account_name_from_sugar
 
   attr_accessor :sn_approximated
 
+  #Named Scopes
+  named_scope :unexpired, :conditions => "expired <> 1"
+  named_scope :current, :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]
+  named_scope :current_unexpired, :conditions => ["start_date <= ? AND end_date >= ? AND expired <> 1", Date.today, Date.today]
+  
   # accepts an array of team ids, and returns contracts where support_office or sales_office
   # matches the passed array of ids.
   def self.short_list(teams)
@@ -362,6 +367,28 @@ class Contract < ActiveRecord::Base
       lineitem.save
     end
   end
+
+  # Returns a collection of Contract objects which meet the following conditions:
+  # - They contain line items that have a support provider != 'Sourcedirect'
+  # - They are current
+  # - Some of the line items that have a support provider != 'Sourcedirect' also have subcontractor_id == nil
+  def Contract.missing_subcontracts
+    #debugger
+    contract_ids = LineItem.find(:all, :select => "contract_id", :conditions => "support_provider <> 'Sourcedirect' AND subcontract_id IS NULL").map {|l| l.contract_id}.uniq
+    #logger.debug "Contract IDs found:"
+    #logger.debug contract_ids.size
+    @contracts = Contract.current_unexpired.find(:all, :conditions => ["id IN (?)", contract_ids])
+    #@contracts.each do |c|
+    #  logger.debug "Contract #{c.id}:"
+    #  c.line_items.each do |l|
+    #    logger.debug "LineItem #{l.id}"
+    #    logger.debug l.support_provider
+    #    logger.debug l.subcontract_id
+    #  end
+    #end
+    @contracts
+  end
+
 
   protected
 

@@ -58,6 +58,10 @@ class AdminController < ApplicationController
     end
   end
 
+  def missing_subcontracts
+    @contracts = Contract.missing_subcontracts
+  end
+
   protected  
   def authorized?
     current_user.has_role?(:admin) || not_authorized

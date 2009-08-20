@@ -1,6 +1,5 @@
 Feature: Smoke Tests
   This will log in as various roles, and visit pages to check for application errors.
-  Except for Cashflow
 
   Scenario Outline: Admin
     Given I am logged in as a "admin"
@@ -57,3 +56,12 @@ Feature: Smoke Tests
     |HW Support Add|
     |SW Support Add|
 
+  Scenario Outline: Admin Reports
+    Given I am logged in as a "admin"
+    When I visit <path>
+    Then I should still see the menu
+    Examples:
+    |path|
+    |/admin/missing_subcontracts|
+    |/admin/lineitems|
+    |/admin/cashflow|
