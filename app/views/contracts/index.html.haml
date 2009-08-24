@@ -17,7 +17,7 @@
     = check_box_tag 'export_expired', @expired, @expired, :name=> 'export[expired]', :style => "display: none"
     = submit_tag "Export to Excel", :onclick => "getContractFormData()"
 #section2
-  %table{:class => 'plain_table'}
+  %table{:class => 'plain_table' }
     %tr
       %td{:valign => "bottom", :width => '350px'}
         %b
@@ -38,7 +38,7 @@
       - if @sn_warning
         %p{ :style => "color: red"}
           =@sn_warning
-    %table{:class => "sortable", :border => "2", :cellpadding => "2", :cellspacing => "2"}
+    %table{:class => "sortable", :border => "2", :cellpadding => "2"}
       %thead
         %tr
           %th{:width => '80px', :ts_type => 'string'}

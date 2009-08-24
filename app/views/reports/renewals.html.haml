@@ -18,7 +18,7 @@
   %h2{:style => 'margin:15px 0px 0px 300px'}
     EXPIRED CONTRACTS &nbsp;&nbsp;&nbsp;
     %span.hideforprint{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
-  %table{:class => "sortable", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ff5455'}
+  %table{:class => "sortable", :cellspacing => "0", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ff5455'}
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
