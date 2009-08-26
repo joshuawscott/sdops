@@ -2,7 +2,7 @@ Then /^The page should load successfully$/ do
   debugger
 end
 
-When /^I visit (.+)$/ do |url|
+When /^I visit ([^ ]+)$/ do |url|
   visit url
 end
 
@@ -18,4 +18,7 @@ Then /^I should see "([^\"]*)" within "([^\"]*)"$/ do |value, field|
   end
 end
 
+Then /^I should not see "([^\"]*)" within "([^\"]*)"$/ do |value, field|
+  response.should_not have_selector(field, :content => value)
+end
 

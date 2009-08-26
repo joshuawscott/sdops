@@ -82,3 +82,16 @@ Feature: Finding contracts
     | SERIALI2  | first   | third   |
     | SERIAL2I  | second  | fourth  |
 
+  Scenario: Call Screener Views a contract
+    When I visit the path for a contract outside my area
+    Then I should see "General Details" within "#section2"
+    And I should see "Terms"
+    And I should see "SERIAL31"
+    But I should not see "Edit"
+    And I should not see "Revenue" within "#section2"
+    And I should not see "Delete"
+    And I should not see "Destroy"
+    And I should not see "Drag"
+    And I should not see "New Line Item"
+    And I should not see "Line Items Mass Update"
+
