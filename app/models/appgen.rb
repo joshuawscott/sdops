@@ -77,7 +77,13 @@ class Appgen
       metarecord.each_with_index do |metarec,row|
         record = metarec[0].split("\n")
         record.each_with_index {|r,idx| record[idx] = r.split(":")[1].to_s.strip}
-        recs_to_create = mv_field_count > 0 ? (record.size - reg_field_count) / mv_field_count : 1
+        #Ensure there is allways 1 for the field counts
+        if mv_field_count > 0
+          field_count = (record.size - reg_field_count) / mv_field_count <= 0 ? 1 : (record.size - reg_field_count) / mv_field_count
+          recs_to_create = mv_field_count > 0 ? field_count : 1
+        else
+          recs_to_create = 1
+        end
         recs_to_create.times {ary << []}
         recs_to_create.times do |z|
           ary[i][0..reg_field_count - 1] = record[0..reg_field_count - 1]

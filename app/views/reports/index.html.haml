@@ -13,122 +13,121 @@
       =submit_tag 'Search'
       =link_to 'clear search', reports_path
 #section2
-  .boxed{:style=>'background:white'}
-    %h2
-      Counts By Office &nbsp;&nbsp;&nbsp;
-      %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
-    %table{:padding => '2', :border => '1'}
-      %thead
+  %h2
+    Counts By Office &nbsp;&nbsp;&nbsp;
+    %span{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
+  %table{:padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th
+        %th{:colspan => '6'}
+          Contracts
+        %th{:colspan => '6'}
+          Customers
+      %tr
+        %th{:width => '90'}
+          %b Office
+        %th{:width => '47'}
+          %b HW
+        %th{:width => '47'}
+          %b SW
+        %th{:width => '47'}
+          %b SA
+        %th{:width => '47'}
+          %b CE
+        %th{:width => '47'}
+          %b DR
+        %th{:width => '47'}
+          %b Total
+        %th{:width => '47'}
+          %b HW
+        %th{:width => '47'}
+          %b SW
+        %th{:width => '47'}
+          %b SA
+        %th{:width => '47'}
+          %b CE
+        %th{:width => '47'}
+          %b DR
+        %th{:width => '47'}
+          %b Total
+    %tfoot
+      %tr
+        %td
+          %b
+            Totals
+        %td{:colspan => '6', :align => 'right'}
+          %b= @total_contracts
+        %td{:colspan => '6', :align => 'right'}
+          %b= @total_customers
+    %tbody
+      - @offices.each do |k|
         %tr
-          %th
-          %th{:colspan => '6'}
-            Contracts
-          %th{:colspan => '6'}
-            Customers
-        %tr
-          %th{:width => '90'}
-            %b Office
-          %th{:width => '47'}
-            %b HW
-          %th{:width => '47'}
-            %b SW
-          %th{:width => '47'}
-            %b SA
-          %th{:width => '47'}
-            %b CE
-          %th{:width => '47'}
-            %b DR
-          %th{:width => '47'}
-            %b Total
-          %th{:width => '47'}
-            %b HW
-          %th{:width => '47'}
-            %b SW
-          %th{:width => '47'}
-            %b SA
-          %th{:width => '47'}
-            %b CE
-          %th{:width => '47'}
-            %b DR
-          %th{:width => '47'}
-            %b Total
-      %tbody
-        - @offices.each do |k|
-          %tr
-            %td= h k
-            %td{:align => 'right'}= h @contract_counts_by_office[k]['hw']
-            %td{:align => 'right'}= h @contract_counts_by_office[k]['sw']
-            %td{:align => 'right'}= h @contract_counts_by_office[k]['sa']
-            %td{:align => 'right'}= h @contract_counts_by_office[k]['ce']
-            %td{:align => 'right'}= h @contract_counts_by_office[k]['dr']
-            %td{:align => 'right'}
-              %b= h @contract_counts_by_office[k]['total']
-            %td{:align => 'right'}= h @customer_counts_by_office[k]['hw']
-            %td{:align => 'right'}= h @customer_counts_by_office[k]['sw']
-            %td{:align => 'right'}= h @customer_counts_by_office[k]['sa']
-            %td{:align => 'right'}= h @customer_counts_by_office[k]['ce']
-            %td{:align => 'right'}= h @customer_counts_by_office[k]['dr']
-            %td{:align => 'right'}
-              %b= h @customer_counts_by_office[k]['total']
-      %tfoot
-        %tr
-          %td
-            %b
-              Totals
-          %td{:colspan => '6', :align => 'right'}
-            %b= @total_contracts
-          %td{:colspan => '6', :align => 'right'}
-            %b= @total_customers
+          %td= h k
+          %td{:align => 'right'}= h @contract_counts_by_office[k]['hw']
+          %td{:align => 'right'}= h @contract_counts_by_office[k]['sw']
+          %td{:align => 'right'}= h @contract_counts_by_office[k]['sa']
+          %td{:align => 'right'}= h @contract_counts_by_office[k]['ce']
+          %td{:align => 'right'}= h @contract_counts_by_office[k]['dr']
+          %td{:align => 'right'}
+            %b= h @contract_counts_by_office[k]['total']
+          %td{:align => 'right'}= h @customer_counts_by_office[k]['hw']
+          %td{:align => 'right'}= h @customer_counts_by_office[k]['sw']
+          %td{:align => 'right'}= h @customer_counts_by_office[k]['sa']
+          %td{:align => 'right'}= h @customer_counts_by_office[k]['ce']
+          %td{:align => 'right'}= h @customer_counts_by_office[k]['dr']
+          %td{:align => 'right'}
+            %b= h @customer_counts_by_office[k]['total']
   %br/
-  .boxed{:style=>'background:white'}
-    %h2
-      Revenues By Office
-      %span{:style => 'font-size:8pt;text-transform:lowercase'}
-        -if @date.class == Date
-          as of
-          =@date.to_s(:local)
-    %table{:class => 'sortable', :padding => '2', :border => '1'}
-      %thead
+  %h2
+    Revenues By Office
+    %span{:style => 'font-size:8pt;text-transform:lowercase'}
+      -if @date.class == Date
+        as of
+        =@date.to_s(:local)
+  %table{:class => 'sortable', :padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th{:width => '90', :ts_type => 'string'}
+          %b Office
+        %th{:width => '95', :ts_type => 'money'}
+          %b HW
+        %th{:width => '95', :ts_type => 'money'}
+          %b SW
+        %th{:width => '95', :ts_type => 'money'}
+          %b SA
+        %th{:width => '95', :ts_type => 'money'}
+          %b CE
+        %th{:width => '95', :ts_type => 'money'}
+          %b DR
+        %th{:width => '95', :ts_type => 'money'}
+          %b Total
+    %tfoot
+      %tr
+        %td
+          %b Total
+        %td{:align => 'right'}
+          %b= number_to_currency(@all_revenue[:annual_hw_rev], :format => '%u%n')
+        %td{:align => 'right'}
+          %b= number_to_currency(@all_revenue[:annual_sw_rev], :format => '%u%n')
+        %td{:align => 'right'}
+          %b= number_to_currency(@all_revenue[:annual_sa_rev], :format => '%u%n')
+        %td{:align => 'right'}
+          %b= number_to_currency(@all_revenue[:annual_ce_rev], :format => '%u%n')
+        %td{:align => 'right'}
+          %b= number_to_currency(@all_revenue[:annual_dr_rev], :format => '%u%n')
+        %td{:align => 'right'}
+          %b= number_to_currency(@all_revenue[:total_revenue], :format => '%u%n')
+    %tbody
+      - @revenue_by_office_by_type.each do |x|
         %tr
-          %th{:width => '90', :ts_type => 'string'}
-            %b Office
-          %th{:width => '95', :ts_type => 'money'}
-            %b HW
-          %th{:width => '95', :ts_type => 'money'}
-            %b SW
-          %th{:width => '95', :ts_type => 'money'}
-            %b SA
-          %th{:width => '95', :ts_type => 'money'}
-            %b CE
-          %th{:width => '95', :ts_type => 'money'}
-            %b DR
-          %th{:width => '95', :ts_type => 'money'}
-            %b Total
-      %tbody
-        - @revenue_by_office_by_type.each do |x|
-          %tr
-            %td= x.sales_office_name
-            %td{:align => 'right'}= number_to_currency(x.hw, :format => '%n')
-            %td{:align => 'right'}= number_to_currency(x.sw, :format => '%n')
-            %td{:align => 'right'}= number_to_currency(x.sa, :format => '%n')
-            %td{:align => 'right'}= number_to_currency(x.ce, :format => '%n')
-            %td{:align => 'right'}= number_to_currency(x.dr, :format => '%n')
-            %td{:align => 'right'}= number_to_currency(x.total, :format => '%n')
-      %tfoot
-        %tr
-          %td Total
-          %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[:annual_hw_rev], :format => '%u%n')
-          %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[:annual_sw_rev], :format => '%u%n')
-          %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[:annual_sa_rev], :format => '%u%n')
-          %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[:annual_ce_rev], :format => '%u%n')
-          %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[:annual_dr_rev], :format => '%u%n')
-          %td{:align => 'right'}
-            %b= number_to_currency(@all_revenue[:total_revenue], :format => '%u%n')
+          %td= x.sales_office_name
+          %td{:align => 'right'}= number_to_currency(x.hw, :format => '%n')
+          %td{:align => 'right'}= number_to_currency(x.sw, :format => '%n')
+          %td{:align => 'right'}= number_to_currency(x.sa, :format => '%n')
+          %td{:align => 'right'}= number_to_currency(x.ce, :format => '%n')
+          %td{:align => 'right'}= number_to_currency(x.dr, :format => '%n')
+          %td{:align => 'right'}= number_to_currency(x.total, :format => '%n')
 
   %br &nbsp;
 #section3
