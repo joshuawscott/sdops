@@ -11,13 +11,17 @@
     %p &nbsp;
   - @comments.each do |comment|
     .comment_container
-      #date.comment.date
-        = h comment.created_at.strftime("%m/%d/%y %I:%M %p") + " - "
-        = h comment.user
-      #body.comment.body
-        = h comment.body
-      - if current_user.has_role?(:admin) || current_user.login == comment.user
+      .comment_data
         #links.comment.links
-          = link_to 'Edit', edit_comment_path(comment), :id => "edit_comment_" + comment.id.to_s
-          = link_to 'Delete', comment_path(comment, :commentable_id => object.id, :commentable_type => object.class.to_s), :confirm => 'Are you sure?', :method => :delete, :id => "delete_comment_" + comment.id.to_s
-    %div{:style => 'display:block;height:1px;width:100%'}
+          - if current_user.has_role?(:admin) || current_user.login == comment.user
+            = link_to image_tag("edit_inline.gif", :border => 0), edit_comment_path(comment), :id => "edit_comment_" + comment.id.to_s, :title => 'Edit Comment' do
+              Edit
+            %br/
+            = link_to image_tag("delete_inline.gif", :border => 0), comment_path(comment, :commentable_id => object.id, :commentable_type => object.class.to_s), :confirm => 'Are you sure?', :method => :delete, :id => "delete_comment_" + comment.id.to_s, :title => 'Delete Comment'
+        #date.comment.date
+          = h comment.created_at.strftime("%m/%d/%y %I:%M %p")
+          %br/
+          = h comment.user
+      .comment.bodywrap
+        #body.comment.body
+          = h comment.body
