@@ -8,6 +8,7 @@ body {
   font-family: Arial;
   font-size: 10pt; }
 
+
 pre {
   font-family: Courier;
   font-size: 10pt; }
@@ -211,11 +212,37 @@ ul.sub_menu {
 .comment {
   float: left;
   margin-right: 10px;
+  margin-bottom: 5px; }
+
+.comment_data {
+  width: 150px;
+  float: left;
+  height: 100%; }
+
+.comment.date {
+  font-weight: bold; }
+
+.comment.links {
+  width: 10px; }
+  .comment.links img {
+    margin-top: 3px; }
+
+.comment.bodywrap {
+  margin-left: 150px;
+  float: none; }
+
+.comment.body {
+  min-width: 300px;
+  font-style: italic; }
+
+.comment_container {
+  width: 100%;
+  float: left;
   margin-bottom: 5px;
   border-top-width: 1px;
-  border-top-style: solid;
+  border-top-style: dotted;
   border-top-color: #000000; }
-  .comment h2 {
+  .comment_container h2 {
     text-transform: uppercase;
     padding-left: 5px;
     color: #000000;

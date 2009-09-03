@@ -56,6 +56,10 @@ When /^I create a contract with "([^\"]*)" set to "([^\"]*)"$/ do |field, value|
   click_button "Create"
 end
 
+When /^I visit the path for a contract outside my area$/ do
+  visit "/contracts/#{@contract3.id}"
+end
+
 Then /^I should see a new contract$/ do
   response.should contain(/successfully/)
 end
