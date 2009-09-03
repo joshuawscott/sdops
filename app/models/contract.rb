@@ -296,7 +296,7 @@ class Contract < ActiveRecord::Base
   # For newbusiness report
   def self.newbusiness
     Contract.find(:all, 
-      :select => "contracts.*, CONCAT(users.first_name, ' ', users.last_name) AS sales_rep_name",
+      :select => "contracts.*, CONCAT(users.first_name, ' ', users.last_name) AS sales_rep_name, (annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as tot_rev",
       :joins => "LEFT JOIN users ON contracts.sales_rep_id = users.id",
       :conditions => "payment_terms <> 'Bundled'").map { |x|  x unless x.renewal? }.compact
   end
