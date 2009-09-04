@@ -1,11 +1,11 @@
 
 xml.instruct!
 xml.Workbook({
-  'xmlns'      => "urn:schemas-microsoft-com:office:spreadsheet", 
+  'xmlns'      => "urn:schemas-microsoft-com:office:spreadsheet",
   'xmlns:o'    => "urn:schemas-microsoft-com:office:office",
-  'xmlns:x'    => "urn:schemas-microsoft-com:office:excel",    
+  'xmlns:x'    => "urn:schemas-microsoft-com:office:excel",
   'xmlns:html' => "http://www.w3.org/TR/REC-html40",
-  'xmlns:ss'   => "urn:schemas-microsoft-com:office:spreadsheet" 
+  'xmlns:ss'   => "urn:schemas-microsoft-com:office:spreadsheet"
   }) do
   xml.Styles do
     xml.Style 'ss:ID' => 'Default', 'ss:Name' => 'Normal' do
@@ -52,7 +52,7 @@ xml.Workbook({
         xml.Cell 'ss:StyleID' => 'headers' do
           xml.Data 'Description', 'ss:Type' => 'String'
         end
-        xml.Cell 'ss:StyleID' => 'headers' do 
+        xml.Cell 'ss:StyleID' => 'headers' do
           xml.Data 'Revenue', 'ss:Type' => 'String'
         end
       end
@@ -68,7 +68,7 @@ xml.Workbook({
             xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.description, 'ss:Type' => 'String' }
             xml.Cell 'ss:StyleID' => 'currency' do
-              xml.Data contract.revenue, 'ss:Type' => 'Number'
+              xml.Data contract.tot_rev, 'ss:Type' => 'Number'
             end
           end
         end
