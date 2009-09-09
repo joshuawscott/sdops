@@ -1,7 +1,3 @@
-// ************************************************
-// Functions for newbusiness report
-// ************************************************
-
 function togglePeriods(){
   var period = $('filter_period').value;
   var a = $('filter_period').options;

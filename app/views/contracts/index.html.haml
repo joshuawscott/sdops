@@ -1,6 +1,7 @@
 - content_for :subtitle do
   Contract List
-= javascript_include_tag "contracts.js"
+- content_for :top_js do
+  = javascript_include_tag "contracts.js"
 
 #section1
   - form_tag formatted_contracts_path('xls'), {:method => 'get', :name => 'export' } do

@@ -1,6 +1,3 @@
-// ************************************************
-// Functions for Upfront Support
-// ************************************************
 function toggleRows(cellNr, _id){
   var table = $('orders_table');
   var ele;
@@ -30,5 +27,6 @@ function unhideAllRows(){
 }
 
 window.onload = function() {
+  $('completed_ckbox').removeAttribute('disabled');
   toggleRows(5, 'completed_ckbox');
 }

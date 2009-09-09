@@ -17,6 +17,10 @@ module ApplicationHelper
     comments_path(:commentable_type => commenter, :commentable_id => controller.instance_variable_get("@#{commenter}").id)
   end
 
+  def include_calendar
+    content_for(:stylesheets) { stylesheet_link_tag("/javascripts/jscalendar-1.0/calendar-blue.css") }
+    content_for(:top_js) { javascript_include_tag("jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js", :cache => "calendar_all") }
+  end
   # Requires the activecalendar plugin.
   # Creates a javascript assisted date selector for use inside a form_tag created form.
   # This is done with a text field, and an image trigger.

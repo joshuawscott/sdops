@@ -1,4 +1,3 @@
-
 // ************************************************
 // Functions for Renewals report
 // ************************************************
@@ -29,39 +28,13 @@ function showAll(){
   }
 }
 
-
-// ************************************************
-// Functions for Dashboard report
-// ************************************************
+// Print view
 function toggleHeaderStuff(){
   $('header').toggle();
   $('section1').toggle();
 }
 
-// ************************************************
-// Functions for Contract Edit
-// ************************************************
-function setReplacedBy(box){
-  if (box.checked == true)
-  {
-    var set_expired = confirm('This contract will be set to "Expired", are you sure you want to continue?\nBe sure to you are selecting the right replacement contract.\n\nHit "Update" to accept changes.');
-    if (set_expired == true)
-      { 
-      $('contract_expired').checked = true;
-      }
-    else
-      {
-      box.checked = false;
-      return false;
-      }
-  }
-  else
-  {
-    $('contract_expired').checked = false;
-    box.checked = false;
-  }
-}
-
+// Menu functions
 function commandDescOn(id, strText){
   $(id).innerHTML = strText;
 }
