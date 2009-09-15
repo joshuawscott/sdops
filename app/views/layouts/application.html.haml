@@ -13,15 +13,11 @@
   %body
     #header
       = image_tag("sodi-logo-tag.png", :id => "logo", :border => "0")
-      
       #title
         %h1
           -  @subtitle = yield :subtitle
           = 'SD Ops - ' + @subtitle
-      
       =render :partial => "layouts/menu"
-            
-
 
     #content
       - if flash[:error]
@@ -30,7 +26,7 @@
       - if flash[:notice]
         %p{ :style => "color: green"}
           = flash[:notice]
-
       = yield
+
     = yield :bottom_js
 

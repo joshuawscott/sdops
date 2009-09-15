@@ -10,28 +10,23 @@
   %body
     #header
       = image_tag("sodi-logo-tag.png", :id => "logo", :border => "0")
-      
       #title
         %h1
           -  @subtitle = yield :subtitle
           = 'SD Ops - ' + @subtitle
-
       #menu
         &nbsp;
-
-            
         #userinfo
           - if current_user != :false
             %p
               = h current_user.first_name + ' ' + current_user.last_name
-        
-
 
     #content
+      - if flash[:error]
+        %p{ :style => "color: red"}
+          = flash[:error]
       - if flash[:notice]
         %p{ :style => "color: green"}
           = flash[:notice]
-
       = yield
-    
 
