@@ -1790,7 +1790,10 @@ Date.prototype.print = function (str) {
 	return str;
 };
 
-Date.prototype.__msh_oldSetFullYear = Date.prototype.setFullYear;
+// Change made by Josh per http://jira.opensymphony.com/browse/WW-1429 to fix problem with calendar loading twice.
+if(Date.prototype.__msh_oldSetFullYear == null) {
+  Date.prototype.__msh_oldSetFullYear = Date.prototype.setFullYear;
+}
 Date.prototype.setFullYear = function(y) {
 	var d = new Date(this);
 	d.__msh_oldSetFullYear(y);
