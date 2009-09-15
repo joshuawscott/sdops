@@ -9,7 +9,7 @@
 
   %body
     #header
-      = image_tag("sodi-logo-tag.png", :border => "0")
+      = image_tag("sodi-logo-tag.png", :id => "logo", :border => "0")
       
       #title
         %h1
@@ -28,10 +28,10 @@
 
 
     #content
-    - if flash[:notice]
-      %p{ :style => "color: green"}
-        = flash[:notice]
+      - if flash[:notice]
+        %p{ :style => "color: green"}
+          = flash[:notice]
 
-    = yield
+      = yield
     
 
