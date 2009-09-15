@@ -346,5 +346,45 @@ describe Contract do
       LineItem.delete_all
     end
   end
+
+  describe "Contract.expected_revenue" do
+    before(:each) do
+      # renewal amount set
+      @contract1 = Factory(:contract, :renewal_amount => 500.0)
+
+      # Bundled Contract, should be $1,200/yr.
+      @contract2 = Factory(:contract, :payment_terms => "Bundled", :revenue => 1200.0)
+      @contract2.line_items << Factory(:line_item, :current_list_price => 100.0, :support_type => "HW", :qty => 1)
+
+      # annual, non-renewal-set contract
+      @contract3 = Factory(:contract, :payment_terms => "Annual", :discount_pref_hw => 0.3, :discount_pref_sw => 0.3, :discount_pref_srv => 0.0, :discount_prepay => 0.05)
+      @contract3.line_items << Factory(:line_item, :current_list_price => 100.0, :support_type => "HW", :qty => 1)
+
+      @contract4 = Factory(:contract, :payment_terms => "Monthly", :discount_pref_hw => 0.3, :discount_pref_sw => 0.3, :discount_pref_srv => 0.0, :discount_prepay => 0.05)
+      @contract4.line_items << Factory(:line_item, :current_list_price => 100.0, :support_type => "HW", :qty => 1)
+    end
+
+    it "returns renewal_amount when it is set" do
+      @contract1.expected_revenue.should == 500.0
+    end
+
+    it "returns 50% off the current list price when bundled" do
+      @contract2.expected_revenue.should == 600.0
+    end
+
+    it "returns the current price, factoring in the appropriate discounts on an annual renewal" do
+      @contract3.expected_revenue.should == 1200 * 0.65
+    end
+
+    it "returns the current price, factoring in the appropriate discounts on an monthly renewal" do
+      @contract4.expected_revenue.should == 1200 * 0.70
+    end
+
+    after(:all) do
+      Contract.delete_all
+      LineItem.delete_all
+    end
+  end
+
 end
 
