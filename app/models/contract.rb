@@ -51,6 +51,9 @@
 #   contact_phone         string
 #   contact_email         string
 #   contact_note          string
+#   new_business_dollars  decimal
+
+
 class Contract < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate
@@ -69,6 +72,8 @@ class Contract < ActiveRecord::Base
   has_many :predecessors, :through => :succeeds
   
   has_many :comments, :as => :commentable
+
+  has_many :commissions, :as => :commissionable
 
   belongs_to :sugar_acct, :foreign_key => :account_id
 
