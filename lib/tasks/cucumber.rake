@@ -12,11 +12,18 @@ begin
 
     Cucumber::Rake::Task.new({:wip => 'db:test:prepare'}, 'Run features that are being worked on') do |t|
       t.fork = true # You may get faster startup if you set this to false
-      t.cucumber_opts = "--color --tags @wip:2 --wip --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'}"
+      t.cucumber_opts = "--color --tags @wip:2 --wip --profile #{ENV['CUCUMBER_FORMAT'] || 'pretty'}"
     end
 
     desc 'Run all features'
     task :all => [:ok, :wip]
+
+    Cucumber::Rake::Task.new({:tag => 'db:test:prepare'}, 'Run features that are tagged') do |t|
+      t.fork = true # You may get faster startup if you set this to false
+      tag = ENV['tag']
+      t.cucumber_opts = "--color --tags #{tag} --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'}"
+    end
+
   end
   desc 'Alias for cucumber:ok'
   task :cucumber => 'cucumber:ok'
