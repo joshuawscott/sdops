@@ -68,6 +68,8 @@ CREATE TABLE `commissions` (
   `notes` text,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
+  `approval` varchar(255) default NULL,
+  `approval_date` datetime default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -139,6 +141,21 @@ CREATE TABLE `dropdowns` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `goals` (
+  `id` int(11) NOT NULL auto_increment,
+  `type` varchar(255) default NULL,
+  `description` varchar(255) default NULL,
+  `sales_office` varchar(255) default NULL,
+  `sales_office_name` varchar(255) default NULL,
+  `amount` decimal(20,2) default NULL,
+  `start_date` date default NULL,
+  `end_date` date default NULL,
+  `periodicity` varchar(255) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `hwdb` (
   `id` int(11) NOT NULL auto_increment,
   `part_number` varchar(255) default NULL,
@@ -167,6 +184,26 @@ CREATE TABLE `inventory_warehouses` (
   `code` varchar(255) default NULL,
   `description` varchar(255) default NULL,
   UNIQUE KEY `index_inventory_warehouses_on_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `invoice_payments` (
+  `id` int(11) NOT NULL auto_increment,
+  `invoice_id` int(11) default NULL,
+  `payment_id` int(11) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `invoices` (
+  `id` int(11) NOT NULL auto_increment,
+  `invoiceable_id` int(11) default NULL,
+  `invoiceable_type` varchar(255) default NULL,
+  `appgen_cust_number` int(11) default NULL,
+  `invoice_number` varchar(255) default NULL,
+  `invoice_date` date default NULL,
+  `invoice_amount` decimal(10,0) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `io_slots` (
@@ -237,6 +274,17 @@ CREATE TABLE `opportunities` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `payments` (
+  `id` int(11) NOT NULL auto_increment,
+  `appgen_cust_number` int(11) default NULL,
+  `payment_number` varchar(255) default NULL,
+  `payment_date` date default NULL,
+  `payment_amount` decimal(10,0) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `permissions` (
   `role_id` int(11) default NULL,
   `user_id` int(11) default NULL,
@@ -255,11 +303,16 @@ CREATE TABLE `product_deals` (
   `invoice_number` varchar(255) default NULL,
   `revenue` decimal(20,3) default NULL,
   `cogs` decimal(20,3) default NULL,
-  `freight` decimal(20,3) default NULL,
+  `other_costs` decimal(20,3) default NULL,
   `status` varchar(255) default NULL,
   `modified_by` varchar(255) default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
+  `sales_office` varchar(255) default NULL,
+  `sales_office_name` varchar(255) default NULL,
+  `customer_po` varchar(255) default NULL,
+  `customer_po_date` date default NULL,
+  `description` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -498,6 +551,18 @@ INSERT INTO schema_migrations (version) VALUES ('20090817165008');
 INSERT INTO schema_migrations (version) VALUES ('20090917183835');
 
 INSERT INTO schema_migrations (version) VALUES ('20090919185947');
+
+INSERT INTO schema_migrations (version) VALUES ('20091024133521');
+
+INSERT INTO schema_migrations (version) VALUES ('20091026213314');
+
+INSERT INTO schema_migrations (version) VALUES ('20091026215214');
+
+INSERT INTO schema_migrations (version) VALUES ('20091027154115');
+
+INSERT INTO schema_migrations (version) VALUES ('20091027161818');
+
+INSERT INTO schema_migrations (version) VALUES ('20091027172353');
 
 INSERT INTO schema_migrations (version) VALUES ('4');
 

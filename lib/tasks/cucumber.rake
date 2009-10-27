@@ -20,8 +20,7 @@ begin
 
     Cucumber::Rake::Task.new({:tag => 'db:test:prepare'}, 'Run features that are tagged') do |t|
       t.fork = true # You may get faster startup if you set this to false
-      tag = ENV['tag']
-      t.cucumber_opts = "--color --tags #{tag} --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'}"
+      t.cucumber_opts = "--color --tags ENV['tag'] --format #{ENV['CUCUMBER_FORMAT'] || 'pretty'}"
     end
 
   end
