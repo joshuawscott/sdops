@@ -1,2 +1,2 @@
-module RolesHelper
+module RolesHelper #:nodoc:
 end

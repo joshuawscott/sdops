@@ -386,5 +386,129 @@ describe Contract do
     end
   end
 
+  describe "Contract.effective_months" do
+    def d date
+      Date.parse date
+    end
+    before(:all) do
+      @contract12a = Factory(:contract, :start_date => d('2009-01-01'), :end_date => d('2009-12-31'))
+      @contract12b = Factory(:contract, :start_date => d('2008-02-01'), :end_date => d('2009-01-31'))
+      @contract5a = Factory(:contract, :start_date => d('2009-01-01'), :end_date => d('2009-05-31'))
+      @contract5b = Factory(:contract, :start_date => d('2009-02-15'), :end_date => d('2009-07-14'))
+      @contract17 = Factory(:contract, :start_date => d('2008-01-15'), :end_date => d('2009-06-14'))
+      @contract4o32 = Factory(:contract, :start_date => d('2008-01-01'), :end_date => d('2008-05-10'))
+    end
+
+    it "returns 12 for a jan 1 - dec 31 contract" do
+      @contract12a.effective_months.should == 12
+    end
+    it "returns 12 for a feb 1 - jan 31 contract" do
+      @contract12b.effective_months.should == 12
+    end
+    it "returns 5 for a jan 1 to may 31 contract" do
+      @contract5a.effective_months.should == 5
+    end
+    it "returns 5 for a feb 15 to july 14 contract" do
+      @contract5b.effective_months.should == 5
+    end
+    it "returns 17 fora jan 15 08 to june 14 09 contract" do
+      @contract17.effective_months.should == 17
+    end
+    it "returns 4.322580645161290... for a Jan 1 to May 10 contract" do
+      @contract4o32.effective_months.should == (4.0 + (10.0 / 31.0))
+    end
+    
+
+    after(:all) do
+      Contract.delete_all
+    end
+  end
+
+  describe "Contract.*_line_items" do
+    #hw_line_items
+    #sw_line_items
+    #srv_line_items
+    before(:all) do
+      @contract = Factory(:contract)
+      @contract.line_items << Factory(:line_item, :support_type => "HW")
+      @contract.line_items << Factory(:line_item, :support_type => "SW")
+      @contract.line_items << Factory(:line_item, :support_type => "SRV")
+    end
+    ["hw", "sw", "srv"].each do |type|
+      it "finds the #{type} Line Item" do
+        @contract.send("#{type}_line_items").length.should == 1
+      end
+    end
+    after(:all) do
+      Contract.delete_all
+      LineItem.delete_all
+    end
+      
+  end
+
+  describe "Contract.*_list_price" do
+    #hw_list_price
+    #sw_list_price
+    #srv_list_price
+    before(:all) do
+      sd = Date.parse('2009-01-01')
+      ed = Date.parse('2009-12-31')
+      @contract = Factory(:contract, :start_date => sd, :end_date => ed)
+      @line_item1 = Factory(:line_item, :begins => sd, :ends => ed, :list_price => 100.0, :qty => 1, :support_type => "HW")
+      @line_item2 = Factory(:line_item, :begins => sd, :ends => ed, :list_price => 100.0, :qty => 1, :support_type => "SW")
+      @line_item3 = Factory(:line_item, :begins => sd, :ends => ed, :list_price => 100.0, :qty => 1, :support_type => "SRV")
+      @contract.line_items = [@line_item1, @line_item2, @line_item3]
+    end
+    @types = ["hw", "sw", "srv"]
+    @types.each do |type|
+      it "totals the #{type}line_items in a contract" do
+        @contract.send("#{type}_list_price").should == 1200.0
+      end
+      
+      it "correctly totals the #{type} line_items when the line items begin after the contract" do
+        [@line_item1, @line_item2, @line_item3].each {|l| l.begins= Date.parse("2009-07-01")}
+        @contract.send("#{type}_list_price").should == 600.0
+      end
+
+      it "correctly totals the #{type} line_items when the line items begin before the contract" do
+        [@line_item1, @line_item2, @line_item3].each {|l| l.begins= Date.parse("2008-07-01")}
+        @contract.send("#{type}_list_price").should == 1200.0
+      end
+
+      it "correctly totals the #{type} line_items when the line items end before the contract" do
+        [@line_item1, @line_item2, @line_item3].each {|l| l.ends= Date.parse("2009-06-30")}
+        @contract.send("#{type}_list_price").should == 600.0
+      end
+
+      it "correctly totals the #{type} line_items when the line items end after the contract" do
+        [@line_item1, @line_item2, @line_item3].each {|l| l.ends= Date.parse("2010-06-30")}
+        @contract.send("#{type}_list_price").should == 1200.0
+      end
+    end
+
+    after(:all) do
+      Contract.delete_all
+      LineItem.delete_all
+    end
+  end
+
+  describe "Contract.calendar_months" do
+    it "returns 12 for a 1 year contract" do
+      contract = Factory(:contract, :start_date => Date.parse('2009-01-01'), :end_date => Date.parse('2009-12-31'))
+      contract.calendar_months.should == 12
+    end
+    it "returns 14 for this contract" do
+      contract = Factory(:contract, :start_date => Date.parse('2008-12-15'), :end_date => Date.parse('2010-01-15'))
+      contract.calendar_months.should == 14
+    end
+    it "returns 7 for this contract" do
+      contract = Factory(:contract, :start_date => Date.parse('2008-12-15'), :end_date => Date.parse('2009-06-30'))
+      contract.calendar_months.should == 7
+    end
+
+  end
+
+  describe "Contract.payment_schedule"
 end
+
 

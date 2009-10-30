@@ -56,14 +56,14 @@ class LineItem < ActiveRecord::Base
 
   # Updates current_list_price for all the LineItem's in the database.
   def self.update_all_current_prices
-    
+
     # Update HW Lines
     lineitems = LineItem.find(:all, :select => "DISTINCT product_num", :joins => :contract, :conditions => "contracts.expired <> true AND support_type = 'HW' AND product_num IS NOT NULL AND product_num NOT LIKE 'label'")
     lineitems.each do |l|
       @cp = HwSupportPrice.current_list_price(l.product_num).list_price
       LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'HW'", l.product_num] )
     end
-    
+
     # Update SW Lines
     lineitems = LineItem.find(:all, :select => "DISTINCT product_num", :joins => :contract, :conditions => "contracts.expired <> true AND support_type = 'SW' AND product_num IS NOT NULL AND product_num NOT LIKE 'label'")
     lineitems.each do |l|
@@ -103,4 +103,31 @@ class LineItem < ActiveRecord::Base
     self.send(associated_model.class.to_s.foreign_key + '=', nil)
     save(false)
   end
+
+  # returns a float corresponding to the number of months that the line item is valid.
+  def effective_months
+    return 0 if start_date > end_date
+    y = (end_date.year - start_date.year) * 12
+    m = (end_date.mon - start_date.mon)
+    last_month_days = ((end_date.day - end_date.beginning_of_month.day) + 1).to_f / end_date.end_of_month.day
+    first_month_days = ((start_date.end_of_month.day - start_date.day) + 1).to_f / start_date.end_of_month.day
+    first_and_last = start_date.day - 1 == end_date.day ? 1 : last_month_days + first_month_days
+    (y + m + first_and_last) - 1
+  end
+
+  # returns the effective start date, taking into account the parent contract's start & end dates
+  def start_date
+    return begins if contract.nil?
+    begins ||= contract.start_date
+    return contract.start_date > begins ? contract.start_date : begins
+  end
+
+  # returns the effective end date, taking into account the parent contract's end date
+  def end_date
+    return ends if contract.nil?
+    ends ||= contract.end_date
+    return contract.end_date > ends ? contract.end_date : ends
+  end
 end
+
+

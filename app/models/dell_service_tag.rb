@@ -15,6 +15,7 @@ class DellServiceTag
   DELLURL1 = 'http://support.dell.com/support/topics/global.aspx/support/my_systems_info/details?c=us&cs=2684&l=en&s=biz&~ck=anavml&servicetag='
   DELLURL2 = '&~tab='
 
+  # :nodoc:
   # Takes a String (service_tag) and a Fixnum(tab_number) and returns a new instance of
   # DellServiceTag
   def initialize(service_tag, tab_number)
@@ -22,7 +23,7 @@ class DellServiceTag
     @tab_number = tab_number
     @dell_page = Nokogiri::HTML(open(dell_url))
     @line_items = []
-    @model_number = @dell_page.css('td.gridCellAlt')[1].content
+    @model_number = @dell_page.css('td.gridCellAlt')[1].content if @dell_page
   end
 
   # returns a URL formed by inserting the service tag and tab number

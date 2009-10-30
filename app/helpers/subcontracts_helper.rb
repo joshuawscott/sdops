@@ -1,2 +1,2 @@
-module SubcontractsHelper
+module SubcontractsHelper #:nodoc:
 end

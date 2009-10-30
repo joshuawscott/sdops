@@ -1,3 +1,4 @@
+# Schema:
 #    t.string  "appgen_order_id",                                :null => false
 #    t.string  "part_number"
 #    t.string  "description"

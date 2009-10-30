@@ -1,2 +1,2 @@
-module AppgenOrdersHelper
+module AppgenOrdersHelper #:nodoc:
 end

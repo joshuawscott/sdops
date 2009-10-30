@@ -3,6 +3,7 @@
 - content_for :subtitle do
   Show Contract
 #section1.hideforprint
+  = link_to(@contract, :params => {:quote => true})
   %b
     = link_to('Edit', edit_contract_path(@contract)) + ' | '  if current_user.has_role?(:contract_admin)
     = link_to('Destroy', contract_path(@contract), :confirm => 'Are you sure?', :method => :delete) + ' | '  if current_user.has_role?(:contract_admin)
@@ -88,6 +89,7 @@
           %br/
           %p= submit_tag "Add to Subcontract"
 -if current_user.has_role?(:contract_editor, :contract_admin)
+    
   = sortable_element('hwlines', :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
   = sortable_element('swlines', :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
 

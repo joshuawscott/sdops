@@ -1,2 +1,2 @@
-module SwSupportPricesHelper
+module SwSupportPricesHelper #:nodoc:
 end

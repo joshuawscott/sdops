@@ -1,2 +1,2 @@
-module UpfrontOrdersHelper
+module UpfrontOrdersHelper #:nodoc:
 end

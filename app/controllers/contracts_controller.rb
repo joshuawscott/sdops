@@ -115,6 +115,7 @@ class ContractsController < ApplicationController
     @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
     respond_to do |format|
       format.html do
+        render :action => 'quote' if params[:quote]
         unless current_user.has_role?(:contract_admin, :manager) || (current_user.sugar_team_ids & [@contract.sales_office, @contract.support_office]).length > 0
           unless current_user.has_role?(:call_screener)
             flash[:error] = 'You are not allowed access to that contract!'
@@ -247,6 +248,13 @@ class ContractsController < ApplicationController
       format.xml  { render :xml => @contract }
       format.xls  #Respond as Excel Doc
     end    
+  end
+
+  def quote
+    @contract = Contract.find(params[:id])
+    @line_items = LineItem.find(:all, :conditions => {:contract_id => params[:id]})
+    @best_discount_amount = @contract.discount_amount(:type => :hw, :prepay => true) + @contract.discount_amount(:type => :sw, :prepay => true) + @contract.discount_amount(:type => :srv, :prepay => true)
+    prawnto :prawn => {:page_layout => :landscape}
   end
 
   protected

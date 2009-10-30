@@ -54,6 +54,7 @@
 class Contract < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate
+  include ContractConstants
   has_many :line_items, :dependent => :destroy
 
   has_many  :succeeds, 
@@ -242,10 +243,12 @@ class Contract < ActiveRecord::Base
     end
   end
 
+  #TODO: Make a view for this, or make the current view work with both.
 	def self.customer_rev_list_by_sales_office
 		Contract.find(:all, :select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sales_office_name', :conditions => 'expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) )', :group => 'account_name, sales_office_name')
 	end
 
+	# for customer list report
 	def self.customer_rev_list_by_support_office (teams)
 		Contract.find(:all,
       :select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue, support_office_name',
@@ -254,12 +257,13 @@ class Contract < ActiveRecord::Base
       :order => 'revenue DESC')
 	end
 
+	#for dashboard report
 	def self.revenue_total(teams)
 		Contract.find(:all,
 			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue')
 	end
 
-  # Calculates the actual discount of a Contract
+  # Calculates the current effective overall hardware discount of a Contract
   def effective_hw_discount
     total_list = BigDecimal.new('0.0')
     self.line_items.each do |x|
@@ -271,6 +275,7 @@ class Contract < ActiveRecord::Base
     BigDecimal.new('1.0') - (self.annual_hw_rev / (total_list * BigDecimal.new('12.0')))
   end
 
+  # Calculates the current effective overall software discount of a Contract
   def effective_sw_discount
     total_list = BigDecimal.new('0.0')
     self.line_items.each do |x|
@@ -282,6 +287,7 @@ class Contract < ActiveRecord::Base
     BigDecimal.new('1.0') - (self.annual_sw_rev / (total_list * BigDecimal.new('12.0')))
   end
 
+  # Calculates the current effective overall services discount of a Contract
   def effective_srv_discount
     total_list = BigDecimal.new('0.0')
     self.line_items.each do |x|
@@ -308,6 +314,8 @@ class Contract < ActiveRecord::Base
     self.po_received.year.to_s + month.to_s
   end
 
+  # determines an expected renewal amount, taking into account the renewal_amount
+  # field.  If the field is blank, it estimates based on the current list prices.
   def expected_revenue
     if !renewal_amount.nil?
       @x = renewal_amount
@@ -333,6 +341,7 @@ class Contract < ActiveRecord::Base
     end
   end
 
+  # returns a BigDecimal used as a price multiplier for the various levels of hardware support.
   def hw_support_level_multiplier
     case hw_support_level_id
       when "SDC 24x7" then 1
@@ -343,6 +352,7 @@ class Contract < ActiveRecord::Base
     end
   end
 
+  # returns a BigDecimal used as a price multiplier for the various levels of software support.
   def sw_support_level_multiplier
     case sw_support_level_id
       when "SDC SW 24x7" then 1
@@ -350,7 +360,8 @@ class Contract < ActiveRecord::Base
       else 1
     end
   end
-  
+
+  # updates the effective_list_price attribute for each of the line items in a contract.
   def update_line_item_effective_prices
     logger.debug "********** Contract update_line_item_effective_prices"
     hw_disc = BigDecimal.new('1.0') - self.effective_hw_discount
@@ -373,22 +384,97 @@ class Contract < ActiveRecord::Base
   # - They are current
   # - Some of the line items that have a support provider != 'Sourcedirect' also have subcontractor_id == nil
   def Contract.missing_subcontracts
-    #debugger
     contract_ids = LineItem.find(:all, :select => "contract_id", :conditions => "support_provider <> 'Sourcedirect' AND subcontract_id IS NULL").map {|l| l.contract_id}.uniq
-    #logger.debug "Contract IDs found:"
-    #logger.debug contract_ids.size
     @contracts = Contract.current_unexpired.find(:all, :conditions => ["id IN (?)", contract_ids])
-    #@contracts.each do |c|
-    #  logger.debug "Contract #{c.id}:"
-    #  c.line_items.each do |l|
-    #    logger.debug "LineItem #{l.id}"
-    #    logger.debug l.support_provider
-    #    logger.debug l.subcontract_id
-    #  end
-    #end
     @contracts
   end
 
+  # BEGIN New methods for quoting #
+
+  # returns a float corresponding to the number of months the contract is valid.
+  def effective_months
+    y = (end_date.year - start_date.year) * 12
+    m = (end_date.mon - start_date.mon)
+    last_month_days = ((end_date.day - end_date.beginning_of_month.day) + 1).to_f / end_date.end_of_month.day
+    first_month_days = ((start_date.end_of_month.day - start_date.day) + 1).to_f / start_date.end_of_month.day
+    first_and_last = start_date.day - 1 == end_date.day ? 1 : last_month_days + first_month_days
+    (y + m + first_and_last) - 1
+  end
+
+  # returns all the hardware line_items.
+  def hw_line_items
+    line_items.find_all {|l| l.support_type == "HW"}.sort_by {|n| n.position}
+  end
+
+  # returns all the software line_items.
+  def sw_line_items
+    line_items.find_all {|l| l.support_type == "SW"}.sort_by {|n| n.position}
+  end
+
+  # returns all the services line_items.
+  def srv_line_items
+    line_items.find_all {|l| l.support_type == "SRV"}.sort_by {|n| n.position}
+  end
+
+  # hardware list price based on the line items
+  def hw_list_price
+    hw_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
+  end
+
+  # software list price based on the line items
+  def sw_list_price
+    sw_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
+  end
+
+  # services list price based on the line items
+  def srv_list_price
+    srv_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
+  end
+
+  def total_list_price
+    hw_list_price + sw_list_price + srv_list_price
+  end
+
+  # :type => ['hw', 'sw', 'srv']
+  # :prepay => [true, false]
+  # :multiyear => [true, false]
+  def discount(opts={:type => 'hw', :prepay => false, :multiyear => false})
+    type = opts[:type].to_s
+    @discount = send("discount_pref_#{type}")
+    @discount += discount_prepay if opts[:prepay]
+    @discount += discount_multiyear if opts[:multiyear]
+    @discount
+  end
+
+  def discount_amount(opts={:type => 'hw', :prepay => false, :multiyear => false})
+    discount(opts) * send("#{opts[:type].to_s}_list_price")
+  end
+
+  def hw_disc_amt
+    hw_list_price * discount_pref_hw
+  end
+  def sw_disc_amt
+    sw_list_price * discount_pref_sw
+  end
+  def srv_disc_amt
+    srv_list_price * discount_pref_srv
+  end
+
+  # Returns the number of calendar months covered by the contract.
+  # Example:
+  #   a = Contract.new(:start_date => Date.parse('2009-01-01'), :end_date => Date.parse('2009-12-31')
+  #   b = Contract.new(:start_date => Date.parse('2009-01-31'), :end_date => Date.parse('2009-02-01')
+  #   a.calendar_months # 12
+  #   b.calendar_months # 2
+  def calendar_months
+    (end_date.mon - start_date.mon) + ((end_date.year - start_date.year) * 12) + 1
+  end
+
+  # Returns an array of payment amounts for a contract (useful for a payment schedule)
+  def payment_schedule(opts)
+    send("#{opts[:type]}_list_price").to_s discount_amount
+  end
+  # END New methods for quoting #
 
   protected
 
