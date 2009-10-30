@@ -386,5 +386,34 @@ describe Contract do
     end
   end
 
+  describe "Contract.new_business" do
+    before(:all) do
+      @contract_new = Factory(:contract, :annual_hw_rev => 500.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old = Factory(:contract, :annual_hw_rev => 250.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old2 = Factory(:contract, :annual_hw_rev => 150.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old3 = Factory(:contract, :annual_hw_rev => 600.0)
+
+    end
+
+    it "returns the difference between current contract total revenue and the sum of the predecessors revenue when current > previous" do
+      @contract_new.predecessors << @contract_old
+      @contract_new.predecessors << @contract_old2
+      @contract_new.new_business.should == 100.0
+    end
+
+    it "returns 0.0 when current <= previous" do
+      @contract_old2.predecessors << @contract_old3
+      @contract_old2.new_business.should == 0.0
+    end
+
+    it "returns total_revenue when there are no predecessors" do
+      @contract_old3.new_business.should == @contract_old3.total_revenue
+    end
+
+    after(:all) do
+      Contract.delete_all
+    end
+
+  end
 end
 

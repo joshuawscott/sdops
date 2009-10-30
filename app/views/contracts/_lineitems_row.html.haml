@@ -5,7 +5,8 @@
     %td.hideforprint
       =check_box_tag(section + "_line_item_ids[]", line_item.id, false, :class => section + '_line_item_class', :id => "licheckbox#{line_item.id.to_s}")
       =hidden_field_tag section + "_line_items[][id]", line_item.id
-  %td= support_provider(line_item)
+  %td
+    - support_provider(line_item)
   %td= h line_item.location
   %td= h line_item.product_num
   %td= h line_item.note

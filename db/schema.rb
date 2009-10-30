@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090919185947) do
+ActiveRecord::Schema.define(:version => 20091027172353) do
 
   create_table "appgen_order_lineitems", :force => true do |t|
     t.string  "appgen_order_id",                                :null => false
@@ -77,6 +77,8 @@ ActiveRecord::Schema.define(:version => 20090919185947) do
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "approval"
+    t.datetime "approval_date"
   end
 
   create_table "contracts", :force => true do |t|
@@ -143,6 +145,19 @@ ActiveRecord::Schema.define(:version => 20090919185947) do
     t.integer  "sort_order", :limit => 8
   end
 
+  create_table "goals", :force => true do |t|
+    t.string   "type"
+    t.string   "description"
+    t.string   "sales_office"
+    t.string   "sales_office_name"
+    t.decimal  "amount",            :precision => 20, :scale => 2
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "periodicity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "hwdb", :force => true do |t|
     t.string  "part_number"
     t.string  "description"
@@ -172,6 +187,22 @@ ActiveRecord::Schema.define(:version => 20090919185947) do
   end
 
   add_index "inventory_warehouses", ["code"], :name => "index_inventory_warehouses_on_code", :unique => true
+
+  create_table "invoice_payments", :force => true do |t|
+    t.integer "invoice_id"
+    t.integer "payment_id"
+  end
+
+  create_table "invoices", :force => true do |t|
+    t.integer  "invoiceable_id"
+    t.string   "invoiceable_type"
+    t.integer  "appgen_cust_number"
+    t.string   "invoice_number"
+    t.date     "invoice_date"
+    t.integer  "invoice_amount",     :limit => 10, :precision => 10, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "io_slots", :force => true do |t|
     t.integer  "server_id"
@@ -234,6 +265,15 @@ ActiveRecord::Schema.define(:version => 20090919185947) do
     t.datetime "updated_at"
   end
 
+  create_table "payments", :force => true do |t|
+    t.integer  "appgen_cust_number"
+    t.string   "payment_number"
+    t.date     "payment_date"
+    t.integer  "payment_amount",     :limit => 10, :precision => 10, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "permissions", :id => false, :force => true do |t|
     t.integer  "role_id"
     t.integer  "user_id"
@@ -246,17 +286,22 @@ ActiveRecord::Schema.define(:version => 20090919185947) do
 
   create_table "product_deals", :force => true do |t|
     t.string   "job_number"
-    t.integer  "sugar_opp_id",   :limit => 8
+    t.integer  "sugar_opp_id",      :limit => 8
     t.string   "account_id"
     t.string   "account_name"
     t.string   "invoice_number"
-    t.decimal  "revenue",                     :precision => 20, :scale => 3
-    t.decimal  "cogs",                        :precision => 20, :scale => 3
-    t.decimal  "freight",                     :precision => 20, :scale => 3
+    t.decimal  "revenue",                        :precision => 20, :scale => 3
+    t.decimal  "cogs",                           :precision => 20, :scale => 3
+    t.decimal  "other_costs",                    :precision => 20, :scale => 3
     t.string   "status"
     t.string   "modified_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "sales_office"
+    t.string   "sales_office_name"
+    t.string   "customer_po"
+    t.date     "customer_po_date"
+    t.string   "description"
   end
 
   create_table "relationships", :force => true do |t|

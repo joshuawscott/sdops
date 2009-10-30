@@ -4,7 +4,7 @@ describe Commission do
   before(:each) do
     @valid_attributes = {
       :commissionable_id => 1,
-      :amount_percentage => 9.99,
+      :percentage => 1.00,
       :approval => "value for approval",
       :approval_date => Time.now
     }

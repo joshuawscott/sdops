@@ -59,18 +59,18 @@ class Contract < ActiveRecord::Base
   include ParseDate
   has_many :line_items, :dependent => :destroy
 
-  has_many  :succeeds, 
-            :foreign_key => :successor_id, 
-            :class_name => 'Relationship', 
+  has_many  :succeeds,
+            :foreign_key => :successor_id,
+            :class_name => 'Relationship',
             :dependent => :destroy
-  has_many  :precedes, 
-            :foreign_key => :predecessor_id, 
+  has_many  :precedes,
+            :foreign_key => :predecessor_id,
             :class_name => 'Relationship',
             :dependent => :destroy
 
   has_many :successors, :through => :precedes
   has_many :predecessors, :through => :succeeds
-  
+
   has_many :comments, :as => :commentable
 
   has_many :commissions, :as => :commissionable
@@ -96,7 +96,8 @@ class Contract < ActiveRecord::Base
   named_scope :unexpired, :conditions => "expired <> 1"
   named_scope :current, :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]
   named_scope :current_unexpired, :conditions => ["start_date <= ? AND end_date >= ? AND expired <> 1", Date.today, Date.today]
-  
+
+
   # accepts an array of team ids, and returns contracts where support_office or sales_office
   # matches the passed array of ids.
   def self.short_list(teams)
@@ -136,7 +137,8 @@ class Contract < ActiveRecord::Base
       ref_date = ParseDate.parsedate(ref_date)
       ref_date = Date.new(ref_date[0], ref_date[1], ref_date[2])
     end
-    
+
+
     plus90 = ref_date.months_since(3)
     Contract.find(:all,
       :select => "id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent, renewal_amount",
@@ -152,6 +154,16 @@ class Contract < ActiveRecord::Base
   def annual_srv_rev
     annual_ce_rev + annual_sa_rev + annual_dr_rev
   end
+
+  #Calculates the amount of New Business for this contract
+  def new_business
+    if predecessors.size > 0
+      @newbusiness = [total_revenue - predecessors.inject(0) {|sum, n| sum + n.total_revenue}, 0].max
+    else
+      @newbusiness = total_revenue
+    end
+  end
+
   # Returns string "Renewal" if the Contract has a predecessor, otherwise returns
   # 'Newbusiness'
   def status
@@ -220,7 +232,8 @@ class Contract < ActiveRecord::Base
     ce = Contract.count(:account_name, {:distinct => true, :conditions => "annual_ce_rev > 0 AND expired <> true", :group => 'sales_office_name'})
     dr = Contract.count(:account_name, {:distinct => true, :conditions => "annual_dr_rev > 0 AND expired <> true", :group => 'sales_office_name'})
     total = Contract.count(:account_name, {:distinct => true, :conditions => "expired <> 1", :group => 'sales_office_name'})
-   
+
+
     offices.each do |x|
       hash[x.sales_office_name]['hw'] = hw[x.sales_office_name] ||= 0
       hash[x.sales_office_name]['sw'] = sw[x.sales_office_name] ||= 0
@@ -300,7 +313,7 @@ class Contract < ActiveRecord::Base
 
   # For newbusiness report
   def self.newbusiness
-    Contract.find(:all, 
+    Contract.find(:all,
       :select => "contracts.*, CONCAT(users.first_name, ' ', users.last_name) AS sales_rep_name, (annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as tot_rev",
       :joins => "LEFT JOIN users ON contracts.sales_rep_id = users.id",
       :conditions => "payment_terms <> 'Bundled'").map { |x|  x unless x.renewal? }.compact
@@ -320,17 +333,18 @@ class Contract < ActiveRecord::Base
       hw_t = 0.0
       line_items.each {|l| hw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "HW" }
       hw_t = hw_t * (1.0 - (discount_pref_hw + (payment_terms == "Annual" ? discount_prepay : 0.0)))
-      
+
+
       sw_t = 0.0
       line_items.each {|l| sw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SW" }
       sw_t = sw_t * (1.0 - (discount_pref_sw + (payment_terms == "Annual" ? discount_prepay : 0.0)))
-      
+
       srv_t = 0.0
       line_items.each {|l| srv_t += (l.list_price.nil? ? 0.0 : l.list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SRV" }
       srv_t = srv_t * (1.0 - (discount_pref_srv + (payment_terms == "Annual" ? discount_prepay : 0.0)))
-      
+
       @x = 12 * ((hw_t * hw_support_level_multiplier) + (sw_t * sw_support_level_multiplier) + srv_t)
-      
+
     else
       t = 0.0
       line_items.each {|l| t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) }
@@ -355,7 +369,7 @@ class Contract < ActiveRecord::Base
       else 1
     end
   end
-  
+
   def update_line_item_effective_prices
     logger.debug "********** Contract update_line_item_effective_prices"
     hw_disc = BigDecimal.new('1.0') - self.effective_hw_discount

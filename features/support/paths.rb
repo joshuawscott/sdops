@@ -12,6 +12,8 @@ module NavigationHelpers
       '/'
     when /the new contracts page/
       '/contracts/new'
+    when /the new goals page/
+      'goals/new'
     when /the new opportunities page/
       '/opportunities/new'
 

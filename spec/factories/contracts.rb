@@ -49,3 +49,5 @@ Factory.define :phoenix_contract, :class => :contract do |c|
   c.revenue 150
   c.sdc_ref 'bar'
 end
+
+

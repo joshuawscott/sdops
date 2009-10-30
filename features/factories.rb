@@ -43,6 +43,7 @@ Factory.define :contract do |c|
   c.said 'foo'
   c.revenue 150
   c.sdc_ref 'bar'
+  c.new_business 150
 end
 
 Factory.define :dallas_contract, :class => :contract do |c|
