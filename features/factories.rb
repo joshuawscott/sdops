@@ -1,6 +1,11 @@
 gem 'thoughtbot-factory_girl'
 require 'factory_girl'
 
+Factory.define :role do |r|
+  r.name 'manager'
+  r.description 'Access to all teams and management reports'
+end
+
 Factory.define :user do |u|
   u.login 'bob'
   @sugar_user ||= SugarUser.find(:first, :conditions => 'user_name = "bobdallas"')

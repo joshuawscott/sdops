@@ -7,8 +7,8 @@ Feature: Manage Goals/Quotas
   In order to maintain the goal information for later retrieval
 
   Background:
-    #Given the goal dropdowns are populated
-    Given I am logged in as a "goal_admin"
+    Given the "goal_admin" role exits with the description "Allowed to set goals/quotas"
+    And I am logged in as a "goal_admin"
 
   Scenario: Create a goal
     Given I am on the new goals page
