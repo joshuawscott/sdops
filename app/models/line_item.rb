@@ -118,15 +118,15 @@ class LineItem < ActiveRecord::Base
   # returns the effective start date, taking into account the parent contract's start & end dates
   def start_date
     return begins if contract.nil?
-    begins ||= contract.start_date
+    self.begins ||= contract.start_date
     return contract.start_date > begins ? contract.start_date : begins
   end
 
   # returns the effective end date, taking into account the parent contract's end date
   def end_date
     return ends if contract.nil?
-    ends ||= contract.end_date
-    return contract.end_date > ends ? contract.end_date : ends
+    self.ends ||= contract.end_date
+    return contract.end_date < ends ? contract.end_date : ends
   end
 end
 

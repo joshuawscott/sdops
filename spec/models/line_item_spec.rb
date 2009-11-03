@@ -47,6 +47,12 @@ describe LineItem do
       @contract.line_items << @line_item000 = Factory(:line_item, :begins => d('2010-01-01'), :ends => d('2010-12-31'))
     end
 
+    it "verifies that the line items belong to the contract" do
+      @line_item1.contract.should == @contract
+      @line_item11.contract.should == @contract
+      @line_item00.contract.should == @contract
+      @line_item000.contract.should == @contract
+    end
     it "returns 12 for a jan 1 - dec 31 line_item" do
       @line_item12a.effective_months.should == 12
     end
@@ -67,6 +73,9 @@ describe LineItem do
     end
     it "returns 0 when the start date is after the end date" do
       @line_item0.effective_months.should == 0.0
+    end
+    it "returns 1 month when only 1 month overlaps with the parent contract" do
+      @line_item1.effective_months.should == 1.0
     end
     it "returns 11 months when only 11 months overlap with the parent contract" do
       @line_item11.effective_months.should == 11.0
