@@ -3,7 +3,7 @@
 - content_for :subtitle do
   Add Line items to a subcontract
 #section1
-  = link_to 'Cancel', contract_path(@line_items[0].contract_id)
+  = link_to 'Cancel', contract_path(@line_items[0].support_deal_id)
 #section2
   #subcontractor_search.boxed{:style => 'display:block'}
     %h2 Find Subcontracts

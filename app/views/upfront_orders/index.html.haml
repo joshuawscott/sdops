@@ -27,7 +27,7 @@
           %td=h u.appgen_order.cust_name
           %td=h u.appgen_order.ship_date
           %td=h u.has_upfront_support.to_s
-          %td=h(u.contract_id != nil).to_s
+          %td=h(u.support_deal_id != nil).to_s
           %td=h u.completed.to_s
           %td
             =link_to("Show", upfront_order_path(u.id))

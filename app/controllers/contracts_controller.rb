@@ -30,25 +30,25 @@ class ContractsController < ApplicationController
       @expired ||= params[:search][:expired]
       #Create and set the scope conditions
       @contracts = Contract.scoped({})
-      @contracts = @contracts.conditions "(contracts.sales_office IN (?) OR contracts.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
-      @contracts = @contracts.conditions "contracts.sales_office = ?", @sales_office unless @sales_office.blank?
-      @contracts = @contracts.conditions "contracts.support_office = ?", @support_office unless @support_office.blank?
-      @contracts = @contracts.conditions "contracts.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
-      @contracts = @contracts.conditions "contracts.said like ?", "%"+@said+"%" unless @said.blank?
+      @contracts = @contracts.conditions "(support_deals.sales_office IN (?) OR support_deals.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
+      @contracts = @contracts.conditions "support_deals.sales_office = ?", @sales_office unless @sales_office.blank?
+      @contracts = @contracts.conditions "support_deals.support_office = ?", @support_office unless @support_office.blank?
+      @contracts = @contracts.conditions "support_deals.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
+      @contracts = @contracts.conditions "support_deals.said like ?", "%"+@said+"%" unless @said.blank?
       op, val = @revenue.split(" ")
-      @contracts = @contracts.conditions "(contracts.annual_hw_rev + contracts.annual_sw_rev + contracts.annual_ce_rev + contracts.annual_sa_rev + contracts.annual_dr_rev) #{op} ?", val.to_f unless @revenue.blank?
+      @contracts = @contracts.conditions "(support_deals.annual_hw_rev + support_deals.annual_sw_rev + support_deals.annual_ce_rev + support_deals.annual_sa_rev + support_deals.annual_dr_rev) #{op} ?", val.to_f unless @revenue.blank?
     
       if @pay_term =~ /^Not/
-        @contracts = @contracts.conditions "contracts.payment_terms <> 'bundled'"
+        @contracts = @contracts.conditions "support_deals.payment_terms <> 'bundled'"
       else
-        @contracts = @contracts.conditions "contracts.payment_terms = ?", @pay_term unless @pay_term.blank?
+        @contracts = @contracts.conditions "support_deals.payment_terms = ?", @pay_term unless @pay_term.blank?
       end
-      @contracts = @contracts.conditions "contracts.description like ?", "%"+@description+"%" unless @description.blank?
+      @contracts = @contracts.conditions "support_deals.description like ?", "%"+@description+"%" unless @description.blank?
       op, val = @start_date.split(" ")
-      @contracts = @contracts.conditions "contracts.start_date #{op} ?", val unless @start_date.blank?
+      @contracts = @contracts.conditions "support_deals.start_date #{op} ?", val unless @start_date.blank?
       op, val = @end_date.split(" ")
-      @contracts = @contracts.conditions "contracts.end_date #{op} ?", val unless @end_date.blank?
-      @contracts = @contracts.conditions "contracts.expired <> true" unless @expired == "on"
+      @contracts = @contracts.conditions "support_deals.end_date #{op} ?", val unless @end_date.blank?
+      @contracts = @contracts.conditions "support_deals.expired <> true" unless @expired == "on"
       @contracts
     elsif params[:export] != nil
       #Get search criteria from params object
@@ -64,25 +64,25 @@ class ContractsController < ApplicationController
       @expired ||= params[:export][:expired]
       #Create and set the scope conditions
       @contracts = Contract.scoped({})
-      @contracts = @contracts.conditions "(contracts.sales_office IN (?) OR contracts.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
-      @contracts = @contracts.conditions "contracts.sales_office = ?", @sales_office unless @sales_office.blank?
-      @contracts = @contracts.conditions "contracts.support_office = ?", @support_office unless @support_office.blank?
-      @contracts = @contracts.conditions "contracts.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
-      @contracts = @contracts.conditions "contracts.said like ?", "%"+@said+"%" unless @said.blank?
+      @contracts = @contracts.conditions "(support_deals.sales_office IN (?) OR support_deals.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
+      @contracts = @contracts.conditions "support_deals.sales_office = ?", @sales_office unless @sales_office.blank?
+      @contracts = @contracts.conditions "support_deals.support_office = ?", @support_office unless @support_office.blank?
+      @contracts = @contracts.conditions "support_deals.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
+      @contracts = @contracts.conditions "support_deals.said like ?", "%"+@said+"%" unless @said.blank?
       op, val = @revenue.split(" ")
-      @contracts = @contracts.conditions "(contracts.annual_hw_rev + contracts.annual_sw_rev + contracts.annual_ce_rev + contracts.annual_sa_rev + contracts.annual_dr_rev) #{op} ?", val.to_f unless @revenue.blank?
+      @contracts = @contracts.conditions "(support_deals.annual_hw_rev + support_deals.annual_sw_rev + support_deals.annual_ce_rev + support_deals.annual_sa_rev + support_deals.annual_dr_rev) #{op} ?", val.to_f unless @revenue.blank?
     
       if @pay_term =~ /^Not/
-        @contracts = @contracts.conditions "contracts.payment_terms <> 'bundled'"
+        @contracts = @contracts.conditions "support_deals.payment_terms <> 'bundled'"
       else
-        @contracts = @contracts.conditions "contracts.payment_terms = ?", @pay_term unless @pay_term.blank?
+        @contracts = @contracts.conditions "support_deals.payment_terms = ?", @pay_term unless @pay_term.blank?
       end
-      @contracts = @contracts.conditions "contracts.description like ?", "%"+@description+"%" unless @description.blank?
+      @contracts = @contracts.conditions "support_deals.description like ?", "%"+@description+"%" unless @description.blank?
       op, val = @start_date.split(" ")
-      @contracts = @contracts.conditions "contracts.start_date #{op} ?", val unless @start_date.blank?
+      @contracts = @contracts.conditions "support_deals.start_date #{op} ?", val unless @start_date.blank?
       op, val = @end_date.split(" ")
-      @contracts = @contracts.conditions "contracts.end_date #{op} ?", val unless @end_date.blank?
-      @contracts = @contracts.conditions "contracts.expired <> true" unless @expired == "on"
+      @contracts = @contracts.conditions "support_deals.end_date #{op} ?", val unless @end_date.blank?
+      @contracts = @contracts.conditions "support_deals.expired <> true" unless @expired == "on"
       @contracts
       
     else
@@ -104,6 +104,9 @@ class ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
     @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}
     @line_items = @contract.line_items.sort_by {|l| l.position}
+    logger.debug "Line Items Found = #{@line_items.size}"
+    x = LineItem.find(:first)
+    logger.debug x.to_yaml
     @hwlines = @line_items.find_all {|e| e.support_type == "HW"}
     @swlines = @line_items.find_all {|e| e.support_type == "SW"}
     @srvlines = @line_items.find_all {|e| e.support_type == "SRV"}
@@ -252,7 +255,7 @@ class ContractsController < ApplicationController
 
   def quote
     @contract = Contract.find(params[:id])
-    @line_items = LineItem.find(:all, :conditions => {:contract_id => params[:id]})
+    @line_items = LineItem.find(:all, :conditions => {:support_deal_id => params[:id]})
     @best_discount_amount = @contract.discount_amount(:type => :hw, :prepay => true) + @contract.discount_amount(:type => :sw, :prepay => true) + @contract.discount_amount(:type => :srv, :prepay => true)
     prawnto :prawn => {:page_layout => :landscape}
   end

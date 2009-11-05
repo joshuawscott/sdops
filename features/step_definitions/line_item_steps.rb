@@ -6,13 +6,13 @@ Given /^a contract exists$/ do
 end
 
 Given /^I have created a line item$/ do
-  @line_item = Factory(:line_item, :contract_id => @contract.id)
+  @line_item = Factory(:line_item, :support_deal_id => @contract.id)
   @contract.line_items.count.should == 1
 end
 
 Given /^I have created 2 line items for that contract$/ do
-  @line1 = Factory(:line_item, :support_provider => "Sourcedirect", :contract_id => @contract.id, :description => "First Lineitem Description")
-  @line2 = Factory(:line_item, :support_provider => "Sourcedirect", :contract_id => @contract.id, :description => "Second Lineitem Description")
+  @line1 = Factory(:line_item, :support_provider => "Sourcedirect", :support_deal_id => @contract.id, :description => "First Lineitem Description")
+  @line2 = Factory(:line_item, :support_provider => "Sourcedirect", :support_deal_id => @contract.id, :description => "Second Lineitem Description")
 end
 
 Given /^I am viewing its contract$/ do

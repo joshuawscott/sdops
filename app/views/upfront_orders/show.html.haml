@@ -34,7 +34,7 @@
       %label Upfront Support
       =u.check_box :has_upfront_support, :onchange => 'return toggleCompleted();'
       =u.hidden_field :completed
-      #contractid{:style => 'display:none'}= @upfront_order.contract_id
+      #contractid{:style => 'display:none'}= @upfront_order.support_deal_id
       &nbsp;
       =submit_tag 'Update'
     %label Completed
@@ -44,10 +44,10 @@
       =link_to "Process Order", review_import_upfront_order_path(@upfront_order)
     %br/
     %label Contract ID
-    -if @upfront_order.contract_id == nil
+    -if @upfront_order.support_deal_id == nil
       N/A
     -else
-      =link_to @upfront_order.contract_id, contract_path(@upfront_order.contract_id)
+      =link_to @upfront_order.support_deal_id, contract_path(@upfront_order.support_deal_id)
     %br/
 #section2
   %h2 Line Items

@@ -93,10 +93,10 @@ class CommentsController < ApplicationController
 
   def find_commenter
     if params[:comment]
-      klass = params[:comment][:commentable_type].capitalize.constantize
+      klass = params[:comment][:commentable_type].singularize.camelize.constantize
       @commenter = klass.find(params[:comment][:commentable_id])     
     else
-      klass = params[:commentable_type].capitalize.constantize
+      klass = params[:commentable_type].singularize.camelize.constantize
       @commenter = klass.find(params[:commentable_id])
     end
     

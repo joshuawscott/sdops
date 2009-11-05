@@ -17,7 +17,7 @@
             = link_to image_tag("edit_inline.gif", :border => 0), edit_comment_path(comment), :id => "edit_comment_" + comment.id.to_s, :title => 'Edit Comment' do
               Edit
             %br/
-            = link_to image_tag("delete_inline.gif", :border => 0), comment_path(comment, :commentable_id => object.id, :commentable_type => object.class.to_s), :confirm => 'Are you sure?', :method => :delete, :id => "delete_comment_" + comment.id.to_s, :title => 'Delete Comment'
+            = link_to image_tag("delete_inline.gif", :border => 0), comment_path(comment, :commentable_id => object.id, :commentable_type => object.class.table_name.camelize.to_s), :confirm => 'Are you sure?', :method => :delete, :id => "delete_comment_" + comment.id.to_s, :title => 'Delete Comment'
         #date.comment.date
           = h comment.created_at.strftime("%m/%d/%y %I:%M %p")
           %br/

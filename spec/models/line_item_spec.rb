@@ -48,10 +48,10 @@ describe LineItem do
     end
 
     it "verifies that the line items belong to the contract" do
-      @line_item1.contract.should == @contract
-      @line_item11.contract.should == @contract
-      @line_item00.contract.should == @contract
-      @line_item000.contract.should == @contract
+      @line_item1.support_deal.should == @contract
+      @line_item11.support_deal.should == @contract
+      @line_item00.support_deal.should == @contract
+      @line_item000.support_deal.should == @contract
     end
     it "returns 12 for a jan 1 - dec 31 line_item" do
       @line_item12a.effective_months.should == 12

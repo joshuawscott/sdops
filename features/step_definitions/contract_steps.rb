@@ -23,14 +23,14 @@ Given /^some contracts exist to search on$/ do
 end
 
 Given /^line items exist for those contracts$/ do
-  Factory(:line_item, :serial_num => 'SERIAL11', :contract_id => @contract1.id)
-  Factory(:line_item, :serial_num => 'SERIAL12', :contract_id => @contract1.id)
-  Factory(:line_item, :serial_num => 'SERIAL21', :contract_id => @contract2.id)
-  Factory(:line_item, :serial_num => 'SERIAL22', :contract_id => @contract2.id)
-  Factory(:line_item, :serial_num => 'SERIAL31', :contract_id => @contract3.id)
-  Factory(:line_item, :serial_num => 'SERIAL32', :contract_id => @contract3.id)
-  Factory(:line_item, :serial_num => 'SERIAL41', :contract_id => @contract4.id)
-  Factory(:line_item, :serial_num => 'SERIAL42', :contract_id => @contract4.id)
+  Factory(:line_item, :serial_num => 'SERIAL11', :support_deal_id => @contract1.id)
+  Factory(:line_item, :serial_num => 'SERIAL12', :support_deal_id => @contract1.id)
+  Factory(:line_item, :serial_num => 'SERIAL21', :support_deal_id => @contract2.id)
+  Factory(:line_item, :serial_num => 'SERIAL22', :support_deal_id => @contract2.id)
+  Factory(:line_item, :serial_num => 'SERIAL31', :support_deal_id => @contract3.id)
+  Factory(:line_item, :serial_num => 'SERIAL32', :support_deal_id => @contract3.id)
+  Factory(:line_item, :serial_num => 'SERIAL41', :support_deal_id => @contract4.id)
+  Factory(:line_item, :serial_num => 'SERIAL42', :support_deal_id => @contract4.id)
 end
 
 When /^I create a new contract$/ do

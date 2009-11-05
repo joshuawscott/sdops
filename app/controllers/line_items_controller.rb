@@ -10,7 +10,7 @@ class LineItemsController < ApplicationController
   # GET /line_items/new.xml
   def new
     logger.debug "******* LineItems controller new method"
-    last_position = LineItem.find(:last, :conditions => {:contract_id => @contract.id}, :order => "position ASC").position unless @contract.line_items.size == 0
+    last_position = LineItem.find(:last, :conditions => {:support_deal_id => @contract.id}, :order => "position ASC").position unless @contract.line_items.size == 0
     @line_item = @contract.line_items.new(:support_provider => 'Sourcedirect', 
       :location => @contract.support_office_name,
       :begins => @contract.start_date,
@@ -43,7 +43,7 @@ class LineItemsController < ApplicationController
   def create
     logger.debug "******* LineItems controller create method"
     @line_item = @contract.line_items.new(params[:line_item])
-    @line_item.contract_id = params[:contract_id]
+    @line_item.support_deal_id = params[:contract_id]
 
     respond_to do |format|
       if @line_item.save
@@ -137,7 +137,7 @@ class LineItemsController < ApplicationController
   def sort
     sorted_type = params[:hwlines].nil? ? "SW" : "HW"
     sorted_table = sorted_type == 'HW' ? 'hwlines' : 'swlines'
-    @line_items = LineItem.find(:all, :conditions => {:contract_id => params[:id], :support_type => sorted_type}, :order => 'position ASC')
+    @line_items = LineItem.find(:all, :conditions => {:support_deal_id => params[:id], :support_type => sorted_type}, :order => 'position ASC')
     @line_items.each do |line_item|
       line_item.position = params[sorted_table].index(line_item.id.to_s)
       line_item.save(false)

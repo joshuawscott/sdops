@@ -1,10 +1,10 @@
 #    t.string  "appgen_order_id"
 #    t.boolean "has_upfront_support"
 #    t.boolean "completed"
-#    t.integer "contract_id"
+#    t.integer "support_deal_id"
 class UpfrontOrder < ActiveRecord::Base
   belongs_to :appgen_order
-  belongs_to :contract
+  belongs_to :support_deal
   validates_uniqueness_of :appgen_order_id
   after_save :update_completed
   
@@ -17,7 +17,7 @@ class UpfrontOrder < ActiveRecord::Base
 
   protected
   def update_completed
-    update_attribute(:completed, false) if self.contract_id == nil && self.completed == true
+    update_attribute(:completed, false) if self.support_deal_id == nil && self.completed == true
   end
   
 end

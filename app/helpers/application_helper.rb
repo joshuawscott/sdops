@@ -74,7 +74,7 @@ module ApplicationHelper
   # Renders a simple show view using haml.  Attempts to translate column names ending in '_id' into a
   # foreign table name, where the value of the remote table's 'name' and 'description' fields are 
   # substituted for the id value in the table:
-  #   @line_item.contract_id => @line_item.contract.[name|description]
+  #   @line_item.support_deal_id => @line_item.contract.[name|description]
   # If name or description fields are not available, then the id value prints.
   # instance should be a single ActiveRecord object
   # 

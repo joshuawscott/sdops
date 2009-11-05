@@ -30,8 +30,9 @@ When /^I am logged in as a "([^\"]*)" with only the "([^\"]*)" team$/ do |user_r
   @sugar_team = SugarTeam.find_by_name(user_team)
   @current_user = Factory(:user)
   @current_user.roles << Role.find_by_name(user_role)
+  @current_user.save(false)
   User.count.should == 1
-  SugarTeamMembership.count(:conditions => ['user_id = ?', @sugar_user.id]).should == 1
+  #SugarTeamMembership.count(:conditions => ['user_id = ?', @sugar_user.id]).should == 1
   visit login_path
   fill_in "Login", :with => @current_user.login
   fill_in "Password", :with => @current_user.password

@@ -76,11 +76,11 @@ class UpfrontOrdersController < ApplicationController
     if @contract.save
       flash[:notice] = "Contract Created"
       @contract.reload
-      @upfront_order.contract_id = @contract.id
+      @upfront_order.support_deal_id = @contract.id
       @upfront_order.completed = true
       @upfront_order.save
       line_item_hash = {
-        :contract_id => @contract.id,
+        :support_deal_id => @contract.id,
         :begins => @contract.start_date,
         :ends => @contract.end_date,
         :location => @contract.support_office_name,
