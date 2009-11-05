@@ -46,7 +46,7 @@ CREATE TABLE `audits` (
   KEY `auditable_index` (`auditable_id`,`auditable_type`),
   KEY `user_index` (`user_id`,`user_type`),
   KEY `index_audits_on_created_at` (`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=21680 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21683 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL auto_increment,
@@ -139,7 +139,7 @@ CREATE TABLE `dropdowns` (
   `updated_at` datetime default NULL,
   `sort_order` bigint(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `goals` (
   `id` int(11) NOT NULL auto_increment,
@@ -154,7 +154,7 @@ CREATE TABLE `goals` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `hwdb` (
   `id` int(11) NOT NULL auto_increment,

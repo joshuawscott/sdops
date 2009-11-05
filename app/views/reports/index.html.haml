@@ -126,6 +126,17 @@
           %td{:align => 'right'}= number_to_currency(x.dr, :format => '%n')
           %td{:align => 'right'}= number_to_currency(x.total, :format => '%n')
 
+  %br/
+  %h2
+    Attrition for 2009
+  %p
+    =h number_to_currency(@renewal_attrition, :format => '%n')
+  %p
+    =h number_to_currency(@non_renewed, :format => '%n')
+  %p
+    =h number_to_currency(@renewal_attrition + @non_renewed, :format => '%n')
+
+
   %br &nbsp;
 #section3
   %p{:style=>"page-break-before: always"}

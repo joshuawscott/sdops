@@ -14,6 +14,8 @@ module NavigationHelpers
       '/contracts/new'
     when /the new goals page/
       'goals/new'
+    when /the dashboard report/
+      'reports/index'
     when /the new opportunities page/
       '/opportunities/new'
 

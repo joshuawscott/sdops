@@ -415,5 +415,46 @@ describe Contract do
     end
 
   end
+
+  describe "Contract.non_renewing_contracts" do
+    before(:all) do
+      @contract_1 = Factory(:contract, :expired => 1, :start_date => "2008-02-01", :end_date => "2009-01-31" )
+      @contract_2 = Factory(:contract, :expired => 1, :start_date => "2008-02-01", :end_date => "2009-01-31" )
+      @contract_3 = Factory(:contract, :start_date => "2009-02-01", :end_date => "2010-01-31" )
+      @contract_4 = Factory(:contract, :start_date => "2008-06-01", :end_date => "2009-05-31" )
+    end
+
+    it "returns the the sum of all contracts that are expired and do not have a successor, between 2 dates" do
+      @contract_2.successors << @contract_3
+      Contract.non_renewing_contracts("2009-01-01","2009-12-31").should == -150.0
+    end
+
+    after(:all) do
+      Contract.delete_all
+    end
+  end
+
+  describe "Contract.renewal_attrition" do
+    before(:all) do
+      @contract_new = Factory(:contract, :annual_hw_rev => 500.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old = Factory(:contract, :annual_hw_rev => 250.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old2 = Factory(:contract, :expired => 1, :annual_hw_rev => 150.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+    end
+
+    it "returns the difference between current contract total revenue and the sum of the predecessors revenue - positive increase" do
+      @contract_new.predecessors << @contract_old
+      @contract_new.predecessors << @contract_old2
+      @contract_new.renewal_attrition.should == 100.0
+    end
+
+    it "returns the difference between current contract total revenue and the sum of the predecessors revenue - negative decrease" do
+      @contract_old.predecessors << @contract_new
+      @contract_old.renewal_attrition.should == -250.0
+    end
+
+    after(:all) do
+      Contract.delete_all
+    end
+  end
 end
 
