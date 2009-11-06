@@ -403,6 +403,7 @@ describe Contract do
     end
     it "returns 12 for a feb 1 - jan 31 contract" do
       @contract12b.effective_months.should == 12
+    end
     it "returns 5 for a jan 1 to may 31 contract" do
       @contract5a.effective_months.should == 5
     end
@@ -415,7 +416,6 @@ describe Contract do
     it "returns 4.322580645161290... for a Jan 1 to May 10 contract" do
       @contract4o32.effective_months.should == (4.0 + (10.0 / 31.0))
     end
-
     after(:all) do
       Contract.delete_all
     end
@@ -501,8 +501,6 @@ describe Contract do
     end
 
   end
-
-end
 
   describe "Contract.new_business" do
     before(:all) do
