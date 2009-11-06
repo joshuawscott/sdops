@@ -7,7 +7,7 @@ require 'spec/rails'
 require 'webrat'
 
 # Uncomment the next line to use webrat's matchers
-require 'webrat/rspec-rails'
+require 'webrat/integrations/rspec-rails'
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.
@@ -22,7 +22,6 @@ Spec::Runner.configure do |config|
   config.fixture_path = RAILS_ROOT + '/spec/fixtures/'
 
   config.include Webrat::Matchers, :type => :views
-
   # == Fixtures
   #
   # You can declare fixtures for each example_group like this:
