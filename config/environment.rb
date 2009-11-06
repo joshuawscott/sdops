@@ -41,7 +41,7 @@ Rails::Initializer.run do |config|
   #config.gem "haml"
   #config.gem "gruff"
   #config.gem 'ryanb-acts-as-list', :lib => 'acts_as_list', :source => 'http://gems.github.com'
-  config.gem "prawn"
+  #config.gem "prawn"
   #config.gem "rspec", :lib => false, :version => ">= 1.2.0"
   #config.gem "rspec-rails", :lib => false, :version => ">= 1.2.0"
   #config.gem "thoughtbot-factory_girl", :lib => "factory_girl", :source => "http://gems.github.com"
