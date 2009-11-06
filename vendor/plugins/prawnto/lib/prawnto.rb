@@ -1,6 +1,6 @@
 require 'action_controller'
 require 'action_view'
-
+require 'rubygems'
 require 'prawn'
 begin 
   require "prawn/layout" # give people what they probably want
