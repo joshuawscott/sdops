@@ -16,7 +16,16 @@ module NavigationHelpers
     #
     #   when /^(.*)'s profile page$/i
     #     user_profile_path(User.find_by_login($1))
-
+    when /the new contracts page/
+      '/contracts/new'
+    when /the new goals page/
+      'goals/new'
+    when /the dashboard report/
+      'reports/index'
+    when /the new opportunities page/
+      '/opportunities/new'
+    when /the reports page/
+      '/reports'
     else
       raise "Can't find mapping from \"#{page_name}\" to a path.\n" +
         "Now, go and add a mapping in #{__FILE__}"
