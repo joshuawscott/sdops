@@ -8,5 +8,7 @@
 #TODO: Need to move support levels to line items
 #TODO: more detailed support levels, multiple fields
 #TODO: some sort of reminder system to follow up on certain items -- maybe dovetails into reminders for expired/expiring contracts
+
+#TODO: Get product deals working
 =end
 

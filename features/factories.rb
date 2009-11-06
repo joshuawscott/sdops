@@ -1,6 +1,11 @@
 gem 'thoughtbot-factory_girl'
 require 'factory_girl'
 
+Factory.define :role do |r|
+  r.name 'manager'
+  r.description 'Access to all teams and management reports'
+end
+
 Factory.define :user do |u|
   u.login 'bob'
   @sugar_user ||= SugarUser.find(:first, :conditions => 'user_name = "bobdallas"')
@@ -43,7 +48,9 @@ Factory.define :contract do |c|
   c.said 'foo'
   c.revenue 150
   c.sdc_ref 'bar'
+  #c.new_business 150
 end
+
 Factory.define :dallas_contract, :class => :contract do |c|
   @sugar_team = SugarTeam.find_by_name('Dallas')
   @sugar_account = SugarAcct.find(:first, :conditions => "team_id = '#{@sugar_team.id}'")
@@ -68,6 +75,7 @@ Factory.define :dallas_contract, :class => :contract do |c|
   c.revenue 150
   c.sdc_ref 'bar'
 end
+
 Factory.define :philadelphia_contract, :class => :contract do |c|
   @sugar_team = SugarTeam.find_by_name('Philadelphia')
   @sugar_account = SugarAcct.find(:first, :conditions => "team_id = '#{@sugar_team.id}'")
@@ -115,6 +123,7 @@ Factory.define :hw_support_price do |h|
   h.modified_at { Factory.next(:date) }
   h.confirm_date { Factory.next(:date) }
 end
+
 Factory.define :sw_support_price do |s|
   s.modified_at { Factory.next(:date) }
   s.confirm_date { Factory.next(:date) }
@@ -122,6 +131,7 @@ end
 
 Factory.define :subcontractor do |s|
 end
+
 Factory.define :subcontract do |s|
   s.subcontractor_id { @subcontractor.id }
   s.start_date Date.parse('2009-01-01')

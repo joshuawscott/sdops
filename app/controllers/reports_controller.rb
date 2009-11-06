@@ -7,6 +7,8 @@ class ReportsController < ApplicationController
     @customer_counts_by_office = Contract.customer_counts_by_office
     @total_contracts = @contract_counts_by_office.map{|k,v| @contract_counts_by_office[k]['total']}.sum
     @total_customers = @customer_counts_by_office.map{|k,v| @customer_counts_by_office[k]['total']}.sum
+    @renewal_attrition = Contract.find(:all, :conditions => "expired = 0").inject(0) {|sum,n| sum + n.renewal_attrition}
+    @non_renewed = Contract.non_renewing_contracts("2009-01-01","2009-12-31")
     
     @offices = []
     n = 0

@@ -7,11 +7,18 @@ module NavigationHelpers
   #
   def path_to(page_name)
     case page_name
-    
+
     when /the homepage/
       '/'
     when /the new contracts page/
       '/contracts/new'
+    when /the new goals page/
+      'goals/new'
+    when /the dashboard report/
+      'reports/index'
+    when /the new opportunities page/
+      '/opportunities/new'
+
     # Add more mappings here.
     # Here is a more fancy example:
     #

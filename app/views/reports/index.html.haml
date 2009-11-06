@@ -126,6 +126,44 @@
           %td{:align => 'right'}= number_to_currency(x.dr, :format => '%n')
           %td{:align => 'right'}= number_to_currency(x.total, :format => '%n')
 
+  %br/
+  %h2
+    Attrition for 2009 YTD
+  %table{:class => 'sortable', :padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th{:width => '250', :ts_type => 'string'}
+          %b Type
+        %th{:width => '95', :ts_type => 'money'}
+          %b Amount
+
+    %tbody
+      %tr
+        %td
+          %b
+            Net Change in renewed contract
+        %td{:align => 'right'}
+          =h number_to_currency(@renewal_attrition, :format => '%n')
+      %tr
+        %td
+          %b
+            Value of Contracts not Renewed
+        %td{:align => 'right'}
+          =h number_to_currency(@non_renewed, :format => '%n')
+      %tr
+        %td
+          %b
+            Total
+        %td{:align => 'right'}
+          =h number_to_currency(@renewal_attrition + @non_renewed, :format => '%n')
+      %tr
+        %td
+          %b
+            As a percentage of Support Rev
+        %td{:align => 'right'}
+          =h number_to_percentage((-(@renewal_attrition + @non_renewed) / @all_revenue[:total_revenue].to_f)*100, :precision => 2)
+
+
   %br &nbsp;
 #section3
   %p{:style=>"page-break-before: always"}

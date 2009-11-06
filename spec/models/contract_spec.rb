@@ -398,13 +398,11 @@ describe Contract do
       @contract17 = Factory(:contract, :start_date => d('2008-01-15'), :end_date => d('2009-06-14'))
       @contract4o32 = Factory(:contract, :start_date => d('2008-01-01'), :end_date => d('2008-05-10'))
     end
-
     it "returns 12 for a jan 1 - dec 31 contract" do
       @contract12a.effective_months.should == 12
     end
     it "returns 12 for a feb 1 - jan 31 contract" do
       @contract12b.effective_months.should == 12
-    end
     it "returns 5 for a jan 1 to may 31 contract" do
       @contract5a.effective_months.should == 5
     end
@@ -417,13 +415,11 @@ describe Contract do
     it "returns 4.322580645161290... for a Jan 1 to May 10 contract" do
       @contract4o32.effective_months.should == (4.0 + (10.0 / 31.0))
     end
-    
 
     after(:all) do
       Contract.delete_all
     end
   end
-
   describe "Contract.*_line_items" do
     #hw_line_items
     #sw_line_items
@@ -443,9 +439,7 @@ describe Contract do
       Contract.delete_all
       LineItem.delete_all
     end
-      
   end
-
   describe "Contract.*_list_price" do
     #hw_list_price
     #sw_list_price
@@ -508,7 +502,77 @@ describe Contract do
 
   end
 
-  describe "Contract.payment_schedule"
+end
+
+  describe "Contract.new_business" do
+    before(:all) do
+      @contract_new = Factory(:contract, :annual_hw_rev => 500.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old = Factory(:contract, :annual_hw_rev => 250.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old2 = Factory(:contract, :annual_hw_rev => 150.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old3 = Factory(:contract, :annual_hw_rev => 600.0)
+    end
+
+    it "returns the difference between current contract total revenue and the sum of the predecessors revenue when current > previous" do
+      @contract_new.predecessors << @contract_old
+      @contract_new.predecessors << @contract_old2
+      @contract_new.new_business.should == 100.0
+    end
+
+    it "returns 0.0 when current <= previous" do
+      @contract_old2.predecessors << @contract_old3
+      @contract_old2.new_business.should == 0.0
+    end
+
+    it "returns total_revenue when there are no predecessors" do
+      @contract_old3.new_business.should == @contract_old3.total_revenue
+    end
+
+    after(:all) do
+      Contract.delete_all
+    end
+
+  end
+
+  describe "Contract.non_renewing_contracts" do
+    before(:all) do
+      @contract_1 = Factory(:contract, :expired => 1, :start_date => "2008-02-01", :end_date => "2009-01-31" )
+      @contract_2 = Factory(:contract, :expired => 1, :start_date => "2008-02-01", :end_date => "2009-01-31" )
+      @contract_3 = Factory(:contract, :start_date => "2009-02-01", :end_date => "2010-01-31" )
+      @contract_4 = Factory(:contract, :start_date => "2008-06-01", :end_date => "2009-05-31" )
+    end
+
+    it "returns the the sum of all contracts that are expired and do not have a successor, between 2 dates" do
+      @contract_2.successors << @contract_3
+      Contract.non_renewing_contracts("2009-01-01","2009-12-31").should == -150.0
+    end
+
+    after(:all) do
+      Contract.delete_all
+    end
+  end
+
+  describe "Contract.renewal_attrition" do
+    before(:all) do
+      @contract_new = Factory(:contract, :annual_hw_rev => 500.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old = Factory(:contract, :annual_hw_rev => 250.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+      @contract_old2 = Factory(:contract, :expired => 1, :annual_hw_rev => 150.0, :annual_sw_rev => 0.0, :annual_sa_rev => 0.0, :annual_ce_rev => 0.0, :annual_dr_rev => 0.0)
+    end
+
+    it "returns the difference between current contract total revenue and the sum of the predecessors revenue - positive increase" do
+      @contract_new.predecessors << @contract_old
+      @contract_new.predecessors << @contract_old2
+      @contract_new.renewal_attrition.should == 100.0
+    end
+
+    it "returns the difference between current contract total revenue and the sum of the predecessors revenue - negative decrease" do
+      @contract_old.predecessors << @contract_new
+      @contract_old.renewal_attrition.should == -250.0
+    end
+
+    after(:all) do
+      Contract.delete_all
+    end
+  end
 end
 
 

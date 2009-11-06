@@ -6,6 +6,10 @@ Given /^a user "([^\"]*)" with login "([^\"]*)" and password "([^\"]*)"$/ do |fu
   @current_user.save(false)
 end
 
+Given /^the "([^\"]*)" role exits with the description "([^\"]*)"$/ do |role, description|
+  Factory(:role, :name => role, :description => description)
+end
+
 When /^I enter login "([^\"]*)" and password "([^\"]*)"$/ do |login, password|
   visit login_path
   fill_in "Login", :with => login

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090811172226) do
+ActiveRecord::Schema.define(:version => 20091027172353) do
 
   create_table "appgen_order_lineitems", :force => true do |t|
     t.string  "appgen_order_id",                                :null => false
@@ -69,6 +69,18 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
     t.string   "user"
   end
 
+  create_table "commissions", :force => true do |t|
+    t.integer  "commissionable_id"
+    t.string   "commissionable_type"
+    t.integer  "user_id"
+    t.integer  "percentage",          :limit => 10, :precision => 10, :scale => 0
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "approval"
+    t.datetime "approval_date"
+  end
+
   create_table "contracts", :force => true do |t|
     t.string   "account_id"
     t.string   "account_name"
@@ -77,34 +89,34 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
     t.string   "said"
     t.string   "sdc_ref"
     t.string   "description"
-    t.integer  "sales_rep_id",        :limit => 8
+    t.integer  "sales_rep_id",         :limit => 8
     t.string   "sales_office"
     t.string   "support_office"
     t.string   "cust_po_num"
     t.string   "payment_terms"
     t.string   "platform"
-    t.decimal  "revenue",                          :precision => 20, :scale => 3
-    t.decimal  "annual_hw_rev",                    :precision => 20, :scale => 3
-    t.decimal  "annual_sw_rev",                    :precision => 20, :scale => 3
-    t.decimal  "annual_ce_rev",                    :precision => 20, :scale => 3
-    t.decimal  "annual_sa_rev",                    :precision => 20, :scale => 3
-    t.decimal  "annual_dr_rev",                    :precision => 20, :scale => 3
+    t.decimal  "revenue",                            :precision => 20, :scale => 3
+    t.decimal  "annual_hw_rev",                      :precision => 20, :scale => 3
+    t.decimal  "annual_sw_rev",                      :precision => 20, :scale => 3
+    t.decimal  "annual_ce_rev",                      :precision => 20, :scale => 3
+    t.decimal  "annual_sa_rev",                      :precision => 20, :scale => 3
+    t.decimal  "annual_dr_rev",                      :precision => 20, :scale => 3
     t.date     "start_date"
     t.date     "end_date"
     t.date     "multiyr_end"
-    t.boolean  "expired",                                                         :default => false
+    t.boolean  "expired",                                                           :default => false
     t.string   "hw_support_level_id"
     t.string   "sw_support_level_id"
     t.string   "updates"
-    t.integer  "ce_days",             :limit => 8
-    t.integer  "sa_days",             :limit => 8
-    t.decimal  "discount_pref_hw",                 :precision => 5,  :scale => 3
-    t.decimal  "discount_pref_sw",                 :precision => 5,  :scale => 3
-    t.decimal  "discount_pref_srv",                :precision => 5,  :scale => 3
-    t.decimal  "discount_prepay",                  :precision => 5,  :scale => 3
-    t.decimal  "discount_multiyear",               :precision => 5,  :scale => 3
-    t.decimal  "discount_ce_day",                  :precision => 5,  :scale => 3
-    t.decimal  "discount_sa_day",                  :precision => 5,  :scale => 3
+    t.integer  "ce_days",              :limit => 8
+    t.integer  "sa_days",              :limit => 8
+    t.decimal  "discount_pref_hw",                   :precision => 5,  :scale => 3
+    t.decimal  "discount_pref_sw",                   :precision => 5,  :scale => 3
+    t.decimal  "discount_pref_srv",                  :precision => 5,  :scale => 3
+    t.decimal  "discount_prepay",                    :precision => 5,  :scale => 3
+    t.decimal  "discount_multiyear",                 :precision => 5,  :scale => 3
+    t.decimal  "discount_ce_day",                    :precision => 5,  :scale => 3
+    t.decimal  "discount_sa_day",                    :precision => 5,  :scale => 3
     t.string   "replacement_sdc_ref"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -113,7 +125,7 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
     t.string   "po_number"
     t.date     "renewal_sent"
     t.date     "po_received"
-    t.decimal  "renewal_amount",                   :precision => 20, :scale => 3
+    t.decimal  "renewal_amount",                     :precision => 20, :scale => 3
     t.string   "address1"
     t.string   "address2"
     t.string   "address3"
@@ -121,6 +133,7 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
     t.string   "contact_phone"
     t.string   "contact_email"
     t.string   "contact_note"
+    t.integer  "new_business_dollars", :limit => 10, :precision => 10, :scale => 0
   end
 
   create_table "dropdowns", :force => true do |t|
@@ -130,6 +143,19 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "sort_order", :limit => 8
+  end
+
+  create_table "goals", :force => true do |t|
+    t.string   "type"
+    t.string   "description"
+    t.string   "sales_office"
+    t.string   "sales_office_name"
+    t.decimal  "amount",            :precision => 20, :scale => 2
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "periodicity"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "hwdb", :force => true do |t|
@@ -161,6 +187,22 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
   end
 
   add_index "inventory_warehouses", ["code"], :name => "index_inventory_warehouses_on_code", :unique => true
+
+  create_table "invoice_payments", :force => true do |t|
+    t.integer "invoice_id"
+    t.integer "payment_id"
+  end
+
+  create_table "invoices", :force => true do |t|
+    t.integer  "invoiceable_id"
+    t.string   "invoiceable_type"
+    t.integer  "appgen_cust_number"
+    t.string   "invoice_number"
+    t.date     "invoice_date"
+    t.integer  "invoice_amount",     :limit => 10, :precision => 10, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "io_slots", :force => true do |t|
     t.integer  "server_id"
@@ -223,6 +265,15 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
     t.datetime "updated_at"
   end
 
+  create_table "payments", :force => true do |t|
+    t.integer  "appgen_cust_number"
+    t.string   "payment_number"
+    t.date     "payment_date"
+    t.integer  "payment_amount",     :limit => 10, :precision => 10, :scale => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "permissions", :id => false, :force => true do |t|
     t.integer  "role_id"
     t.integer  "user_id"
@@ -235,17 +286,22 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
 
   create_table "product_deals", :force => true do |t|
     t.string   "job_number"
-    t.integer  "sugar_opp_id",   :limit => 8
+    t.integer  "sugar_opp_id",      :limit => 8
     t.string   "account_id"
     t.string   "account_name"
     t.string   "invoice_number"
-    t.decimal  "revenue",                     :precision => 20, :scale => 3
-    t.decimal  "cogs",                        :precision => 20, :scale => 3
-    t.decimal  "freight",                     :precision => 20, :scale => 3
+    t.decimal  "revenue",                        :precision => 20, :scale => 3
+    t.decimal  "cogs",                           :precision => 20, :scale => 3
+    t.decimal  "other_costs",                    :precision => 20, :scale => 3
     t.string   "status"
     t.string   "modified_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "sales_office"
+    t.string   "sales_office_name"
+    t.string   "customer_po"
+    t.date     "customer_po_date"
+    t.string   "description"
   end
 
   create_table "relationships", :force => true do |t|
@@ -309,6 +365,8 @@ ActiveRecord::Schema.define(:version => 20090811172226) do
     t.boolean  "labor_provided"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "start_date"
+    t.date     "end_date"
   end
 
   create_table "swdb", :force => true do |t|
