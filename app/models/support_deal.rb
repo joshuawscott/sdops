@@ -93,6 +93,15 @@ class SupportDeal < ActiveRecord::Base
   named_scope :current, :conditions => ["start_date <= ? AND end_date >= ?", Date.today, Date.today]
   named_scope :current_unexpired, :conditions => ["start_date <= ? AND end_date >= ? AND expired <> 1", Date.today, Date.today]
 
+  # This allows iterating through each of the types.
+  def srv_support_level_id
+    if srv_line_items.inject(0) {|sum,n| sum + n.qty}
+      "Services"
+    else
+      ""
+    end
+  end
+
   # accepts an array of team ids, and returns contracts where support_office or sales_office
   # matches the passed array of ids.
   def self.short_list(teams)

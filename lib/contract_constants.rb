@@ -55,8 +55,8 @@ Monday - Friday
 Patch Assistance"
     else "No SW Support"
     end
-    if updates == false
-      @sw_support_description += "\nSoftware Updates Not Provided"
+    if updates == "false"
+      @sw_support_description += "\nSoftware Updates Not Provided" if @sw_support_description != "No SW Support"
     end
     @sw_support_description
   end
