@@ -62,6 +62,16 @@ class AdminController < ApplicationController
     @contracts = Contract.missing_subcontracts
   end
 
+  def jared
+    respond_to do |format|
+      format.html
+      format.xls do
+        first_id = params[:first_id].to_i
+        last_id = params[:last_id].to_i == 0 ? Contract.find(:last).id.to_i : params[:last_id].to_i
+        @contracts = Contract.find(:all, :conditions => ["id >= ? AND id <= ?", first_id, last_id] )
+      end
+    end
+  end
   protected  
   def authorized?
     current_user.has_role?(:admin) || not_authorized

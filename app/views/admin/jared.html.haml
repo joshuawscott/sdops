@@ -1,0 +1,16 @@
+- content_for :subtitle do
+  Admin Reports
+
+#section1
+  %p Leaving the Beginning or Ending ID field blank will use the first or last contract in the database respectively.
+  - form_tag 'jared.xls' do
+    %p
+      %label{:for => :first_id}
+        Beginning Contract ID
+      = text_field_tag 'first_id'
+    %p
+      %label{:for => :last_id}
+        Ending Contract ID
+      = text_field_tag 'last_id'
+    = submit_tag "Generate Report"
+
