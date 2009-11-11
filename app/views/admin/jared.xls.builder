@@ -43,7 +43,7 @@ xml.Workbook({
             xml.Data contract.po_received.to_xls_serial, 'ss:Type' => 'Number'
           end
           xml.Cell 'ss:StyleID' => 'currency' do
-            xml.Data contract.po_received.to_xls_serial, 'ss:Type' => 'Number'
+            xml.Data contract.revenue, 'ss:Type' => 'Number'
           end
           xml.Cell 'ss:StyleID' => 'date' do
             xml.Data contract.start_date.to_xls_serial, 'ss:Type' => 'Number'
