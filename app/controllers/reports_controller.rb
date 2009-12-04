@@ -92,6 +92,10 @@ class ReportsController < ApplicationController
     @locations = LineItem.hw_revenue_by_location
   end
 
+  def missing_subcontracts
+    @contracts = Contract.missing_subcontracts
+  end
+
   def spares_assessment
     @offices = SugarTeam.dropdown_list(current_user.sugar_team_ids).map {|x| x.name}
     if params[:filter] != nil && params[:filter][:office_name] != nil

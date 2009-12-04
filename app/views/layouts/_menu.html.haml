@@ -11,6 +11,8 @@
             %br/
             =link_to 'Renewals', {:controller => 'reports', :action => 'renewals'}, submenuhash('contractsinfo', 'Expiring Contracts')
             %br/
+            =link_to 'Missing Subcontracts', {:controller => 'reports', :action => 'missing_subcontracts'}, submenuhash('contractsinfo', 'Contracts needing a subcontract in place')
+            %br/
           .menuCol.last
             %h2 SubContracts
             =link_to 'Partners', {:controller => 'subcontractors', :action => 'index'}, submenuhash('contractsinfo', 'View and Manage Subcontractor Partners')

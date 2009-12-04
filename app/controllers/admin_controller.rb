@@ -58,10 +58,6 @@ class AdminController < ApplicationController
     end
   end
 
-  def missing_subcontracts
-    @contracts = Contract.missing_subcontracts
-  end
-
   def jared
     respond_to do |format|
       format.html

@@ -62,6 +62,6 @@ Feature: Smoke Tests
     Then I should still see the menu
     Examples:
     |path|
-    |/admin/missing_subcontracts|
+    |/reports/missing_subcontracts|
     |/admin/lineitems|
     |/admin/cashflow|
