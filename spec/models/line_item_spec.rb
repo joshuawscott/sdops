@@ -108,14 +108,14 @@ describe LineItem do
       Factory(:inventory_item, :id => 'c', :item_code => 'A5002')
       Factory(:inventory_item, :id => 'd', :item_code => 'A5003')
       Factory(:inventory_item, :id => 'e', :item_code => 'A5003')
-      @line_items = LineItem.spares_assessment("Dallas")
+      @line_items = LineItem.sparesreq("Dallas")
     end
     it "finds the line items and corresponding inventory items" do
       @line_items[0].product_num.should == 'A5001'
       @line_items[0].base_product.should == 'A5001'
       @line_items[0].description.should == "Description A5001"
       @line_items[0].qty_instock.should == 2
-      @line_items[0].qty_supported.should == 3
+      @line_items[0].count.should == 3
     end
     after(:all) do
       Contract.delete_all

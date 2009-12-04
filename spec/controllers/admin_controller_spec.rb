@@ -23,6 +23,7 @@ describe AdminController do
   describe "POST jared.xls" do
     before :each do
       Contract.stub!(:find).and_return([@contract])
+      Contract.should_receive(:find).with(:last).and_return(@contract)
     end
     it "finds the contracts between the ids given" do
       Contract.should_receive(:find)
@@ -33,5 +34,4 @@ describe AdminController do
       assigns[:contracts].should == [@contract]
     end
   end
-  
 end

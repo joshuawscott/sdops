@@ -59,8 +59,8 @@ describe ReportsController do
     before :each do
       @sugar_team = mock_model(SugarTeam, :name => "Dallas")
       SugarTeam.stub!(:dropdown_list).and_return([@sugar_team])
-      @lineitem = mock_model(LineItem, :product_num => "A5001", :base_part => "A5001-00000", :qty_instock => 1, :qty_covered => 1, :description => "Description")
-      LineItem.stub!(:spares_assessment).and_return([@lineitem])
+      @lineitem = mock_model(LineItem, :product_num => "A5001", :base_part => "A5001-00000", :qty_instock => 1, :count => 1, :description => "Description")
+      LineItem.stub!(:sparesreq).and_return([@lineitem])
     end
 
     it "renders /reports/spares_assessment" do
