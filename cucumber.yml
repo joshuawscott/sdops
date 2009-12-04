@@ -1,2 +1,3 @@
 default: --tag ~@wip features
+wip: --tag @wip features
 html: --format progress --format html --out public/features.html features

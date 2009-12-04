@@ -479,9 +479,10 @@ class SupportDeal < ActiveRecord::Base
     (end_date.mon - start_date.mon) + ((end_date.year - start_date.year) * 12) + 1
   end
 
+  # TODO: WIP
   # Returns an array of payment amounts for a contract (useful for a payment schedule)
   def payment_schedule(opts)
-    send("#{opts[:type]}_list_price").to_s discount_amount
+    send("#{opts[:type].to_s}_list_price") - discount_amount(opts.merge({:prepay => false}))
   end
   # END New methods for quoting #
 

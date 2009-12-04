@@ -1,0 +1,35 @@
+- content_for :subtitle do
+  Spares Assessment
+#section1
+  %table{:class => 'plain_table'}
+    %tr
+      %td{:width => '300px'}
+        %h2{:margin => '0'}
+          Spares Assessment &nbsp;&nbsp;&nbsp;
+      %td
+        %b Filter by Office&nbsp;
+      %td
+        - form_tag'/reports/spares_assessment', {:name => 'search' }  do
+          = select("filter", "offices", @offices, {:include_blank => true}, {:onchange => "document.getElementById('filter_office_name').value = this.options[this.selectedIndex].text" })
+          = hidden_field "filter", "office_name"
+          = submit_tag "Search"
+  %table
+    %thead
+      %tr
+        %th{:colspan => 3}
+        %th{:colspan => 2} Qty
+      %tr
+        %th Base Part
+        %th Part Number
+        %th Description
+        %th In stock
+        %th Covered
+    %tbody
+      -@lineitems.each do |lineitem|
+        %tr
+          %td= lineitem.base_product
+          %td= lineitem.product_num
+          %td= lineitem.description
+          %td= lineitem.qty_instock(@office)
+          %td= lineitem.count
+

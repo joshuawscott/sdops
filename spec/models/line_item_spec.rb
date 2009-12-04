@@ -94,4 +94,34 @@ describe LineItem do
     end
   end
 
+  describe "LineItem.spares_assessment" do
+    before(:all) do
+      @contract = Factory(:contract, :start_date => d('2009-01-01'), :end_date => d('2009-12-31') )
+      a = Factory(:line_item, :product_num => 'A5001', :description => 'Description A5001', :begins => d('2009-01-01'), :ends => d('2009-12-31'))
+      b = Factory(:line_item, :product_num => 'A5001', :description => 'Description A5001', :begins => d('2009-01-01'), :ends => d('2009-12-31'))
+      c = Factory(:line_item, :product_num => 'A5001', :description => 'Description A5001', :begins => d('2009-01-01'), :ends => d('2009-12-31'))
+      d = Factory(:line_item, :product_num => 'A5002', :description => 'Description A5002', :begins => d('2009-01-01'), :ends => d('2009-12-31'))
+      e = Factory(:line_item, :product_num => 'A5005', :description => 'Description A5005', :begins => d('2009-01-01'), :ends => d('2009-12-31'))
+      @contract.line_items = [a,b,c,d,e]
+      Factory(:inventory_item, :id => 'a', :item_code => 'A5001')
+      Factory(:inventory_item, :id => 'b', :item_code => 'A5001')
+      Factory(:inventory_item, :id => 'c', :item_code => 'A5002')
+      Factory(:inventory_item, :id => 'd', :item_code => 'A5003')
+      Factory(:inventory_item, :id => 'e', :item_code => 'A5003')
+      @line_items = LineItem.spares_assessment("Dallas")
+    end
+    it "finds the line items and corresponding inventory items" do
+      @line_items[0].product_num.should == 'A5001'
+      @line_items[0].base_product.should == 'A5001'
+      @line_items[0].description.should == "Description A5001"
+      @line_items[0].qty_instock.should == 2
+      @line_items[0].qty_supported.should == 3
+    end
+    after(:all) do
+      Contract.delete_all
+      LineItem.delete_all
+      InventoryItem.delete_all
+    end
+  end
+
 end

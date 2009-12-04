@@ -15,4 +15,27 @@ class InventoryItem < ActiveRecord::Base
   def tracking
     self.id
   end
+
+  def office
+    wh_city = inventory_warehouse.description.split(" ")
+    @office = case wh_city[0]
+      when "Philly" then "Philadelphia"
+      when "Rentals" then "NONE"
+      when "Onsite" then "NONE"
+      when "Los" then wh_city[0] + " " + wh_city[1]
+      else wh_city[0]
+    end
+    @office
+  end
+
+  def self.warehouse_code_for(office)
+    @warehouse_name =
+    case office
+    when "Philadelphia" then "Philly Spares"
+    when "Los Angeles" then "Los Angeles CA"
+    when "Dayton" then "Dayton Ohio"
+    else office + " Spares"
+    end
+    InventoryWarehouse.find(:first, :conditions => "description LIKE '#{@warehouse_name}%'").code
+  end
 end

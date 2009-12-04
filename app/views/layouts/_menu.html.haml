@@ -44,6 +44,8 @@
             %br/
             =link_to 'Inventory', {:controller => 'inventory_items', :action => 'index'}, submenuhash('reportsinfo', 'Inventory of Parts')
             %br/
+            =link_to 'Spares Assessment', {:controller => 'reports', :action => 'spares_assessment'}, submenuhash('reportsinfo', 'Compare inventory to supported products')
+            %br/
           .submenuFooter{:id => "reportsinfo"}
             &nbsp;
     %li

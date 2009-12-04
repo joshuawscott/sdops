@@ -136,6 +136,35 @@ class LineItem < ActiveRecord::Base
     self.ends ||= support_deal.end_date
     return support_deal.end_date < ends ? support_deal.end_date : ends
   end
+
+  def self.sparesreq(office_name)
+    @lineitems = LineItem.find(:all,
+      :select => 'l.product_num, l.description, sum(l.qty) as count',
+      :conditions => ['l.support_provider = "Sourcedirect" AND l.location = ? AND l.support_type = "HW" AND l.product_num <> "LABEL" AND (l.ends > CURDATE() AND l.begins < ADDDATE(CURDATE(), INTERVAL 30 DAY) OR c.expired <> true)', office_name],
+      :joins => 'as l inner join support_deals c on c.id = l.support_deal_id',
+      :group => 'l.product_num')
+  end
+
+  def qty_instock(office_name=nil)
+    if office_name.nil?
+      InventoryItem.count(:conditions => ['item_code = ?', base_product])
+    else
+      wc = InventoryItem.warehouse_code_for(office_name)
+      InventoryItem.count(:conditions => ['item_code = ? AND warehouse = ?', base_product, wc])
+    end
+  end
+
+  #TODO: add translation table support
+  def base_product
+    product_num
+  end
+
+  # TODO: WIP
+  # returns the price for a particular calendar month.  opts takes a :year and :month keys, and the price
+  # is calculated for that calendar month based on start & end dates of the line item and contract.
+  def price_for_month(opts)
+    nil
+  end
 end
 
 
