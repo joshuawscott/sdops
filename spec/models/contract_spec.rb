@@ -288,8 +288,8 @@ describe Contract do
 
   describe "Contract.missing_subcontracts" do
     before(:all) do
-      @found1    = Factory :contract
-      @found2    = Factory :contract
+      @found1    = Factory :contract, :start_date => Date.parse('2010-01-01'), :end_date => Date.parse('2010-12-31')
+      @found2    = Factory :contract, :start_date => Date.parse('2010-01-01'), :end_date => Date.parse('2010-12-31')
       @notfound1 = Factory :contract
       @notfound2 = Factory :contract
       @notfound3 = Factory :contract
