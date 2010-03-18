@@ -223,22 +223,22 @@ monthly_price_cell = Prawn::Table::Cell.new(:document => pdf, :text => "Monthly 
 
 if multi_year_annual_option
   payment_option_number += 1
-  print_payment_option(payment_option_number, :multi_year => true, :pre_pay => true)
+  print_payment_option(payment_option_number, :multiyear => true, :prepay => true)
 end
 
 if multi_year_monthly_option
   payment_option_number += 1
-  print_payment_option(payment_option_number, :multi_year => true, :pre_pay => false)
+  print_payment_option(payment_option_number, :multiyear => true, :prepay => false)
 end
 
 if annual_option
   payment_option_number += 1
-  print_payment_option(payment_option_number, :multi_year => false, :pre_pay => true)
+  print_payment_option(payment_option_number, :multiyear => false, :prepay => true)
 end
 
 if monthly_option
   payment_option_number += 1
-  print_payment_option(payment_option_number, :multi_year => false, :pre_pay => false)
+  print_payment_option(payment_option_number, :multiyear => false, :prepay => false)
 end
 
 ########################
@@ -248,6 +248,22 @@ end
 pdf.start_new_page
 set_page :description => "Monthly Payment Schedule", :subheader => ""
 pdf.move_down 130
+normal_payment_schedule = @contract.payment_schedule()
+multiyear_payment_schedule = @contract.payment_schedule(:multiyear => true)
+###################  spacer       Date          Multiyear     spacer      normal
+column_widths     = {0 => 150,    1 => 80,      2 => 100,     3 => 20,    4 => 100    }
+column_alignments = {0 => :left,  1 => :left,   2 => :center, 3 => :left, 4 => :center}
+pdf.table([["", "Date", "with Multiyear", "", "Monthly"]], {:horizontal_padding => 0, :vertical_padding => 5, :font_size => 12, :border_width => 0, :row_height => 25, :align => column_alignments, :column_widths => column_widths})
+normal_payment_schedule.size.times do |month|
+  if month == 24
+    pdf.start_new_page
+    set_page :description => "Monthly Payment Schedule", :subheader => "(continued)"
+    pdf.move_down 130
+    pdf.table([["", "Date", "with Multiyear", "", "Monthly"]], {:horizontal_padding => 0, :vertical_padding => 5, :font_size => 12, :border_width => 0, :row_height => 25, :align => column_alignments, :column_widths => column_widths})
+  end
+  date = month == 0 ? @contract.start_date : Date.new(@contract.start_date.>>(month).year,@contract.start_date.>>(month).month,1)
+  pdf.table([["", date, number_to_currency(multiyear_payment_schedule[month]), "", number_to_currency(normal_payment_schedule[month])]], {:padding => 0, :font_size => 10, :border_width => 0, :row_height => 20, :align => column_alignments, :column_widths => column_widths})
+end
 
 ########################
 ### LINE ITEM DETAIL ###

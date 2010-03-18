@@ -455,6 +455,9 @@ class SupportDeal < ActiveRecord::Base
     @discount
   end
 
+  # :type => ['hw', 'sw', 'srv']
+  # :prepay => [true, false]
+  # :multiyear => [true, false]
   def discount_amount(opts={:type => 'hw', :prepay => false, :multiyear => false})
     discount(opts) * send("#{opts[:type].to_s}_list_price")
   end
@@ -479,10 +482,35 @@ class SupportDeal < ActiveRecord::Base
     (end_date.mon - start_date.mon) + ((end_date.year - start_date.year) * 12) + 1
   end
 
-  # TODO: WIP
   # Returns an array of payment amounts for a contract (useful for a payment schedule)
-  def payment_schedule(opts)
-    send("#{opts[:type].to_s}_list_price") - discount_amount(opts.merge({:prepay => false}))
+  def payment_schedule(opts={:multiyear => false, :prepay => false})
+    prepay = opts[:prepay]
+    multiyear = opts[:multiyear]
+    month = start_date.month
+    year = start_date.year
+
+    hw_pay_sched = []
+    sw_pay_sched = []
+    srv_pay_sched = []
+    @payment_schedule = []
+    # set discount
+    hw_disc = BigDecimal.new("1.0") - discount(:type => "hw", :prepay => prepay, :multiyear => multiyear)
+    sw_disc = BigDecimal.new("1.0") - discount(:type => "sw", :prepay => prepay, :multiyear => multiyear)
+    srv_disc = BigDecimal.new("1.0") - discount(:type => "srv", :prepay => prepay, :multiyear => multiyear)
+
+    until (year > end_date.year && month == 1) || (month > end_date.month && year == end_date.year) do
+      hw_pay_sched << hw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * hw_disc}
+      sw_pay_sched << sw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * sw_disc}
+      srv_pay_sched << srv_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * srv_disc}
+      year += 1 if month == 12
+      month = 0 if month == 12
+      month += 1
+    end
+
+    hw_pay_sched.size.times do |i|
+      @payment_schedule << hw_pay_sched[i].to_f + sw_pay_sched[i].to_f + srv_pay_sched[i].to_f
+    end
+    @payment_schedule
   end
   # END New methods for quoting #
 

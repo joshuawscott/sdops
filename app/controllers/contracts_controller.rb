@@ -99,7 +99,6 @@ class ContractsController < ApplicationController
   # GET /contracts/1
   # GET /contracts/1.xml
   def show
-    #TODO: make labels bold in line items list.
     logger.debug "******* Contracts controller show method"
     @contract = Contract.find(params[:id])
     @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}
@@ -256,7 +255,9 @@ class ContractsController < ApplicationController
   def quote
     @contract = Contract.find(params[:id])
     @line_items = LineItem.find(:all, :conditions => {:support_deal_id => params[:id]})
-    @best_discount_amount = @contract.discount_amount(:type => :hw, :prepay => true) + @contract.discount_amount(:type => :sw, :prepay => true) + @contract.discount_amount(:type => :srv, :prepay => true)
+    multiyear = @contract.discount_multiyear > 0.0
+    prepay = true
+    @best_discount_amount = @contract.discount_amount(:type => :hw, :prepay => prepay, :multiyear => multiyear) + @contract.discount_amount(:type => :sw, :prepay => prepay, :multiyear => multiyear) + @contract.discount_amount(:type => :srv, :prepay => prepay, :multiyear => multiyear)
     prawnto :prawn => {:page_layout => :landscape}
   end
 

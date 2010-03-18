@@ -17,35 +17,58 @@ module ContractsHelper
     puts "setting page #{@page_num}"
   end
 
-  def print_payment_option(num, opts={:multi_year => false, :pre_pay => false})
+  def print_payment_option(num, opts={:multiyear => false, :prepay => false})
     #debugger
     original_font = @pdf.font
-    multi_year = opts[:multi_year]
-    pre_pay = opts[:pre_pay]
+    multiyear = opts[:multiyear]
+    prepay = opts[:prepay]
 
-
-    if multi_year && pre_pay
+    # Consturct the description of the given discounts
+    if multiyear && prepay
       discount_string = "Includes Multi Year and PrePay Discounts"
-    elsif multi_year
+      hw_discount_breakdown = "HW = " + number_to_percentage(@contract.discount_pref_hw * 100, :precision => 0) + ", Mult = " + number_to_percentage(@contract.discount_multiyear * 100, :precision => 0) + ", PrePay = " + number_to_percentage(@contract.discount_prepay * 100, :precision => 0)
+      sw_discount_breakdown = "SW = " + number_to_percentage(@contract.discount_pref_sw * 100, :precision => 0) + ", Mult = " + number_to_percentage(@contract.discount_multiyear * 100, :precision => 0) + ", PrePay = " + number_to_percentage(@contract.discount_prepay * 100, :precision => 0)
+      srv_discount_breakdown = "SRV = " + number_to_percentage(@contract.discount_pref_srv * 100, :precision => 0) + ", Mult = " + number_to_percentage(@contract.discount_multiyear * 100, :precision => 0) + ", PrePay = " + number_to_percentage(@contract.discount_prepay * 100, :precision => 0)
+    elsif multiyear
       discount_string = "Includes Multi Year Discount"
-    elsif pre_pay
+      hw_discount_breakdown = "HW = " + number_to_percentage(@contract.discount_pref_hw * 100, :precision => 0) + ", Mult = " + number_to_percentage(@contract.discount_multiyear * 100, :precision => 0)
+      sw_discount_breakdown = "SW = " + number_to_percentage(@contract.discount_pref_sw * 100, :precision => 0) + ", Mult = " + number_to_percentage(@contract.discount_multiyear * 100, :precision => 0)
+      srv_discount_breakdown = "SRV = " + number_to_percentage(@contract.discount_pref_srv * 100, :precision => 0) + ", Mult = " + number_to_percentage(@contract.discount_multiyear * 100, :precision => 0)
+    elsif prepay
       discount_string = "Includes PrePay Discount"
+      hw_discount_breakdown = "HW = " + number_to_percentage(@contract.discount_pref_hw * 100, :precision => 0) + ", PrePay = " + number_to_percentage(@contract.discount_prepay * 100, :precision => 0)
+      sw_discount_breakdown = "SW = " + number_to_percentage(@contract.discount_pref_sw * 100, :precision => 0) + ", PrePay = " + number_to_percentage(@contract.discount_prepay * 100, :precision => 0)
+      srv_discount_breakdown = "SRV = " + number_to_percentage(@contract.discount_pref_srv * 100, :precision => 0) + ", PrePay = " + number_to_percentage(@contract.discount_prepay * 100, :precision => 0)
     else
-      discount_string = "Includes Prefered Customer Discount Only"
+      discount_string = "Includes Preferred Customer Discount Only"
+      hw_discount_breakdown = "HW = " + number_to_percentage(@contract.discount_pref_hw * 100, :precision => 0)
+      sw_discount_breakdown = "SW = " + number_to_percentage(@contract.discount_pref_sw * 100, :precision => 0)
+      srv_discount_breakdown = "SRV = " + number_to_percentage(@contract.discount_pref_srv * 100, :precision => 0)
     end
+
+    hw_discount_rate = @contract.discount(:type => 'hw', :multiyear => multiyear, :prepay => prepay)
+    sw_discount_rate = @contract.discount(:type => 'sw', :multiyear => multiyear, :prepay => prepay)
+    srv_discount_rate = @contract.discount(:type => 'srv', :multiyear => multiyear, :prepay => prepay)
+
+    hw_discount_string = number_to_percentage(hw_discount_rate * 100, :precision => 0)
+    sw_discount_string = number_to_percentage(sw_discount_rate * 100, :precision => 0)
+    srv_discount_string = number_to_percentage(srv_discount_rate * 100, :precision => 0)
 
     #banner
     @pdf.font("Helvetica-Bold")
     @pdf.table [["Option #{num.to_s} (#{discount_string})"]], :row_colors => ["F2F2F2"], :font_size => 12, :border_width => 0, :width => @full_wide, :row_height => 18
 
     #row titles
-    @pdf.table [["","", "List\nPrice", "Discount\nRate", "Discount\nAmount", "Contract Price", pre_pay ? "" : "Monthly Price"]], {:font_size => 8, :align => :center, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
+    @pdf.table [["","", "List\nPrice", "Discount\nRate", "Discount\nAmount", "Contract Price", prepay ? "" : "Monthly Price"]], {:font_size => 8, :align => :center, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
     @pdf.font("Helvetica", :size => 10)
 
     # data
-    @pdf.table [["Hardware Support Pricing","HW = 44%, Mult = 5%, PrePay = 4%", "$4,872.00", "53%", "$(2,582.16)", "$2,289.84", pre_pay ? "" : "$190.82"]], {:align => {0 => :left, 1 => :left, 2 => :right, 3 => :right, 4 => :right, 5 => :right, 6 => :right, 7 => :right}, :font_size => 10, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
-    @pdf.table [["Software Support Pricing","SW = 44%, Mult = 5%, PrePay = 4%", "$4,872.00", "53%", "$(2,582.16)", "$2,289.84", pre_pay ? "" : "$190.82"]], {:align => {0 => :left, 1 => :left, 2 => :right, 3 => :right, 4 => :right, 5 => :right, 6 => :right, 7 => :right}, :font_size => 10, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
-    @pdf.table [["Services Pricing","SW = 44%, Mult = 5%, PrePay = 4%", "$4,872.00", "53%", "$(2,582.16)", "$2,289.84", pre_pay ? "" : "$190.82"]], {:align => {0 => :left, 1 => :left, 2 => :right, 3 => :right, 4 => :right, 5 => :right, 6 => :right, 7 => :right}, :font_size => 10, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
+    hw_contract_price = @contract.hw_list_price - @contract.discount_amount(:type => 'hw', :prepay => prepay, :multiyear => multiyear)
+    sw_contract_price = @contract.sw_list_price - @contract.discount_amount(:type => 'sw', :prepay => prepay, :multiyear => multiyear)
+    srv_contract_price = @contract.srv_list_price - @contract.discount_amount(:type => 'srv', :prepay => prepay, :multiyear => multiyear)
+    @pdf.table [["Hardware Support Pricing", hw_discount_breakdown, number_to_currency(@contract.hw_list_price), hw_discount_string, number_to_currency(-@contract.discount_amount(:type => "hw", :multiyear => multiyear, :prepay => prepay)), number_to_currency(hw_contract_price), prepay ? "" : "see sched."]], {:align => {0 => :left, 1 => :left, 2 => :right, 3 => :right, 4 => :right, 5 => :right, 6 => :right, 7 => :right}, :font_size => 10, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
+    @pdf.table [["Software Support Pricing", sw_discount_breakdown, number_to_currency(@contract.sw_list_price), sw_discount_string, number_to_currency(-@contract.discount_amount(:type => "sw", :multiyear => multiyear, :prepay => prepay)), number_to_currency(sw_contract_price), prepay ? "" : "see sched."]], {:align => {0 => :left, 1 => :left, 2 => :right, 3 => :right, 4 => :right, 5 => :right, 6 => :right, 7 => :right}, :font_size => 10, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
+    @pdf.table [["Services Pricing", srv_discount_breakdown, number_to_currency(@contract.srv_list_price), srv_discount_string, number_to_currency(-@contract.discount_amount(:type => "srv", :multiyear => multiyear, :prepay => prepay)), number_to_currency(srv_contract_price), prepay ? "" : "see sched."]], {:align => {0 => :left, 1 => :left, 2 => :right, 3 => :right, 4 => :right, 5 => :right, 6 => :right, 7 => :right}, :font_size => 10, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
     @pdf.move_down 7
 
     @pdf.font(original_font.attributes["fullname"])

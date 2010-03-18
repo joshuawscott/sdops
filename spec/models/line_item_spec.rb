@@ -124,4 +124,35 @@ describe LineItem do
     end
   end
 
+  describe "LineItem#list_price_for_month" do
+    before(:all) do
+      contract = Factory(:contract, :start_date => d('2009-01-01'), :end_date => d('2009-12-31') )
+      @line_item = Factory(:line_item, :begins => d('2009-01-21'), :ends => d('2009-12-15'), :list_price => 1.0, :qty => 1 )
+      contract.line_items << @line_item
+    end
+    it "prices a full month correctly" do
+      @line_item.list_price_for_month(:month => 2, :year => 2009).should == 1.0
+    end
+    it "prices a beginning partial month correctly" do
+      @line_item.list_price_for_month(:month => 1, :year => 2009).should == (11.0 / 31.0)
+    end
+    it "prices a ending partial month correctly" do
+      @line_item.list_price_for_month(:month => 12, :year => 2009).should == (15.0 / 31.0)
+    end
+    it "prices a month after the contract correctly" do
+      @line_item.list_price_for_month(:month =>1, :year => 2010).should == (0.0)
+    end
+    it "prices a month before the contract correctly" do
+      @line_item.list_price_for_month(:month =>12, :year => 2008).should == (0.0)
+    end
+    it "prices a partial start and stop correctly" do
+      @line_item.ends = d('2009-01-22')
+      @line_item.list_price_for_month(:month => 1, :year => 2009).should == (2.0 / 31.0)
+    end
+    after(:all) do
+      LineItem.delete_all
+      Contract.delete_all
+    end
+  end
+
 end

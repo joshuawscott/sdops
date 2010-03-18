@@ -159,12 +159,35 @@ class LineItem < ActiveRecord::Base
     product_num
   end
 
-  # TODO: WIP
-  # returns the price for a particular calendar month.  opts takes a :year and :month keys, and the price
+  # Returns the list price for a particular calendar month.  opts takes a :year and :month keys, and the list price
   # is calculated for that calendar month based on start & end dates of the line item and contract.
-  def price_for_month(opts)
-    nil
+  def list_price_for_month(opts)
+    month = opts[:month]
+    year = opts[:year]
+    days_in_month = Time.days_in_month(month,year)
+
+    if start_date.month == month && start_date.year == year
+      #beginning month
+      start_day = start_date.day
+    elsif (start_date.month > month && start_date.year == year) || (start_date.year > year)
+      # month before start_date (have to check for the year too because of wraparound)
+      start_day = days_in_month + 1
+    else
+      start_day = 1
+    end
+
+    if end_date.month == month && end_date.year == year
+      #ending month
+      end_day = end_date.day
+    elsif (end_date.month < month && end_date.year == year) || (end_date.year < year)
+      # month after end_date (have to check for the year too because of wraparound)
+      end_day = 0
+    else
+      end_day = days_in_month
+    end
+
+    days_covered = (end_day - start_day) + 1
+    list_price * (days_covered.to_f / days_in_month.to_f) * qty.to_f
   end
 end
-
 
