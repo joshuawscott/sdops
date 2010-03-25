@@ -253,8 +253,10 @@ class ContractsController < ApplicationController
   end
 
   def quote
-    #expires_in 1.minute, :private => nil, :public => true
-    response.headers['Cache-Control'] = 'private, max-age=120'
+    response.headers['Expires'] = '0'
+    response.headers['Cache-Control'] = 'private'
+    response.headers['Pragma'] = 'Cache'
+    #expires_in 120, :private => true, :must-revalidate => nil
     @contract = Contract.find(params[:id])
     @line_items = LineItem.find(:all, :conditions => {:support_deal_id => params[:id]})
     multiyear = @contract.discount_multiyear > 0.0
