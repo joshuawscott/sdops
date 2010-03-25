@@ -258,7 +258,7 @@ class ContractsController < ApplicationController
     multiyear = @contract.discount_multiyear > 0.0
     prepay = true
     @best_discount_amount = @contract.discount_amount(:type => :hw, :prepay => prepay, :multiyear => multiyear) + @contract.discount_amount(:type => :sw, :prepay => prepay, :multiyear => multiyear) + @contract.discount_amount(:type => :srv, :prepay => prepay, :multiyear => multiyear)
-    prawnto :prawn => {:page_layout => :landscape}
+    prawnto :prawn => {:page_layout => :landscape}, :inline => false
   end
 
   protected
