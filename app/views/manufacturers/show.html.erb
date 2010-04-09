@@ -1,0 +1,11 @@
+<% content_for :subtitle do %>
+  Manufacturer
+<% end %>
+<p>
+  <b>Name:</b>
+  <%=h @manufacturer.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_manufacturer_path(@manufacturer) %> |
+<%= link_to 'Back', manufacturers_path %>

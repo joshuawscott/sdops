@@ -68,12 +68,12 @@ describe SwSupportPricesController, "POST create" do
     end
 
     it "should redirect to the new form again" do
-      post :create
-      response.should redirect_to(new_sw_support_price_path)
+      post :create, {"sw_support_price" => {"confirm_date" => '2009-01-01'}}
+      response.should redirect_to(new_sw_support_price_path + "?confirm_date=2009-01-01")
     end
 
     it "should display a success message" do
-      post :create
+      post :create, {"sw_support_price" => {"confirm_date" => '2009-01-01'}}
       flash[:notice].should == "The price was saved successfully."
     end
 

@@ -1,4 +1,8 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :manufacturer_lines
+
+  map.resources :manufacturers
+
   map.resources :subcontracts, :has_many => :line_items, :collection => {:add_line_items => :post}
 
   map.resources :subcontractors

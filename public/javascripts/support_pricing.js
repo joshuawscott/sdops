@@ -14,3 +14,4 @@ function useSwPricing(field,type){
   $(type+'_support_price_phone_price').value = $(field+'_price').innerHTML;
   $(type+'_support_price_update_price').value = "0";
 }
+

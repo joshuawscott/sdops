@@ -8,6 +8,11 @@ Given /^some support products exist$/ do
   SwSupportPrice.count.should == 2
 end
 
+Given /^the product lines are populated$/ do
+  mfg = Factory(:manufacturer, :name => "HP")
+  Factory(:manufacturer_line, :name => "Proliant", :manufacturer_id => mfg.id)
+end
+
 Then /^I should see the HW support price add form$/ do
   response.should have_tag("form[action='/hw_support_prices']") do |form|
     form.should have_tag("label[for=hw_support_price_part_number]") do |label|

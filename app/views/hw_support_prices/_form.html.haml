@@ -1,4 +1,8 @@
 %p
+  %label{:for => "hw_support_price_manufacturer_line_id"}
+    Product Line
+  = f.select :manufacturer_line_id, @manufacturer_lines.map {|mfg| [mfg.manufacturer.name + " | " + mfg.name, mfg.id]}
+%p
   %label{:for => "hw_support_price_part_number"}
     Product Number
   = f.text_field :part_number

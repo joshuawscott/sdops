@@ -1,0 +1,22 @@
+<% content_for :subtitle do %>
+  New Product Line
+<% end %>
+<h1>New manufacturer_line</h1>
+
+<% form_for(@manufacturer_line) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :manufacturer_id %><br />
+    <%= f.select :manufacturer_id, @manufacturers.map {|mfg| [mfg.name, mfg.id]} %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', manufacturer_lines_path %>

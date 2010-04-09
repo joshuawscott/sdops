@@ -5,11 +5,13 @@ Feature: Maintain pricing information
 
   Background:
     Given I am logged in as a "pricing_manager"
+    And the product lines are populated
 
   Scenario: Add a HW support price
     Given I follow "HW Support Add"
     When I fill in "Product Number" with "A6144A"
     And I fill in "Description" with "L3000 Server"
+    And I select "HP | Proliant" from "Product Line"
     And I fill in "List Price" with "100.00"
     And I press "Create"
     Then I should see "The price was saved successfully."
@@ -19,6 +21,7 @@ Feature: Maintain pricing information
     Given I follow "SW Support Add"
     When I fill in "Product Number" with "A6144A"
     And I fill in "Description" with "L3000 Server"
+    And I select "HP | Proliant" from "Product Line"
     And I fill in "Phone Price" with "100.00"
     And I fill in "Update Price" with "100.00"
     And I press "Create"

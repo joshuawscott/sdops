@@ -1,0 +1,23 @@
+<% content_for :subtitle do %>
+  Edit Manufacturers
+<% end %>
+<h1>Editing manufacturer_line</h1>
+
+<% form_for(@manufacturer_line) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :manufacturer %><br />
+    <%= f.select :manufacturer, @manufacturers.map {|mfg| [mfg.name, mfg.id]} %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @manufacturer_line %> |
+<%= link_to 'Back', manufacturer_lines_path %>

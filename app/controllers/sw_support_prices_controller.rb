@@ -10,13 +10,15 @@ class SwSupportPricesController < ApplicationController
   end
   def new
     @sw_support_price ||= SwSupportPrice.new
+    @sw_support_price.confirm_date ||= params[:confirm_date]
+    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
   end
 
   def create
     @sw_support_price = SwSupportPrice.new(params[:sw_support_price])
     if @sw_support_price.save
       flash[:notice] = "The price was saved successfully."
-      redirect_to new_sw_support_price_path
+      redirect_to url_for(new_sw_support_price_path) + "?confirm_date=" + params[:sw_support_price][:confirm_date]
     else
       flash[:notice] = "The price failed to save"
       render :action => "new"
@@ -33,6 +35,7 @@ class SwSupportPricesController < ApplicationController
 
   def edit
     @sw_support_price = SwSupportPrice.find(params[:id])
+    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
   end
 
   def update

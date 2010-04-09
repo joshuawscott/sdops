@@ -49,4 +49,8 @@ class SupportPricingDb < ActiveRecord::Base
     #TODO: Timezone checks
     self.modified_at = 5.hours.ago
   end
+
+  def manufacturer
+    manufacturer_line.manufacturer
+  end
 end

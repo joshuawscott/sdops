@@ -1,0 +1,2 @@
+module ManufacturerLinesHelper
+end

@@ -1,0 +1,16 @@
+<% content_for :subtitle do %>
+  Product Line
+<% end %>
+<p>
+  <b>Name:</b>
+  <%=h @manufacturer_line.name %>
+</p>
+
+<p>
+  <b>Integer:</b>
+  <%=h @manufacturer_line.manufacturer.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_manufacturer_line_path(@manufacturer_line) %> |
+<%= link_to 'Back', manufacturer_lines_path %>
