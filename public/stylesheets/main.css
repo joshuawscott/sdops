@@ -67,6 +67,8 @@ table {
   table tbody tr.line_item_header td {
     font-weight: bold;
     background-color: #eeeeee; }
+  table tbody tr.line_item_expired td {
+    background-color: #ffff99; }
   table tr:first-child th:last-child {
     -moz-border-radius-topright: 8px;
     -webkit-border-top-right-radius: 8px;

@@ -66,7 +66,7 @@ module ApplicationHelper
   # Returns a url containing parameters for executing a search on the contracts/index action.
   def contract_search_url(search_hash = {})
     Contract.columns.each do |c|
-      search_hash[c.name] ||= ""
+      search_hash[c.name.to_sym] ||= ""
     end
     url_for  :controller => "contracts", :action => "index", :commit => "Search", :params => { :search => search_hash }
   end

@@ -1,4 +1,4 @@
-%tr{:id => "lineitem_" + line_item.id.to_s, :class => line_item.product_num == 'LABEL' ? 'line_item_header' : ''}
+%tr{:id => "lineitem_" + line_item.id.to_s, :class => line_item.product_num == 'LABEL' ? 'line_item_header' : line_item.ends < Date.today ? 'line_item_expired' : ''}
   - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
     -if section != 'SRV'
       %td.drag_handle.hideforprint [drag]
@@ -12,8 +12,8 @@
   %td= h line_item.note
   %td{:title => line_item.description.to_s.length > 30 ? line_item.description : ""}= h truncate(line_item.description, 30)
   %td= h line_item.serial_num
-  %td= h line_item.begins
-  %td= h line_item.ends
+  %td{:style => line_item.begins == @contract.start_date ? 'color: #777777;' : 'font-weight: bold;'}= h line_item.begins
+  %td{:style => line_item.ends == @contract.end_date ? 'color: #777777;' : 'font-weight: bold;'}= h line_item.ends
   %td{:align => 'center'}
     = h line_item.qty
   - if @restricted_user.nil?
