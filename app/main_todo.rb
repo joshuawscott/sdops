@@ -9,6 +9,16 @@
 #TODO: more detailed support levels, multiple fields
 #TODO: some sort of reminder system to follow up on certain items -- maybe dovetails into reminders for expired/expiring contracts
 
+#TODO: Link on Account Names to see all contracts for that account
+#TODO: Add blank default selection to product line in dropdown on support price add and edit
+#TODO: Total renewals, using javascript to update total when filtering
+#TODO: Dashboard or Admin - report for totals by product line
+#TODO: Dashboard report - Add columns to total up expired contracts and subtract them from the total
+#TODO: Admin Report - uncategorized items
+#TODO: Global todo list (uncat items, renewals, upfront contracts)
+#TODO: Comments report, - maybe with RSS feed
+
+
 #TODO: Get product deals working
 
 #TODO: Line Items export expanded to include other columns, provider, Notes...

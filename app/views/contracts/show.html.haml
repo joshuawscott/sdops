@@ -90,6 +90,6 @@
           %p= submit_tag "Add to Subcontract"
 -if current_user.has_role?(:contract_editor, :contract_admin)
     
-  = sortable_element('hwlines', :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
-  = sortable_element('swlines', :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
+  = sortable_element('hwlines', :scroll => :window, :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
+  = sortable_element('swlines', :scroll => :window, :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
 

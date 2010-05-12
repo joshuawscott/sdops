@@ -11,8 +11,8 @@
     <%= f.text_field :name %>
   </p>
   <p>
-    <%= f.label :manufacturer %><br />
-    <%= f.select :manufacturer, @manufacturers.map {|mfg| [mfg.name, mfg.id]} %>
+    <%= f.label :manufacturer_id %><br />
+    <%= f.select :manufacturer_id, @manufacturers.map {|mfg| [mfg.name, mfg.id]} %>
   </p>
   <p>
     <%= f.submit "Update" %>
