@@ -1,0 +1,49 @@
+- content_for :subtitle do
+  Products Missing Manufacturer
+
+%p &nbsp;
+
+#section1
+  %h2{:style => 'margin:15px 0px 0px 3px'} HW Products
+  
+  %table{:class => "sortable", :padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th
+          &nbsp;
+        %th
+        %th
+          %b Product
+    %tbody
+      - n = 0
+      - @sw_products.each do |x|
+        %tr
+          %td
+            = n += 1
+          %td
+            %b
+              = link_to 'edit', edit_sw_support_price_url(x.id)
+          %td
+            = link_to x.part_number.to_s + " | " + x.description.to_s, hw_support_price_url(x.id)
+  %h2{:style => 'margin:15px 0px 0px 3px'} SW Products
+  
+  %table{:class => "sortable", :padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th
+          &nbsp;
+        %th
+        %th
+          %b Product
+    %tbody
+      - n = 0
+      - @sw_products.each do |x|
+        %tr
+          %td
+            = n += 1
+          %td
+            %b
+              = link_to 'edit', edit_sw_support_price_url(x.id)
+          %td
+            = link_to x.part_number.to_s + " | " + x.description.to_s, sw_support_price_url(x.id)
+

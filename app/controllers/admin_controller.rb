@@ -68,7 +68,12 @@ class AdminController < ApplicationController
       end
     end
   end
-  protected  
+
+  def missing_manufacturer
+    @hw_products = HwSupportPrice.find(:all, :conditions => "manufacturer_line_id IS NULL OR manufacturer_line_id = ''")
+    @sw_products = SwSupportPrice.find(:all, :conditions => "manufacturer_line_id IS NULL OR manufacturer_line_id = ''")
+  end
+  protected
   def authorized?
     current_user.has_role?(:admin) || not_authorized
   end
