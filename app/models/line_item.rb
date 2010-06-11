@@ -15,14 +15,14 @@
 #   position      integer
 #   location      string
 #   current_list_price  decimal
-#   effective_price     decimal   
+#   effective_price     decimal
 class LineItem < ActiveRecord::Base
   @@support_types = ['HW', 'SW', 'SRV']
   belongs_to :support_deal
   belongs_to :subcontract
   validates_presence_of :support_type, :in => @@support_types
   validates_presence_of :location, :position, :product_num
-  acts_as_audited :except => :effective_price
+  acts_as_audited :except => [:effective_price, :position]
   acts_as_list :scope => :support_deal
   # Aggregates the locations in LineItems as an Array Object
   def contract

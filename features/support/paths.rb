@@ -26,6 +26,8 @@ module NavigationHelpers
       '/opportunities/new'
     when /the reports page/
       '/reports'
+    when /the line items report page/
+      '/reports/customer_line_items'
     else
       raise "Can't find mapping from \"#{page_name}\" to a path.\n" +
         "Now, go and add a mapping in #{__FILE__}"

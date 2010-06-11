@@ -106,4 +106,5 @@ class ReportsController < ApplicationController
       @lineitems = []
     end
   end
+
 end
