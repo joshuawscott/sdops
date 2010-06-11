@@ -24,32 +24,40 @@
           %img{:src => '/images/spinner_green.gif'}
     %p
       = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('current','hw')", :title => "Copy this"
-      %b Current Description:
+      %b Current description:
       %span#current_description
     %p
-      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('sun','hw')", :title => "Copy this"
-      %b Sun Description:
-      %span#sun_description
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('current','hw')", :title => "Copy this"
+      %b Current price:
+      %span#current_price
     %p
       = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('hp','hw')", :title => "Copy this"
       %b HP description:
       %span#hp_description
     %p
-      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('current','hw')", :title => "Copy this"
-      %b Current Price:
-      %span#current_price
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('hp_option','hw')", :title => "Copy this"
+      %b HP monthly option price:
+      %span#hp_option_price
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('sun','hw')", :title => "Copy this"
+      %b Sun Description:
+      %span#sun_description
     %p
       = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('sun','hw')", :title => "Copy this"
       %b Sun price:
       %span#sun_price
     %p
       = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('ibm_gsa','hw')", :title => "Copy this"
-      %b IBM GSA pricing:
+      %b IBM GSA price:
       %span#ibm_gsa_price
     %p
-      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('hp_option','hw')", :title => "Copy this"
-      %b HP monthly option pricing:
-      %span#hp_option_price
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('emc','hw')", :title => "Copy this"
+      %b EMC description:
+      %span#emc_description
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('emc','hw')", :title => "Copy this"
+      %b EMC price:
+      %span#emc_price
   #search_current_info.boxed{:style => 'width:800px'}
     %h2 current pricing search
     - form_remote_tag :url => {:action => 'index', :format => :js}, :method => :get, :failure => 'alert(request.status)', :before => "Element.show('search_spinner')", :complete => "Element.hide('search_spinner')" do

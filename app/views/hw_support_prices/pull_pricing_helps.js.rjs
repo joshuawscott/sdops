@@ -4,3 +4,5 @@ page['sun_description'].innerHTML = @sun_info.description
 page['sun_price'].innerHTML = @sun_info.list_price
 page['hp_description'].innerHTML = @hp_info.description
 page['hp_option_price'].innerHTML = @hp_info.list_price
+page['emc_price'].innerHTML = @emc_info.list_price
+page['emc_description'].innerHTML = @emc_info.description

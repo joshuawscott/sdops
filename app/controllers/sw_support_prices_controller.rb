@@ -20,6 +20,7 @@ class SwSupportPricesController < ApplicationController
       flash[:notice] = "The price was saved successfully."
       redirect_to url_for(new_sw_support_price_path) + "?confirm_date=" + params[:sw_support_price][:confirm_date]
     else
+      @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
       flash[:notice] = "The price failed to save"
       render :action => "new"
     end
@@ -44,6 +45,7 @@ class SwSupportPricesController < ApplicationController
       flash[:notice] = "Price successfully updated"
       redirect_to sw_support_prices_path
     else
+      @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
       flash[:notice] = "FAILURE!"
       render :action => "edit"
     end
@@ -54,6 +56,7 @@ class SwSupportPricesController < ApplicationController
     @current_info = SwSupportPrice.current_list_price(part_number)
     @sun_info = PricingDbSunService.find_pn(part_number)
     @hp_info = PricingDbHpPrice.find_sw_pn(part_number)
+    @emc_info = PricingDbEmc.find_pn(part_number)
   end
 
 end

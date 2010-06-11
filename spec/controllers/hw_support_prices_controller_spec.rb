@@ -48,6 +48,10 @@ describe HwSupportPricesController, "POST create" do
     controller.stub!(:login_required)
     @hw_support_price = mock_model(HwSupportPrice, :save => nil)
     HwSupportPrice.stub!(:new).and_return @hw_support_price
+    @manufacturer = mock_model(Manufacturer, :name => "hp")
+    Manufacturer.stub!(:name).and_return "hp"
+    @manufacturer_line = mock_model(ManufacturerLine, :manufacturer => @manufacturer, :name => "proliant")
+    ManufacturerLine.stub!(:find).and_return [@manufacturer_line]
   end
 
   it "should create a new HwSupportPrice" do
@@ -86,6 +90,11 @@ describe HwSupportPricesController, "POST create" do
     it "should assign @hw_support_price" do
       post :create
       assigns[:hw_support_price].should == @hw_support_price
+    end
+
+    it "should assign @manufacturer_lines" do
+      post :create
+      assigns[:manufacturer_lines].should == [@manufacturer_line]
     end
 
     it "should render the new template" do

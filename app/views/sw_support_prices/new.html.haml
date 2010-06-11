@@ -27,29 +27,37 @@
       %b Current Description:
       %span#current_description
     %p
-      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('sun','sw')", :title => "Copy this"
-      %b Sun Description:
-      %span#sun_description
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePhonePricing('current_phone','sw')", :title => "Copy this"
+      %b Current phone price:
+      %span#current_phone_price
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "useUpdatePricing('current_update','sw')", :title => "Copy this"
+      %b Current update price:
+      %span#current_update_price
     %p
       = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('hp','sw')", :title => "Copy this"
       %b HP description:
       %span#hp_description
     %p
-      = link_to_function image_tag('/images/mini-copy.gif'), "usePhonePricing('current_phone','sw')", :title => "Copy this"
-      %b Current Phone Price:
-      %span#current_phone_price
+      = link_to_function image_tag('/images/mini-copy.gif'), "useSwPricing('hp_option','sw')", :title => "Copy this"
+      %b HP monthly option price:
+      %span#hp_option_price
     %p
-      = link_to_function image_tag('/images/mini-copy.gif'), "useUpdatePricing('current_update','sw')", :title => "Copy this"
-      %b Current Update Price:
-      %span#current_update_price
+      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('sun','sw')", :title => "Copy this"
+      %b Sun description:
+      %span#sun_description
     %p
       = link_to_function image_tag('/images/mini-copy.gif'), "useSwPricing('sun','sw')", :title => "Copy this"
-      %b Sun price:
+      %b Sun pricing:
       %span#sun_price
     %p
-      = link_to_function image_tag('/images/mini-copy.gif'), "useSwPricing('hp_option','sw')", :title => "Copy this"
-      %b HP monthly option pricing:
-      %span#hp_option_price
+      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('emc','sw')", :title => "Copy this"
+      %b EMC description:
+      %span#emc_description
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "useSwPricing('emc','sw')", :title => "Copy this"
+      %b EMC price:
+      %span#emc_price
   #search_current_info.boxed{:style => 'width:800px'}
     %h2 current pricing search
     - form_remote_tag :url => {:action => 'index', :format => :js}, :method => :get, :failure => 'alert(request.status)', :before => "Element.show('search_spinner')", :complete => "Element.hide('search_spinner')" do
