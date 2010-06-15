@@ -13,19 +13,23 @@ class ImportController < ApplicationController
   def create()
     #because the import processing is so complex, we must do form checking in the controller
     #to avoid nils and NoMethodErrors
-    if params["importfile"] == ""
-      flash[:error] = "You must select a file to import"
-      render :controller => :import, :action => :index and return
-    else
+    if params[:contract] != ""
       records = YAML::load( params[:importfile] )
-    end
-    if params["platform"] == "" || params["sales_office"] == "" || params["contract_type"] == "" || params["sales_rep_id"] == "" || params["po_received"] == ""
-      flash[:error] = "Please fill in all fields in red."
-      render :controller => :import, :action => :index and return
-    end
-    if params["account_id"] == "" && params["contract"] == ""
-      flash[:error] = "You must select either an account or a current contract"
-      render :controller => :import, :action => :index and return
+    else
+      if params["importfile"] == ""
+        flash[:error] = "You must select a file to import"
+        render :controller => :import, :action => :index and return
+      else
+        records = YAML::load( params[:importfile] )
+      end
+      if params["platform"] == "" || params["sales_office"] == "" || params["contract_type"] == "" || params["sales_rep_id"] == "" || params["po_received"] == ""
+        flash[:error] = "Please fill in all fields in red."
+        render :controller => :import, :action => :index and return
+      end
+      if params["account_id"] == "" && params["contract"] == ""
+        flash[:error] = "You must select either an account or a current contract"
+        render :controller => :import, :action => :index and return
+      end
     end
     #Separate out the data
     contract_ary = records[0]
@@ -52,18 +56,18 @@ class ImportController < ApplicationController
     #If this is an existing contract
     if params[:contract] != ""
       @contract = Contract.find(params[:contract])
-      @contract.hw_support_level_id = contract_ary.ivars['attributes']['hw_support_level_id']
-      @contract.sw_support_level_id = contract_ary.ivars['attributes']['sw_support_level_id']
-      @contract.updates = contract_ary.ivars['attributes']['updates']
-      @contract.said = contract_ary.ivars['attributes']['said']
-      @contract.sales_rep_id = contract_ary.ivars['attributes']['sales_rep_id']
-      @contract.sales_office = contract_ary.ivars['attributes']['sales_office']
-      @contract.support_office = contract_ary.ivars['attributes']['support_office']
-      @contract.sales_office_name = contract_ary.ivars['attributes']['sales_office_name']
-      @contract.support_office_name = contract_ary.ivars['attributes']['support_office_name']
-      @contract.platform = contract_ary.ivars['attributes']['platform']
-      @contract.contract_type = contract_ary.ivars['attributes']['contract_type']
-      @contract.cust_po_num = contract_ary.ivars['attributes']['cust_po_num']
+      #@contract.hw_support_level_id = contract_ary.ivars['attributes']['hw_support_level_id']
+      #@contract.sw_support_level_id = contract_ary.ivars['attributes']['sw_support_level_id']
+      #@contract.updates = contract_ary.ivars['attributes']['updates']
+      #@contract.said = contract_ary.ivars['attributes']['said']
+      #@contract.sales_rep_id = contract_ary.ivars['attributes']['sales_rep_id']
+      #@contract.sales_office = contract_ary.ivars['attributes']['sales_office']
+      #@contract.support_office = contract_ary.ivars['attributes']['support_office']
+      #@contract.sales_office_name = contract_ary.ivars['attributes']['sales_office_name']
+      #@contract.support_office_name = contract_ary.ivars['attributes']['support_office_name']
+      #@contract.platform = contract_ary.ivars['attributes']['platform']
+      #@contract.contract_type = contract_ary.ivars['attributes']['contract_type']
+      #@contract.cust_po_num = contract_ary.ivars['attributes']['cust_po_num']
     else # If this is a new contract
       @contract = Contract.new(contract_ary.ivars['attributes'])
     end
