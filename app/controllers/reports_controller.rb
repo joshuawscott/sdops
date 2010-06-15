@@ -88,6 +88,24 @@ class ReportsController < ApplicationController
     end
   end
 
+  def oldbusiness
+    logger.debug "************** reports/oldbusiness action"
+    @contracts = Contract.oldbusiness
+    #TODO: Change to AJAX requests for report?
+    #generate the filter dropdown:
+    @period_names = []
+    @period_ids = []
+    (2003..Date.today.year).to_a.each do |y|
+      1.upto(12) {|m| @period_names << Date::MONTHNAMES[m] + " " + y.to_s; @period_ids << y.to_s + m.to_s}
+    end
+    @periods = @period_names.zip(@period_ids)
+    @currperiod = Date.today.year.to_s + Date.today.month.to_s
+    respond_to do |format|
+      format.html { render :html => @contracts }# index.html.haml
+      format.xls  #Respond as Excel Doc
+    end
+  end
+
   def potentialoffices
     @locations = LineItem.hw_revenue_by_location
   end

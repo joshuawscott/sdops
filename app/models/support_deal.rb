@@ -308,14 +308,6 @@ class SupportDeal < ActiveRecord::Base
     BigDecimal.new('1.0') - (self.annual_srv_rev / (total_list * BigDecimal.new('12.0')))
   end
 
-  # For newbusiness report
-  def self.newbusiness
-    self.find(:all,
-      :select => "support_deals.*, CONCAT(users.first_name, ' ', users.last_name) AS sales_rep_name, (annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as tot_rev",
-      :joins => "LEFT JOIN users ON support_deals.sales_rep_id = users.id",
-      :conditions => "payment_terms <> 'Bundled'").map { |x|  x unless x.renewal? }.compact
-  end
-
   # String: po_received date translated to YYYYM.
   # Useful for in-place filtering based on date
   def period
