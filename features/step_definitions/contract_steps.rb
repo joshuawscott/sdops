@@ -17,7 +17,7 @@ end
 
 Given /^some contracts exist to search on$/ do
   @contract1 = Factory(:dallas_contract, :description => 'contract the first', :said => 'first SAID', :sdc_ref => 'first SDC REF', :start_date => '2009-01-01', :end_date => '2009-01-31', :annual_hw_rev => 10000)
-  @contract2 = Factory(:dallas_contract, :description => 'contract the second', :payment_terms => 'Monthly', :said => 'second SAID', :sdc_ref => 'second SDC REF', :start_date => '2009-02-01', :end_date => '2009-02-28')
+  @contract2 = Factory(:dallas_contract, :description => 'contract the second', :payment_terms => 'Monthly', :said => 'second SAID', :sdc_ref => 'second SDC REF', :start_date => '2009-02-01', :end_date => Date.today)
   @contract3 = Factory(:philadelphia_contract, :description => 'contract the third', :said => 'third SAID', :sdc_ref => 'third SDC REF')
   @contract4 = Factory(:philadelphia_contract, :description => 'contract the fourth', :payment_terms => 'Monthly', :said => 'fourth SAID', :sdc_ref => 'fourth SDC REF')
 end
