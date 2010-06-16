@@ -48,7 +48,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "support_deals.start_date #{op} ?", val unless @start_date.blank?
       op, val = @end_date.split(" ")
       @contracts = @contracts.conditions "support_deals.end_date #{op} ?", val unless @end_date.blank?
-      @contracts = @contracts.conditions "support_deals.expired <> true" unless @expired == "on"
+      @contracts = @contracts.conditions "(support_deals.expired <> true OR support_deals.end_date >= '#{Date.today}')" unless @expired == "on"
       @contracts
     elsif params[:export] != nil
       #Get search criteria from params object
@@ -82,7 +82,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "support_deals.start_date #{op} ?", val unless @start_date.blank?
       op, val = @end_date.split(" ")
       @contracts = @contracts.conditions "support_deals.end_date #{op} ?", val unless @end_date.blank?
-      @contracts = @contracts.conditions "support_deals.expired <> true" unless @expired == "on"
+      @contracts = @contracts.conditions "(support_deals.expired <> true OR support_deals.end_date >= '#{Date.today}')" unless @expired == "on"
       @contracts
       
     else

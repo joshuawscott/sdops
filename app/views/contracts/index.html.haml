@@ -80,13 +80,13 @@
           %th{:class => "search"}
             = text_field 'search', 'revenue', :size => 9, :value => @revenue
       -@contracts.each do |contract|
-        - rowclass = contract.end_date < Date.today ? 'expired' : 'plain'
-        %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"} 
+        - rowclass = contract.end_date < Date.today ? 'expired' : contract.expired == true ? 'old' : 'plain'
+        %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"}
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
           %td{:title => contract.account_name.length > 20 ? contract.account_name : ""}= h truncate(contract.account_name, 20)
           %td{:title => contract.said.to_s.length > 15 ? contract.said : ""}= h truncate(contract.said, 15)
-          %td{:title => contract.description.to_s.length > 20 ? contract.description : ""}= h truncate(contract.description, 20)
+          %td{:title => contract.description.to_s.length > 20 ? contract.description : ""}= link_to(truncate(contract.description, 20), contract_path(contract), :class => 'highlight')
           %td= h contract.start_date
           %td= h contract.end_date
           %td= h contract.payment_terms

@@ -20,6 +20,10 @@ a:hover {
   text-decoration: none;
   color: #a0d55c; }
 
+a.highlight:hover {
+  text-decoration: none;
+  color: #0000ff; }
+
 p, blockquote, ul, ol {
   margin-bottom: 1em;
   text-align: justify; }
@@ -89,6 +93,10 @@ table {
   table tr.expired {
     background: #ffff99; }
   table tr.expired:hover {
+    background: #a0d55c; }
+  table tr.old {
+    background: #cccccc; }
+  table tr.old:hover {
     background: #a0d55c; }
   table tr.plain {
     background: none; }

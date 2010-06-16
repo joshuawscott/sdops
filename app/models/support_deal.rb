@@ -105,7 +105,7 @@ class SupportDeal < ActiveRecord::Base
   # accepts an array of team ids, and returns contracts where support_office or sales_office
   # matches the passed array of ids.
   def self.short_list(teams)
-    self.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name", :conditions => ["(sales_office IN (?) OR support_office IN(?)) AND expired <> true", teams, teams], :order => 'sales_office, account_name, start_date', :group => 'id')
+    self.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired", :conditions => ["(sales_office IN (?) OR support_office IN(?)) AND (expired <> true OR end_date >= '#{Date.today}')", teams, teams], :order => 'sales_office, account_name, start_date', :group => 'id')
   end
 
   # Returns Contracts where Contracts.LineItem.serial_num matches serial_num
