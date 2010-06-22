@@ -62,7 +62,6 @@ class UpfrontOrdersController < ApplicationController
       :payment_terms => "Bundled",
       :start_date => @appgen_order.ship_date + 1,
       :expired => false,
-      :updates => true,
       :discount_pref_hw => 0.0,
       :discount_pref_sw => 0.0,
       :discount_pref_srv => 0.0,
