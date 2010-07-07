@@ -5,9 +5,10 @@
 
 #section1
   %p
-    =link_to 'Manual Edit', edit_upfront_order_path(@upfront_order)
-    &nbsp;|&nbsp;
-    =link_to 'Upfront Orders Listing', upfront_orders_path
+    - if current_user.has_role?(:admin)
+      =link_to 'Manual Edit', edit_upfront_order_path(@upfront_order)
+      &nbsp;|&nbsp;
+    =link_to 'Back to Upfront Orders Listing', upfront_orders_path
   #results.boxed{:style => 'width:350px'}
     %h2 Order Information
     %label Appgen Order #
@@ -30,18 +31,18 @@
     =@upfront_order.appgen_order.ship_date
   #results.boxed{:style => 'width:350px'}
     %h2 Status
-    - form_for @upfront_order do |u|
-      %label Upfront Support
-      =u.check_box :has_upfront_support, :onchange => 'return toggleCompleted();'
-      =u.hidden_field :completed
-      #contractid{:style => 'display:none'}= @upfront_order.support_deal_id
-      &nbsp;
-      =submit_tag 'Update'
+    -if current_user.has_role?(:admin)
+      - form_for @upfront_order do |u|
+        %label Upfront Support
+        =u.check_box :has_upfront_support, :onchange => 'return toggleCompleted();'
+        =u.hidden_field :completed
+        #contractid{:style => 'display:none'}= @upfront_order.support_deal_id
+        &nbsp;
+        =submit_tag 'Update'
     %label Completed
     =@upfront_order.completed
     -unless @upfront_order.completed
-      &nbsp-&nbsp;
-      =link_to "Process Order", review_import_upfront_order_path(@upfront_order)
+      =link_if current_user.has_role?(:admin), " - Process Order", review_import_upfront_order_path(@upfront_order)
     %br/
     %label Contract ID
     -if @upfront_order.support_deal_id == nil

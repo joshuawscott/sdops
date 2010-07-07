@@ -136,14 +136,17 @@ module ApplicationHelper
       options[:prefix] = ''
     end
     linkcols = 0
-    options[:display_show] ||= true
-    options[:display_edit] ||= true
-    options[:display_destroy] ||= true
+    [options[:display_show], options[:display_edit], options[:display_destroy]].each do |opt|
+      opt = true if opt.nil?
+      linkcols += 1 if opt == true
+    end
+    options[:display_show] = true if options[:display_show].nil?
+    options[:display_edit] = true if options[:display_edit].nil?
+    options[:display_destroy] = true if options[:display_destroy].nil?
     haml_tag :table do
       haml_tag :thead do
         aggregation[0].class.columns.each do |c|
           next if options[:exclude].include? c.name.to_sym
-          linkcols += 1
           haml_tag :th do
             haml_concat h(c.name.humanize)
           end
@@ -204,23 +207,31 @@ module ApplicationHelper
       when  'inventory_items'
         rcname = 'reports'
       when  'comments',
-            'line_items'
+            'line_items',
+            'subcontractors',
+            'subcontracts'
         rcname = 'contracts'
-      when  'appgen_orders',
+      when  'audits',
             'dropdowns',
             'import',
             'roles',
-            'upfront_orders',
             'users'
         rcname = 'admin'
-      when  'io_slots',
+      when  'appgen_orders',
+            'io_slots',
             'ioscans',
             'servers',
             'swlist_blacklists',
             'swlist_whitelists',
             'swlists',
-            'swproducts'
+            'swproducts',
+            'upfront_orders'
         rcname = 'tools'
+      when  'hw_support_prices',
+            'manufacturers',
+            'manufacturer_lines',
+            'sw_support_prices'
+        rcname = 'prices'
       else
         rcname = controller.controller_name
     end

@@ -54,3 +54,7 @@ auditor:
   id: 14
   name: 'auditor'
   description: 'Access to auditing functions'
+hardware_sales:
+  id: 15
+  name: 'hardware_sales'
+  description: 'Read access to upfront orders'

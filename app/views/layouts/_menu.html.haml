@@ -66,7 +66,7 @@
               %br/
               =link_to 'Whitelists', swlist_whitelists_path, submenuhash('toolsinfo', 'Edit Whitelisted SWLIST items & SW Products')
               %br/
-          .menuCol.last
+          .menuCol
             %h2 Gather Configs
             =link_to 'I/O Scan', ioscans_path, submenuhash('toolsinfo', 'Process an HP-UX I/O Scan')
             %br/
@@ -75,6 +75,13 @@
             =link_to 'Dell Warranty', {:controller => 'tools', :action => 'dell_service_tag'}, submenuhash('toolsinfo', 'Find Dell Warranty information')
             %br/
             =link_to 'Dell Configuration', {:controller => 'tools', :action => 'dell_configuration'}, submenuhash('toolsinfo', 'Find Dell Original Configuration information')
+          - if current_user.has_role?(:admin, :hardware_sales)
+            .menuCol.last
+              %h2 Upfront Orders
+              =link_to 'Open Upfront Orders', {:controller => 'upfront_orders', :action => 'index'}, submenuhash('admininfo', 'View Pending Upfront Orders')
+              %br/
+              =link_to 'Raw Appgen Orders', {:controller => 'appgen_orders', :action => 'index'}, submenuhash('admininfo', 'View Raw Upfront Orders')
+              %br/
           .submenuFooter{:id => "toolsinfo"}
             &nbsp;
     %li
@@ -118,10 +125,6 @@
             .menuCol
               %h2 Tools
               =link_to 'Import', {:controller => 'import', :action => 'index'}, submenuhash('admininfo', 'Import a new Contract')
-              %br/
-              =link_to 'Upfront Orders', {:controller => 'upfront_orders', :action => 'index'}, submenuhash('admininfo', 'View Pending Upfront Orders')
-              %br/
-              =link_to 'Appgen Orders', {:controller => 'appgen_orders', :action => 'index'}, submenuhash('admininfo', 'View Raw Upfront Orders')
               %br/
             .menuCol
               %h2 Admin Reports

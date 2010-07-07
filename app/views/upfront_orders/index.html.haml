@@ -19,7 +19,10 @@
         %th Support?
         %th Converted?
         %th Completed?
-        %th{:colspan => 3}
+        - if current_user.has_role?(:admin)
+          %th{:colspan => 3}
+        - else
+          %th{:colspan => 2}
     %tbody
       - @upfront_orders.each do |u|
         %tr{:id => u.completed}
@@ -33,4 +36,5 @@
             =link_to("Show", upfront_order_path(u.id))
           %td
             =link_to("Original Order", appgen_order_path(u.appgen_order_id))
-          %td=link_to "Process Order", review_import_upfront_order_path(u)
+          - if current_user.has_role?(:admin)
+            %td=link_to "Process Order", review_import_upfront_order_path(u)

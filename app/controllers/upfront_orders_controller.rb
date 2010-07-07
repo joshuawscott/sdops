@@ -1,6 +1,7 @@
 class UpfrontOrdersController < ApplicationController
   before_filter :set_dropdowns, :only => [:review_import, :save_import]
-  before_filter :authorized?
+  before_filter :authorized?, :except => [:show, :index]
+  before_filter :read_authorized?, :only => [:show, :index]
   def index
     @upfront_orders = UpfrontOrder.find(:all, :joins => :appgen_order, :order => :ship_date)
     
@@ -147,5 +148,7 @@ class UpfrontOrdersController < ApplicationController
     current_user.has_role?(:admin) || not_authorized
   end
 
-  
+  def read_authorized?
+    current_user.has_role?(:admin, :hardware_sales) || not_authorized
+  end
 end
