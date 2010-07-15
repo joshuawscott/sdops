@@ -53,10 +53,16 @@ class SwSupportPricesController < ApplicationController
 
   def pull_pricing_helps
     part_number = params[:part_number]
+    cisco = params[:ciscobox] == "true"
     @current_info = SwSupportPrice.current_list_price(part_number)
     @sun_info = PricingDbSunService.find_pn(part_number)
     @hp_info = PricingDbHpPrice.find_sw_pn(part_number)
     @emc_info = PricingDbEmc.find_pn(part_number)
+    if cisco
+      @cisco_info = CiscoProduct.new(part_number)
+    else
+      @cisco_info = CiscoProduct.empty
+    end
   end
 
 end

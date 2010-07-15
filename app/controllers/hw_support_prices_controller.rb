@@ -53,9 +53,16 @@ class HwSupportPricesController < ApplicationController
 
   def pull_pricing_helps
     part_number = params[:part_number]
+    cisco = params[:ciscobox] == "true"
     @current_info = HwSupportPrice.current_list_price(part_number)
     @sun_info = PricingDbSunService.find_pn(part_number)
     @hp_info = PricingDbHpPrice.find_hw_pn(part_number)
     @emc_info = PricingDbEmc.find_pn(part_number)
+    # Since we hit an external site, only hit it if explicitly requested
+    if cisco
+      @cisco_info = CiscoProduct.new(part_number)
+    else
+      @cisco_info = CiscoProduct.empty
+    end
   end
 end

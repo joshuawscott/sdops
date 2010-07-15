@@ -19,9 +19,14 @@
       Other information
       %span{:style => 'font-size:8pt;text-transform:lowercase'}
         = " - "
-        = link_to_remote 'refresh', :url => pull_pricing_helps_hw_support_prices_path(:format => :js), :method => :post, :failure => 'alert(request.status)', :with => "'part_number=' + $('hw_support_price_part_number').value", :before => "Element.show('spinner')", :complete => "Element.hide('spinner')"
+        = link_to_remote 'refresh', :url => pull_pricing_helps_hw_support_prices_path(:format => :js), :method => :post, :failure => 'alert(request.status)', :with => "'part_number=' + $('hw_support_price_part_number').value + '&ciscobox=' + $('ciscobox').checked", :before => "Element.show('spinner')", :complete => "Element.hide('spinner')"
         %span#spinner{:style => 'display:none'}
           %img{:src => '/images/spinner_green.gif'}
+    %p
+      = check_box_tag('ciscobox')
+      %label{:for => 'ciscobox'} Include Cisco
+    %p
+      &nbsp;
     %p
       = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('current','hw')", :title => "Copy this"
       %b Current description:
@@ -58,6 +63,14 @@
       = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('emc','hw')", :title => "Copy this"
       %b EMC price:
       %span#emc_price
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "useDescription('cisco','hw')", :title => "Copy this"
+      %b Cisco description:
+      %span#cisco_description
+    %p
+      = link_to_function image_tag('/images/mini-copy.gif'), "usePricing('cisco','hw')", :title => "Copy this"
+      %b Cisco price:
+      %span#cisco_price
   #search_current_info.boxed{:style => 'width:800px'}
     %h2 current pricing search
     - form_remote_tag :url => {:action => 'index', :format => :js}, :method => :get, :failure => 'alert(request.status)', :before => "Element.show('search_spinner')", :complete => "Element.hide('search_spinner')" do
