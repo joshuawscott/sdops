@@ -4,6 +4,8 @@
   = link_to 'Edit', edit_subcontractor_path(@subcontractor)
   &nbsp;|
   = link_to 'Back', subcontractors_path
+  &nbsp;|
+  = link_to('vCard', formatted_subcontractor_path(@subcontractor, :vcf))
 #section2
   #general_information.boxed{:style => 'height:160px;width:350px'}
     %h2 Company Information

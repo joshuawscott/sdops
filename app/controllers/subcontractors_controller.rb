@@ -17,7 +17,8 @@ class SubcontractorsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @subcontractor }
+      format.xml { render :xml => @subcontractor }
+      format.vcf { render :text => @subcontractor.to_vcf }
     end
   end
 

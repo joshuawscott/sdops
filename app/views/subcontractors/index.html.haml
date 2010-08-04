@@ -9,8 +9,9 @@
         %th Contact
         %th Contact email
         %th Phone number
-        %th
         - if current_user.has_role?(:contract_admin)
+          %th{:colspan => 4}
+        - else
           %th{:colspan => 2}
     %tbody
       - @subcontractors.each do |subcontractor|
@@ -20,6 +21,7 @@
           %td= subcontractor.contact_email
           %td= subcontractor.phone
           %td= link_to 'Show', subcontractor
+          %td= link_to('vCard', formatted_subcontractor_path(subcontractor, :vcf))
           - if current_user.has_role?(:contract_admin)
             %td= link_to 'Edit', edit_subcontractor_path(subcontractor)
             %td= link_to 'Delete', subcontractor, :confirm => 'Are you sure?', :method => :delete
