@@ -10,7 +10,7 @@
 class HwSupportPrice < SupportPricingDb
 
   set_table_name "hwdb"
-  validates_presence_of :part_number
+  validates_presence_of :part_number, :description, :list_price, :product_line
 
   belongs_to :manufacturer_line
 end

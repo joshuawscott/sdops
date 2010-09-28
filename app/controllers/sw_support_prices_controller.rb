@@ -21,7 +21,7 @@ class SwSupportPricesController < ApplicationController
       redirect_to url_for(new_sw_support_price_path) + "?confirm_date=" + params[:sw_support_price][:confirm_date]
     else
       @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
-      flash[:notice] = "The price failed to save"
+      flash[:error] = "The price failed to save"
       render :action => "new"
     end
   end
