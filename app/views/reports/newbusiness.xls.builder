@@ -53,13 +53,19 @@ xml.Workbook({
           xml.Data 'Description', 'ss:Type' => 'String'
         end
         xml.Cell 'ss:StyleID' => 'headers' do
+          xml.Data 'HW Rev', 'ss:Type' => 'String'
+        end
+        xml.Cell 'ss:StyleID' => 'headers' do
+          xml.Data 'SW Rev', 'ss:Type' => 'String'
+        end
+        xml.Cell 'ss:StyleID' => 'headers' do
           xml.Data 'Revenue', 'ss:Type' => 'String'
         end
       end
 
       # Rows
       @contracts.each do |contract|
-        if contract.period == params[:filter][:period]
+        if contract.period == params[:filter][:period] || params[:filter][:period] == ''
           xml.Row do
             xml.Cell 'ss:StyleID' => 'date' do
               xml.Data contract.po_received.to_xls_serial, 'ss:Type' => 'Number'
@@ -67,6 +73,12 @@ xml.Workbook({
             xml.Cell { xml.Data contract.sales_rep_name, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
             xml.Cell { xml.Data contract.description, 'ss:Type' => 'String' }
+            xml.Cell 'ss:StyleID' => 'currency' do
+              xml.Data contract.annual_hw_rev, 'ss:Type' => 'Number'
+            end
+            xml.Cell 'ss:StyleID' => 'currency' do
+              xml.Data contract.annual_sw_rev, 'ss:Type' => 'Number'
+            end
             xml.Cell 'ss:StyleID' => 'currency' do
               xml.Data contract.tot_rev, 'ss:Type' => 'Number'
             end
