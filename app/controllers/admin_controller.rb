@@ -73,6 +73,11 @@ class AdminController < ApplicationController
     @hw_products = HwSupportPrice.find(:all, :conditions => "manufacturer_line_id IS NULL OR manufacturer_line_id = ''")
     @sw_products = SwSupportPrice.find(:all, :conditions => "manufacturer_line_id IS NULL OR manufacturer_line_id = ''")
   end
+
+  def tlci
+    @hw_products = HwSupportPrice.find(:all, :conditions => "tlci IS NULL AND list_price > 0", :order => "part_number ASC")
+    @sw_products = SwSupportPrice.find(:all, :conditions => "tlci IS NULL AND phone_price + update_price > 0", :order => "part_number ASC")
+  end
   protected
   def authorized?
     current_user.has_role?(:admin) || not_authorized
