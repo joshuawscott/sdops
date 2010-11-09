@@ -3,9 +3,9 @@ describe HwSupportPrice do
 
   before(:each) do
     HwSupportPrice.count.should == 0
-    @initial_item = Factory(:hw_support_price, :list_price => 300.00, :modified_at => Date.parse('1970-01-01'), :confirm_date => Date.parse('1970-01-01'))
-    @first_item   = Factory(:hw_support_price, :list_price => 400.00, :modified_at => Date.parse('2009-01-01'), :confirm_date => Date.parse('2008-01-01'))
-    @second_item  = Factory(:hw_support_price, :list_price => 500.00, :modified_at => Date.parse('2009-06-01'), :confirm_date => Date.parse('2008-06-01'))
+    @initial_item = Factory(:hw_support_price, :list_price => 300.00, :modified_at => Date.parse('1970-01-01'), :confirm_date => Date.parse('1970-01-01'), :manufacturer_line_id => 1)
+    @first_item   = Factory(:hw_support_price, :list_price => 400.00, :modified_at => Date.parse('2009-01-01'), :confirm_date => Date.parse('2008-01-01'), :manufacturer_line_id => 1)
+    @second_item  = Factory(:hw_support_price, :list_price => 500.00, :modified_at => Date.parse('2009-06-01'), :confirm_date => Date.parse('2008-06-01'), :manufacturer_line_id => 1)
   end
 
   describe "quote" do
