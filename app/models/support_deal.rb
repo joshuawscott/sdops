@@ -75,6 +75,8 @@ class SupportDeal < ActiveRecord::Base
 
   has_one :upfront_order, :dependent => :nullify
 
+  belongs_to :sales_rep, :class_name => 'User'
+
   #Validate General Details
   validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id
   validates_presence_of :said, :sdc_ref, :payment_terms, :platform
@@ -362,7 +364,8 @@ class SupportDeal < ActiveRecord::Base
     end
   end
 
-  # updates the effective_list_price attribute for each of the line items in a contract.
+  #TODO: Fix so that we are not using the inaccurate "effective_*_discount" methods.
+  # updates the effective_price attribute for each of the line items in a contract.
   def update_line_item_effective_prices
     logger.debug "********** Contract update_line_item_effective_prices"
     hw_disc = BigDecimal.new('1.0') - self.effective_hw_discount
