@@ -1,4 +1,6 @@
 class HwSupportPricesController < ApplicationController
+  before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
+
   def index
     @part_number = params[:part_number]
     @description = params[:description]
@@ -12,7 +14,6 @@ class HwSupportPricesController < ApplicationController
   def new
     @hw_support_price ||= HwSupportPrice.new
     @hw_support_price.confirm_date ||= params[:confirm_date]
-    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
   end
 
   def create
@@ -21,7 +22,6 @@ class HwSupportPricesController < ApplicationController
       flash[:notice] = "The price was saved successfully."
       redirect_to url_for(new_hw_support_price_path) + "?confirm_date=" + params[:hw_support_price][:confirm_date]
     else
-      @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
       flash[:notice] = "The price failed to save"
       render :action => "new"
     end
@@ -37,7 +37,6 @@ class HwSupportPricesController < ApplicationController
 
   def edit
     @hw_support_price = HwSupportPrice.find(params[:id])
-    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
   end
 
   def update
@@ -64,5 +63,9 @@ class HwSupportPricesController < ApplicationController
     else
       @cisco_info = CiscoProduct.empty
     end
+  end
+
+  def set_dropdowns
+    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
   end
 end

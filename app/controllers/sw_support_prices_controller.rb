@@ -1,4 +1,6 @@
 class SwSupportPricesController < ApplicationController
+  before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
+
   def index
     @part_number = params[:part_number]
     @description = params[:description]
@@ -11,7 +13,6 @@ class SwSupportPricesController < ApplicationController
   def new
     @sw_support_price ||= SwSupportPrice.new
     @sw_support_price.confirm_date ||= params[:confirm_date]
-    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
   end
 
   def create
@@ -36,7 +37,6 @@ class SwSupportPricesController < ApplicationController
 
   def edit
     @sw_support_price = SwSupportPrice.find(params[:id])
-    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
   end
 
   def update
@@ -45,7 +45,6 @@ class SwSupportPricesController < ApplicationController
       flash[:notice] = "Price successfully updated"
       redirect_to sw_support_prices_path
     else
-      @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
       flash[:notice] = "FAILURE!"
       render :action => "edit"
     end
@@ -65,4 +64,7 @@ class SwSupportPricesController < ApplicationController
     end
   end
 
+  def set_dropdowns
+    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
+  end
 end
