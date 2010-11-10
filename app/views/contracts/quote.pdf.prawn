@@ -83,6 +83,7 @@ end
 # Customer Address area
 pdf.bounding_box([0, pdf.cursor - 20], :width => half_wide, :height => 75) do
   pdf.text "Customer Address:", :style => :bold
+  pdf.text @contract.account_name
   pdf.text @contract.address1
   pdf.text @contract.address2
   pdf.text @contract.address3
@@ -91,18 +92,18 @@ end
 # Source Direct Contact area
 pdf.bounding_box([half_wide, pdf.cursor + 75], :width => 300, :height => 75) do
   pdf.text "Source Direct Contact:", :style => :bold
-  pdf.text @contract.address1
-  pdf.text @contract.address2
-  pdf.text @contract.address3
+  pdf.text @contract.sales_rep.first_name + " " + @contract.sales_rep.last_name
+  pdf.text "4555 Excel Parkway, Suite 500"
+  pdf.text "Addison, TX 75001"
 end
 
 # Customer Contact area
 pdf.bounding_box([0, pdf.cursor], :width => half_wide, :height => 75) do
   pdf.text "Customer Contact:", :style => :bold
-  pdf.text @contract.address1
-  pdf.text @contract.address2
-  pdf.text @contract.address3
-  #pdf.stroke_bounds
+  pdf.text @contract.contact_name
+  pdf.text @contract.contact_phone
+  pdf.text @contract.contact_email
+  pdf.text @contract.contact_note
 end
 
 # Contract Term Box
@@ -128,8 +129,8 @@ pdf.move_down(10)
 @terms = "Total excludes all taxes; however, taxes will be added at the time of invoicing at the current tax rate.
 Total price includes all discount and adjustments if applicable.
 Subject to Source Direct terms and conditions of Sale and Service
-This is line 4
-This is line 5"
+
+"
 
 # Pricing Summary Box
 pdf.font("Helvetica-Bold")
