@@ -16,9 +16,9 @@ class CiscoProduct
   # This is a constructor method that prevents going out to the external site.
   def self.empty
     x = self.new("")
-    @description = ""
-    @full_price = 0.0
-    @base_price = 0.0
+    x.description = ""
+    x.full_price = 0.0
+    x.base_price = 0.0
     x
   end
 
@@ -50,6 +50,10 @@ class CiscoProduct
     end
   end
 
+  def description=(description)
+    @description = description
+  end
+
   def base_price
     return @base_price unless @base_price.nil?
     @base_price = Nokogiri::HTML(open(base_url)).xpath(@price_xpath)
@@ -60,6 +64,10 @@ class CiscoProduct
     end
   end
 
+  def base_price=(base_price)
+    @base_price = base_price
+  end
+
   def full_price
     return @full_price unless @full_price.nil?
     @full_price = Nokogiri::HTML(open(full_url)).xpath(@price_xpath)
@@ -68,6 +76,10 @@ class CiscoProduct
     else
       @full_price = @full_price[0].content.sub("$","").to_f
     end
+  end
+
+  def full_price=(full_price)
+    @full_price = full_price
   end
 
   def base_url
