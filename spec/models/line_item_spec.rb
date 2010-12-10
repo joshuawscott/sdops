@@ -3,7 +3,44 @@ describe LineItem do
 
   describe "LineItem.locations"
 
-  describe "LineItem.hw_revenue_by_location"
+  describe ".hw_revenue_by_location" do
+
+    before(:all) do
+      line_item1 = Factory(:line_item, :qty => 1, :support_type => "SW", :location => "Dallas",    :begins => '2010-01-01', :ends => '2010-12-31', :list_price => '1.0', :effective_price => '1.0')
+      line_item2 = Factory(:line_item, :qty => 1, :support_type => "SRV", :location => "Dallas",    :begins => '2010-01-01', :ends => '2010-12-31', :list_price => '1.0', :effective_price => '1.0')
+      line_item3 = Factory(:line_item, :qty => 1, :support_type => "HW", :location => "Charlotte", :begins => '2010-03-15', :ends => '2010-12-31', :list_price => '1.0', :effective_price => '1.0')
+      line_item4 = Factory(:line_item, :qty => 1, :support_type => "HW", :location => "Charlotte", :begins => '2010-01-01', :ends => '2010-12-31', :list_price => '1.0', :effective_price => '1.0')
+      line_item5 = Factory(:line_item, :qty => 1, :support_type => "HW", :location => "Dallas",    :begins => '2010-01-01', :ends => '2010-12-31', :list_price => '1.0', :effective_price => '1.0')
+      line_item6 = Factory(:line_item, :qty => 1, :support_type => "HW", :location => "Charlotte", :begins => '2009-01-01', :ends => '2009-12-31', :list_price => '1.0', :effective_price => '1.0')
+      line_item7 = Factory(:line_item, :qty => 1, :support_type => "HW", :location => "Charlotte", :begins => '2011-01-01', :ends => '2011-12-31', :list_price => '1.0', :effective_price => '1.0')
+      line_item8 = Factory(:line_item, :qty => 1, :support_type => "HW", :location => "Dallas",    :begins => '2009-01-01', :ends => '2009-12-31', :list_price => '1.0', :effective_price => '1.0')
+      line_item9 = Factory(:line_item, :qty => 1, :support_type => "HW", :location => "Dallas",    :begins => '2011-01-01', :ends => '2011-12-31', :list_price => '1.0', :effective_price => '1.0')
+      contract = Factory(:contract, :expired => false, :account_name => 'foo', :discount_pref_hw => 0.0, :discount_pref_sw => 0.0, :discount_pref_srv => 0.0, :discount_prepay => 0.0, :discount_multiyear => 0.0)
+      contract.line_items = [line_item1, line_item2, line_item3, line_item4, line_item5, line_item6, line_item7, line_item8, line_item9]
+      @locations = LineItem.hw_revenue_by_location(Date.parse('2010-06-01'))
+    end
+
+    it "should sort Charlotte first" do
+      @locations[0][:location].should == "Charlotte"
+    end
+
+    it "should sort Dallas last" do
+      @locations[1][:location].should == "Dallas"
+    end
+
+    it "should calculate the price for Charlotte" do
+      @locations[0][:revenue].should == 24.0
+    end
+
+    it "should calculate the price for Dallas" do
+      @locations[1][:revenue].should == 12.0
+    end
+
+    after(:all) do
+      Contract.delete_all
+      LineItem.delete_all
+    end
+  end
 
   describe "LineItem.update_all_current_prices"
 
@@ -155,4 +192,29 @@ describe LineItem do
     end
   end
 
+  describe "#calculated_list_price" do
+    before(:all) do
+      Factory(:contract, :start_date => '2010-01-01', :end_date => '2010-12-31')
+    end
+  end
+  describe "LineItem.for_customer" do
+    before(:all) do
+      contract_a = Factory(:contract, :account_id => 'a', :start_date => '2010-01-01', :end_date => '2010-12-31')
+      contract_b = Factory(:contract, :account_id => 'b', :start_date => '2010-01-01', :end_date => '2010-12-31')
+      @line_item_for_a = Factory(:line_item, :begins => '2010-01-01', :ends => '2010-12-31')
+      @line_item_for_b = Factory(:line_item, :begins => '2010-01-01', :ends => '2010-12-31')
+      contract_a.line_items = [@line_item_for_a]
+      contract_b.line_items = [@line_item_for_b]
+    end
+    it "should find a" do
+      LineItem.for_customer("a").should == [@line_item_for_a]
+    end
+    it "should not find b" do
+      LineItem.for_customer("a").should_not == [@line_item_for_b]
+    end
+    after :all do
+      LineItem.delete_all
+      Contract.delete_all
+    end
+  end
 end

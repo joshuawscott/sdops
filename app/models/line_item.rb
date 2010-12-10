@@ -40,26 +40,33 @@ class LineItem < ActiveRecord::Base
   # OPTIMIZE: hw_revenue_by_location is VERY slow (>15 seconds)
   # Returns a collection of LineItem Objects with the total revenue for each location
   def self.hw_revenue_by_location(effective_time = Time.now)
-    locations = LineItem.find(:all, 
-      :select => 'DISTINCT location, 0.0 as revenue', 
-      :joins => :support_deal,
-      :conditions => ['support_deals.expired = ?', false],
-      :order => :location)
-    rawlist = LineItem.find(:all,
-      :select => 'line_items.*, support_deals.discount_pref_hw + support_deals.discount_prepay + support_deals.discount_multiyear AS discount, IFNULL(qty * list_price * 12 ,0.0) AS revenue',
-      :joins => :support_deal,
-      :conditions =>
-        ['support_deals.expired = :expired AND line_items.begins <= :begins AND line_items.ends >= :ends AND support_type = "HW"',
-        {:expired => false, :begins => effective_time, :ends => effective_time}])
+
+    locations = LineItem.find(:all, :select => 'line_items.*, SUM(effective_price * qty * 12) AS revenue', :conditions => ["begins <= :time AND ends >= :time AND support_type = 'HW'", {:time => effective_time}], :group => 'location ASC' )
     locations.each do |l|
-      rawlist.each  do |i|
-        if l.location == i.location && i.revenue != nil && i.revenue.to_i > 0
-          i.discount = i.support_deal.effective_hw_discount if i.discount.to_f == 0.0
-          l.revenue = l.revenue.to_f + (i.revenue.to_f * (1 - i.discount.to_f))
-        end
-      end
+      l.revenue = l.revenue.to_f
     end
     locations
+    # OLD METHOD:
+    #locations = LineItem.find(:all,
+    #  :select => 'DISTINCT location, 0.0 as revenue',
+    #  :joins => :support_deal,
+    #  :conditions => ['support_deals.expired = ?', false],
+    #  :order => :location)
+    #rawlist = LineItem.find(:all,
+    #  :select => 'line_items.*, support_deals.discount_pref_hw + support_deals.discount_prepay + support_deals.discount_multiyear AS discount, IFNULL(qty * list_price * 12 ,0.0) AS revenue',
+    #  :joins => :support_deal,
+    #  :conditions =>
+    #    ['support_deals.expired = :expired AND line_items.begins <= :begins AND line_items.ends >= :ends AND support_type = "HW"',
+    #    {:expired => false, :begins => effective_time, :ends => effective_time}])
+    #locations.each do |l|
+    #  rawlist.each  do |i|
+    #    if l.location == i.location && i.revenue != nil && i.revenue.to_i > 0
+    #      i.discount = i.support_deal.effective_hw_discount if i.discount.to_f == 0.0
+    #      l.revenue = l.revenue.to_f + (i.revenue.to_f * (1 - i.discount.to_f))
+    #    end
+    #  end
+    #end
+    #locations
   end
 
   # Updates current_list_price for all the LineItem's in the database.
@@ -188,6 +195,10 @@ class LineItem < ActiveRecord::Base
 
     days_covered = (end_day - start_day) + 1
     list_price * (days_covered.to_f / days_in_month.to_f) * qty.to_f
+  end
+
+  def self.for_customer(account_id)
+    self.find(:all, :joins => :support_deal, :conditions => ["support_deals.account_id = ?", account_id])
   end
 end
 
