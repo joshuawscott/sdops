@@ -9,7 +9,7 @@
           Renewals &nbsp;&nbsp;&nbsp;
       %td
         Filter by Office
-        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices()', :style => "width: 82px"})
+        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOffices(7)', :style => "width: 82px"})
       %td{:width => '325px', :align => 'right'}
         - form_tag'/reports/renewals', {:name => 'date_search' }  do
           = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
@@ -21,13 +21,13 @@
           %h2{:margin => '0'}
             Total expired contracts:&nbsp;
         %td
-          %h2#expired_total{:margin => '0'}
+          %h2#sum_total{:margin => '0'}
             &nbsp;
 #section2
   %h2{:style => 'margin:15px 0px 0px 300px'}
     EXPIRED CONTRACTS &nbsp;&nbsp;&nbsp;
     %span.hideforprint{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
-  %table{:class => "sortable", :cellspacing => "0", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ff5455', :id => 'expired_table'}
+  %table{:class => "sortable", :cellspacing => "0", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ff5455', :id => 'sum_table'}
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
@@ -62,4 +62,4 @@
         - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
           = render :partial => "renewals_table_content", :locals => { :x => x }
   %script
-    toggleOffices();
+    toggleOffices(7);
