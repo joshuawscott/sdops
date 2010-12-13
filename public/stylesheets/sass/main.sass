@@ -10,15 +10,18 @@ body
 
 *
   :margin 0
-  :padding 0 
+  :padding 0
   :font
     :family Arial
     :size 10pt
 
+.hidden
+  :display none
+
 pre
   :font
     :family Courier
-    :size 10pt  
+    :size 10pt
 a
   :text-decoration underline
   :color = !sdc_black
@@ -41,7 +44,7 @@ h1
   :font-size 16pt
   :font-weight bold
   :margin-bottom .5em
-  
+
 h2
   :font-size 12pt
   :margin-bottom .5em
@@ -78,12 +81,12 @@ table
       :padding-right 5px
 
   tbody
-    tr.line_item_header 
+    tr.line_item_header
       td
         :font-weight bold
         :background-color #eeeeee
 
-    tr.line_item_expired 
+    tr.line_item_expired
       td
         :background-color #ffff99
 
@@ -109,7 +112,6 @@ table
       :-moz-border-radius-bottomright = !radius_width
       :-webkit-border-bottom-right-radius = !radius_width
       :border-bottom-right-radius = !radius_width
-
 
   tr.expired
     :background = #ffff99
@@ -158,7 +160,7 @@ table
       :padding-left 5px
       :color = blue
       :background = !sdc_green + 30
-      
+
 table.plain_table
   :border-width 0px
   :border-collapse collapse
@@ -169,7 +171,7 @@ table.plain_table
     :border-width 0px
     :border-collapse collapse
     :padding 1px 0px 1px 0px
-    
+
 ul.sub_menu
   :position absolute
   :top 87px
@@ -177,12 +179,12 @@ ul.sub_menu
   :margin 0
   :padding-top 0px
   :list-style none
-  
+
   li
     :display inline
     :font-size 12px
-  
-  a 
+
+  a
     :display block
     :float left
     :width 80px
@@ -195,22 +197,21 @@ ul.sub_menu
     :font-weight bold
     :color = white
 
-  
   a:hover
     :color = !sdc_black
     :background = !sdc_green - 23
-  
+
   a.active
     :color = !sdc_green
     :background = !sdc_black
-    
+
 #userinfo
   :position absolute
   :top 49px
   :left 5px
   :z-index 100
   :height 9pt
-  
+
   p
     :font-size 8pt
     :margin-top 0
@@ -221,8 +222,7 @@ ul.sub_menu
   :top 0pt
   :left 540pt
   :padding 0pt
-    
-    
+
 .errorExplanation
   :width 700px
   :padding 2pt
@@ -240,7 +240,7 @@ ul.sub_menu
 #error
   :font-weight bold
   :color #f00
-  
+
 /* Boxed Styles
 
 #search
@@ -367,7 +367,7 @@ ul.sub_menu
   :font-weight bold
 
 .boxed
-  :float left 
+  :float left
   :padding 2px 3px 10px 3px
   :margin-right 5px
   :margin-bottom 5px
@@ -428,7 +428,7 @@ ul.sub_menu
     :margin 3px 0px 5px 0px
     :height 2px
     :width 100%
-    
+
   select
     :width 10em
     :padding .5px
@@ -456,7 +456,7 @@ ul.sub_menu
       :width 1px
       :style solid
       :color = !sdc_black
-      
+
 /* Header Styles
 
 #header
@@ -469,45 +469,45 @@ ul.sub_menu
     :position center bottom
 
   /* Header > Logo
-  
-  #logo 
+
+  #logo
     :float left
     :margin-right 15px
     :margin-left 5px
-  
-    h1 
+
+    h1
       :float left
       :width 650px
       :font-size 1.5em
       :margin 0
       :padding 18px 0 0px 0
       :color = !sdc_black
-  
-    h2 
+
+    h2
       :float left
       :margin-top -5px
       :font-size 1em
-  
+
   /* Header > Title
-  
+
   #title
     :min-width 600px
-  
+
     h1
       :font-size 1.5em
       :margin 0
       :padding 18px 0 0px 0
       :color = !sdc_black
-      
+
   /* Header > Menu
 
   #menu
     /*:float left
     :width 700px
-    
+
     ul,li,a
       :margin 0
-    
+
     ul
       :position absolute
       :width 700px
@@ -515,7 +515,7 @@ ul.sub_menu
       :left 200px
       :list-style none
       :z-index 1
-      
+
     div.submenu
       :position absolute
       :height 160px
@@ -530,7 +530,7 @@ ul.sub_menu
         :width thin
       :list-style none
       :z-index 9
-    
+
     div.submenuHeader
       :padding 2px
       :width 95%
@@ -543,7 +543,7 @@ ul.sub_menu
         :color black
         :style none none dotted none
         :width 1px
-    
+
     div.submenuFooter
       :display block
       :float left
@@ -554,7 +554,7 @@ ul.sub_menu
         :family arial,tahoma,verdana,helvetica
         :weight bold
         :style italic
-    
+
     div.menuCol
       :float left
       :display block
@@ -564,14 +564,14 @@ ul.sub_menu
         :color black
         :style none dotted none none
         :width 1px
-    
+
     div.last
       :border-style none none none none
-      
+
     li
       :display inline
       :z-index 9
-    
+
     a.menuSelected, a.menuUnselected
       :float left
       :display block
@@ -584,52 +584,52 @@ ul.sub_menu
       :background black
       :color white
       :z-index 10
-    
+
     a.menuSelected
       :background url("/images/selected_tab.gif") no-repeat
       :color rgb(187, 213, 59)
-    
+
     a.menuUnselected
       :background url("/images/unselected_tab.gif") no-repeat
-      
+
     a.menuUnselected:hover
       :background url("/images/selected_tab.gif") no-repeat
       :color rgb(187, 213, 59)
-    
+
     a.submenu
       :width auto
       :background #cccccc
       :color green
       :font-weight bold
-      
+
     //regular hovers
-    
+
     a.menu:hover
       :background url("/images/selected_tab.gif") no-repeat
       :color black
-      
+
     a.submenu:hover
       :color black
-    
+
     // hovers with specificity
-    
+
     ul ul, li:hover ul
       :display none
-    
+
     li:hover ul, li:hover ul
       :display block
       :background-color red
-    
+
     div.sub1
       :width 100px
       :background-image url("/images/selected_tab.gif")
-      
+
     div.sub2
       :display none
-    
+
     div.sub1:hover div.sub2
       :display block
-            
+
     hr
       :position absolute
       :left 0px
@@ -653,7 +653,6 @@ ul.sub_menu
   :margin 5px 20px 0px 3px
   :background #fff
 
-
 /* Section 1
 
 #section1
@@ -665,7 +664,6 @@ ul.sub_menu
   #submenu
     :width 160px
     :margin 0 0 5px 300px
-
 
 /* Sections 2-6
 

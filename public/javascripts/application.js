@@ -11,37 +11,35 @@ function toggleOffices(){
     for (i=0; i < a.length; i++){
       var name = 'tr[name="'+a[i].value+'"]';
       if (a[i].value != office && a[i].value !=""){
-        $$(name).invoke('hide');
+        $$(name).invoke('addClassName', 'hidden');
       }
       else {
-        $$(name).invoke('show');
+        $$(name).invoke('removeClassName', 'hidden');
       }
     }
   }
-  sumVisibleRows();
+  $('expired_total').innerHTML = sumVisibleRows();
 }
 
 function showAll(){
   var a = $('filter_offices').options;
   for (i=0; i < a.length; i++){
     var name = 'tr[name="'+a[i].value+'"]';
-    $$(name).invoke('show');
+    $$(name).invoke('removeClassName', 'hidden');
   }
-  sumVisibleRows();
 }
 
 function sumVisibleRows(){
 	var rows = $$('#expired_table tbody tr');
+	var sum_area = $('expired_total');
 	var sum = 0.0;
 	rows.each(function(r) {
-			if (r.getAttribute("style") != 'display: none;') {
+			if (r.hasClassName('hidden') == false) {
 				var price = r.cells[7].innerHTML.replace(/[\$\,]/g, '');
-				sum += (price * 1.0);
-				//console.log(r.getAttribute("name"));
+				sum += (price * 1.0); // * 1.0 converts string to a float
 			}
 	});
-	console.log(sum);
-	$('expired_total').innerHTML = number_to_currency(sum);
+	return number_to_currency(sum);
 }
 
 // Print view
