@@ -53,7 +53,7 @@ class ImportController < ApplicationController
     records = nil
 
     #Save new contract
-    #If this is an existing contract
+    #If this is an existing contract, just import the line items
     if params[:contract] != ""
       @contract = Contract.find(params[:contract])
       #@contract.hw_support_level_id = contract_ary.ivars['attributes']['hw_support_level_id']
@@ -78,7 +78,7 @@ class ImportController < ApplicationController
     if @contract.save
       line_items_ary.each do |item|
         @line_item = @contract.line_items.new(item.ivars['attributes'])
-        @line_item.location = @contract.support_office_name
+        @line_item.location ||= @contract.support_office_name
         if @line_item.save
           #all good
         else
