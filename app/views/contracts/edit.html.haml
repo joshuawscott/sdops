@@ -1,10 +1,11 @@
+- content_for :top_js do
+  = javascript_include_tag "contracts.js", "effects.js", "controls.js", "dragdrop.js", :cache => "contract_all"
 - content_for :subtitle do
   Edit Contract
 
 #section1
   = link_to('Show', contract_path(@contract))
   = link_to(' Import Line Items ', '/import?contract=' + @contract.id.to_s) if current_user.has_role?(:admin, :importer, :contract_admin)
-
 
 #section2
   = error_messages_for 'contract'
@@ -13,5 +14,3 @@
     #section3
       %p
         = submit_tag "Update"
-
-
