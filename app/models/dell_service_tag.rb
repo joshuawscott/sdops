@@ -50,9 +50,9 @@ class DellServiceTag
 
     new_dell_service_tag.support_level = raw_html[0+curr_max_index].content
     new_dell_service_tag.service_provider = raw_html[1+curr_max_index].content
-    new_dell_service_tag.start_date = raw_html[2+curr_max_index].content
-    new_dell_service_tag.end_date = raw_html[3+curr_max_index].content
-    new_dell_service_tag.days_left = raw_html[4+curr_max_index].content
+    new_dell_service_tag.start_date = raw_html[3+curr_max_index].content
+    new_dell_service_tag.end_date = raw_html[4+curr_max_index].content
+    new_dell_service_tag.days_left = raw_html[5+curr_max_index].content
     new_dell_service_tag
   end
 
