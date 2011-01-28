@@ -73,5 +73,22 @@ module ContractsHelper
 
     @pdf.font(original_font.attributes["fullname"])
   end
+
+  # takes a number and converts to a percentage with extra zeros stripped.
+  # .50 => 50%
+  # .3612 => 36.12%
+  # .123456789 => 12.34%
+  def discount_to_percentage(number, options ={})
+    options[:strip_digits] = true if options[:strip_digits].nil?
+    options[:precision] = 2 if options[:precision].nil?
+
+    number ||= 0.0
+    if options[:strip_digits] == true
+      number_to_percentage(number * 100.0, :precision => options[:precision]).gsub(/0*%$/, '%').gsub(/\.%/, '%')
+    else
+      number_to_percentage(number * 100.0, :precision => options[:precision])
+    end
+  end
+
 end
 
