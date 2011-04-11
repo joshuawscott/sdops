@@ -194,7 +194,7 @@ class LineItem < ActiveRecord::Base
     end
 
     days_covered = (end_day - start_day) + 1
-    list_price * (days_covered.to_f / days_in_month.to_f) * qty.to_f
+    list_price.to_f * (days_covered.to_f / days_in_month.to_f) * qty.to_f
   end
 
   def self.for_customer(account_id)
