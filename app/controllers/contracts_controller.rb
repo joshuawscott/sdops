@@ -103,9 +103,6 @@ class ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
     @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}
     @line_items = @contract.line_items.sort_by {|l| l.position}
-    logger.debug "Line Items Found = #{@line_items.size}"
-    x = LineItem.find(:first)
-    logger.debug x.to_yaml
     @hwlines = @line_items.find_all {|e| e.support_type == "HW"}
     @swlines = @line_items.find_all {|e| e.support_type == "SW"}
     @srvlines = @line_items.find_all {|e| e.support_type == "SRV"}

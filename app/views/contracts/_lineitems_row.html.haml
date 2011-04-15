@@ -21,5 +21,6 @@
       = h number_to_currency(line_item.list_price)
   - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
     %td.hideforprint= link_to 'Edit', edit_contract_line_item_path(@contract, line_item)
+  - if current_user.has_role?(:admin)
     %td.hideforprint= link_to 'Delete', contract_line_item_path(@contract, line_item), :confirm => 'Are you SURE you want to permanently delete this Line Item?', :method => :delete
 

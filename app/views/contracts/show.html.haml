@@ -83,9 +83,10 @@
           = hidden_field_tag "contract_id", @contract.id
         %p
           = submit_tag "Update Checked Items"
-        - if current_user.has_role?(:contract_admin)
+        - if current_user.has_role?(:admin)
           %br/
           %p= submit_tag "Delete Checked Items", :confirm => "Are you SURE you want to delete the selected Line Items?"
+        - if current_user.has_role?(:contract_admin)
           %br/
           %p= submit_tag "Add to Subcontract"
 -if current_user.has_role?(:contract_editor, :contract_admin)

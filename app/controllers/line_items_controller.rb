@@ -1,7 +1,8 @@
 class LineItemsController < ApplicationController
   before_filter :get_contract, :except => [:form_pull_pn_data, :sort]
-  before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :destroy, :mass_update]
+  before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :mass_update]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
+  before_filter :admin?, :only => [:destroy]
 
   def show
     @line_item = LineItem.find params[:id]
@@ -88,7 +89,7 @@ class LineItemsController < ApplicationController
       #format.xml  { head :ok }
     end
   end
-  
+
   # PUT /line_items/mass_update
 	def mass_update
 		#TODO: check filtering based on submit button clicked.
@@ -97,7 +98,11 @@ class LineItemsController < ApplicationController
     unless line_item_ids.nil? || line_item_ids.empty?
       @line_items = @contract.line_items.find(line_item_ids)
 			if params[:commit] == "Delete Checked Items"
-        @line_items.each {|line| line.destroy}
+			  if current_user.has_role?(:admin)
+			    @line_items.each {|line| line.destroy}
+			  else
+			    flash[:error] = "You are not authorized to perform that action"
+			  end
 			elsif params[:commit] == "Add to Subcontract"
         @subcontractors = Subcontractor.find(:all)
         render(:action => "add_to_subcontract") and return
@@ -145,13 +150,17 @@ class LineItemsController < ApplicationController
     render :nothing => true
   end
   protected
-  
+
   def get_contract
     @contract = Contract.find params[:contract_id]
   end
-  
+
   def authorized?
     current_user.has_role?(:admin, :contract_admin, :contract_editor) || not_authorized
+  end
+
+  def admin?
+    current_user.has_role?(:admin) || not_authorized
   end
 
   def set_dropdowns
