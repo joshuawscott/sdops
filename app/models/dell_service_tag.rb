@@ -64,7 +64,11 @@ class DellServiceTag
     # I view this as a fragile way to scrape... any change by Dell would completely undo it.
     # In case there's a problem with this model in the future, the alternate code may still work, but
     # it may be a matter of simply looking at the source
-    raw_html = new_dell_service_tag.dell_page.xpath("/html[1]/body/table/tr/td/div[1]/table/tr/td/div/table[2]/tr/td[2]/table/tr[4]/td/div[2]/table/tr[4]/td/table/tr/td")[4..-1]
+    raw_html = new_dell_service_tag.dell_page.xpath("/html[1]/body/table/tr/td/div[1]/table/tr/td/div/table[2]/tr/td[2]/table/tr[4]/td/div[2]/table/tr[4]/td/table/tr/td")[4..-3]
+    # If I need to debug:
+    #puts "------------------------------------------------"
+    #puts raw_html
+    #puts "------------------------------------------------"
     raw_html.each_slice(3) do |line|
       new_dell_service_tag.add_line_item(DellServiceTagLineItem.new(line[0].content,line[1].content,line[2].content))
     end
