@@ -81,7 +81,7 @@ class AdminController < ApplicationController
 
   def check_for_renewals
     id = params[:id].to_i
-    if id.blank?
+    if id == 0
       @contracts = []
     else
       @contract = Contract.find(id)
