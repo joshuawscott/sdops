@@ -1,0 +1,44 @@
+- content_for :subtitle do
+  Contracts to replace a contract
+
+%p &nbsp;
+
+#section1
+  - form_tag url_for(:controller => :admin, :action => :check_for_renewals), {:name => 'contract_id_search', :method => :get} do
+    %label{:for => :id}
+      Contract ID
+    = text_field_tag :id, @id
+  %h2{:style => 'margin:15px 0px 0px 3px'} Contracts
+  %table{:class => "sortable", :border => "2", :cellpadding => "2"}
+    %thead
+      %tr
+        %th{:width => '80px', :ts_type => 'string'}
+          %label.table_header{:for => 'search_sales_office'}Sales Office
+        %th{:width => '80px', :ts_type => 'string'}
+          %label.table_header{:for => 'search_support_office'}Supp. Office
+        %th{:width => '149px', :ts_type => 'string'}
+          %label.table_header{:for => 'search_account_name'}Account Name
+        %th{:width => '100px', :ts_type => 'string'}
+          %label.table_header{:for => 'search_said'}SAID
+        %th{:width => '150px', :ts_type => 'string'}
+          %label.table_header{:for => 'search_description'}Description
+        %th{:width => '90px'}
+          %label.table_header{:for => 'search_start_date'}Start Date
+        %th{:width => '90px'}
+          %label.table_header{:for => 'search_end_date'}End Date
+        %th{:width => '80px', :ts_type => 'string'}
+          %label.table_header{:for => 'search_payment_terms'}Terms
+        %th{:width => '85px', :ts_type => 'money'}
+          %label.table_header{:for => 'search_revenue'}Annual Rev
+    -@contracts.each do |contract|
+      - rowclass = contract.end_date < Date.today ? 'expired' : contract.expired == true ? 'old' : 'plain'
+      %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"}
+        %td= h contract.sales_office_name
+        %td= h contract.support_office_name
+        %td{:title => contract.account_name.length > 20 ? contract.account_name : ""}= h truncate(contract.account_name, 20)
+        %td{:title => contract.said.to_s.length > 15 ? contract.said : ""}= h truncate(contract.said, 15)
+        %td{:title => contract.description.to_s.length > 20 ? contract.description : ""}= link_to(truncate(contract.description, 20), contract_path(contract), :class => 'highlight')
+        %td= h contract.start_date
+        %td= h contract.end_date
+        %td= h contract.payment_terms
+        %td{:align => 'right'}= h number_to_currency(contract.total_revenue, :precision => 2)

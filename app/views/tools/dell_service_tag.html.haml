@@ -26,6 +26,8 @@
         %th{:width => '150px', :ts_type => 'string'}
           %b Server Model
         %th{:width => '100px', :ts_type => 'string'}
+          %b Warr. Start Date
+        %th{:width => '100px', :ts_type => 'string'}
           %b Warr. End Date
         %th{:width => '250px', :ts_type => 'string'}
           %b Current Dell Support Level
@@ -34,5 +36,6 @@
         %tr
           %td= h x.service_tag
           %td= h x.model_number
+          %td= h x.start_date
           %td= h x.end_date
           %td= h x.support_level
