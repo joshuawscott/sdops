@@ -12,3 +12,6 @@
   %td{:align => 'right'}= h x.days_due
   %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
   %td{:align => 'right'}= number_to_currency(x.renewal_amount, :format => '%n')
+  - if current_user.has_role?(:admin)
+    %td
+      = link_to "check", url_for(:controller => :admin, :action => :check_for_renewals, :params => {:id => x.id})

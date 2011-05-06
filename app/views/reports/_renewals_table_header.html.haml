@@ -17,3 +17,6 @@
     %b Revenue
   %th{:width => '90px', :ts_type => 'money'}
     %b Renewal Estimate
+  - if current_user.has_role?(:admin)
+    %th
+      &nbsp;
