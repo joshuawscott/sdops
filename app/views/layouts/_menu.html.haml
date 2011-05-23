@@ -46,7 +46,7 @@
             %h2 Parts
             =link_to 'Spares Requirements', {:controller => 'reports', :action => 'sparesreq'}, submenuhash('reportsinfo', 'Supported Parts by Location')
             %br/
-            =link_to 'Inventory', {:controller => 'inventory_items', :action => 'index'}, submenuhash('reportsinfo', 'Inventory of Parts')
+            =link_to 'Inventory', {:controller => 'fishbowl_inventory_items', :action => 'index'}, submenuhash('reportsinfo', 'Inventory of Parts')
             %br/
             =link_to 'Spares Assessment', {:controller => 'reports', :action => 'spares_assessment'}, submenuhash('reportsinfo', 'Compare inventory to supported products')
             %br/

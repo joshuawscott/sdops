@@ -1,0 +1,45 @@
+- content_for :subtitle do
+  Fishbowl Inventory
+
+#section1
+  - form_tag '/fishbowl_inventory_items', { :method => :get } do
+    %div{:style => 'width:764px;padding-bottom:0px;'}
+      %div{:align => 'left'}
+        %h2 Inventory Items
+      %div{:align => 'right', :style => 'padding-bottom:1px;display:block'}
+        %b
+          = link_to 'Clear Search', '/fishbowl_inventory_items'
+          &nbsp;
+        = submit_tag "Search", :style => 'align:right;'
+
+    %table{:class => 'plain', :border => "2", :cellpadding => "2", :cellspacing => "2"}
+      %thead
+        %tr
+          %th{:width => '150px'}
+            %label{:for => 'search_part_num'}Part Number
+          %th{:width => '336px'}
+            %label{:for => 'search_partdescription'}Description
+          %th{:width => '150px'}
+            %label{:for => 'search_serialnum'}Serial Number
+          %th{:width => '100px'}
+            %label{:for => 'search_location'}Location Group
+          %th{:width => '100px'}
+            %label{:for => 'search_location'}Location
+        %tr
+          %th{:class => "search"}
+            = text_field 'search', 'part_num', :size => 20, :value => @part_num
+          %th{:class => "search"}
+            = text_field 'search', 'partdescription', :size => 51, :value => @partdescription
+          %th{:class => "search"}
+            = text_field 'search', 'serialnum', :size => 20, :value => @serialnum
+          %th{:class => "search"}
+            = select("search", "locationgroupid", @locationgroups, {:selected => @locationgroupid, :include_blank => true },{ :style => "width: 105px"})
+          %th
+            &nbsp;
+      - @inventory_items.each do |inventory_item|
+        %tr
+          %td= h inventory_item.partnum
+          %td= h inventory_item.partdescription
+          %td= h inventory_item.serialnum
+          %td= h inventory_item.fb_locationgroup.name
+          %td= h inventory_item.locationname
