@@ -48,6 +48,8 @@
             %label.table_header{:for => 'search_support_office'}Supp. Office
           %th{:width => '149px', :ts_type => 'string'}
             %label.table_header{:for => 'search_account_name'}Account Name
+          %th{:width => '80px', :ts_type => 'number'}
+            %label.table_header{:for => 'search_id'}Contract ID
           %th{:width => '100px', :ts_type => 'string'}
             %label.table_header{:for => 'search_said'}SAID
           %th{:width => '150px', :ts_type => 'string'}
@@ -68,6 +70,8 @@
           %th{:class => "search"}
             = text_field 'search', 'account_name', :size => 19, :value => @account_name
           %th{:class => "search"}
+            = text_field 'search', 'id', :size => 7, :value => @id
+          %th{:class => "search"}
             = text_field 'search', 'said', :size => 16, :value => @said
           %th{:class => "search"}
             = text_field 'search', 'description', :size => 20, :value => @description
@@ -85,6 +89,7 @@
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
           %td{:title => contract.account_name.length > 20 ? contract.account_name : ""}= h truncate(contract.account_name, 20)
+          %td= h contract.id
           %td{:title => contract.said.to_s.length > 15 ? contract.said : ""}= h truncate(contract.said, 15)
           %td{:title => contract.description.to_s.length > 20 ? contract.description : ""}= link_to(truncate(contract.description, 20), contract_path(contract), :class => 'highlight')
           %td= h contract.start_date
