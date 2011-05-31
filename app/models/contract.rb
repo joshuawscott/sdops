@@ -1,5 +1,7 @@
 class Contract < SupportDeal
 
+  validates_presence_of :payment_terms, :po_received
+
   #Calculates the amount of New Business for this contract
   def new_business
     if predecessors.size > 0
@@ -40,6 +42,5 @@ class Contract < SupportDeal
       :joins => "LEFT JOIN users ON support_deals.sales_rep_id = users.id",
       :conditions => "payment_terms <> 'Bundled'").map { |x|  x if x.renewal? }.compact
   end
-
 
 end

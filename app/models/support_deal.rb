@@ -79,11 +79,11 @@ class SupportDeal < ActiveRecord::Base
 
   #Validate General Details
   validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id
-  validates_presence_of :said, :sdc_ref, :payment_terms, :platform
+  validates_presence_of :said, :sdc_ref, :platform
   #Validate Revenue
   validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev
   #Validate Terms
-  validates_presence_of :start_date, :end_date, :po_received
+  validates_presence_of :start_date, :end_date
 
   before_save :update_line_item_effective_prices
   after_save :update_account_name_from_sugar
