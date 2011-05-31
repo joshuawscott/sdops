@@ -44,6 +44,7 @@ class ReportsController < ApplicationController
     @offices = @offices.uniq.sort
     respond_to do |format|
       format.html # renewals.html.haml
+      format.xls #create excel doc
     end
   end
   

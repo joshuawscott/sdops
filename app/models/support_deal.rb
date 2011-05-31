@@ -393,6 +393,16 @@ class SupportDeal < ActiveRecord::Base
     @contracts
   end
 
+  # Returns the last _num_ comments for a support_deal (default 1)
+  # If num is not used, returns a single comment object, otherwise returns an array of comments.
+  def last_comment(num = nil)
+    if num.nil?
+      Comment.find(:first, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC")
+    else
+      Comment.find(:first, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC", :limit => num )
+    end
+  end
+
   # BEGIN New methods for quoting #
 
   # returns a float corresponding to the number of months the contract is valid.
