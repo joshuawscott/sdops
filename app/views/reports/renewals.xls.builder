@@ -41,7 +41,8 @@ xml.Workbook({
       xml.Column 'ss:Width' => '65.25' #Renewal Sent
       xml.Column 'ss:Width' => '63' #Revenue
       xml.Column 'ss:Width' => '63' #Renewal Est.
-      xml.Column 'ss:Width' => '300' #Comment
+      xml.Column 'ss:Width' => '53.25' #Comment Date
+      xml.Column 'ss:Width' => '245' #Comment
 
       # Header
       xml.Row do
@@ -53,6 +54,7 @@ xml.Workbook({
         xml.Cell { xml.Data 'Renewal Sent', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Revenue', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Renewal Est.', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Cmt. Date', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Comment', 'ss:Type' => 'String' }
       end
 
@@ -83,7 +85,11 @@ xml.Workbook({
           end
           if contract.last_comment.nil?
             xml.Cell { xml.Data "", 'ss:Type' => 'String' }
+            xml.Cell { xml.Data "", 'ss:Type' => 'String' }
           else
+            xml.Cell 'ss:StyleID' => 'date' do
+              xml.Data contract.last_comment.created_at.to_date.to_xls_serial, 'ss:Type' => 'Number'
+            end
             xml.Cell { xml.Data contract.last_comment.body, 'ss:Type' => 'String' }
           end
         end
