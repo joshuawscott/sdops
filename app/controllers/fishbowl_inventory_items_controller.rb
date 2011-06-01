@@ -3,9 +3,10 @@ class FishbowlInventoryItemsController < ApplicationController
     begin
       Rails.cache.clear
       flash[:notice] = ''
+      @line_items_limit ||= 1000
       # avoid returning everything on a blank search
       if !params[:search].blank? && !(params[:search][:serialnum].blank? && params[:search][:part_num].blank? && params[:search][:locationgroupid].blank? && params[:search][:partdescription].blank?)
-        line_items_limit = 1000 #possibly allow this to be set in the form?
+        params[:search][:line_items_limit].to_i < 1 ? @line_items_limit = 1000 : @line_items_limit = params[:search][:line_items_limit].to_i
         search_hash = params[:search]
         search_hash.delete_if {|k,v| v.blank?}
         @part_num = search_hash[:part_num] if !search_hash[:part_num].blank?
@@ -21,10 +22,10 @@ class FishbowlInventoryItemsController < ApplicationController
         params_hash[:locationgroup] = @locationgroup unless @locationgroup.blank?
         params_hash[:locationgroupid] = @locationgroupid unless @locationgroupid.blank?
         params_hash[:qty] = 1.0
-        params_hash[:use_limit] = line_items_limit
+        params_hash[:use_limit] = @line_items_limit
 
         @inventory_items = FishbowlQoh.find(:all, :params => params_hash)
-        flash[:notice] = "Search limited to #{line_items_limit} items" if @inventory_items.size == line_items_limit
+        flash[:notice] = "Search limited to #{@line_items_limit} items" if @inventory_items.size == @line_items_limit
       else
         @inventory_items = []
         @locations = []

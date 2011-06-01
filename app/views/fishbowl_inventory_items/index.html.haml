@@ -3,10 +3,14 @@
 
 #section1
   - form_tag '/fishbowl_inventory_items', { :method => :get } do
-    %div{:style => 'width:764px;padding-bottom:0px;'}
+    %div{:style => 'width:882px;padding-bottom:0px;'}
       %div{:align => 'left'}
         %h2 Inventory Items
-      %div{:align => 'right', :style => 'padding-bottom:1px;display:block'}
+      %div{:align => 'left', :style => 'padding-bottom:1px;padding-right:300px;display:inline'}
+        %label{:for => 'search_line_items_limit'}Rows Limit
+        = text_field 'search', 'line_items_limit', :size => 10, :value => @line_items_limit
+        %em more than 1000 rows may be slow
+      %div{:align => 'right', :style => 'padding-bottom:1px;display:inline'}
         %b
           = link_to 'Clear Search', '/fishbowl_inventory_items'
           &nbsp;
