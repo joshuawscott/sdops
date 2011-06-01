@@ -33,7 +33,9 @@ xml.Workbook({
 
   xml.Worksheet 'ss:Name' => 'Contracts' do
     xml.Table do
+      xml.Column 'ss:Width' => '31.5' #ID
       xml.Column 'ss:Width' => '59.25' #Sales Office
+      xml.Column 'ss:Width' => '84.75' #Sales Rep
       xml.Column 'ss:Width' => '150' #Account Name
       xml.Column 'ss:Width' => '180' #Description
       xml.Column 'ss:Width' => '53.25' #Start Date
@@ -42,11 +44,13 @@ xml.Workbook({
       xml.Column 'ss:Width' => '63' #Revenue
       xml.Column 'ss:Width' => '63' #Renewal Est.
       xml.Column 'ss:Width' => '53.25' #Comment Date
-      xml.Column 'ss:Width' => '245' #Comment
+      xml.Column 'ss:Width' => '140' #Comment
 
       # Header
       xml.Row do
+        xml.Cell { xml.Data 'ID', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Sales Office', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Sales Rep', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Account Name', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Description', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Start Date', 'ss:Type' => 'String' }
@@ -61,7 +65,9 @@ xml.Workbook({
       # Rows
       @contracts.each do |contract|
         xml.Row do
+          xml.Cell { xml.Data contract.id, 'ss:Type' => 'Number' }
           xml.Cell { xml.Data contract.sales_office_name, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.sales_rep.full_name, 'ss:Type' => 'String' }
           xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
           xml.Cell { xml.Data contract.description, 'ss:Type' => 'String' }
           xml.Cell 'ss:StyleID' => 'date' do
