@@ -62,5 +62,14 @@
       - @contracts.each do |x|
         - if x.days_due.to_i > 60 && x.days_due.to_i <= 90
           = render :partial => "renewals_table_content", :locals => { :x => x }
+
+  %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 91 to 120 days
+  %table{:class => "sortable", :padding => '2', :border => '1', :width => '860px'}
+    %thead
+      = render :partial => 'renewals_table_header'
+    %tbody
+      - @contracts.each do |x|
+        - if x.days_due.to_i > 90 && x.days_due.to_i <= 120
+          = render :partial => "renewals_table_content", :locals => { :x => x }
   %script
     toggleOffices(7);

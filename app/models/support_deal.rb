@@ -135,7 +135,7 @@ class SupportDeal < ActiveRecord::Base
     contracts
   end
 
-  # Returns Contracts with end_date in the next 90 days, unless Contract.expired = 1
+  # Returns Contracts with end_date in the next 120 days, unless Contract.expired = 1
   def self.renewals_next_90_days(teams, ref_date)
     if ref_date.nil?
       ref_date = Date.today
@@ -144,7 +144,7 @@ class SupportDeal < ActiveRecord::Base
       ref_date = Date.new(ref_date[0], ref_date[1], ref_date[2])
     end
 
-    plus90 = ref_date.months_since(3)
+    plus90 = ref_date.months_since(4)
     self.find(:all,
       :select => "id, sales_rep_id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent, renewal_amount",
       :conditions => ["end_date <= '#{plus90}' AND expired <> 1 AND (sales_office IN (?) OR support_office IN (?))", teams, teams],
