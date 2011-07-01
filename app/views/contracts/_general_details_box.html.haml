@@ -1,4 +1,4 @@
-#general.boxed{:style => 'width:430px;height:260px'}
+#general.boxed{:style => 'width:430px;height:270px'}
   %h2 General Details
   %p
     %label{:for => "contract_id"}
@@ -8,6 +8,10 @@
     %label{:for => "contract_account_name"}
       Account
     = @contract.account_name.blank? ? 'N/A' :  link_to(@contract.account_name, contract_search_url(:account_name => @contract.account_name), :title => "View all contracts for #{@contract.account_name}")
+  %p
+    %label{:for => "contract_account_client_category"}
+      Client Category
+    =h @contract.sugar_acct.client_category.blank? ? 'N/A' : @contract.sugar_acct.client_category
   %p
     %label{:for => "contract_sales_office_name"}
       Sales Office

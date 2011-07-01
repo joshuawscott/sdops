@@ -41,5 +41,13 @@ class SugarAcct < SugarDb
   has_many :sugar_acct_opps, :foreign_key => "account_id"
   has_many :sugar_opps, :through => :sugar_acct_opps, :foreign_key => "account_id"
   has_many :contracts
-  
+  has_one :sugar_accounts_cstm, :foreign_key => "id_c"
+
+  def client_category
+    begin
+      @client_category = self.sugar_accounts_cstm.client_category_c
+    rescue
+      @client_category = nil
+    end
+  end
 end
