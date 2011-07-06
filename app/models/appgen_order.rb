@@ -14,4 +14,15 @@ class AppgenOrder < ActiveRecord::Base
   has_many :appgen_order_lineitems
   has_many :appgen_order_serials, :through => :appgen_order_lineitems
   has_one :upfront_order
+
+  #consistent interface between this and fishbowl_so
+  def line_items
+    appgen_order_lineitems
+  end
+  def num
+    id
+  end
+  def salesman
+    ""
+  end
 end

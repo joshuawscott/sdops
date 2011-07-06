@@ -6,6 +6,8 @@
   %p
     -form_tag update_from_appgen_upfront_orders_path do
       =submit_tag "Update from Appgen"
+    -form_tag update_from_fishbowl_upfront_orders_path do
+      =submit_tag "Update from Fishbowl"
   %p
     
     Show Completed?
@@ -13,7 +15,7 @@
   %table{:id => "orders_table"}
     %thead
       %tr
-        %th Appgen Order #
+        %th Sales Order #
         %th Cust Name
         %th Ship Date
         %th Support?
@@ -26,12 +28,15 @@
     %tbody
       - @upfront_orders.each do |u|
         %tr{:id => u.completed}
-          %td=h u.appgen_order_id
-          %td=h u.appgen_order.cust_name
-          %td=h u.appgen_order.ship_date
-          %td=h u.has_upfront_support.to_s
-          %td=h(u.support_deal_id != nil).to_s
-          %td=h u.completed.to_s
+          -unless u.linked_order.blank?
+            %td=h u.linked_order.num
+            %td=h u.linked_order.cust_name
+            %td=h u.linked_order.ship_date
+            %td=h u.has_upfront_support.to_s
+            %td=h(u.support_deal_id != nil).to_s
+            %td=h u.completed.to_s
+          -else
+            %td{:colspan => 6} NO LINKED ORDER!
           %td
             =link_to("Show", upfront_order_path(u.id))
           %td

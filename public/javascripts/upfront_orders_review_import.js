@@ -18,15 +18,13 @@ function toggleContracts(){
 }
 
 function hideAllContracts(){
-  var a = $('contract[account_id]').options;
-  for (i=0; i < a.length; i++){
-    var name = 'tr[id="'+a[i].value+'"]';
-    $$(name).invoke('hide');
-  }
+  var rows = $$('tbody#contracts tr');
+  rows.invoke('hide');
 }
 /*
 window.onload = function() {hideAllContracts();}
 */
 document.observe("dom:loaded", function() {
   hideAllContracts();
+  toggleContracts();
 });

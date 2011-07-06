@@ -258,3 +258,7 @@ module ApplicationHelper
   end
 
 end
+
+def tooltip_if_truncated(string, length)
+  string.length > 30 ? string : ""
+end

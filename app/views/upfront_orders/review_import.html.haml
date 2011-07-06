@@ -8,57 +8,59 @@
     =submit_tag "Save Contract and Line Items"
     =hidden_field_tag 'contract[sales_office_name]'
     =hidden_field_tag 'contract[support_office_name]'
-    =hidden_field_tag 'contract[account_name]'
+    =hidden_field_tag 'contract[account_name]', @account_selected_name
     %h2 Contract
     #results.boxed{:style => 'width: 300px;height: 350px'}
       %h2 Original Order Information
       %label{:for => :cust_name} Cust Name
-      =@appgen_order.cust_name
+      =@linked_order.cust_name
       %br/
       %label Address
-      =@appgen_order.address2
+      =@linked_order.address2
       %br/
-      -if @appgen_order.address3 != ''
-        %label &nbsp;
-        =@appgen_order.address3
-        %br/
       %label &nbsp;
-      =@appgen_order.address4
+      =@linked_order.address3
+      %br/
+      %label &nbsp;
+      =@linked_order.address4
       %br/
       %label Sales Rep
-      =@appgen_order.sales_rep
+      =@linked_order.sales_rep
       %br/
       %label Ship Date
-      =@appgen_order.ship_date
+      =@linked_order.ship_date
+      %br/
+      %label SO Number
+      =@linked_order.num
       %br/
     #results.boxed{:style => 'width: 400px;height: 350px'}
       %h2 New Contract Details
       %label{:for => :account_id} Account ID
-      =select_tag("contract[account_id]", '<option></option>' + options_from_collection_for_select(@sugar_accts, :id, :name), :onchange => "$('contract[account_name]').value = this.options[this.selectedIndex].text;toggleContracts();", :style => 'width: 200px')
+      =select_tag("contract[account_id]", '<option></option>' + options_from_collection_for_select(@sugar_accts, :id, :name, @account_selected_id), :onchange => "$('contract[account_name]').value = this.options[this.selectedIndex].text;toggleContracts();", :style => 'width: 200px')
       %br/
       %label{:for => :sales_office} Sales Office
-      =select_tag("contract[sales_office]", '<option></option>' + options_from_collection_for_select(@sales_offices, :id, :name), :onchange => "$('contract[sales_office_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
+      =select_tag("contract[sales_office]", '<option></option>' + options_from_collection_for_select(@sales_offices, :id, :name, @office_selected_id), :onchange => "$('contract[sales_office_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
       %br/
       %label{:for => :support_office} Support Office
-      =select_tag("contract[support_office]", '<option></option>' + options_from_collection_for_select(@support_offices, :id, :name), :onchange => "$('contract[support_office_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
+      =select_tag("contract[support_office]", '<option></option>' + options_from_collection_for_select(@support_offices, :id, :name, @office_selected_id), :onchange => "$('contract[support_office_name]').value = this.options[this.selectedIndex].text", :style => 'width: 200px')
       %br/
       %label{:for => :description} Description
       =text_field_tag 'contract[description]', '', :size => 35
       %br/
       %label{:for => :sales_rep_id} Sales Rep
-      =select_tag("contract[sales_rep_id]", '<option></option>' + options_from_collection_for_select(@reps, :id, :full_name), :style => 'width: 200px')
+      =select_tag("contract[sales_rep_id]", '<option></option>' + options_from_collection_for_select(@reps, :id, :full_name, @rep_selected_id), :style => 'width: 200px')
       %br/
       %label{:for => :platform} Platform
       =select_tag("contract[platform]", '<option></option>' + options_from_collection_for_select(@platform, :label, :label), :style => 'width: 200px')
       %br/
       %label{:for => :start_date} Start Date
-      =date_select_tag 'contract[start_date]', (@appgen_order.ship_date. + 1.day).to_s(:local)
+      =date_select_tag 'contract[start_date]', (@linked_order.ship_date. + 1.day).to_s(:local)
       %br/
       %label{:for => :end_date} End Date
-      =date_select_tag 'contract[end_date]', (@appgen_order.ship_date + 1.year).to_s(:local)
+      =date_select_tag 'contract[end_date]', (@linked_order.ship_date + 1.year).to_s(:local)
       %br/
-      %label{:for => :multiyr_end} Multiyear End Date
-      =date_select_tag 'contract[multiyr_end]', ''
+      %label{:for => :multiyr_end} Multiyr. end date
+      =date_select_tag 'contract[multiyr_end]', (@linked_order.ship_date + 1.year).to_s(:local)
       %br/
       %label{:for => :hw_support_level_id} HW Support Level
       =select_tag("contract[hw_support_level_id]", '<option></option>' + options_from_collection_for_select(@types_hw, :label, :label), :style => 'width: 200px')
@@ -67,7 +69,7 @@
       =select_tag("contract[sw_support_level_id]", '<option></option>' + options_from_collection_for_select(@types_sw, :label, :label), :style => 'width: 200px')
       %br/
       %label{:for => :updates} Updates?
-      =select_tag 'contract[updates]', options_for_select(%w(false true))
+      =select_tag 'contract[updates]', options_for_select(%w(true false))
       %br/
       %label{:for => :ce_days} CE Days
       =text_field_tag 'contract[ce_days]', 0
@@ -84,12 +86,12 @@
           %th Description
           %th Start Date
           %th End Date
-      %tbody
+      %tbody#contracts
         -@contracts.each do |c|
           %tr{:id => c.account_id}
-            %td{:title => c.account_name.length > 30 ? c.account_name : ""}= h truncate (c.account_name, 30)
-            %td{:title => c.said.to_s.length > 25 ? c.said : ""}= h truncate(c.said, 25)
-            %td{:title => c.description.to_s.length > 30 ? c.description : ""}= h truncate(c.description, 30)
+            %td{:title => tooltip_if_truncated(c.account_name, 30)}= h truncate(c.account_name, 30)
+            %td{:title => tooltip_if_truncated(c.said, 25)}= h truncate(c.said, 25)
+            %td{:title => tooltip_if_truncated(c.description, 30)}= h truncate(c.description, 30)
             %td= c.start_date
             %td= c.end_date
           
@@ -97,7 +99,7 @@
     #results.boxed{:style => 'width:400px'}
       %h2 Upfront Revenue
       %label Main Discount: 
-      =@appgen_order.net_discount.to_s + '%'
+      =@linked_order.net_discount.to_s + '%'
       %table{:class => 'plain'}
         %tr
           %th Part#
@@ -137,6 +139,9 @@
       %br/
   #section2
     %h2 Line Items
+    %em
+      %span{:style => "background: #FF0000"}
+        lines in red are not found in pricing DB.
     %table
       %thead
         %tr
@@ -148,14 +153,15 @@
           %th Qty
           %th Support Provider
       %tbody
-        - @appgen_order_lineitems.each do |line|
-          %tr
+        - @lineitems.each do |line|
+          %tr{:class => class_for_pn(line.part_number)}
             %td= select_tag 'line_item[][is_hw]', options_for_select(%w(true false), line.hwchecked)
             %td= select_tag 'line_item[][is_sw]', options_for_select(%w(true false), line.swchecked)
             %td= text_field_tag 'line_item[][product_num]', line.part_number
             %td= line.description
-            %td= text_field_tag 'line_item[][serial_num]', line.appgen_order_serial.serial_number unless line.appgen_order_serial == nil
-            %td= text_field_tag 'line_item[][qty]', line.quantity, :style => 'width:3em;text-align:center'
-            %td= select_tag 'line_item[][support_provider]', options_from_collection_for_select(@support_providers, :label, :label)
-            
-
+            %td= text_field_tag 'line_item[][serial_num]', line.serialnum
+            %td= text_field_tag 'line_item[][qty]', line.quantity, :style => 'width:3em;text-align:center', :autocomplete => 'off'
+            %td= select_tag 'line_item[][support_provider]', options_from_collection_for_select(@support_providers, :name, :name, "Sourcedirect")
+    %p &nbsp;
+    =submit_tag "Save Contract and Line Items"
+    %p &nbsp;

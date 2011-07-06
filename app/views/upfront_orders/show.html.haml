@@ -11,24 +11,24 @@
     =link_to 'Back to Upfront Orders Listing', upfront_orders_path
   #results.boxed{:style => 'width:350px'}
     %h2 Order Information
-    %label Appgen Order #
-    =@upfront_order.appgen_order_id
+    %label Sales Order #
+    =@upfront_order.linked_order.num
     %br/
     %label Cust. Address
-    =@upfront_order.appgen_order.cust_name
+    =@upfront_order.linked_order.cust_name
     %br/
     %label &nbsp;
-    =@upfront_order.appgen_order.address2
+    =@upfront_order.linked_order.address2
     %br/
-    -unless @upfront_order.appgen_order.address3.blank? 
+    -unless @upfront_order.linked_order.address3.blank?
       %label &nbsp;
-      =@upfront_order.appgen_order.address3
+      =@upfront_order.linked_order.address3
       %br/
     %label &nbsp;
-    =@upfront_order.appgen_order.address4
+    =@upfront_order.linked_order.address4
     %br/
     %label Ship Date
-    =@upfront_order.appgen_order.ship_date
+    =@upfront_order.linked_order.ship_date
   #results.boxed{:style => 'width:350px'}
     %h2 Status
     -if current_user.has_role?(:admin)
@@ -66,7 +66,7 @@
         %tr
           %td= line.part_number
           %td= line.description
-          %td= line.appgen_order_serial.serial_number unless line.appgen_order_serial == nil
+          %td= line.serialnum
           %td= line.quantity
           %td= line.price
           %td= line.discount

@@ -8,3 +8,4 @@ spec_output
 doc/*
 *~
 public/stylesheets/main.css
+nbproject/*

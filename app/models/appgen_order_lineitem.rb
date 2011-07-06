@@ -20,4 +20,9 @@ class AppgenOrderLineitem < ActiveRecord::Base
     return "true" if part_number[0] == 66
     'false'
   end
+  #consistent interface between this and fishbowl_so
+  def serialnum
+    self.appgen_order_serial.serial_number
+  end
+
 end

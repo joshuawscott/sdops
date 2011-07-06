@@ -2,7 +2,7 @@
   Edit Upfront Order
 #section1
   #results.boxed
-    %h2= "Upfront Order " + @upfront_order.appgen_order_id.to_s
+    %h2= "Upfront Order " + @upfront_order.linked_order.id.to_s
     -form_for @upfront_order do |f|
       %p
         %label{:for => "upfront_order_has_upfront_support"}
@@ -21,6 +21,6 @@
 #section2
   #results.boxed
     %h2 Original Order Info
-    =render_simple_show(@appgen_order)
+    =render_simple_show(@upfront_order.linked_order)
 #section3
-  =render_simple_index(@appgen_order.appgen_order_lineitems, :ignore_foreign_keys => [:appgen_order_id], :display_show => false, :display_edit => false, :display_destroy => false)
+  =render_simple_index(@line_items, :ignore_foreign_keys => [:appgen_order_id], :display_show => false, :display_edit => false, :display_destroy => false)

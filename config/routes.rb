@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :quotes
+
   map.resources :manufacturer_lines
 
   map.resources :manufacturers
@@ -15,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :appgen_orders
   map.resources :appgen_order_lineitems
   map.resources :appgen_serials
-  map.resources :upfront_orders, :collection => {:update_from_appgen => :put}, :member => {:save_import => :put, :review_import => :get}
+  map.resources :upfront_orders, :collection => {:update_from_appgen => :put, :update_from_fishbowl => :put}, :member => {:save_import => :put, :review_import => :get}
   
   map.resources :swproducts
 

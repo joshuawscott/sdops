@@ -3,21 +3,28 @@ class UpfrontOrdersController < ApplicationController
   before_filter :authorized?, :except => [:show, :index]
   before_filter :read_authorized?, :only => [:show, :index]
   def index
-    @upfront_orders = UpfrontOrder.find(:all, :joins => :appgen_order, :order => :ship_date)
-    
+    #@upfront_orders = UpfrontOrder.find(:all, :joins => :appgen_order, :order => :ship_date)
+    @upfront_orders = UpfrontOrder.find(:all, :conditions => "completed = 0 AND has_upfront_support = 1", :order => :id)
   end
   def show
-    @upfront_order = UpfrontOrder.find(params[:id], :include => :appgen_order)
-    @lineitems = AppgenOrderLineitem.find(:all, :include => :appgen_order_serial, :conditions => ['appgen_order_id = ?', @upfront_order.appgen_order_id])
+    #@upfront_order = UpfrontOrder.find(params[:id], :include => :appgen_order)
+    #@lineitems = AppgenOrderLineitem.find(:all, :include => :appgen_order_serial, :conditions => ['appgen_order_id = ?', @upfront_order.appgen_order_id])
+    @upfront_order = UpfrontOrder.find(params[:id])
+    @lineitems = @upfront_order.linked_order.line_items
   end
 
   def edit
     @upfront_order = UpfrontOrder.find(params[:id])
-    @appgen_order = @upfront_order.appgen_order
+    @linked_order = @upfront_order.linked_order
+    @line_items = @upfront_order.linked_order.line_items
     @contract_dropdown = Contract.find(:all, :conditions => {:payment_terms => "Bundled"}).collect {|c| [c.said.to_s + " | " + c.description.to_s, c.id]}
   end
   def update_from_appgen
     UpfrontOrder.update_from_appgen
+    redirect_to upfront_orders_url
+  end
+  def update_from_fishbowl
+    UpfrontOrder.update_from_fishbowl
     redirect_to upfront_orders_url
   end
 
@@ -35,33 +42,47 @@ class UpfrontOrdersController < ApplicationController
         format.xml  { render :xml => @upfront_order.errors, :status => :unprocessable_entity }
       end
     end
-
   end
-  
+
   def review_import
     @contracts = Contract.find(:all, :conditions => {:expired => false})
     @upfront_order = UpfrontOrder.find(params[:id])
-    @appgen_order = @upfront_order.appgen_order
-    @appgen_order_lineitems = AppgenOrderLineitem.find(:all, :conditions => {:appgen_order_id => @appgen_order.id}, :include => :appgen_order_serial)
+    @linked_order = @upfront_order.linked_order
+    if @linked_order.class == AppgenOrder
+      @lineitems = AppgenOrderLineitem.find(:all, :conditions => {:appgen_order_id => @linked_order.id}, :include => :appgen_order_serial)
+    elsif @linked_order.class == FishbowlSo
+      @lineitems = @linked_order.line_items
+      rep_selected = User.find(:first, :conditions => ["login = ?", @linked_order.salesman])
+      @rep_selected_id = rep_selected.id unless rep_selected.nil?
+      office_selected = SugarTeam.find(:first, :conditions => {:name => @linked_order.team_name})
+      @office_selected_id = office_selected.id unless office_selected.nil?
+      #Find matching contracts
+      matching_accounts = SugarAcct.find(:all, :conditions => {:deleted => false, :name => @linked_order.customer_name})
+      if matching_accounts.length == 1
+        @account_selected_id = matching_accounts[0].id
+        @account_selected_name = matching_accounts[0].name
+      end
+    end
     @support_revenue_lines = []
     @srltotal = BigDecimal.new("0.0")
-    @appgen_order_lineitems.each do |a|
-      if a.part_number.match(/^SDC/)
-        @support_revenue_lines << a
-        @srltotal += a.price
+    @lineitems.each do |lineitem|
+      if lineitem.part_number.match(/^SDC/)
+        @support_revenue_lines << lineitem
+        @srltotal += lineitem.price
       end
     end
   end
 
   def save_import
     @upfront_order = UpfrontOrder.find(params[:id])
-    @appgen_order = @upfront_order.appgen_order
+    @linked_order = @upfront_order.linked_order
+    #defaults - these are overridden by the user input.
     contract_hash = {
-      :said => @upfront_order.appgen_order_id,
-      :sdc_ref => @upfront_order.appgen_order_id,
-      :cust_po_num => @appgen_order.cust_po_number,
+      :said => @linked_order.num,
+      :sdc_ref => @linked_order.num,
+      :cust_po_num => @linked_order.cust_po_number,
       :payment_terms => "Bundled",
-      :start_date => @appgen_order.ship_date + 1,
+      :start_date => @linked_order.ship_date + 1,
       :expired => false,
       :discount_pref_hw => 0.0,
       :discount_pref_sw => 0.0,
@@ -70,9 +91,9 @@ class UpfrontOrdersController < ApplicationController
       :discount_multiyear => 0.0,
       :discount_ce_day => 0.0,
       :discount_sa_day => 0.0,
-      :so_number => @upfront_order.appgen_order_id,
-      :po_received => @appgen_order.ship_date}
-      @contract = Contract.new(contract_hash.merge(params[:contract]))
+      :so_number => @linked_order.num,
+      :po_received => @linked_order.ship_date}
+    @contract = Contract.new(contract_hash.merge(params[:contract]))
     if @contract.save
       flash[:notice] = "Contract Created"
       @contract.reload
@@ -141,7 +162,9 @@ class UpfrontOrdersController < ApplicationController
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
     #LineItem dropdowns
-    @support_providers = Dropdown.support_provider_list
+    #@support_providers = Dropdown.support_provider_list
+    @support_providers = Subcontractor.find(:all)
+    @support_providers << Subcontractor.new(:id => 0, :name => "Sourcedirect")
   end
     
   def authorized?

@@ -91,7 +91,7 @@ class User < ActiveRecord::Base
 	end
   
   def self.user_list
-     User.find(:all, :order => "last_name")
+     User.find(:all, :order => "first_name, last_name")
   end
 
   def sugar_team_ids
