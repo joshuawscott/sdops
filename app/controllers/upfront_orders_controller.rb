@@ -56,6 +56,7 @@ class UpfrontOrdersController < ApplicationController
       @rep_selected_id = rep_selected.id unless rep_selected.nil?
       office_selected = SugarTeam.find(:first, :conditions => {:name => @linked_order.team_name})
       @office_selected_id = office_selected.id unless office_selected.nil?
+      @office_selected_name = office_selected.name unless office_selected.nil?
       #Find matching contracts
       matching_accounts = SugarAcct.find(:all, :conditions => {:deleted => false, :name => @linked_order.customer_name})
       if matching_accounts.length == 1

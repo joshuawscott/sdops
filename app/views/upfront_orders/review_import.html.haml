@@ -6,8 +6,8 @@
 - form_tag save_import_upfront_order_path(@upfront_order), :method => :put do
   #section1
     =submit_tag "Save Contract and Line Items"
-    =hidden_field_tag 'contract[sales_office_name]'
-    =hidden_field_tag 'contract[support_office_name]'
+    =hidden_field_tag 'contract[sales_office_name]', @office_selected_name
+    =hidden_field_tag 'contract[support_office_name]', @office_selected_name
     =hidden_field_tag 'contract[account_name]', @account_selected_name
     %h2 Contract
     #results.boxed{:style => 'width: 300px;height: 350px'}
