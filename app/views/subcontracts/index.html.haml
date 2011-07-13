@@ -2,6 +2,12 @@
   Subcontracts Listing
 #section1
   = link_to 'New subcontract', new_subcontract_path
+  - if @viewing_all
+    =button_to 'Show Current', subcontracts_path, :method => :get
+  - else
+    - form_tag subcontracts_path, :method => :get do
+      = hidden_field_tag 'view_all', 1
+      = submit_tag 'View all subcontracts'
 #section2
   %table#subcontracts
     %thead

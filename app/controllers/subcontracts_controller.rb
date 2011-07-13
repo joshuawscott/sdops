@@ -4,9 +4,13 @@ class SubcontractsController < ApplicationController
   # GET /subcontracts.xml
   def index
     if params[:subcontractor]
-      @subcontracts = Subcontract.find(:all, :conditions => {:subcontractor_id => params[:subcontractor]})
-    else
+      @subcontracts = Subcontract.current.find(:all,:conditions => {:subcontractor_id => params[:subcontractor]})
+    elsif params[:view_all] == "1"
       @subcontracts = Subcontract.find(:all)
+      @viewing_all = true
+    else
+      @subcontracts = Subcontract.current
+      @viewing_all = false
     end
     
     respond_to do |format|
