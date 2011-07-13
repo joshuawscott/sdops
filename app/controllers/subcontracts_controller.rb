@@ -25,6 +25,7 @@ class SubcontractsController < ApplicationController
   def show
     @subcontract = Subcontract.find(params[:id])
     @comments = @subcontract.comments.sort {|x,y| y.created_at <=> x.created_at}
+    @line_items = @subcontract.line_items.sort_by {|x| x.position}
     @comment = Comment.new
     respond_to do |format|
       format.html # show.html.erb

@@ -99,7 +99,7 @@
         %th Cost
         %th
     %tbody
-      -@subcontract.line_items.each do |line|
+      -@line_items.each do |line|
         %tr
           %td=line.support_type
           %td=line.product_num
