@@ -69,3 +69,21 @@ function number_to_currency(Amount) {
 	return '$' + intPart + '.' + decPart;
 
 }
+// To use this, you will need to put a <span> with class <css_class>,
+// and the id of that <span> should be db_field_name_<id>
+// css_class -> the selector string to iterate through and create click-to-edit fields.  e.g.: '.click_to_edit_class'
+// url_prefix -> the beginning part of the post url (everything before the id)
+// rails_class -> the underscore formatted name of the rails model to update
+// db_field_name -> the name of the database field
+function editFieldInPlaceInTable(css_class, url_prefix, rails_class, db_field_name) {
+  var items = $$(css_class);
+  var len = items.length;
+  for(i=0; i<len; i=i+1){
+    var item_id = items[i].id.toString().replace(db_field_name+'_','');
+    var post_url = '/'+url_prefix+'/' + item_id + '.js';
+    new Ajax.InPlaceEditor(items[i], post_url, {
+      method: 'post',
+      callback: function(form, value) { return '_method=put&id='+encodeURIComponent(item_id)+'&'+rails_class+'['+db_field_name+']='+encodeURIComponent(value)+'&authenticity_token='+encodeURIComponent(authenticity_token)}
+    });
+  }
+}

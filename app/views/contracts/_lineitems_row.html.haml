@@ -9,9 +9,11 @@
     - support_provider(line_item)
   %td= h line_item.location
   %td= h line_item.product_num
-  %td= h line_item.note
+  %td
+    %div{:class => 'note_click_to_edit click_to_edit', :id => 'note_' + line_item.id.to_s}= h line_item.note || " "
   %td{:title => line_item.description.to_s.length > 30 ? line_item.description : ""}= h truncate(line_item.description, 30)
-  %td= h line_item.serial_num
+  %td
+    %div{:class => 'serial_num_click_to_edit click_to_edit', :id => 'serial_num_' + line_item.id.to_s}= h line_item.serial_num || " "
   %td{:style => line_item.begins == @contract.start_date ? 'color: #777777;' : 'font-weight: bold;'}= h line_item.begins
   %td{:style => line_item.ends == @contract.end_date ? 'color: #777777;' : 'font-weight: bold;'}= h line_item.ends
   %td{:align => 'center'}

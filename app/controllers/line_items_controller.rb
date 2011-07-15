@@ -69,9 +69,16 @@ class LineItemsController < ApplicationController
         flash[:notice] = 'Line Item was successfully updated.'
         format.html { redirect_to(@contract) }
         #format.xml  { head :ok }
+        # returns the updated attribute, if you are updating just one (this is to handle click-to-edit)
+        format.js {
+          key = nil
+          params[:line_item].each {|k,v| key = k}
+          render :text => @line_item.send("#{key}")
+          }
       else
         format.html { render :action => "edit" }
         #format.xml  { render :xml => @line_item.errors, :status => :unprocessable_entity }
+        format.js { render :text => "ERROR"}
       end
     end
   end
@@ -152,7 +159,8 @@ class LineItemsController < ApplicationController
   protected
 
   def get_contract
-    @contract = Contract.find params[:contract_id]
+    @contract = Contract.find params[:contract_id] if params[:contract_id]
+    @contract ||= LineItem.find(params[:id]).contract
   end
 
   def authorized?

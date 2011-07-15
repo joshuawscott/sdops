@@ -30,6 +30,7 @@ function setReplacedBy(box){
     if (set_expired == true)
       {
       $('contract_expired').checked = true;
+      return true;
       }
     else
       {
@@ -41,6 +42,11 @@ function setReplacedBy(box){
   {
     $('contract_expired').checked = false;
     box.checked = false;
+    return false;
   }
 }
 
+document.observe("dom:loaded", function() {
+  editFieldInPlaceInTable( '.note_click_to_edit', 'line_items', 'line_item', 'note');
+  editFieldInPlaceInTable( '.serial_num_click_to_edit', 'line_items', 'line_item', 'serial_num');
+});

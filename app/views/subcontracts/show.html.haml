@@ -1,6 +1,10 @@
+- content_for :bottom_js do
+  =javascript_tag "authenticity_token = '#{form_authenticity_token}'"
+  =javascript_include_tag 'prototype', 'effects', 'controls', 'subcontracts'
 -content_for :subtitle do
   Subcontract
 #section1
+  %span#testarea
   = link_to 'Edit', edit_subcontract_path(@subcontract)
   &nbsp;|&nbsp;
   = link_to 'Back', subcontracts_path
@@ -92,6 +96,7 @@
   %table
     %thead
       %tr
+        %th Contract ID
         %th Type
         %th Product Num
         %th Description
@@ -101,11 +106,15 @@
     %tbody
       -@line_items.each do |line|
         %tr
+          %td= link_to line.support_deal_id.to_s, contract_path(line.support_deal_id)
           %td=line.support_type
           %td=line.product_num
           %td=line.description
           %td=line.qty
-          %td=line.subcontract_cost
           -if current_user.has_role?(:contract_admin)
+            %td
+              %div{:class => 'subcontract_cost click_to_edit', :id => "id#{line.id}"}= line.subcontract_cost || 0.00
             %td= link_to "Remove", url_for(:controller => 'subcontracts', :action => 'remove_line_item', :id => @subcontract, :line_item_id => line.id), :confirm => 'Remove this item from this subcontract?', :method => :delete
-
+          -else
+            %td=line.subcontract_cost
+            %td{:colspan => 2} &nbsp;

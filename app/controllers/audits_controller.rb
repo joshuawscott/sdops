@@ -17,19 +17,21 @@ class AuditsController < ApplicationController
 
   def index
     @models = Audit.audited_classes.map {|x| x.to_s}.sort
-    @users = Audit.find(:all, :include => :user).map {|a| a.user.nil? ? "system" : a.user.login}.uniq.sort
+    #@users = Audit.find(:all, :include => :user).map {|a| a.user.nil? ? "system" : a.user.login}.uniq.sort
+    @users = User.find(:all).map{|a| a.login}.sort
+    @users << 'system'
   end
 
   def focus
     @model = params[:model]
-    @audits = Audit.find(:all, :conditions => ['auditable_type = ?', @model], :order => 'id DESC')
+    @audits = Audit.find(:all, :conditions => ['auditable_type = ?', @model], :order => 'id DESC', :limit => 5000)
   end
 
   def user
     @user = params[:user] == 'system' ?
       User.new(:first_name => '', :last_name => 'system') :
       User.find(:first, :conditions => {:login => params[:user]})
-    @audits = Audit.find(:all, :conditions => {:user_id => @user.id}, :order => 'id DESC')
+    @audits = Audit.find(:all, :conditions => {:user_id => @user.id}, :order => 'id DESC', :limit => 5000)
   end
 
   def show
