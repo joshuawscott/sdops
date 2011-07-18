@@ -107,7 +107,7 @@ class LineItem < ActiveRecord::Base
   # If support_type is 'SRV', returns nil.  This method is for updating from the current pricing DB.
   def return_current_info
     @current_info = (support_type.downcase + "_support_price").camelize.constantize.current_list_price(product_num) unless support_type == 'SRV'
-    @current_info.list_price = (@current_info.list_price * (self.support_deal.list_price_increase + BigDecimal('1.0'))).round
+    @current_info.list_price = (@current_info.list_price * (self.support_deal.list_price_increase.to_f + BigDecimal('1.0'))).round
     @current_info
   end
 
