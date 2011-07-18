@@ -3,12 +3,12 @@
 
 #section1
   = error_messages_for :line_item
-  - form_for(:line_item, :url => contract_line_item_path(@contract.id, @line_item.id), :html => { :method => :put }) do |f|
+  - form_for(:line_item, :url => contract_line_item_path(@support_deal.id, @line_item.id), :html => { :method => :put }) do |f|
     = render :partial => "form", :locals => { :f => f } 
 
     %p
       = submit_tag "Update"
-      = link_to 'Cancel & Return to Contract', contract_path(@contract)
+      = link_to 'Cancel & Return to Contract', contract_path(@support_deal)
 
 #section2
   = render :partial => "basic_line_listing" 

@@ -37,7 +37,6 @@ class LineItem < ActiveRecord::Base
     LineItem.find(:all, :select => 'location', :joins => :support_deal, :conditions => ['support_deals.expired = ?', false], :group => 'location').map {|x| x.location.to_s}.sort!
   end
 
-  # OPTIMIZE: hw_revenue_by_location is VERY slow (>15 seconds)
   # Returns a collection of LineItem Objects with the total revenue for each location
   def self.hw_revenue_by_location(effective_time = Time.now)
 
@@ -107,7 +106,9 @@ class LineItem < ActiveRecord::Base
   # Returns a HwSupportPrice or SwSupportPrice object, if support_type is 'HW' or 'SW' respectively.
   # If support_type is 'SRV', returns nil.  This method is for updating from the current pricing DB.
   def return_current_info
-    (support_type.downcase + "_support_price").camelize.constantize.current_list_price(product_num) unless support_type == 'SRV'
+    @current_info = (support_type.downcase + "_support_price").camelize.constantize.current_list_price(product_num) unless support_type == 'SRV'
+    @current_info.list_price = (@current_info.list_price * (self.support_deal.list_price_increase + BigDecimal('1.0'))).round
+    @current_info
   end
 
   def self.support_types
@@ -200,5 +201,6 @@ class LineItem < ActiveRecord::Base
   def self.for_customer(account_id)
     self.find(:all, :joins => :support_deal, :conditions => ["support_deals.account_id = ?", account_id])
   end
+
 end
 

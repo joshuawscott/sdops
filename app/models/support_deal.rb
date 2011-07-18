@@ -390,8 +390,8 @@ class SupportDeal < ActiveRecord::Base
   # - Some of the line items that have a support provider != 'Sourcedirect' also have subcontractor_id == nil
   def self.missing_subcontracts
     support_deal_ids = LineItem.find(:all, :select => "support_deal_id", :conditions => "support_provider <> 'Sourcedirect' AND subcontract_id IS NULL").map {|l| l.support_deal_id}.uniq
-    @contracts = self.current_unexpired.find(:all, :conditions => ["id IN (?)", support_deal_ids])
-    @contracts
+    @support_deals = self.current_unexpired.find(:all, :conditions => ["id IN (?)", support_deal_ids])
+    @support_deals
   end
 
   # Returns the last _num_ comments for a support_deal (default 1)

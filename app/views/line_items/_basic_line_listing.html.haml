@@ -8,7 +8,7 @@
       %th Description
       %th Qty
   %tbody
-    -@contract.line_items.each do |line|
+    -@support_deal.line_items.each do |line|
       %tr
         %td=line.position
         %td=line.support_type

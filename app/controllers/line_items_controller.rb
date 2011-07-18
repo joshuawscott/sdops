@@ -11,11 +11,11 @@ class LineItemsController < ApplicationController
   # GET /line_items/new.xml
   def new
     logger.debug "******* LineItems controller new method"
-    last_position = LineItem.find(:last, :conditions => {:support_deal_id => @contract.id}, :order => "position ASC").position unless @contract.line_items.size == 0
-    @line_item = @contract.line_items.new(:support_provider => 'Sourcedirect', 
-      :location => @contract.support_office_name,
-      :begins => @contract.start_date,
-      :ends => @contract.end_date,
+    last_position = LineItem.find(:last, :conditions => {:support_deal_id => @support_deal.id}, :order => "position ASC").position unless @support_deal.line_items.size == 0
+    @line_item = @support_deal.line_items.new(:support_provider => 'Sourcedirect',
+      :location => @support_deal.support_office_name,
+      :begins => @support_deal.start_date,
+      :ends => @support_deal.end_date,
       :position => (last_position || 0) + 1,
       :support_type => params[:support_type]
       )
@@ -29,27 +29,27 @@ class LineItemsController < ApplicationController
   # GET /line_items/1/edit
   def edit
     logger.debug "******* LineItems controller edit method"
-    @line_item = @contract.line_items.find(params[:id])
+    @line_item = @support_deal.line_items.find(params[:id])
     respond_to do |format|
       format.html
     end
   end
 
   def form_pull_pn_data
-    @new_info = LineItem.new(params[:line_item] || {:product_num => params[:product_num], :support_type => params[:support_type]}).return_current_info
+    @new_info = LineItem.new(params[:line_item] || {:product_num => params[:product_num], :support_type => params[:support_type], :support_deal_id => params[:support_deal_id]}).return_current_info
   end
 
   # POST /line_items
   # POST /line_items.xml
   def create
     logger.debug "******* LineItems controller create method"
-    @line_item = @contract.line_items.new(params[:line_item])
+    @line_item = @support_deal.line_items.new(params[:line_item])
     @line_item.support_deal_id = params[:contract_id]
 
     respond_to do |format|
       if @line_item.save
         flash[:notice] = 'Line Item was successfully created.'
-        format.html { redirect_to(@contract) }
+        format.html { redirect_to(@support_deal) }
         #format.xml  { render :xml => @line_item, :status => :created, :location => @line_item }
       else
         format.html { render :action => "new" }
@@ -62,12 +62,12 @@ class LineItemsController < ApplicationController
   # PUT /line_items/1.xml
   def update
     logger.debug "******* LineItems controller update method"
-    @line_item = @contract.line_items.find(params[:id])
+    @line_item = @support_deal.line_items.find(params[:id])
 
     respond_to do |format|
       if @line_item.update_attributes(params[:line_item])
         flash[:notice] = 'Line Item was successfully updated.'
-        format.html { redirect_to(@contract) }
+        format.html { redirect_to(@support_deal) }
         #format.xml  { head :ok }
         # returns the updated attribute, if you are updating just one (this is to handle click-to-edit)
         format.js {
@@ -87,12 +87,12 @@ class LineItemsController < ApplicationController
   # DELETE /line_items/1.xml
   def destroy
     logger.debug "******* LineItems controller destroy method"
-    @line_item = @contract.line_items.find(params[:id])
+    @line_item = @support_deal.line_items.find(params[:id])
 		logger.info current_user.login + " destroyed line item " + @line_item.id.to_s
     @line_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to(@contract) }
+      format.html { redirect_to(@support_deal) }
       #format.xml  { head :ok }
     end
   end
@@ -103,7 +103,7 @@ class LineItemsController < ApplicationController
     logger.debug "******* LineItems controller mass_update method"
     line_item_ids = params[:HW_line_item_ids].to_a + params[:SW_line_item_ids].to_a + params[:SRV_line_item_ids].to_a
     unless line_item_ids.nil? || line_item_ids.empty?
-      @line_items = @contract.line_items.find(line_item_ids)
+      @line_items = @support_deal.line_items.find(line_item_ids)
 			if params[:commit] == "Delete Checked Items"
 			  if current_user.has_role?(:admin)
 			    @line_items.each {|line| line.destroy}
@@ -143,7 +143,7 @@ class LineItemsController < ApplicationController
         line_to_update.update_attribute(:position, line_item[:position])
       end
     end
-		redirect_to contract_path(@contract)
+		redirect_to contract_path(@support_deal)
 	end
 
   def sort
@@ -159,8 +159,8 @@ class LineItemsController < ApplicationController
   protected
 
   def get_contract
-    @contract = Contract.find params[:contract_id] if params[:contract_id]
-    @contract ||= LineItem.find(params[:id]).contract
+    @support_deal = SupportDeal.find params[:contract_id] if params[:contract_id]
+    @support_deal ||= LineItem.find(params[:id]).support_deal
   end
 
   def authorized?

@@ -69,8 +69,8 @@ function number_to_currency(Amount) {
 	return '$' + intPart + '.' + decPart;
 
 }
-// To use this, you will need to put a <span> with class <css_class>,
-// and the id of that <span> should be db_field_name_<id>
+// To use this, you will need to put an element with class <css_class>,
+// and the id of that element should be db_field_name_<id>
 // css_class -> the selector string to iterate through and create click-to-edit fields.  e.g.: '.click_to_edit_class'
 // url_prefix -> the beginning part of the post url (everything before the id)
 // rails_class -> the underscore formatted name of the rails model to update
