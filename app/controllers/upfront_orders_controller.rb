@@ -93,7 +93,10 @@ class UpfrontOrdersController < ApplicationController
       :discount_ce_day => 0.0,
       :discount_sa_day => 0.0,
       :so_number => @linked_order.num,
-      :po_received => @linked_order.ship_date}
+      :po_received => @linked_order.ship_date,
+      :address1 => @linked_order.shiptoaddress,
+      :address2 => @linked_order.shiptocity + ", " + @linked_order.shiptostate + " " + @linked_order.shiptozip
+      }
     @contract = Contract.new(contract_hash.merge(params[:contract]))
     if @contract.save
       flash[:notice] = "Contract Created"
