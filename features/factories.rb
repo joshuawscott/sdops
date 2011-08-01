@@ -48,6 +48,15 @@ Factory.define :contract do |c|
   c.said 'foo'
   c.revenue 150
   c.sdc_ref 'bar'
+  c.hw_support_level_id 'SDC 24x7'
+  c.sw_support_level_id 'SDC SW 24x7'
+  c.discount_pref_hw 0.0
+  c.discount_pref_sw 0.0
+  c.discount_pref_srv 0.0
+  c.discount_prepay 0.0
+  c.discount_multiyear 0.0
+  c.discount_ce_day 0.0
+  c.discount_sa_day 0.0
   #c.new_business 150
 end
 
@@ -74,6 +83,15 @@ Factory.define :dallas_contract, :class => :contract do |c|
   c.said 'foo'
   c.revenue 150
   c.sdc_ref 'bar'
+  c.hw_support_level_id 'SDC 24x7'
+  c.sw_support_level_id 'SDC SW 24x7'
+  c.discount_pref_hw 0.0
+  c.discount_pref_sw 0.0
+  c.discount_pref_srv 0.0
+  c.discount_prepay 0.0
+  c.discount_multiyear 0.0
+  c.discount_ce_day 0.0
+  c.discount_sa_day 0.0
 end
 
 Factory.define :philadelphia_contract, :class => :contract do |c|
@@ -99,6 +117,15 @@ Factory.define :philadelphia_contract, :class => :contract do |c|
   c.said 'foo'
   c.revenue 150
   c.sdc_ref 'bar'
+  c.hw_support_level_id 'SDC 24x7'
+  c.sw_support_level_id 'SDC SW 24x7'
+  c.discount_pref_hw 0.0
+  c.discount_pref_sw 0.0
+  c.discount_pref_srv 0.0
+  c.discount_prepay 0.0
+  c.discount_multiyear 0.0
+  c.discount_ce_day 0.0
+  c.discount_sa_day 0.0
 end
 
 Factory.define :line_item do |l|
@@ -134,8 +161,8 @@ end
 
 Factory.define :subcontract do |s|
   s.subcontractor_id { @subcontractor.id }
-  s.start_date Date.parse('2009-01-01')
-  s.end_date Date.parse('2009-12-31')
+  s.start_date Date.today
+  s.end_date Date.today.next_year
 end
 
 Factory.define :manufacturer do |m|; end

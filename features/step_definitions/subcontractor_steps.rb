@@ -16,7 +16,6 @@ When /^I follow "([^\"]*)" in the subcontractors table$/ do |link|
     end
   end
   click_link_within "#subcontractors", link
-
 end
 
 Given /^a subcontract exists$/ do
@@ -25,7 +24,12 @@ Given /^a subcontract exists$/ do
 end
 
 When /^I follow "([^\"]*)" in the subcontracts table$/ do |link|
-  click_link_within "#subcontracts", link
+  response.should have_selector("table#subcontracts") do |t|
+    t.should have_tag("tbody") do |tbody|
+      tbody.should contain(link)
+    end
+  end
+  click_link_within "table#subcontracts", link
 end
 
 Then /^I should see the subcontract form$/ do

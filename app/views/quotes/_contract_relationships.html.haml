@@ -1,0 +1,14 @@
+#relationships.boxed{:style => 'display:block;float:left'}
+  %h2 Relationships
+  %p
+    %b Replaced By
+    %br
+    - @replaced_by.each do |x|
+      = link_to x.sdc_ref, contract_path(x.id)
+  %p &nbsp;
+  %p
+    %b Replaces
+    %br
+    - @replaces.each do |x|
+      = link_to x.sdc_ref, contract_path(x.id)
+

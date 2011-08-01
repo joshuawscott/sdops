@@ -37,4 +37,19 @@ class ToolsController < ApplicationController
     end
   end
 
+  def hp_warranty
+    @warranty_info = []
+    if params[:serial_numbers]
+      sn_list = params[:serial_numbers].strip.split("\r\n").reject {|x| x.nil? || x.strip.blank?}
+      @warranty_info = sn_list.map {|serial_number| HpWarranty.new(serial_number)}
+#      if params[:pn] == '' || params[:pn].nil?
+#        part_number = nil
+#      else
+#        part_number = params[:pn]
+#      end
+#      serial_number = params[:sn]
+#      @warranty_info = HpWarranty.new(part_number,serial_number)
+    end
+  end
+
 end

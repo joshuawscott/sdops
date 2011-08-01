@@ -27,9 +27,7 @@ Feature: Line Item Management
   Scenario: Delete a line item
     Given I have created a line item
     And I am viewing its contract
-    When I follow "Delete" for that line item
-    Then I should be see its contract
-    And I should not see that line item
+    Then I should not see "Delete" for that line item
 
   Scenario Outline: Try to create an incomplete line item
     When I follow "New Line Item"

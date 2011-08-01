@@ -10,6 +10,7 @@ Feature: Search for Support Pricing information
 
   Background:
     Given I am logged in without a role
+    And the product lines are populated
     And some support products exist
 
   Scenario Outline: Search for a product

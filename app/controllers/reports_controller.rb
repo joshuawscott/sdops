@@ -9,7 +9,7 @@ class ReportsController < ApplicationController
     @total_customers = @customer_counts_by_office.map{|k,v| @customer_counts_by_office[k]['total']}.sum
     @renewal_attrition = Contract.find(:all, :conditions => "expired = 0").inject(0) {|sum,n| sum + n.renewal_attrition}
     @non_renewed = Contract.non_renewing_contracts("2009-01-01","2009-12-31")
-    
+
     @offices = []
     n = 0
     @contract_counts_by_office.each_key do |k|
@@ -47,7 +47,7 @@ class ReportsController < ApplicationController
       format.xls #create excel doc
     end
   end
-  
+
   def sparesreq
     @offices = current_user.has_role?(:admin, :manager, :purchasing) ? LineItem.locations : SugarTeam.dropdown_list(current_user.sugar_team_ids).map {|x| x.name}
     if params[:filter] != nil
@@ -56,19 +56,19 @@ class ReportsController < ApplicationController
     else
       @lineitems = []
     end
-    
+
     respond_to do |format|
       format.html # sparesreq.html.haml
     end
   end
-  
+
   def customers
     @office = params[:filter][:office_name] unless params[:filter].nil?
     @customers = Contract.customer_rev_list_by_support_office(current_user.sugar_team_ids)
 		@offices = @customers.map{|x| x.support_office_name}.uniq.sort
 		#@offices.uniq!.sort!
 		@all_revenue = Contract.all_revenue
-	
+
   end
 
   def newbusiness
@@ -124,6 +124,11 @@ class ReportsController < ApplicationController
       @office = nil
       @lineitems = []
     end
+  end
+
+  def variable_billing
+    contracts = Contract.current_unexpired.find(:all, :conditions => 'payment_terms NOT IN ("Bundled", "Annual", "Annual+MY") AND revenue > 0')
+    @contracts = contracts.reject {|c| c.billing_fluctuates? }
   end
 
 end

@@ -1,5 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :quotes
 
   map.resources :manufacturer_lines
 
@@ -18,7 +17,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :appgen_order_lineitems
   map.resources :appgen_serials
   map.resources :upfront_orders, :collection => {:update_from_appgen => :put, :update_from_fishbowl => :put}, :member => {:save_import => :put, :review_import => :get}
-  
+
   map.resources :swproducts
 
   map.resources :swlist_whitelists, :has_many => :swproducts
@@ -30,22 +29,22 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :servers
 
   map.resources :swlists
-  
+
   map.resources :ioscans
-  
+
   map.resources :servers, :has_many => :io_slots
 
   map.resources :inventory_items
 
-  map.resources :line_items, :collection => { :mass_update => :put, :form_pull_pn_data => :post }
+  map.resources :line_items, :collection => { :mass_update => :put, :form_pull_pn_data => :post, :update_field => :put }
 
 	map.resources :opportunities
 
   map.resources :product_deals
 
   map.resources :sugar_opps
-
   map.resources :sugar_accts
+  map.resources :sugar_contacts
 
   map.resources :locations
 
@@ -58,6 +57,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :comments
 
   map.resources :contracts, :has_many => :line_items, :member => {:quote => :get}
+  map.resources :quotes, :has_many => :line_items, :member => {:quote => :get}
 
   map.resources :import, :controller => 'import'
 

@@ -30,6 +30,8 @@
             %h2 Contracts
             =link_to 'Renewals', {:controller => 'reports', :action => 'renewals'}, submenuhash('reportsinfo', 'Expiring Contracts')
             %br/
+            =link_to 'Special Billing', {:controller => 'reports', :action => 'variable_billing'}, submenuhash('reportsinfo', 'Contracts with changing monthly payments')
+            %br/
           .menuCol
             %h2 Revenue
             =link_to 'Dashboard', {:controller => 'reports', :action => 'index'}, submenuhash('reportsinfo', 'Main Reports Page')

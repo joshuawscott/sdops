@@ -1,0 +1,93 @@
+- content_for :top_js do
+  =javascript_tag "authenticity_token = '#{form_authenticity_token}'"
+  = javascript_include_tag "quote.js"
+- content_for :subtitle do
+  Show Quote
+#section1.hideforprint
+  = link_to("Create PDF", :action => 'quote', :format => 'pdf') if current_user.has_role?(:quoter, :contract_admin, :renewals_manager, :contract_editor)
+  %b
+    = link_to('Edit', edit_quote_path(@quote)) + ' | '  if current_user.has_role?(:contract_admin)
+    = link_to('Destroy', quote_path(@quote), :confirm => 'Are you sure?', :method => :delete) + ' | '  if current_user.has_role?(:contract_admin)
+    = link_to('Import Line Items', '/import?contract=' + @quote.id.to_s) if current_user.has_role?(:contract_admin)
+#section2{:style => 'width:800px'}
+  = render :partial => "general_details_box"
+  = render :partial => "terms_box"
+  = render :partial => "revenue_box"
+  = render :partial => "discounts_box"
+  = render :partial => "contact_details_box"
+#section4
+  = render :partial => "/shared_views/comments_box", :locals => {:object => @quote}
+.pagebreak
+#section5{:style => 'padding-top: 20px'}
+  %b.hideforprint
+    = link_to 'Export Line Items to Excel', :id => @quote.id, :action => 'lineitems', :format => 'xls'
+  %br/
+  %b.hideforprint
+    = link_to 'New Line Item', new_quote_line_item_path(@quote) if current_user.has_role?(:contract_admin, :contract_editor) && @hwlines.empty? && @swlines.empty? && @srvlines.empty?
+  %br/
+  - form_tag mass_update_line_items_path, :method => :put do
+    - unless @hwlines.empty?
+      - @i = 0
+      %h2
+        Hardware Line Items
+        %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_quote_line_item_path(@quote, :support_type => 'HW') if current_user.has_role?(:contract_admin, :contract_editor)
+      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+        %thead
+          =render :partial => 'lineitems_header', :locals => {:section => "HW"}
+        %tbody#hwlines
+          - @hwlines.each do |line_item|
+            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "HW"}
+      %br/
+    - unless @swlines.empty?
+      %h2
+        Software Line Items
+        %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_quote_line_item_path(@quote, :support_type => 'SW') if current_user.has_role?(:contract_admin, :contract_editor)
+      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+        %thead
+          =render :partial => 'lineitems_header', :locals => {:section => "SW"}
+        %tbody#swlines
+          - @swlines.each do |line_item|
+            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SW"}
+      %br/
+    - unless @srvlines.empty?
+      %h2
+        Services Line Items
+        %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_quote_line_item_path(@quote, :support_type => 'SRV') if current_user.has_role?(:contract_admin, :contract_editor)
+      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+        %thead
+          =render :partial => 'lineitems_header', :locals => {:section => "SRV"}
+        %tbody
+          - @srvlines.each do |line_item|
+            =render :partial => 'lineitems_row', :locals => {:line_item => line_item, :section => "SRV"}
+      %br/
+    - if current_user.has_role?(:contract_admin, :contract_editor)
+      #results.boxed.hideforprint{:style => 'height:160px', :style => 'width:480px'}
+        %h2 Line Items Mass Update
+        %p
+          %label{:for => 'support_provider'}
+            Supp Provider
+          = select_tag('support_provider', "<option value=''></option>" + options_for_select(@support_providers))
+        %p
+          %label{:for => 'location'}
+            Supp Location
+          = text_field_tag "location"
+        %p
+          %label{:for => 'begins'}
+            Begins
+          = text_field_tag "begins"
+        %p
+          %label{:for => 'ends'}
+            Ends
+          = text_field_tag "ends"
+          = hidden_field_tag "quote_id", @quote.id
+        %p
+          = submit_tag "Update Checked Items"
+        - if current_user.has_role?(:admin)
+          %br/
+          %p= submit_tag "Delete Checked Items", :confirm => "Are you SURE you want to delete the selected Line Items?"
+        - if current_user.has_role?(:contract_admin)
+          %br/
+          %p= submit_tag "Add to Subcontract"
+-if current_user.has_role?(:contract_editor, :contract_admin)
+  = sortable_element('hwlines', :scroll => :window, :url => {:controller => :line_items, :action => "sort", :id => @quote}, :handle => :drag_handle, :tag => :tr)
+  = sortable_element('swlines', :scroll => :window, :url => {:controller => :line_items, :action => "sort", :id => @quote}, :handle => :drag_handle, :tag => :tr)

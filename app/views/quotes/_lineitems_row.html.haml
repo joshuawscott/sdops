@@ -1,0 +1,32 @@
+%tr{:id => "lineitem_" + line_item.id.to_s, :class => line_item.product_num == 'LABEL' ? 'line_item_header' : line_item.ends ||= @quote.end_date < Date.today ? 'line_item_expired' : ''}
+  - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
+    -if section != 'SRV'
+      %td.drag_handle.hideforprint [drag]
+    %td.hideforprint
+      =check_box_tag(section + "_line_item_ids[]", line_item.id, false, :class => section + '_line_item_class', :id => "licheckbox#{line_item.id.to_s}")
+      =hidden_field_tag section + "_line_items[][id]", line_item.id
+  %td
+    - support_provider(line_item)
+  %td
+    %div{:class => 'location_click_to_edit click_to_edit', :id => 'location_' + line_item.id.to_s}= h line_item.location || " "
+  %td
+    %span{:style => 'display:none;', :id => 'support_type_' + line_item.id.to_s}=line_item.support_type
+    %div{:class => 'product_num_click_to_edit click_to_edit', :id => 'product_num_' + line_item.id.to_s}= h line_item.product_num || " "
+  %td
+    %div{:class => 'note_click_to_edit click_to_edit', :id => 'note_' + line_item.id.to_s}= h line_item.note || " "
+  %td
+    %div{:class => 'description_click_to_edit click_to_edit', :id => 'description_' + line_item.id.to_s}= h line_item.description
+  %td
+    %div{:class => 'serial_num_click_to_edit click_to_edit', :id => 'serial_num_' + line_item.id.to_s}= h line_item.serial_num || " "
+  %td{:style => line_item.begins == @quote.start_date ? 'color: #777777;' : 'font-weight: bold;'}= h line_item.begins
+  %td{:style => line_item.ends == @quote.end_date ? 'color: #777777;' : 'font-weight: bold;'}= h line_item.ends
+  %td{:align => 'center'}
+    %div{:class => 'qty_click_to_edit click_to_edit', :id => 'qty_' + line_item.id.to_s}= h line_item.qty
+  - if @restricted_user.nil?
+    %td{:align => 'right'}
+      %div{:class => 'list_price_click_to_edit click_to_edit', :id => 'list_price_' + line_item.id.to_s}= h number_to_currency(line_item.list_price)
+  - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
+    %td.hideforprint= link_to 'Edit', edit_quote_line_item_path(@quote, line_item)
+  - if current_user.has_role?(:admin)
+    %td.hideforprint= link_to 'Delete', quote_line_item_path(@quote, line_item), :confirm => 'Are you SURE you want to permanently delete this Line Item?', :method => :delete
+

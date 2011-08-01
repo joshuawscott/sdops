@@ -78,9 +78,9 @@ function number_to_currency(Amount) {
 function editFieldInPlaceInTable(css_class, url_prefix, rails_class, db_field_name) {
   var items = $$(css_class);
   var len = items.length;
-  for(i=0; i<len; i=i+1){
+  for(var i=0; i<len; i++){
     var item_id = items[i].id.toString().replace(db_field_name+'_','');
-    var post_url = '/'+url_prefix+'/' + item_id + '.js';
+    var post_url = '/'+url_prefix+'/update_field.js';
     new Ajax.InPlaceEditor(items[i], post_url, {
       method: 'post',
       callback: function(form, value) { return '_method=put&id='+encodeURIComponent(item_id)+'&'+rails_class+'['+db_field_name+']='+encodeURIComponent(value)+'&authenticity_token='+encodeURIComponent(authenticity_token)}

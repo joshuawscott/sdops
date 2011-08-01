@@ -288,8 +288,8 @@ describe Contract do
 
   describe "Contract.missing_subcontracts" do
     before(:all) do
-      @found1    = Factory :contract, :start_date => Date.parse('2010-01-01'), :end_date => Date.parse('2010-12-31')
-      @found2    = Factory :contract, :start_date => Date.parse('2010-01-01'), :end_date => Date.parse('2010-12-31')
+      @found1    = Factory :contract, :start_date => Date.parse('2011-01-01'), :end_date => Date.parse('2011-12-31')
+      @found2    = Factory :contract, :start_date => Date.parse('2011-01-01'), :end_date => Date.parse('2011-12-31')
       @notfound1 = Factory :contract
       @notfound2 = Factory :contract
       @notfound3 = Factory :contract
@@ -571,6 +571,46 @@ describe Contract do
       Contract.delete_all
     end
   end
+
+  describe "Contract.billing_fluctuates?" do
+    before(:all) do
+      start_date = '2011-01-01'
+      end_date = '2011-12-31'
+      # 2 for the non-fluctuating contract
+      @line1 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
+      @line2 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
+      # 2 for the fluctuating contract
+      @fline1 = Factory(:line_item, :begins => '2011-04-01', :ends => end_date, :list_price => 50, :qty => 1)
+      @fline2 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
+      # 2 for the expired contract
+      @xline1 = Factory(:line_item, :begins => start_date, :ends => '2010-12-31', :list_price => 50, :qty => 1)
+      @xline2 = Factory(:line_item, :begins => '2010-04-01', :ends => '2010-12-31', :list_price => 50, :qty => 1)
+      @contract_expired = Factory(:contract, :start_date => '2010-01-01', :end_date => '2010-12-31')
+      @contract_match = Factory(:contract, :start_date => start_date, :end_date => end_date)
+      @contract_nomatch = Factory(:contract, :start_date => start_date, :end_date => end_date)
+      @contract_expired.line_items = [@xline1, @xline2]
+      @contract_match.line_items = [@fline1, @fline2]
+      @contract_nomatch.line_items = [@line1, @line2]
+    end
+    it "returns contracts with line_items that cause changing billing" do
+      @contract_match.billing_fluctuates?.should == true
+    end
+    it "does not return expired contracts" do
+      @contract_expired.billing_fluctuates?.should == false
+    end
+    it "does not return contracts that have consistent billing" do
+      @contract_nomatch.billing_fluctuates?.should == false
+    end
+    after(:all) do
+      Contract.delete_all
+      LineItem.delete_all
+    end
+  end
 end
-
-
+#   discount_pref_hw      decimal
+#   discount_pref_sw      decimal
+#   discount_pref_srv     decimal
+#   discount_prepay       decimal
+#   discount_multiyear    decimal
+#   discount_ce_day       decimal
+#   discount_sa_day       decimal

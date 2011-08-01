@@ -113,7 +113,7 @@
           %td=line.qty
           -if current_user.has_role?(:contract_admin)
             %td
-              %div{:class => 'subcontract_cost click_to_edit', :id => "id#{line.id}"}= line.subcontract_cost || 0.00
+              %div{:class => 'subcontract_cost click_to_edit', :id => "subcontract_cost_#{line.id}"}= line.subcontract_cost || 0.00
             %td= link_to "Remove", url_for(:controller => 'subcontracts', :action => 'remove_line_item', :id => @subcontract, :line_item_id => line.id), :confirm => 'Remove this item from this subcontract?', :method => :delete
           -else
             %td=line.subcontract_cost

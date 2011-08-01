@@ -43,7 +43,6 @@ Feature: Manage Contracts
     | said            | Said can't be blank           |
     | sdc_ref         | Sdc ref can't be blank        |
     | payment_terms   | Payment terms can't be blank  |
-    | platform        | Platform can't be blank       |
     | start_date      | Start date can't be blank     |
     | end_date        | End date can't be blank       |
     | po_received     | Po received can't be blank    |

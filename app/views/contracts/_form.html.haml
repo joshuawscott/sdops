@@ -9,7 +9,7 @@
     %p
       %label{:for => "contract_account_name"}
         Name
-      = f.text_field :account_name, :class => 'textbox'
+      = f.text_field :account_name, :class => 'textbox readonly', :readonly => "readonly", :style => 'width: 18em'
     %p
       %label{:for => "contract_account_id"}
         Account
@@ -50,6 +50,7 @@
       %label{:for => "contract_platform"}
         Platform
       = f.collection_select(:platform, @platform, :label, :label, { :include_blank => true })
+      %em optional
     %p
       %label{:for => "contract_renewal_sent"}
         Renewal Sent

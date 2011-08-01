@@ -1,0 +1,44 @@
+#general.boxed{:style => 'width:430px;height:270px'}
+  %h2 General Details
+  %p
+    %label{:for => "quote_id"}
+      Contract ID
+    %span#support_deal_id=@quote.id.to_s
+  %p
+    %label{:for => "quote_account_name"}
+      Account
+    = @quote.account_name.blank? ? 'N/A' :  link_to(@quote.account_name, contract_search_url(:account_name => @quote.account_name), :title => "View all contracts for #{@quote.account_name}")
+  %p
+    %label{:for => "quote_account_client_category"}
+      Client Category
+    =h @quote.sugar_acct.client_category.blank? ? 'N/A' : @quote.sugar_acct.client_category
+  %p
+    %label{:for => "quote_sales_office_name"}
+      Sales Office
+    =h @quote.sales_office_name.blank? ? 'N/A' : @quote.sales_office_name
+  %p
+    %label{:for => "quote_support_office_name"}
+      Support Office
+    =h @quote.support_office_name.blank? ? 'N/A' : @quote.support_office_name
+  %p
+    %label{:for => "quote_sales_rep_id"}
+      Sales rep
+    = h @quote.sales_rep_id.blank? ? 'N/A' : @sales_rep
+  %p
+    %label{:for => "quote_said"}
+      SAID
+    =h @quote.said ||= 'N/A'
+  %p
+    %label{:for => "quote_sdc_ref"}
+      SDC Reference
+    =h @quote.sdc_ref ||= 'N/A'
+  %p
+    %label{:for => "quote_description"}
+      Description
+    %span{:title => @quote.description.to_s.length > 30 ? @quote.description : ""}
+      =h @quote.description.blank? ? 'N/A' : truncate(@quote.description, 30, ".....")
+  %p
+    %label{:for => "quote_platform"}
+      Platform
+    =h @quote.platform.blank? ? 'N/A' : @quote.platform
+

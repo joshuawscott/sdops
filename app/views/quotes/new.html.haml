@@ -1,0 +1,12 @@
+- content_for :subtitle do
+  New Quote
+- content_for :bottom_js do
+  = javascript_include_tag "quote.js"
+
+#section1
+  = error_messages_for :quote
+  - form_for(:quote, :url => quotes_path) do |f|
+    = render :partial => "form", :locals => { :f => f }
+    #section2
+      %p
+        = submit_tag "Create"

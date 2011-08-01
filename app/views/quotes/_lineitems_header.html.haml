@@ -1,0 +1,34 @@
+%tr
+  - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
+    -if section != 'SRV'
+      %th.hideforprint
+    %th.hideforprint{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}=check_box_tag section.to_s + "checkbox", 1 , false, {:onclick => "checkAllBoxes('" + section.to_s + "');"}
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
+    Supp
+    %br/
+    Provider
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
+    Supp
+    %br/
+    Location
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
+    Product
+    %br/
+    num
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Note
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Description
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
+    Serial
+    %br/
+    num
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Begins
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Ends
+  %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'} Qty
+  -if @restricted_user.nil?
+    %th{:style => 'padding:0px 2px 0px 2px;text-align:center;height:37px;'}
+      List
+      %br/
+      Price
+  - if current_user.has_role?(:contract_admin, :contract_editor) && @restricted_user.nil?
+    %th.hideforprint{:colspan => "2"} &nbsp;
+

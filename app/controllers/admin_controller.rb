@@ -80,17 +80,17 @@ class AdminController < ApplicationController
   end
 
   def check_for_renewals
-    id = params[:id].to_i
-    if id == 0
+    @id = params[:id].to_i
+    if @id == 0
       @contracts = []
     else
-      @contract = Contract.find(id)
+      @contract = Contract.find(@id)
       serial_numbers = @contract.line_items.map {|line_item| line_item.serial_num.to_s}
-      @contracts = []
+      contracts = []
       serial_numbers.each do |serial_number|
-        @contracts << Contract.serial_search(serial_number)
+        contracts << Contract.serial_search(serial_number)
       end
-      @contracts = @contracts.flatten.uniq.delete_if {|c| c.id == id}
+      @contracts = contracts.flatten.uniq.delete_if {|c| c.id == @id}
     end
   end
   protected

@@ -1,0 +1,31 @@
+- content_for :subtitle do
+  Variable Billing Report
+
+#section2
+  %h2
+    Contracts with variable billing
+  %table
+    %thead
+      %tr
+        %th Account Name
+        %th Contract ID
+        %th SAID
+        %th Description
+        %th Start Date
+        %th End Date
+        %th Payment Terms
+        %th Annual Rev
+        %th Contract Value
+
+    %tbody
+      - @contracts.each do |contract|
+        %tr
+          %td= contract.account_name
+          %td= link_to contract.id, contract_path(contract)
+          %td= contract.said
+          %td= contract.description
+          %td= contract.start_date
+          %td= contract.end_date
+          %td= contract.payment_terms
+          %td= number_to_currency(contract.total_revenue)
+          %td= number_to_currency(contract.revenue)

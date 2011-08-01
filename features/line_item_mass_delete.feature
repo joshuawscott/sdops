@@ -5,7 +5,7 @@ Feature: Line Items Mass Delete
 
   Background:
     Given the contract dropdowns are populated
-    And I am logged in as a "contract_admin"
+    And I am logged in as a "admin"
     And a contract exists
     And I have created 2 line items for that contract
     And I am viewing that contract

@@ -1,5 +1,5 @@
 class LineItemsController < ApplicationController
-  before_filter :get_contract, :except => [:form_pull_pn_data, :sort]
+  before_filter :get_contract, :except => [:form_pull_pn_data, :sort, :update_field]
   before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :mass_update]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
   before_filter :admin?, :only => [:destroy]
@@ -37,6 +37,10 @@ class LineItemsController < ApplicationController
 
   def form_pull_pn_data
     @new_info = LineItem.new(params[:line_item] || {:product_num => params[:product_num], :support_type => params[:support_type], :support_deal_id => params[:support_deal_id]}).return_current_info
+    respond_to do |format|
+      format.js
+      format.json { render :text => @new_info.to_json }
+    end
   end
 
   # POST /line_items
@@ -62,23 +66,16 @@ class LineItemsController < ApplicationController
   # PUT /line_items/1.xml
   def update
     logger.debug "******* LineItems controller update method"
-    @line_item = @support_deal.line_items.find(params[:id])
-
+   @line_item = @support_deal.line_items.find(params[:id])
     respond_to do |format|
       if @line_item.update_attributes(params[:line_item])
         flash[:notice] = 'Line Item was successfully updated.'
         format.html { redirect_to(@support_deal) }
         #format.xml  { head :ok }
         # returns the updated attribute, if you are updating just one (this is to handle click-to-edit)
-        format.js {
-          key = nil
-          params[:line_item].each {|k,v| key = k}
-          render :text => @line_item.send("#{key}")
-          }
       else
         format.html { render :action => "edit" }
         #format.xml  { render :xml => @line_item.errors, :status => :unprocessable_entity }
-        format.js { render :text => "ERROR"}
       end
     end
   end
@@ -156,10 +153,24 @@ class LineItemsController < ApplicationController
     end
     render :nothing => true
   end
+
+  # for use with the inplaceeditor
+  def update_field
+    @line_item = LineItem.find(params[:editorId].split('_').last.to_i)
+    if @line_item.update_attributes(params[:line_item])
+      key = nil
+      params[:line_item].each {|k,v| key = k}
+      render :text => @line_item.send("#{key}")
+    else
+      render :text => "ERROR ON SAVE"
+    end
+  end
+
   protected
 
   def get_contract
     @support_deal = SupportDeal.find params[:contract_id] if params[:contract_id]
+    @support_deal ||= SupportDeal.find params[:quote_id] if params[:quote_id]
     @support_deal ||= LineItem.find(params[:id]).support_deal
   end
 

@@ -10,8 +10,8 @@ Factory.define :contract do |c|
   c.sales_office_name "Dallas"
   c.support_office_name "Dallas"
   c.sales_rep_id { Factory.next(:counter) }
-  c.start_date "2009-01-01"
-  c.end_date "2009-12-31"
+  c.start_date "2011-01-01"
+  c.end_date "2011-12-31"
   c.annual_hw_rev 50
   c.annual_sw_rev 40
   c.annual_sa_rev 30
@@ -23,6 +23,15 @@ Factory.define :contract do |c|
   c.said 'foo'
   c.revenue 150
   c.sdc_ref 'bar'
+  c.hw_support_level_id "SDC 24x7"
+  c.sw_support_level_id "SDC SW 24x7"
+  c.discount_pref_hw 0.0
+  c.discount_pref_sw 0.0
+  c.discount_pref_srv 0.0
+  c.discount_prepay 0.0
+  c.discount_multiyear 0.0
+  c.discount_ce_day 0.0
+  c.discount_sa_day 0.0
 end
 
 Factory.define :phoenix_contract, :class => :contract do |c|
@@ -35,8 +44,8 @@ Factory.define :phoenix_contract, :class => :contract do |c|
   c.sales_office_name "Phoenix"
   c.support_office_name "Phoenix"
   c.sales_rep_id { Factory.next(:counter) }
-  c.start_date "2009-01-01"
-  c.end_date "2009-12-31"
+  c.start_date "2011-01-01"
+  c.end_date "2011-12-31"
   c.annual_hw_rev 50
   c.annual_sw_rev 40
   c.annual_sa_rev 30
@@ -48,6 +57,15 @@ Factory.define :phoenix_contract, :class => :contract do |c|
   c.said 'foo'
   c.revenue 150
   c.sdc_ref 'bar'
+  c.hw_support_level_id "SDC 24x7"
+  c.sw_support_level_id "SDC SW 24x7"
+  c.discount_pref_hw 0.0
+  c.discount_pref_sw 0.0
+  c.discount_pref_srv 0.0
+  c.discount_prepay 0.0
+  c.discount_multiyear 0.0
+  c.discount_ce_day 0.0
+  c.discount_sa_day 0.0
 end
 
 

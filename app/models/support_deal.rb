@@ -79,13 +79,11 @@ class SupportDeal < ActiveRecord::Base
 
   #Validate General Details
   validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id
-  validates_presence_of :said, :sdc_ref, :platform
-  #Validate Revenue
-  validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev
+  validates_presence_of :said, :sdc_ref #, :platform
   #Validate Terms
   validates_presence_of :start_date, :end_date
+  validates_presence_of :hw_support_level_id, :sw_support_level_id
 
-  before_save :update_line_item_effective_prices
   after_save :update_account_name_from_sugar
 
   attr_accessor :sn_approximated
@@ -154,11 +152,39 @@ class SupportDeal < ActiveRecord::Base
 
   # Total Annual Revenue
   def total_revenue
-     annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev
+    @total_revenue = BigDecimal('0.0')
+    if annual_hw_rev.class == BigDecimal
+      @total_revenue += annual_hw_rev
+    else
+      @total_revenue += BigDecimal.new(annual_hw_rev.to_s)
+    end
+    if annual_sw_rev.class == BigDecimal
+      @total_revenue += annual_sw_rev
+    else
+      @total_revenue += BigDecimal.new(annual_sw_rev.to_s)
+    end
+    @total_revenue += annual_srv_rev
+    @total_revenue
   end
 
   def annual_srv_rev
-    annual_ce_rev + annual_sa_rev + annual_dr_rev
+    @annual_srv_rev = BigDecimal('0.0')
+    if annual_ce_rev.class == BigDecimal
+      @annual_srv_rev += annual_ce_rev
+    else
+      @annual_srv_rev += BigDecimal.new(annual_ce_rev.to_s)
+    end
+    if annual_sa_rev.class == BigDecimal
+      @annual_srv_rev += annual_sa_rev
+    else
+      @annual_srv_rev += BigDecimal.new(annual_sa_rev.to_s)
+    end
+    if annual_dr_rev.class == BigDecimal
+      @annual_srv_rev += annual_dr_rev
+    else
+      @annual_srv_rev += BigDecimal.new(annual_dr_rev.to_s)
+    end
+    @annual_srv_rev
   end
   # Returns string "Renewal" if the Contract has a predecessor, otherwise returns
   # 'Newbusiness'

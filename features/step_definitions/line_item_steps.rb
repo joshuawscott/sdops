@@ -92,3 +92,8 @@ Then /^I should not see that line item$/ do
   response.should_not contain("STRANGE BREW")
 end
 
+Then /^I should not see "([^\"]*)" for that line item$/ do |action|
+  within("#lineitem_#{@line_item.id.to_s}") do |content|
+    content.should_not contain(action)
+  end
+end

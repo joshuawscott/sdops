@@ -1,0 +1,38 @@
+#terms.boxed{:style => 'width:300px;height:270px'}
+  %h2 Terms
+  %p
+    %label{:for => "quote_hw_support_level_id"}
+      HW Support Level
+    =h @quote.hw_support_level_id.blank? ? 'N/A' : @quote.hw_support_level_id
+  %p
+    %label{:for => "quote_sw_support_level_id"}
+      SW Support Level
+    =h @quote.sw_support_level_id.blank? ? 'N/A' : @quote.sw_support_level_id
+  %p
+    %label{:for => "quote_updates"}
+      SW Updates
+    =h @quote.updates.blank? ? 'N/A' : @quote.updates
+  %p
+    %label{:for => "quote_ce_days"}
+      Num. CE Days
+    =h @quote.ce_days.blank? ? 'N/A' : @quote.ce_days
+  %p
+    %label{:for => "quote_sa_days"}
+      Num. SA Days
+    =h @quote.sa_days.blank? ? 'N/A' : @quote.sa_days
+  %p
+    %label{:for => "quote_start_date"}
+      Start Date
+    =h @quote.start_date ||= 'N/A'
+  %p
+    %label{:for => "quote_end_date"}
+      End Date
+    =h @quote.end_date ||= 'N/A'
+  %p
+    %label{:for => "quote_multiyr_end"}
+      Multi-Year End
+    =h @quote.multiyr_end.blank? ? 'N/A' : @quote.multiyr_end
+  %p
+    %label{:for => "quote_expired"}
+      Expired
+    =h @quote.expired.blank? ? 'N/A' : @quote.expired

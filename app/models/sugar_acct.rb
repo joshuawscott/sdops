@@ -42,6 +42,8 @@ class SugarAcct < SugarDb
   has_many :sugar_opps, :through => :sugar_acct_opps, :foreign_key => "account_id"
   has_many :contracts
   has_one :sugar_accounts_cstm, :foreign_key => "id_c"
+  has_many :sugar_accounts_contacts, :foreign_key => "account_id"
+  has_many :sugar_contacts, :through => :sugar_accounts_contacts, :foreign_key => "account_id"
 
   def client_category
     begin
@@ -49,5 +51,9 @@ class SugarAcct < SugarDb
     rescue
       @client_category = nil
     end
+  end
+  def sugar_contacts_with_email
+    sugar_contact_ids = sugar_contacts.map {|sc| sc.id}
+    SugarContact.find_with_email(sugar_contact_ids)
   end
 end

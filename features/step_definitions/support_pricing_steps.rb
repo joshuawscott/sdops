@@ -1,16 +1,16 @@
-Given /^some support products exist$/ do
-  Factory(:hw_support_price, :part_number => 'A6144A', :description => 'L3000')
-  Factory(:hw_support_price, :part_number => 'A6144B', :description => 'L3000')
-  Factory(:sw_support_price, :part_number => 'A6144A', :description => 'L3000')
-  Factory(:hw_support_price, :part_number => 'A5522A', :description => 'Processor')
-  Factory(:sw_support_price, :part_number => 'A5522A', :description => 'Processor')
-  HwSupportPrice.count.should == 3
-  SwSupportPrice.count.should == 2
+Given /^the product lines are populated$/ do
+  @mfg = Factory(:manufacturer, :name => "HP")
+  @mfg_line = Factory(:manufacturer_line, :name => "Proliant", :manufacturer_id => @mfg.id)
 end
 
-Given /^the product lines are populated$/ do
-  mfg = Factory(:manufacturer, :name => "HP")
-  Factory(:manufacturer_line, :name => "Proliant", :manufacturer_id => mfg.id)
+Given /^some support products exist$/ do
+  Factory(:hw_support_price, :part_number => 'A6144A', :description => 'L3000', :list_price => 0.0, :manufacturer_line_id => @mfg_line.id)
+  Factory(:hw_support_price, :part_number => 'A6144B', :description => 'L3000', :list_price => 0.0, :manufacturer_line_id => @mfg_line.id)
+  Factory(:sw_support_price, :part_number => 'A6144A', :description => 'L3000', :phone_price => 0.0, :update_price => 0.0, :manufacturer_line_id => @mfg_line.id)
+  Factory(:hw_support_price, :part_number => 'A5522A', :description => 'Processor', :list_price => 0.0, :manufacturer_line_id => @mfg_line.id)
+  Factory(:sw_support_price, :part_number => 'A5522A', :description => 'Processor', :phone_price => 0.0, :update_price => 0.0, :manufacturer_line_id => @mfg_line.id)
+  HwSupportPrice.count.should == 3
+  SwSupportPrice.count.should == 2
 end
 
 Then /^I should see the HW support price add form$/ do

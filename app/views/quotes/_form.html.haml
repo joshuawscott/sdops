@@ -1,0 +1,159 @@
+=include_calendar
+
+#section1{:style => 'width:800px'}
+  %h3 Field names in <span style='color: #D00000;'>red</span> are required
+  #general.boxed{:style => 'width:450px;height:230px'}
+    %h2 General Details
+    = f.hidden_field :sales_office_name
+    = f.hidden_field :support_office_name
+
+    %p
+      %label{:for => "quote_account_name"}
+        Name
+      = f.text_field :account_name, :class => 'textbox readonly', :readonly => "readonly", :style => 'width: 18em'
+    %p
+      %label.required{:for => "quote_account_id"}
+        Account
+      = f.collection_select(:account_id, @sugar_accts, :id, :name, { :include_blank => true }, {:onchange => "accountChanged();"})
+      %span#spinner_account{:style => 'display:none;'}
+        %em Please wait...
+        %img{:src => '/images/spinner_green.gif'}
+    %p
+      %label.required{:for => "quote_sales_office"}
+        Sales Office
+      = f.collection_select(:sales_office, @sales_offices, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('quote_sales_office_name').value = this.options[this.selectedIndex].text"})
+    %p
+      %label.required{:for => "quote_support_office"}
+        Support Office
+      = f.collection_select(:support_office, @support_offices, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('quote_support_office_name').value = this.options[this.selectedIndex].text"})
+    %p
+      %label.required{:for => "quote_sales_rep_id"}
+        Sales rep
+      = f.collection_select(:sales_rep_id, @reps, :id, :full_name, { :include_blank => true })
+    %p
+      %label.required{:for => "quote_sdc_ref"}
+        SDC Reference
+      = f.text_field :sdc_ref, :class => 'textbox', :style => 'width: 18em'
+    %p
+      %label.required{:for => "quote_said"}
+        SAID
+      = f.text_field :said, :class => 'textbox', :style => 'width: 18em'
+    %p
+      %label{:for => "quote_description"}
+        Description
+      = f.text_field :description, :class => 'textbox', :style => 'width: 18em'
+    %p
+      %label{:for => "quote_platform"}
+        Platform
+      = f.collection_select(:platform, @platform, :label, :label, { :include_blank => true })
+      %em optional
+
+  #terms.boxed{:style => 'width:300px;height:230px'}
+    %h2 Terms
+    %p
+      %label.required{:for => "quote_hw_support_level_id"}
+        HW Support Level
+      = f.collection_select(:hw_support_level_id, @types_hw, :label, :label, { :include_blank => true })
+    %p
+      %label.required{:for => "quote_sw_support_level_id"}
+        SW Support Level
+      = f.collection_select(:sw_support_level_id, @types_sw, :label, :label, { :include_blank => true })
+    %p
+      %label{:for => "quote_updates"}
+        SW Updates
+      = f.select(:updates, %w{false true unknown})
+    %p
+      %label{:for => "quote_ce_days"}
+        Num. CE Days
+      = f.text_field :ce_days, :class => 'textbox', :style => 'width: 5em'
+    %p
+      %label{:for => "quote_sa_days"}
+        Num. SA Days
+      = f.text_field :sa_days, :class => 'textbox', :style => 'width: 5em'
+    %p
+      %label.required{:for => "quote_start_date"}
+        Start Date
+      = f.date_select :start_date, :class => 'textbox'
+    %p
+      %label.required{:for => "quote_end_date"}
+        End Date
+      = f.date_select :end_date, :class => 'textbox'
+    %p
+      %label{:for => "quote_multiyr_end"}
+        Multi-Year End
+      = f.date_select :multiyr_end, :class => 'textbox'
+
+  #discounts.boxed{:style => 'width:240px;height:210px'}
+    %h2 Discounts
+    %p
+      %label{:for => "quote_discount_pref_hw"}
+        Discount HW
+      = f.text_field :discount_pref_hw, :class => 'textboxright'
+    %p
+      %label{:for => "quote_discount_pref_sw"}
+        Discount SW
+      = f.text_field :discount_pref_sw, :class => 'textboxright'
+    %p
+      %label{:for => "quote_discount_pref_srv"}
+        Discount SRV
+      = f.text_field :discount_pref_srv, :class => 'textboxright'
+    %p
+      %label{:for => "quote_discount_prepay"}
+        Discount Prepay
+      = f.text_field :discount_prepay, :class => 'textboxright'
+    %p
+      %label{:for => "quote_discount_multiyear"}
+        Multi-year Disc.
+      = f.text_field :discount_multiyear, :class => 'textboxright'
+    %p
+      %label{:for => "quote_discount_ce_day"}
+        Discount CE Days
+      = f.text_field :discount_ce_day, :class => 'textboxright'
+    %p
+      %label{:for => "quote_discount_sa_day"}
+        Discount SA Days
+      = f.text_field :discount_sa_day, :class => 'textboxright'
+    %p
+      %b &nbsp
+    %p Example: Enter 35% as .35
+
+  #contactinfo.boxed{:style => 'width:300px;height:210px'}
+    %h2 Contact Details
+    %p
+      %label{:for => "quote_address1"}
+        Address
+      = f.text_field :address1, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "quote_address2"}
+        &nbsp;
+      = f.text_field :address2, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "quote_address3"}
+        &nbsp;
+      = f.text_field :address3, :class => 'textbox', :style => 'width:8em'
+    %br/
+    %p
+      %label{:for => "quote_contact_id"}
+        Select Contact
+      = select_tag :quote_contact_id, '<option value=""></option>', :onchange => "contactChanged();"
+      %span#spinner_contact{:style => 'display:none;'}
+        %em Please wait...
+        %img{:src => '/images/spinner_green.gif'}
+    %p
+      %label{:for => "quote_contact_name"}
+        Contact Name
+      = f.text_field :contact_name, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "quote_contact_phone"}
+        Contact Phone
+      = f.text_field :contact_phone, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "quote_contact_email"}
+        Contact Email
+      = f.text_field :contact_email, :class => 'textbox', :style => 'width:8em'
+    %p
+      %label{:for => "quote_contact_note"}
+        Contact Note
+      = f.text_field :contact_note, :class => 'textbox', :style => 'width:8em'
+
+

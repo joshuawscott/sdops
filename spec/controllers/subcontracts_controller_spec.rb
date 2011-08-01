@@ -10,7 +10,10 @@ describe SubcontractsController do
   def mock_subcontract(stubs={})
     @mock_subcontract ||= mock_model(Subcontract, stubs)
   end
-  
+  def mock_line_item(stubs={})
+    @mock_line_item ||= mock_model(LineItem, stubs)
+  end
+
   describe "GET index" do
     it "assigns all subcontracts as @subcontracts" do
       Subcontract.stub!(:find).with(:all).and_return([mock_subcontract])
@@ -28,7 +31,8 @@ describe SubcontractsController do
   describe "GET show" do
     before(:each) do
       @comments = [mock(Comment)]
-      Subcontract.stub!(:find).with("37").and_return(mock_subcontract(:comments => @comments))
+      @line_items = [mock_line_item(:position => 1)]
+      Subcontract.stub!(:find).with("37").and_return(mock_subcontract(:comments => @comments, :line_items => @line_items))
     end
     it "assigns the requested subcontract as @subcontract" do
       get :show, :id => "37"
@@ -38,6 +42,11 @@ describe SubcontractsController do
     it "assigns the subcontract's comments as @comments" do
       get :show, :id => "37"
       assigns(:comments).should == @comments
+    end
+
+    it "assigns the subcontract's line_items as @line_items" do
+      get :show, :id => "37"
+      assigns(:line_items).should == @line_items
     end
   end
 
@@ -72,7 +81,7 @@ describe SubcontractsController do
   end
 
   describe "POST create" do
-    
+
     describe "with valid params" do
       it "assigns a newly created subcontract as @subcontract" do
         Subcontract.stub!(:new).with({'these' => 'params'}).and_return(mock_subcontract(:save => true))
@@ -86,7 +95,7 @@ describe SubcontractsController do
         response.should redirect_to(subcontract_url(mock_subcontract))
       end
     end
-    
+
     describe "with invalid params" do
       it "assigns a newly created but unsaved subcontract as @subcontract" do
         Subcontract.stub!(:new).with({'these' => 'params'}).and_return(mock_subcontract(:save => false))
@@ -100,11 +109,11 @@ describe SubcontractsController do
         response.should render_template('new')
       end
     end
-    
+
   end
 
   describe "PUT update" do
-    
+
     describe "with valid params" do
       it "updates the requested subcontract" do
         Subcontract.should_receive(:find).with("37").and_return(mock_subcontract)
@@ -124,7 +133,7 @@ describe SubcontractsController do
         response.should redirect_to(subcontract_url(mock_subcontract))
       end
     end
-    
+
     describe "with invalid params" do
       it "updates the requested subcontract" do
         Subcontract.should_receive(:find).with("37").and_return(mock_subcontract)
@@ -144,7 +153,7 @@ describe SubcontractsController do
         response.should render_template('edit')
       end
     end
-    
+
   end
 
   describe "DELETE destroy" do
@@ -153,7 +162,7 @@ describe SubcontractsController do
       mock_subcontract.should_receive(:destroy)
       delete :destroy, :id => "37"
     end
-  
+
     it "redirects to the subcontracts list" do
       Subcontract.stub!(:find).and_return(mock_subcontract(:destroy => true))
       delete :destroy, :id => "1"
@@ -163,10 +172,10 @@ describe SubcontractsController do
 
   describe "POST add_line_items" do
     before(:each) do
-      @mock_line_item = mock_model(LineItem)
-      @mock_line_item.stub!(:update_attribute).and_return true
-      Subcontract.stub!(:find).with("27").and_return(mock_subcontract(:id => 27, :line_items => [@mock_line_item]))
-      LineItem.stub!(:find).with("123").and_return(@mock_line_item)
+      @line_item = mock_line_item
+      @line_item.stub!(:update_attribute).and_return true
+      Subcontract.stub!(:find).with("27").and_return(mock_subcontract(:id => 27, :line_items => [@line_item]))
+      LineItem.stub!(:find).with("123").and_return(@line_item)
     end
 
     it "finds a subcontract to add lines to" do
@@ -178,16 +187,16 @@ describe SubcontractsController do
     it "finds line items to add to the subcontracts" do
       LineItem.should_receive(:find).with("123")
       post :add_line_items, :id => '27', "line_items" => [{"id" => "123", "subcontract_cost" => "5"}]
-      assigns[:line_item].should == @mock_line_item
+      assigns[:line_item].should == @line_item
     end
 
     it "updates the subcontract_cost of the line items" do
-      @mock_line_item.should_receive(:update_attribute).with("subcontract_cost", "5")
+      @line_item.should_receive(:update_attribute).with("subcontract_cost", "5")
       post :add_line_items, :id => '27', "line_items" => [{"id" => "123", "subcontract_cost" => "5"}]
     end
 
     it "adds the line items to the subcontract" do
-      @mock_subcontract.line_items.should_receive("<<").with(@mock_line_item)
+      @mock_subcontract.line_items.should_receive("<<").with(@line_item)
       post :add_line_items, :id => '27', "line_items" => [{"id" => "123", "subcontract_cost" => "5"}]
     end
 

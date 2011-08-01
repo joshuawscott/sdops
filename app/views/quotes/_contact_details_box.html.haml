@@ -1,0 +1,31 @@
+#contact.boxed{:style => 'width:300px;height:160px'}
+  %h2 Contact Details
+  %p
+    %label{:for => "quote_address1"}
+      Address
+    =h @quote.address1.blank? ? 'N/A' : @quote.address1
+  %p
+    %label{:for => "quote_address2"}
+      &nbsp;
+    =h @quote.address2.blank? ? 'N/A' : @quote.address2
+  %p
+    %label{:for => "quote_address3"}
+      &nbsp;
+    =h @quote.address3.blank? ? 'N/A' : @quote.address3
+  %p
+    %label{:for => "quote_contact_name"}
+      Contact Name
+    =h @quote.contact_name.blank? ? 'N/A' : @quote.contact_name
+  %p
+    %label{:for => "quote_contact_phone"}
+      Contact Phone
+    =h @quote.contact_phone.blank? ? 'N/A' : @quote.contact_phone
+  %p
+    %label{:for => "quote_contact_email"}
+      Contact email
+    =h @quote.contact_email.blank? ? 'N/A' : @quote.contact_email
+  %p
+    %label{:for => "quote_contact_note"}
+      Contact Note
+    =h @quote.contact_note.blank? ? 'N/A' : @quote.contact_note
+

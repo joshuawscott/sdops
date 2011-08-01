@@ -25,7 +25,7 @@
     = link_to 'Export Line Items to Excel', :id => @contract.id, :action => 'lineitems', :format => 'xls'
   %br/
   %b.hideforprint
-    = link_to 'New Line Item', new_contract_line_item_path(@contract) if current_user.has_role?(:contract_admin, :contract_editor) && @hwlines.empty? && @swlines.empty? && @srvlines.empty?
+    = link_to 'New Line Item', new_contract_line_item_path(@contract) if current_user.has_role?(:admin, :contract_admin, :contract_editor) && @hwlines.empty? && @swlines.empty? && @srvlines.empty?
   %br/
   - form_tag mass_update_line_items_path, :method => :put do
     - unless @hwlines.empty?

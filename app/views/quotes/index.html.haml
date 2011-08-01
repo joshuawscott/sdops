@@ -1,0 +1,44 @@
+- content_for :subtitle do
+  Quotes Listing
+%h1 Listing quotes
+%table
+  %thead
+    %tr
+      %th
+        Territory
+      %th
+        Account Name
+      %th
+        SAID
+      %th
+        Description
+      %th
+        Expiration
+      %th
+        Annual Rev
+      %th{:colspan => 3}
+
+  - for quote in @quotes
+    %tbody
+      %tr
+        %td
+          =quote.sales_office_name
+        %td
+          =quote.account_name
+        %td
+          =quote.said
+        %td
+          =quote.description
+        %td
+          =quote.created_at + 90.days
+        %td
+          =quote.total_revenue
+        %td
+          = link_to 'Show', quote
+        %td
+          = link_to 'Edit', edit_quote_path(quote)
+        %td
+          = link_to 'Destroy', quote, :confirm => 'Are you sure?', :method => :delete
+%br/
+
+= link_to 'New quote', new_quote_path

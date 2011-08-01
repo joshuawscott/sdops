@@ -4,7 +4,8 @@ Feature: Pricing Admin
   To correct the mistakes of the pricing_managers.
 
   Background:
-    Given some support products exist
+    Given the product lines are populated
+    And some support products exist
     And I am logged in as a "pricing_admin"
 
   Scenario: Links to admin features should be seen - HW

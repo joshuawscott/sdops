@@ -26,7 +26,10 @@ body
   :min-width 4em
 
 .inplaceeditor-saving
-  :background url("/images/spinner_gray.gif") bottom right no-repeat
+  :background-repeat no-repeat
+  :background-position top right
+  :background-image url("/images/spinner_gray.gif")
+  :background-color #eeeeee
 
 pre
   :font
@@ -73,6 +76,9 @@ label.table_header
   :float none
   :width none
   :text-align center
+
+label.required
+  :color #D80000
 
 table
   :border-width 1px 0px 0px 1px
@@ -459,6 +465,9 @@ ul.sub_menu
       :width 1px
       :style solid
       :color = !sdc_black
+
+  .readonly
+    :background-color = !sdc_grey
 
   .textboxright
     :text-align right

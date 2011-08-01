@@ -1,6 +1,10 @@
 class Contract < SupportDeal
 
   validates_presence_of :payment_terms, :po_received
+  #Validate Revenue
+  validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev
+  validates_numericality_of :discount_pref_hw, :discount_pref_sw, :discount_pref_srv, :discount_prepay, :discount_multiyear, :discount_ce_day, :discount_sa_day
+  before_save :update_line_item_effective_prices
 
   #Calculates the amount of New Business for this contract
   def new_business
@@ -41,6 +45,13 @@ class Contract < SupportDeal
       :select => "support_deals.*, CONCAT(users.first_name, ' ', users.last_name) AS sales_rep_name, (annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as tot_rev",
       :joins => "LEFT JOIN users ON support_deals.sales_rep_id = users.id",
       :conditions => "payment_terms <> 'Bundled'").map { |x|  x if x.renewal? }.compact
+  end
+
+  def billing_fluctuates?
+    return false if self.expired
+    return false if self.end_date < Date.today
+    return false if payment_schedule.uniq.length == 1
+    true
   end
 
 end

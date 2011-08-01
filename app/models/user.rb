@@ -142,9 +142,12 @@ class User < ActiveRecord::Base
   end
 
   # Takes any number of Role names as symbols or strings, returning true if the user has any of the supplied role(s)
+  # always returns true if user has role 'admin'.
   def has_role?(*args)
     # The first part of this compiles an array of common elements between the passed args and
     # the roles of this User instance.  If the length is > 0, then we have a match.
+    args = args.to_ary
+    args << :admin
     (roles.map {|r| r.name} &(args.map{|a| a.to_s})).length > 0
   end
 
