@@ -128,7 +128,7 @@ class ReportsController < ApplicationController
 
   def variable_billing
     contracts = Contract.current_unexpired.find(:all, :conditions => 'payment_terms NOT IN ("Bundled", "Annual", "Annual+MY") AND revenue > 0')
-    @contracts = contracts.reject {|c| c.billing_fluctuates? }
+    @contracts = contracts.select {|c| c.billing_fluctuates? }
   end
 
 end
