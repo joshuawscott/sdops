@@ -50,6 +50,9 @@ class Contract < SupportDeal
   def billing_fluctuates?
     return false if self.expired
     return false if self.end_date < Date.today
+    start_dates = line_items.reject {|l| l.list_price.nil? || l.list_price == 0 }.map { |line| line.begins }
+    end_dates = line_items.reject {|l| l.list_price.nil? || l.list_price == 0 }.map { |line| line.ends }
+    return false if start_dates.uniq.length == 1 && end_dates.uniq.length == 1
     return false if payment_schedule.uniq.length == 1
     true
   end
