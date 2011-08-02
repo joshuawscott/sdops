@@ -1,6 +1,20 @@
 // ************************************************
 // Functions for Renewals report
 // ************************************************
+function toggleOfficesRenewal(sum_col) {
+  toggleOffices(sum_col);
+  sumVisibleRows('sum_expired', 'renewals_expired', sum_col);
+  sumVisibleRows('sum_0_30', 'renewals_0_30', sum_col);
+  sumVisibleRows('sum_31_60', 'renewals_31_60', sum_col);
+  sumVisibleRows('sum_61_90', 'renewals_61_90', sum_col);
+  sumVisibleRows('sum_91_120', 'renewals_91_120', sum_col);
+}
+
+function toggleOfficesGeneric(sum_col) {
+  toggleOffices(sum_col);
+  sumVisibleRows('sum_total', 'sum_table', sum_col);
+}
+
 function toggleOffices(sum_col){
   var office = $('filter_offices').value;
   var a = $('filter_offices').options;
@@ -18,7 +32,6 @@ function toggleOffices(sum_col){
       }
     }
   }
-  $('sum_total').innerHTML = sumVisibleRows(sum_col);
 }
 
 function showAll(){
@@ -29,8 +42,8 @@ function showAll(){
   }
 }
 
-function sumVisibleRows(sum_col){
-	var rows = $$('#sum_table tbody tr');
+function sumVisibleRows(total_container_id, sum_table_id, sum_col){
+	var rows = $$('#'+sum_table_id+' tbody tr');
 	var sum_area = $('expired_total');
 	var sum = 0.0;
 	rows.each(function(r) {
@@ -39,7 +52,7 @@ function sumVisibleRows(sum_col){
 				sum += (price * 1.0); // * 1.0 converts string to a float
 			}
 	});
-	return number_to_currency(sum);
+	$(total_container_id).innerHTML = number_to_currency(sum);
 }
 
 // Print view
