@@ -8,6 +8,15 @@ function toggleOfficesRenewal(sum_col) {
   sumVisibleRows('sum_31_60', 'renewals_31_60', sum_col);
   sumVisibleRows('sum_61_90', 'renewals_61_90', sum_col);
   sumVisibleRows('sum_91_120', 'renewals_91_120', sum_col);
+  var sum_all = $('sum_all');
+  var total = 0.0;
+  //ugh... floats.
+  total += ($('sum_expired').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  total += ($('sum_0_30').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  total += ($('sum_31_60').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  total += ($('sum_61_90').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  total += ($('sum_91_120').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  sum_all.innerHTML = number_to_currency(total/100);
 }
 
 function toggleOfficesGeneric(sum_col) {
