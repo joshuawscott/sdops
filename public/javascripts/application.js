@@ -82,15 +82,20 @@ function commandDescOff(id){
 // Basic functions
 
 function number_to_currency(Amount) {
-	var AmountWithCommas = Amount.toLocaleString();
-	var arParts = String(AmountWithCommas).split('.');
-	var intPart = arParts[0];
-	var decPart = (arParts.length > 1 ? arParts[1] : '');
-	decPart = (decPart + '00').substr(0,2);
-
-	return '$' + intPart + '.' + decPart;
-
+	return '$' + Amount.formatMoney(2,".",",");
 }
+
+// Number.formatMoney([floatPoint: Integer = 2], [decimalSep: String = ","], [thousandsSep: String = "."]): String
+//    Returns the number into the monetary format.
+//    floatPoint amount of decimal places
+//    decimalSep string that will be used as decimal separator
+//    thousandsSep string that will be used as thousands separator
+Number.prototype.formatMoney = function(c, d, t){
+    var n = this, c = isNaN(c = Math.abs(c)) ? 2 : c, d = d == undefined ? "," : d, t = t == undefined ? "." : t, s = n < 0 ? "-" : "",
+    i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "", j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+};
+
 // To use this, you will need to put an element with class <css_class>,
 // and the id of that element should be db_field_name_<id>
 // css_class -> the selector string to iterate through and create click-to-edit fields.  e.g.: '.click_to_edit_class'
