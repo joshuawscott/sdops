@@ -1,3 +1,18 @@
+# Retrieves Sales Order information from Fishbowl, using a custom join on the
+# Fishbowl side.
+# ===Schema (read-only)
+#   customer_name   string
+#   customercontact string
+#   customerpo      string
+#   datecompleted   datetime
+#   id              integer
+#   num             string
+#   salesman        string
+#   shiptoaddress   string
+#   shiptocity      string
+#   shiptostate     string
+#   shiptozip       string
+#   team_name       string
 class FishbowlSo < Fishbowl
   self.element_name = 'custom_sdops_so'
   self.collection_name = 'custom_sdops_so'

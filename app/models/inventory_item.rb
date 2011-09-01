@@ -1,11 +1,13 @@
-# Schema:
+# ==DEPRECATED
+# This pulled from Appgen; using FishbowlQoh to gather inventory items now.
+# ===Schema
 #   id            string
 #   item_code     string
 #   description   string
 #   serial_number string
 #   warehouse     string
 #   location      string
-#   manufactuer   string
+#   manufacturer  string
 class InventoryItem < ActiveRecord::Base
   #custom association for InventoryWarehouse...
   def inventory_warehouse

@@ -2,6 +2,8 @@ require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
 require 'net/http'
+# Fetches a price from a cisco reseller website, and converts it to our monthly
+# pricing scheme.  Used by the pricing functions.
 class CiscoProduct
 
   def initialize(pn)

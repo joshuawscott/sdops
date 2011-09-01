@@ -1,3 +1,4 @@
+# See SupportDeal for schema
 class Contract < SupportDeal
 
   validates_presence_of :payment_terms, :po_received
@@ -47,6 +48,7 @@ class Contract < SupportDeal
       :conditions => "payment_terms <> 'Bundled'").map { |x|  x if x.renewal? }.compact
   end
 
+  # returns true if the monthly billing changes during the contract period.
   def billing_fluctuates?
     return false if self.expired
     return false if self.end_date < Date.today

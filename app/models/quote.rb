@@ -1,4 +1,10 @@
+# ===Still a work in progress.
+# Not-yet-effective SupportDeal.
+# See SupportDeal for schema.
 class Quote < SupportDeal
+
+  # TODO: Make this work.
+  # Update the revenue fields based on the line items in the quote.
   def update_revenue
     @revenue = new_revenue
     @annual_hw_revenue = new_annual_hw_revenue

@@ -1,4 +1,8 @@
-# Schema
+# ==DEPRECATED
+# This was a table populated by a cronjob that pulled data from the
+# Appgen accounting system.  We no longer use this, and it has been replaced by
+# the Fishbowl and Fishbowl* classes.
+# ===Schema
 #   id             string
 #   cust_code      integer
 #   cust_name      string
@@ -10,6 +14,7 @@
 #   net_discount   decimal
 #   sub_total      decimal
 #   sales_rep      string
+
 class AppgenOrder < ActiveRecord::Base
   has_many :appgen_order_lineitems
   has_many :appgen_order_serials, :through => :appgen_order_lineitems

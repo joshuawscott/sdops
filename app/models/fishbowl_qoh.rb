@@ -1,6 +1,15 @@
+# Connects to the Fishbowl "QOHVIEW" view
+# ===Schema (read-only)
+#   locationgroupid integer
+#   locationid      integer
+#   partid          integer
+#   tagnum          string
+#   serialnum       string
+#   qty             integer
 class FishbowlQoh < Fishbowl
   self.element_name = 'custom_inventory'
   self.collection_name = 'custom_inventory'
+  # Caches locationgroupid to avoid repeated XML requests.
   def fb_locationgroup
     @fb_locationgroup ||= Rails.cache.fetch("fishbowl_locationgroup_#{locationgroupid}") { Fishbowl.find(:first, :from => :locationgroup, :params => {:id => locationgroupid} ) }
   end

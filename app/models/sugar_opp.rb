@@ -1,4 +1,6 @@
-# Schema:
+# A SugarOpp is an opportunity (potential sale) in SugarCRM.  We do not use this
+# for anything at this time.
+# ===Schema
 #   id                string
 #   date_entered      datetime
 #   date_modified     datetime
@@ -20,6 +22,8 @@
 #   sales_stage       string
 #   probability       float
 #   description       text
+#--
+# TODO: a new Quote should create or link to an opportunity.
 class SugarOpp < SugarDb
   set_table_name "opportunities"
   

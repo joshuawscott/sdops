@@ -1,7 +1,7 @@
 document.observe("dom:loaded", function() {
   editFieldInPlaceInTable( '.location_click_to_edit', 'line_items', 'line_item', 'location');
   //editFieldInPlaceInTable( '.product_num_click_to_edit', 'line_items', 'line_item', 'product_num');
-  editFieldInPlaceProductNum(); // Because I want it to update description/list price.
+  editFieldInPlaceProductNum(); // Custom method so it will update description/list price.
   editFieldInPlaceInTable( '.note_click_to_edit', 'line_items', 'line_item', 'note');
   editFieldInPlaceInTable( '.description_click_to_edit', 'line_items', 'line_item', 'description');
   editFieldInPlaceInTable( '.serial_num_click_to_edit', 'line_items', 'line_item', 'serial_num');
@@ -78,14 +78,16 @@ function updateDescriptionAndPrice(item_id, pricing_info) {
   });
 }
 
-function addRow(row_id) {
+function addRowAfter(row_id) {
 	//
 }
 
-function deleteRow(row_id) {
+/*function deleteRow(row_id) {
 	var row = $(row_id);
+        db_id = row.id.toString().replace('line_item_', '');
+        new Ajax.Request('/')
         row.remove();
-}
+}*/
 
 function accountChanged() {
   var result = $('spinner_account').show();

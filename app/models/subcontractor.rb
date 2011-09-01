@@ -1,23 +1,26 @@
-# Fields:
-# id
-# name
-# contact_name
-# contact_email
-# contact_phone_work
-# contact_phone_mobile
-# phone
-# address1
-# address2
-# city
-# state
-# postalcode
-# country
-# note
+# A Subcontractor is a vendor that provides some level of support to our
+# customers.  This is mainly contact information; the specifics of what they
+# cover is stored under Subcontract.
+# ===Schema
+#   id
+#   name
+#   contact_name
+#   contact_email
+#   contact_phone_work
+#   contact_phone_mobile
+#   phone
+#   address1
+#   address2
+#   city
+#   state
+#   postalcode
+#   country
+#   note
 
 class Subcontractor < ActiveRecord::Base
   has_many :subcontracts
 
-  # converts the subcontractor to a vcard
+  # Converts the subcontractor to a vcard
   def to_vcf
     @subcontractor = "BEGIN:VCARD\r\n"
     @subcontractor += "VERSION:2.1\r\n"

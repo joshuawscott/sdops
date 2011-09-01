@@ -1,3 +1,4 @@
+# JOIN table between SugarAcct and SugarContact
 class SugarAccountsContact < SugarDb
   set_table_name "accounts_contacts"
   belongs_to :sugar_contact, :foreign_key => "contact_id"

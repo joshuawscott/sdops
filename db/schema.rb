@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091027172353) do
+ActiveRecord::Schema.define(:version => 20110718134005) do
 
   create_table "appgen_order_lineitems", :force => true do |t|
     t.string  "appgen_order_id",                                :null => false
@@ -81,61 +81,6 @@ ActiveRecord::Schema.define(:version => 20091027172353) do
     t.datetime "approval_date"
   end
 
-  create_table "contracts", :force => true do |t|
-    t.string   "account_id"
-    t.string   "account_name"
-    t.string   "sales_office_name"
-    t.string   "support_office_name"
-    t.string   "said"
-    t.string   "sdc_ref"
-    t.string   "description"
-    t.integer  "sales_rep_id",         :limit => 8
-    t.string   "sales_office"
-    t.string   "support_office"
-    t.string   "cust_po_num"
-    t.string   "payment_terms"
-    t.string   "platform"
-    t.decimal  "revenue",                            :precision => 20, :scale => 3
-    t.decimal  "annual_hw_rev",                      :precision => 20, :scale => 3
-    t.decimal  "annual_sw_rev",                      :precision => 20, :scale => 3
-    t.decimal  "annual_ce_rev",                      :precision => 20, :scale => 3
-    t.decimal  "annual_sa_rev",                      :precision => 20, :scale => 3
-    t.decimal  "annual_dr_rev",                      :precision => 20, :scale => 3
-    t.date     "start_date"
-    t.date     "end_date"
-    t.date     "multiyr_end"
-    t.boolean  "expired",                                                           :default => false
-    t.string   "hw_support_level_id"
-    t.string   "sw_support_level_id"
-    t.string   "updates"
-    t.integer  "ce_days",              :limit => 8
-    t.integer  "sa_days",              :limit => 8
-    t.decimal  "discount_pref_hw",                   :precision => 5,  :scale => 3
-    t.decimal  "discount_pref_sw",                   :precision => 5,  :scale => 3
-    t.decimal  "discount_pref_srv",                  :precision => 5,  :scale => 3
-    t.decimal  "discount_prepay",                    :precision => 5,  :scale => 3
-    t.decimal  "discount_multiyear",                 :precision => 5,  :scale => 3
-    t.decimal  "discount_ce_day",                    :precision => 5,  :scale => 3
-    t.decimal  "discount_sa_day",                    :precision => 5,  :scale => 3
-    t.string   "replacement_sdc_ref"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "contract_type"
-    t.string   "so_number"
-    t.string   "po_number"
-    t.date     "renewal_sent"
-    t.date     "po_received"
-    t.decimal  "renewal_amount",                     :precision => 20, :scale => 3
-    t.string   "address1"
-    t.string   "address2"
-    t.string   "address3"
-    t.string   "contact_name"
-    t.string   "contact_phone"
-    t.string   "contact_email"
-    t.string   "contact_note"
-    t.integer  "new_business_dollars", :limit => 10, :precision => 10, :scale => 0
-  end
-
   create_table "dropdowns", :force => true do |t|
     t.string   "dd_name"
     t.string   "filter"
@@ -161,11 +106,13 @@ ActiveRecord::Schema.define(:version => 20091027172353) do
   create_table "hwdb", :force => true do |t|
     t.string  "part_number"
     t.string  "description"
-    t.decimal "list_price",       :precision => 10, :scale => 2
+    t.decimal "list_price",           :precision => 10, :scale => 2
     t.integer "modified_user_id"
     t.date    "modified_at"
     t.date    "confirm_date"
     t.text    "notes"
+    t.integer "manufacturer_line_id"
+    t.boolean "tlci"
   end
 
   add_index "hwdb", ["part_number"], :name => "index_hwdb_on_part_number"
@@ -215,7 +162,7 @@ ActiveRecord::Schema.define(:version => 20091027172353) do
   end
 
   create_table "line_items", :force => true do |t|
-    t.integer  "contract_id",        :limit => 8
+    t.integer  "support_deal_id",    :limit => 8
     t.string   "support_type"
     t.string   "product_num"
     t.string   "serial_num"
@@ -237,7 +184,7 @@ ActiveRecord::Schema.define(:version => 20091027172353) do
   end
 
   add_index "line_items", ["product_num"], :name => "index_line_items_on_product_num"
-  add_index "line_items", ["contract_id"], :name => "index_line_items_on_contract_id"
+  add_index "line_items", ["support_deal_id"], :name => "index_line_items_on_contract_id"
 
   create_table "locations", :force => true do |t|
     t.string   "name"
@@ -245,6 +192,19 @@ ActiveRecord::Schema.define(:version => 20091027172353) do
     t.text     "data"
     t.integer  "resource_id",   :limit => 8
     t.string   "resource_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "manufacturer_lines", :force => true do |t|
+    t.string   "name"
+    t.integer  "manufacturer_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "manufacturers", :force => true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -369,15 +329,74 @@ ActiveRecord::Schema.define(:version => 20091027172353) do
     t.date     "end_date"
   end
 
+  create_table "support_deals", :force => true do |t|
+    t.string   "account_id"
+    t.string   "account_name"
+    t.string   "sales_office_name"
+    t.string   "support_office_name"
+    t.string   "said"
+    t.string   "sdc_ref"
+    t.string   "description"
+    t.integer  "sales_rep_id",         :limit => 8
+    t.string   "sales_office"
+    t.string   "support_office"
+    t.string   "cust_po_num"
+    t.string   "payment_terms"
+    t.string   "platform"
+    t.decimal  "revenue",                            :precision => 20, :scale => 3
+    t.decimal  "annual_hw_rev",                      :precision => 20, :scale => 3
+    t.decimal  "annual_sw_rev",                      :precision => 20, :scale => 3
+    t.decimal  "annual_ce_rev",                      :precision => 20, :scale => 3
+    t.decimal  "annual_sa_rev",                      :precision => 20, :scale => 3
+    t.decimal  "annual_dr_rev",                      :precision => 20, :scale => 3
+    t.date     "start_date"
+    t.date     "end_date"
+    t.date     "multiyr_end"
+    t.boolean  "expired",                                                           :default => false
+    t.string   "hw_support_level_id"
+    t.string   "sw_support_level_id"
+    t.string   "updates"
+    t.integer  "ce_days",              :limit => 8
+    t.integer  "sa_days",              :limit => 8
+    t.decimal  "discount_pref_hw",                   :precision => 5,  :scale => 3
+    t.decimal  "discount_pref_sw",                   :precision => 5,  :scale => 3
+    t.decimal  "discount_pref_srv",                  :precision => 5,  :scale => 3
+    t.decimal  "discount_prepay",                    :precision => 5,  :scale => 3
+    t.decimal  "discount_multiyear",                 :precision => 5,  :scale => 3
+    t.decimal  "discount_ce_day",                    :precision => 5,  :scale => 3
+    t.decimal  "discount_sa_day",                    :precision => 5,  :scale => 3
+    t.string   "replacement_sdc_ref"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "contract_type"
+    t.string   "so_number"
+    t.string   "po_number"
+    t.date     "renewal_sent"
+    t.date     "po_received"
+    t.decimal  "renewal_amount",                     :precision => 20, :scale => 3
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "address3"
+    t.string   "contact_name"
+    t.string   "contact_phone"
+    t.string   "contact_email"
+    t.string   "contact_note"
+    t.integer  "new_business_dollars", :limit => 10, :precision => 10, :scale => 0
+    t.string   "type"
+    t.decimal  "list_price_increase",                :precision => 5,  :scale => 3
+  end
+
   create_table "swdb", :force => true do |t|
     t.string  "part_number"
     t.string  "description"
-    t.decimal "phone_price",      :precision => 10, :scale => 2
-    t.decimal "update_price",     :precision => 10, :scale => 2
+    t.decimal "phone_price",          :precision => 10, :scale => 2
+    t.decimal "update_price",         :precision => 10, :scale => 2
     t.integer "modified_user_id"
     t.date    "modified_at"
     t.date    "confirm_date"
     t.text    "notes"
+    t.integer "manufacturer_line_id"
+    t.boolean "tlci"
   end
 
   add_index "swdb", ["part_number"], :name => "index_swdb_on_part_number"
@@ -410,7 +429,8 @@ ActiveRecord::Schema.define(:version => 20091027172353) do
     t.string  "appgen_order_id"
     t.boolean "has_upfront_support", :default => true
     t.boolean "completed",           :default => false
-    t.integer "contract_id"
+    t.integer "support_deal_id"
+    t.integer "fishbowl_so_id"
   end
 
   add_index "upfront_orders", ["appgen_order_id"], :name => "index_upfront_orders_on_appgen_order_id", :unique => true
@@ -429,6 +449,19 @@ ActiveRecord::Schema.define(:version => 20091027172353) do
     t.datetime "updated_at"
     t.string   "remember_token"
     t.datetime "remember_token_expires_at"
+  end
+
+  create_table "v_config_items", :force => true do |t|
+    t.string  "product_num"
+    t.string  "supporttype",      :limit => 8
+    t.string  "description"
+    t.string  "support_level"
+    t.string  "account_name"
+    t.integer "support_deal_id",  :limit => 8
+    t.string  "serial_num"
+    t.string  "location"
+    t.string  "account_id"
+    t.string  "support_provider"
   end
 
 end

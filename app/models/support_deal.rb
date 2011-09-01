@@ -1,4 +1,9 @@
-# Schema:
+# A SupportDeal is an object that store billing information, support levels,
+# customer information, etc. for a specific collection of LineItem objects.
+#
+# Normally this is accessed through one of its child classes - Contract or
+# Quote.
+# ===Schema
 #   id                    integer
 #   account_id            string
 #   account_name          string
@@ -102,8 +107,8 @@ class SupportDeal < ActiveRecord::Base
     end
   end
 
-  # accepts an array of team ids, and returns contracts where support_office or sales_office
-  # matches the passed array of ids.
+  # accepts an array of team ids, and returns contracts where support_office or
+  # sales_office matches the passed array of ids.
   def self.short_list(teams)
     self.find(:all, :select => "id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired", :conditions => ["(sales_office IN (?) OR support_office IN(?)) AND (expired <> true OR end_date >= '#{Date.today}')", teams, teams], :order => 'sales_office, account_name, start_date', :group => 'id')
   end
@@ -133,7 +138,11 @@ class SupportDeal < ActiveRecord::Base
     contracts
   end
 
-  # Returns Contracts with end_date in the next 120 days, unless Contract.expired = 1
+  # Returns any SupportDeal with end_date in the next *120* days (in spite of
+  # the name) unless Contract.expired = 1.  This is to provide a list of the
+  # upcoming unrenewed Contracts
+  #--
+  # TODO: Move to Contract.
   def self.renewals_next_90_days(teams, ref_date)
     if ref_date.nil?
       ref_date = Date.today
@@ -150,7 +159,8 @@ class SupportDeal < ActiveRecord::Base
       :order => 'sales_office, days_due')
     end
 
-  # Total Annual Revenue
+  # Total Annual Revenue - adds +annual_hw_rev+, +annual_sw_rev+, and
+  # +annual_srv_rev+
   def total_revenue
     @total_revenue = BigDecimal('0.0')
     if annual_hw_rev.class == BigDecimal
@@ -167,6 +177,7 @@ class SupportDeal < ActiveRecord::Base
     @total_revenue
   end
 
+  # Sum of +annual_ce_rev+, +annual_sa_rev+, and +annual_dr_rev+.
   def annual_srv_rev
     @annual_srv_rev = BigDecimal('0.0')
     if annual_ce_rev.class == BigDecimal
@@ -186,8 +197,9 @@ class SupportDeal < ActiveRecord::Base
     end
     @annual_srv_rev
   end
+
   # Returns string "Renewal" if the Contract has a predecessor, otherwise returns
-  # 'Newbusiness'
+  # 'Newbusiness'.  This is for some reports.
   def status
     if self.renewal?
       'Renewal'
@@ -201,9 +213,11 @@ class SupportDeal < ActiveRecord::Base
     self.predecessor_ids.size > 0
   end
 
-  # Pulls just the revenue fields (for reports).  Without the date parameter, it returns totals
-  # regardless of start and end dates.  An optional date parameter will return historical
-  # revenue amounts for that date, which ignores the expired field, only looking at start & end dates.
+  # Pulls just the revenue fields (for reports).  Without the date parameter, it
+  # returns totals regardless of start and end dates.  An optional date
+  # parameter will return historical revenue amounts for that date, which
+  # ignores the expired field, only looking at start & end dates.  This is used
+  # in the main dashboard revenue report.
   def self.all_revenue(date = nil)
     if date.nil?
       self.find(:first,
@@ -216,7 +230,8 @@ class SupportDeal < ActiveRecord::Base
     end
   end
 
-  # For Dashboard report
+  # Returns a hash with the office name as the key, and the number of active
+  # contracts as the value.
   def self.contract_counts_by_office
     offices = self.find(:all, :select => 'DISTINCT sales_office_name', :conditions => 'expired <> true', :order => 'sales_office_name')
     hash = {}
@@ -241,7 +256,8 @@ class SupportDeal < ActiveRecord::Base
     hash
   end
 
-  # For Dashboard report
+  # Returns a hash with the office name as the key, and the number of active
+  # customers as the value.
   def self.customer_counts_by_office
     offices = self.find(:all, :select => 'DISTINCT sales_office_name', :conditions => 'expired <> 1', :order => 'sales_office_name')
     hash = {}
@@ -266,7 +282,20 @@ class SupportDeal < ActiveRecord::Base
     hash
   end
 
-  # For Dashboard report
+  # TODO: Move to Contract - should not be needed for quotes.
+  # Returns an array of SupportDeal objects, but with the following fields:
+  # * sales_office_name (this is the group by field)
+  # * total (all annual revenue fields)
+  # * hw (annual_hw_revenue)
+  # * sw (annual_hw_revenue)
+  # * sa (annual_sa_revenue)
+  # * ce (annual_ce_revenue)
+  # * dr (annual_dr_revenue)
+  # Each of the fields is the sum total of all current contracts in that
+  # sales_office.
+  #
+  # Takes an optional +date+. When present, it gives the revenues as of that
+  # date. When absent, it gives the revenues of contracts where expired = 0.
   def self.revenue_by_office_by_type(date = nil)
     if date.nil?
       self.find(:all,
@@ -282,12 +311,23 @@ class SupportDeal < ActiveRecord::Base
   end
 
   #TODO: Make a view for this, or make the current view work with both.
+  # Returns an array of SupportDeal objects, with the following fields:
+  # * account_name (group field #1)
+  # * sales_office_name (group field #2)
+  # * total (total of all annual revenue fields)
 	def self.customer_rev_list_by_sales_office
 		self.find(:all, :select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sales_office_name', :conditions => 'expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) )', :group => 'account_name, sales_office_name')
 	end
 
-	# for customer list report
-	def self.customer_rev_list_by_support_office (teams)
+  # Takes an array +teams+ that limits the query to only SupportDeal objects
+  # having a +support_office+ matching one of the +teams+.
+  #
+  # Returns an array of SupportDeal objects, with the following fields:
+  # * account_name (group field #1)
+  # * support_office_name (group field #2)
+  # * revenue (total of all annual revenue fields)
+  # Sorted by highest +revenue+ first.
+	def self.customer_rev_list_by_support_office(teams)
 		self.find(:all,
       :select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue, support_office_name',
       :conditions => ['support_office IN (?) AND (expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) ))', teams],
@@ -295,13 +335,20 @@ class SupportDeal < ActiveRecord::Base
       :order => 'revenue DESC')
 	end
 
-	#for dashboard report
+  # Takes an array +teams+ that has no effect.
+  #
+  # Returns an array with a single SupportDeal object, with only the +revenue+
+  # field.  +revenue+ is the total annual revenue of all SupportDeal objects
+  # past, present, and future.
+  #
+  # FIXME: Make sure this isn't used anywhere and get rid of it!
 	def self.revenue_total(teams)
 		self.find(:all,
 			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue')
 	end
 
-  # Calculates the current effective overall hardware discount of a Contract
+  # Calculates the current effective overall hardware discount of a Contract.
+  # Returns a BigDecimal giving the discount as a decimal number, e.g. 30% = 0.3
   def effective_hw_discount
     total_list = BigDecimal.new('0.0')
     self.line_items.each do |x|
@@ -314,6 +361,7 @@ class SupportDeal < ActiveRecord::Base
   end
 
   # Calculates the current effective overall software discount of a Contract
+  # Returns a BigDecimal giving the discount as a decimal number, e.g. 30% = 0.3
   def effective_sw_discount
     total_list = BigDecimal.new('0.0')
     self.line_items.each do |x|
@@ -326,6 +374,7 @@ class SupportDeal < ActiveRecord::Base
   end
 
   # Calculates the current effective overall services discount of a Contract
+  # Returns a BigDecimal giving the discount as a decimal number, e.g. 30% = 0.3
   def effective_srv_discount
     total_list = BigDecimal.new('0.0')
     self.line_items.each do |x|
@@ -337,15 +386,18 @@ class SupportDeal < ActiveRecord::Base
     BigDecimal.new('1.0') - (self.annual_srv_rev / (total_list * BigDecimal.new('12.0')))
   end
 
-  # String: po_received date translated to YYYYM.
+  # Returns a String: po_received date translated to YYYYM.
   # Useful for in-place filtering based on date
   def period
     month = self.po_received.month
     self.po_received.year.to_s + month.to_s
   end
 
-  # determines an expected renewal amount, taking into account the renewal_amount
-  # field.  If the field is blank, it estimates based on the current list prices.
+  # Determines an expected renewal amount, taking into account the
+  # +renewal_amount+ field.  If the field is blank, it estimates based on the
+  # current list prices.
+  #
+  # Returns a Float.
   def expected_revenue
     if !renewal_amount.nil?
       @x = renewal_amount
@@ -371,7 +423,11 @@ class SupportDeal < ActiveRecord::Base
     end
   end
 
-  # returns a BigDecimal used as a price multiplier for the various levels of hardware support.
+  # Returns a BigDecimal used as a price multiplier for the various levels of
+  # hardware support. Example:
+  #   c = SupportDeal.new(:hw_support_level_id => "SDC ND") => {:id=>37, :hw_support_level_id=>"SDC ND"}
+  #   c.save
+  #   c.hw_support_level_multiplier # 0.65
   def hw_support_level_multiplier
     case hw_support_level_id
       when "SDC 24x7" then 1
@@ -382,7 +438,8 @@ class SupportDeal < ActiveRecord::Base
     end
   end
 
-  # returns a BigDecimal used as a price multiplier for the various levels of software support.
+  # returns a BigDecimal used as a price multiplier for the various levels of
+  # software support. See +hw_support_level_multiplier+.
   def sw_support_level_multiplier
     case sw_support_level_id
       when "SDC SW 24x7" then 1
@@ -391,8 +448,10 @@ class SupportDeal < ActiveRecord::Base
     end
   end
 
-  #TODO: Fix so that we are not using the inaccurate "effective_*_discount" methods.
-  # updates the effective_price attribute for each of the line items in a contract.
+  # TODO: Fix so that we are not using the inaccurate +effective_*_discount+
+  # methods.
+  #
+  # Updates the effective_price attribute for each of the line items in a contract.
   def update_line_item_effective_prices
     logger.debug "********** Contract update_line_item_effective_prices"
     hw_disc = BigDecimal.new('1.0') - self.effective_hw_discount
@@ -411,17 +470,19 @@ class SupportDeal < ActiveRecord::Base
   end
 
   # Returns a collection of Contract objects which meet the following conditions:
-  # - They contain line items that have a support provider != 'Sourcedirect'
-  # - They are current
-  # - Some of the line items that have a support provider != 'Sourcedirect' also have subcontractor_id == nil
+  # * They contain line items that have a support provider != 'Sourcedirect'
+  # * They are current
+  # * Some of the line items that have a support provider != 'Sourcedirect' also
+  #   have subcontractor_id == nil
   def self.missing_subcontracts
     support_deal_ids = LineItem.find(:all, :select => "support_deal_id", :conditions => "support_provider <> 'Sourcedirect' AND subcontract_id IS NULL").map {|l| l.support_deal_id}.uniq
     @support_deals = self.current_unexpired.find(:all, :conditions => ["id IN (?)", support_deal_ids])
     @support_deals
   end
 
-  # Returns the last _num_ comments for a support_deal (default 1)
-  # If num is not used, returns a single comment object, otherwise returns an array of comments.
+  # Returns the last +num+ comments for a SupportDeal. If num is not provided,
+  # returns a single comment object, otherwise returns an array of comments.
+  # FIXME: Never returns an array!!!
   def last_comment(num = nil)
     if num.nil?
       Comment.find(:first, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC")
@@ -442,43 +503,47 @@ class SupportDeal < ActiveRecord::Base
     (y + m + first_and_last) - 1
   end
 
-  # returns all the hardware line_items.
+  # Returns an Array of the hardware +line_items+.
   def hw_line_items
     line_items.find_all {|l| l.support_type == "HW"}.sort_by {|n| n.position}
   end
 
-  # returns all the software line_items.
+  # Returns an Array of the software +line_items+.
   def sw_line_items
     line_items.find_all {|l| l.support_type == "SW"}.sort_by {|n| n.position}
   end
 
-  # returns all the services line_items.
+  # Returns an Array of the services +line_items+.
   def srv_line_items
     line_items.find_all {|l| l.support_type == "SRV"}.sort_by {|n| n.position}
   end
 
-  # hardware list price based on the line items
+  # Returns a Float - hardware list price based on the +line_items+.
   def hw_list_price
     hw_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
   end
 
-  # software list price based on the line items
+  # Returns a Float - software list price based on the +line_items+.
   def sw_list_price
     sw_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
   end
 
-  # services list price based on the line items
+  # Returns a Float - services list price based on the +line_items+.
   def srv_list_price
     srv_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
   end
 
+  # Total of +hw_list_price+, +sw_list_price+ and +srv_list_price+
   def total_list_price
     hw_list_price + sw_list_price + srv_list_price
   end
 
-  # :type => ['hw', 'sw', 'srv']
-  # :prepay => [true, false]
-  # :multiyear => [true, false]
+  # Returns a BigDecimal of the discount percentage (e.g. 30% => 0.30)
+  #
+  # +opts+ hash
+  #   :type => ['hw', 'sw', 'srv']
+  #   :prepay => [true, false]
+  #   :multiyear => [true, false]
   def discount(opts={:type => 'hw', :prepay => false, :multiyear => false})
     type = opts[:type].to_s
     @discount = send("discount_pref_#{type}")
@@ -487,34 +552,47 @@ class SupportDeal < ActiveRecord::Base
     @discount
   end
 
-  # :type => ['hw', 'sw', 'srv']
-  # :prepay => [true, false]
-  # :multiyear => [true, false]
+  # Returns a BigDecimal of the discount amount (how much the discount percentage
+  # subtracts from the total)
+  #
+  # +opts+ hash
+  #   :type => ['hw', 'sw', 'srv']
+  #   :prepay => [true, false]
+  #   :multiyear => [true, false]
   def discount_amount(opts={:type => 'hw', :prepay => false, :multiyear => false})
     discount(opts) * send("#{opts[:type].to_s}_list_price")
   end
 
+  # Returns a BigDecimal of the hardware discount amount (e.g. 30% => 0.30)
   def hw_disc_amt
     hw_list_price * discount_pref_hw
   end
+
+  # Returns a BigDecimal of the software discount amount (e.g. 30% => 0.30)
   def sw_disc_amt
     sw_list_price * discount_pref_sw
   end
+
+  # Returns a BigDecimal of the services discount amount (e.g. 30% => 0.30)
   def srv_disc_amt
     srv_list_price * discount_pref_srv
   end
 
   # Returns the number of calendar months covered by the contract.
   # Example:
-  #   a = Contract.new(:start_date => Date.parse('2009-01-01'), :end_date => Date.parse('2009-12-31')
-  #   b = Contract.new(:start_date => Date.parse('2009-01-31'), :end_date => Date.parse('2009-02-01')
+  #   a = Contract.new(:start_date => Date.parse('2009-01-01'), :end_date => Date.parse('2009-12-31'))
+  #   b = Contract.new(:start_date => Date.parse('2009-01-31'), :end_date => Date.parse('2009-02-01'))
+  #   a.save;b.save
   #   a.calendar_months # 12
   #   b.calendar_months # 2
   def calendar_months
     (end_date.mon - start_date.mon) + ((end_date.year - start_date.year) * 12) + 1
   end
 
-  # Returns an array of payment amounts for a contract (useful for a payment schedule)
+  # Returns an array of payment amounts for a contract (useful for a payment
+  # schedule).  Uses calendar months -- any days in a specific month will
+  # generate an array member with the calculated price for that month.  The
+  # length of this array is thus +calendar_months+
   def payment_schedule(opts={:multiyear => false, :prepay => false})
     prepay = opts[:prepay]
     multiyear = opts[:multiyear]
@@ -546,13 +624,15 @@ class SupportDeal < ActiveRecord::Base
   end
   # END New methods for quoting #
 
-  protected
+protected
 
   # This method updates the account_name field from SugarCRM for all the Contracts with a matching account_id
   def update_account_name_from_sugar
     SupportDeal.update_all(["account_name = ?", sugar_acct && sugar_acct.name ], ["account_id = ?", account_id])
   end
 
+  # Returns an Array of strings giving possible alternate serial numbers based
+  # on visual similarity (0 = O; 5 = S, etc.)
   def self.find_substituted_sn_chars(serial_num)
     #check for similar serial numbers
     possible_serial_nums = []
@@ -587,6 +667,10 @@ class SupportDeal < ActiveRecord::Base
     possible_serial_nums
   end
 
+  # Returns an Array of strings giving possible alternate serial numbers
+  # generated by adding A-Z and 0-9 between each of the characters in the serial
+  # number.  Note that this generates (serial_num.length + 1) * 36 additional
+  # serial numbers.
   def self.insert_missing_sn_chars(serial_num)
     #check for missing characters...
     possible_serial_nums = []

@@ -1,9 +1,10 @@
-# Schema:
+# JOIN table for Roles & Users
+# ===Schema
 #   roles_id        integer
 #   users_id        integer
 #   created_at      datetime
 #   updated_at      datetime
-# JOIN table for Roles & Users
+#
 class Permission < ActiveRecord::Base
   belongs_to :user
   belongs_to :role

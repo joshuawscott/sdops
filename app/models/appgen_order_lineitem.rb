@@ -1,10 +1,14 @@
-# Schema:
-#    t.string  "appgen_order_id",                                :null => false
-#    t.string  "part_number"
-#    t.string  "description"
-#    t.integer "quantity"
-#    t.decimal "price",           :precision => 20, :scale => 5
-#    t.decimal "discount",        :precision => 7,  :scale => 2
+# ==DEPRECATED
+# This was a table populated by a cronjob that pulled data from the
+# Appgen accounting system.  We no longer use this, and it has been replaced by
+# the Fishbowl and Fishbowl* classes.
+# ===Schema:
+#   appgen_order_id string
+#   part_number     string
+#    description    string
+#    quantity       integer
+#    price          decimal(20,5)
+#    discount       decimal(7,2)
 class AppgenOrderLineitem < ActiveRecord::Base
   belongs_to :appgen_order
   has_one :appgen_order_serial, :foreign_key => :id

@@ -1,4 +1,6 @@
-# Schema:
+# A SugarAcct is an account in SugarCRM.  This is used to populate the account
+# information for a SupportDeal and in other places.
+# ===Schema
 #   id                string
 #   date_entered      datetime
 #   date_modified     datetime
@@ -45,6 +47,7 @@ class SugarAcct < SugarDb
   has_many :sugar_accounts_contacts, :foreign_key => "account_id"
   has_many :sugar_contacts, :through => :sugar_accounts_contacts, :foreign_key => "account_id"
 
+  # convenience method to pull client_category_c from SugarAccountsCstm.
   def client_category
     begin
       @client_category = self.sugar_accounts_cstm.client_category_c
@@ -52,6 +55,8 @@ class SugarAcct < SugarDb
       @client_category = nil
     end
   end
+
+  # Pull all linked contacts while including the email address field.
   def sugar_contacts_with_email
     sugar_contact_ids = sugar_contacts.map {|sc| sc.id}
     SugarContact.find_with_email(sugar_contact_ids)

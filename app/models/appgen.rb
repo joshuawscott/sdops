@@ -1,7 +1,9 @@
 require 'active_record/validations'
 require 'faster_csv'
 require 'csv'
-
+# ==DEPRECATED
+# This is our old accounting system.
+# Maintained by Troy Nini as an easy interface to pull data from Appgen.
 class Appgen
   attr_reader :appgen_dir
   attr_accessor :delimited

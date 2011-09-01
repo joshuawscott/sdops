@@ -1,4 +1,5 @@
-#Schema:
+# This is an I/O slot in a server, used for the _ioscan_ tool.
+# ===Schema:
 #   id            integer
 #   server_id     integer
 #   slot_number   integer

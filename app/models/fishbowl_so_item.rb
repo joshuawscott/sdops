@@ -1,3 +1,20 @@
+# Individual line items from a FishbowlSo
+# ===Schema (read-only)
+#   adjustamount      integer
+#   adjustpercentage  decimal
+#   description       string
+#   id                integer
+#   productid         integer
+#   productnum        string
+#   qtyshipped        integer
+#   qtytofulfill      integer
+#   serialnum         string
+#   soid              integer
+#   solineitem        integer
+#   totalcost         decimal
+#   typeid            integer
+#   unitprice         decimal
+#
 class FishbowlSoItem < Fishbowl
   self.element_name = 'custom_sdops_so_item'
   self.collection_name = 'custom_sdops_so_item'

@@ -1,4 +1,5 @@
-# Schema:
+# JOIN table between SugarAcct and SugarOpp.
+# ===Schema
 #   id              string
 #   opportunity_id  string
 #   account_id      string

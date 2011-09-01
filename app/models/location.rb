@@ -1,4 +1,5 @@
-# Schema
+# Work in progress.
+# ===Schema
 #   id            integer
 #   name          string
 #   description   string
@@ -7,5 +8,5 @@
 #   resource_type string
 #   created_at    datetime
 #   updated_at    datetime
-class Location < ActiveRecord::Base
+class Location < ActiveRecord::Base #:nodoc:s
 end

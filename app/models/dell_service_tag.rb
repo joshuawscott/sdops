@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'nokogiri'
 require 'open-uri'
-# Scrapes Dell's website for information on a particular Dell "Service Tag" (similar to a
-# serial number)
+# Scrapes Dell's website for information on a particular Dell "Service Tag"
+# (similar to a serial number)
 class DellServiceTag
   attr_accessor :service_tag
   attr_accessor :model_number
@@ -15,10 +15,10 @@ class DellServiceTag
   DELLURL1 = 'http://support.dell.com/support/topics/global.aspx/support/my_systems_info/details?c=us&cs=2684&l=en&s=biz&~ck=anavml&servicetag='
   DELLURL2 = '&~tab='
 
-  # :nodoc:
-  # Takes a String (service_tag) and a Fixnum(tab_number) and returns a new instance of
-  # DellServiceTag
-  def initialize(service_tag, tab_number)
+
+  # Takes a String (service_tag) and a Fixnum(tab_number) and returns a new
+  # instance of DellServiceTag
+  def initialize(service_tag, tab_number)#:nodoc:
     @service_tag = service_tag
     @tab_number = tab_number
     @dell_page = Nokogiri::HTML(open(dell_url))
@@ -57,13 +57,16 @@ class DellServiceTag
   end
 
   # Returns a new DelLServiceTag with Configuration information set
+  # _Please take a look at the source if this breaks for help_
   def self.find_configuration(service_tag)
     new_dell_service_tag = self.new(service_tag, 2)
 
 
-    # I view this as a fragile way to scrape... any change by Dell would completely undo it.
-    # In case there's a problem with this model in the future, the alternate code may still work, but
-    # it may be a matter of simply looking at the source
+    # I view this as a fragile way to scrape... any changes by Dell can (and
+    # sometimes does) breaks it. In case there's a problem with this model in
+    # the future, the alternate code may still work, but it may be a matter of
+    # simply looking at the Dell HTML source to re-point at the right area.
+
     raw_html = new_dell_service_tag.dell_page.xpath("/html[1]/body/table/tr/td/div[1]/table/tr/td/div/table[2]/tr/td[2]/table/tr[4]/td/div[2]/table/tr[4]/td/table/tr/td")[4..-3]
     # If I need to debug:
     #puts "------------------------------------------------"
@@ -73,17 +76,19 @@ class DellServiceTag
       new_dell_service_tag.add_line_item(DellServiceTagLineItem.new(line[0].content,line[1].content,line[2].content))
     end
 
-    # Alternate code, this one uses CSS classes to find the data.  The problem with this method
-    # is that it grabs all the odd numbered lines, then the even numbered, so they are not arranged
-    # in the same order as on the dell site.
-    #raw_html1 = new_dell_service_tag.dell_page.css('td.gridCell')[4..-3]
-    #raw_html2 = new_dell_service_tag.dell_page.css('td.gridCellAlt')[4..-1]
-    #raw_html1.each_slice(3) do |line|
-    #  new_dell_service_tag.add_line_item(DellServiceTagLineItem.new(line[0].content,line[1].content,line[2].content))
-    #end
-    #raw_html2.each_slice(3) do |line|
-    #  new_dell_service_tag.add_line_item(DellServiceTagLineItem.new(line[0].content,line[1].content,line[2].content))
-    #end
+    # Alternate code, this one uses CSS classes to find the data.  The problem
+    # with this method is that it grabs all the odd numbered lines, then the
+    # even numbered, so they are not arranged in the same order as on the Dell
+    # site.
+    # ==Code
+    #   raw_html1 = new_dell_service_tag.dell_page.css('td.gridCell')[4..-3]
+    #   raw_html2 = new_dell_service_tag.dell_page.css('td.gridCellAlt')[4..-1]
+    #   raw_html1.each_slice(3) do |line|
+    #     new_dell_service_tag.add_line_item(DellServiceTagLineItem.new(line[0].content,line[1].content,line[2].content))
+    #   end
+    #   raw_html2.each_slice(3) do |line|
+    #     new_dell_service_tag.add_line_item(DellServiceTagLineItem.new(line[0].content,line[1].content,line[2].content))
+    #   end
 
     new_dell_service_tag
   end
@@ -99,7 +104,8 @@ class DellServiceTag
 
 end
 
-# This class is to provide convenience methods for accessing data about each line item in a DellServiceTag
+# This class is to provide convenience methods for accessing data about each
+# line item in a DellServiceTag
 class DellServiceTagLineItem
   attr_accessor :quantity, :part_number, :description
   def initialize(qty,pn,desc)

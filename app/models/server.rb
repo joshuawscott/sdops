@@ -1,3 +1,5 @@
+# A Server is a definition of a server that contains information on I/O slots,
+# number of CPU sockets, model name, etc. for the ioscan and swlist tools.
 # Schema
 #   id            integer
 #   model_name    string
