@@ -469,13 +469,14 @@ class SupportDeal < ActiveRecord::Base
   end
 
   # Returns the last +num+ comments for a SupportDeal. If num is not provided,
-  # returns a single comment object, otherwise returns an array of comments.
-  # FIXME: Never returns an array!!!
-  def last_comment(num = nil)
-    if num.nil?
+  # or is equal to 1, returns a single comment object, otherwise returns an
+  # array of comments.
+  # If there are no comments, returns +nil+.
+  def last_comment(num = 1)
+    if num == 1
       Comment.find(:first, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC")
     else
-      Comment.find(:first, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC", :limit => num )
+      Comment.find(:all, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC", :limit => num )
     end
   end
 

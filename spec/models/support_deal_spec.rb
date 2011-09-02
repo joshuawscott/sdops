@@ -27,4 +27,27 @@ describe SupportDeal do
       LineItem.delete_all
     end
   end
+  describe "#last_comment" do
+    before(:each) do
+      @empty_support_deal = Factory(:support_deal)
+      @support_deal = Factory(:support_deal)
+      comment1 = Factory(:comment)
+      comment2 = Factory(:comment)
+      @support_deal.comments << comment1
+      @support_deal.comments << comment2
+    end
+    it "should return nil when no comments exist" do
+      @empty_support_deal.last_comment.should == nil
+    end
+    it "should return a comment when passed no options" do
+      @support_deal.last_comment.class.should == Comment
+    end
+    it "should return a comment array when passed 2" do
+      @support_deal.last_comment(2).class.should == Array
+    end
+    it "should return a comment when passed 1" do
+      @support_deal.last_comment(1).class.should == Comment
+    end
+
+  end
 end
