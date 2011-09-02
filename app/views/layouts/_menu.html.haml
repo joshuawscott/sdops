@@ -142,12 +142,13 @@
               &nbsp;
     -if logged_in?
       %li
-        = link_to 'Logout', "/logout",  :class => "menuUnselected" 
+        = link_to 'Logout', "/logout",  :class => "menuUnselected"
     -else
       %li
         = link_to 'Login', "/login",  :class => "menuUnselected"
+    %li
+      =link_to 'Feedback', 'http://bugs.corp.ad/enter_bug.cgi?product=SD%20Ops', :class => "menuUnselected", :title => "Submit an issue or enhancement request", :target => "_blank"
   #userinfo
     - if current_user != :false
       %p
         = h current_user.first_name.to_s + ' ' + current_user.last_name.to_s
-
