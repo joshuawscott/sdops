@@ -3,6 +3,8 @@
     %b Office
   %th{:width => '140px', :ts_type => 'string'}
     %b Account
+  %th{:width => '100px', :ts_type => 'number'}
+    %b Contract ID
   %th{:width => '200px', :ts_type => 'string'}
     %b Description
   %th{:width => '80px'}
@@ -17,6 +19,8 @@
     %b Revenue
   %th{:width => '90px', :ts_type => 'money'}
     %b Renewal Estimate
+  %th
+    %b Comment?
   - if current_user.has_role?(:admin)
     %th
       &nbsp;

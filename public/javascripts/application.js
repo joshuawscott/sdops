@@ -3,11 +3,19 @@
 // ************************************************
 function toggleOfficesRenewal(sum_col) {
   toggleOffices(sum_col);
+  // insert sums for each section
   sumVisibleRows('sum_expired', 'renewals_expired', sum_col);
   sumVisibleRows('sum_0_30', 'renewals_0_30', sum_col);
   sumVisibleRows('sum_31_60', 'renewals_31_60', sum_col);
   sumVisibleRows('sum_61_90', 'renewals_61_90', sum_col);
   sumVisibleRows('sum_91_120', 'renewals_91_120', sum_col);
+  // insert counts for each section
+  countVisibleRows('count_expired', 'renewals_expired');
+  countVisibleRows('count_0_30', 'renewals_0_30');
+  countVisibleRows('count_31_60', 'renewals_31_60');
+  countVisibleRows('count_61_90', 'renewals_61_90');
+  countVisibleRows('count_91_120', 'renewals_91_120');
+  //Total the sum column
   var sum_all = $('sum_all');
   var total = 0.0;
   //ugh... floats.
@@ -17,6 +25,9 @@ function toggleOfficesRenewal(sum_col) {
   total += ($('sum_61_90').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
   total += ($('sum_91_120').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
   sum_all.innerHTML = number_to_currency(total/100);
+  // Total the count column
+  var count_all = $('count_all');
+  count_all.innerHTML = $('count_expired').innerHTML*1 + $('count_0_30').innerHTML*1 + $('count_31_60').innerHTML*1 + $('count_61_90').innerHTML*1 + $('count_91_120').innerHTML*1;
 }
 
 function toggleOfficesGeneric(sum_col) {
@@ -49,6 +60,17 @@ function showAll(){
     var name = 'tr[name="'+a[i].value+'"]';
     $$(name).invoke('removeClassName', 'hidden');
   }
+}
+
+function countVisibleRows(total_container_id, count_table_id) {
+  var rows = $$('#'+count_table_id+' tbody tr');
+  var count = 0;
+    rows.each(function(r) {
+      if(r.hasClassName('hidden') == false) {
+        count += 1;
+      }
+    })
+  $(total_container_id).innerHTML = count;
 }
 
 function sumVisibleRows(total_container_id, sum_table_id, sum_col){
@@ -114,3 +136,16 @@ function editFieldInPlaceInTable(css_class, url_prefix, rails_class, db_field_na
     });
   }
 }
+
+document.observe("dom:loaded", function() {
+  var tooltip_elements = $$('.tooltip_target');
+  var tooltips = $$('.tooltip_content');
+  var len = tooltip_elements.length;
+  //var len = tooltip_elements.length;
+    for(var i=0; i<len; i++){
+      //alert(tooltip_elements[i].id);
+      new Tooltip(tooltip_elements[i], tooltips[i], {hook: {target:'rightMid', tip:'leftMid'} } );
+    }
+
+
+})
