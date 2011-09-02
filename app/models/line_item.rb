@@ -171,7 +171,7 @@ class LineItem < ActiveRecord::Base
       :group => 'l.product_num')
   end
 
-  # FIXME: Not working with Fishbowl.
+  # FIXME: Not working with Fishbowl.  Bug #14
   # When fixed, remove the warning from app/views/reports/spares_assessment.html.haml
   # Do not use until fixed.
   def qty_instock(office_name=nil)

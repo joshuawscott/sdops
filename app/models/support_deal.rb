@@ -335,18 +335,6 @@ class SupportDeal < ActiveRecord::Base
       :order => 'revenue DESC')
 	end
 
-  # Takes an array +teams+ that has no effect.
-  #
-  # Returns an array with a single SupportDeal object, with only the +revenue+
-  # field.  +revenue+ is the total annual revenue of all SupportDeal objects
-  # past, present, and future.
-  #
-  # FIXME: Make sure this isn't used anywhere and get rid of it!
-	def self.revenue_total(teams)
-		self.find(:all,
-			:select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue')
-	end
-
   # Calculates the current effective overall hardware discount of a Contract.
   # Returns a BigDecimal giving the discount as a decimal number, e.g. 30% = 0.3
   def effective_hw_discount
