@@ -23,6 +23,11 @@ class Contract < SupportDeal
     nonrenew = c.inject(0) {|sum, n| n.successors.size == 0 ? sum - n.total_revenue : sum }
   end
 
+  #Returns an array of contracts marked as will not renew.
+  def self.unrenewed(startdate,enddate)
+    contracts = Contract.find(:all, :conditions => ["expired = 1 AND end_date >= ? AND end_date <= ?", startdate, enddate]).reject {|c| c.successors.size > 0}
+  end
+
   #Calculates the amount of change, per contract, bewteen current year and previous year
   def renewal_attrition
     if predecessors.size > 0

@@ -1,0 +1,46 @@
+- content_for :subtitle do
+  Attrition Report
+
+#section1
+  -form_tag '/admin/attrition' do
+    %label{:for => :start_date}
+      Start Date
+    %p
+      =text_field_tag :start_date, @start_date
+    %label{:for => :end_date}
+      End Date
+    %p
+      =text_field_tag :end_date, @end_date
+    =submit_tag 'Recalculate'
+  %h2{:style => 'margin:15px 0px 0px 3px'} Unrenewed Contracts
+
+  %table{:class => "sortable", :padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th ID
+        %th Description
+        %th Account Name
+        %th Annual Revenue
+    %tbody
+      - for contract in @unrenewed do
+        %tr
+          %td=link_to contract.id, url_for(contract)
+          %td=contract.description
+          %td=contract.account_name
+          %td=number_to_currency(contract.total_revenue)
+#section2
+  %h2{:style => 'margin:15px 0px 0px 3px'} Attrition on renewals
+  %table{:class => "sortable", :padding => '2', :border => '1'}
+    %thead
+      %tr
+        %th ID
+        %th Description
+        %th Account Name
+        %th Attrition
+    %tbody
+      - for contract in @contracts do
+        %tr
+          %td=link_to contract.id, url_for(contract)
+          %td=contract.description
+          %td=contract.account_name
+          %td=number_to_currency(contract.renewal_attrition)

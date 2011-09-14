@@ -1,9 +1,9 @@
 class AdminController < ApplicationController
   before_filter :authorized?
-  
+
   # GET /admin
   def index
-  
+
     respond_to do |format|
       format.html # index.html.haml
     end
@@ -39,7 +39,7 @@ class AdminController < ApplicationController
       format.html # lineitems.html.haml
     end
   end
-  
+
   # GET /admin/account_id
   def account_id
     @contracts = Contract.find(:all, :conditions => 'CHAR_LENGTH(account_id) < 2', :order => 'account_name, start_date')
@@ -48,7 +48,7 @@ class AdminController < ApplicationController
       format.html # account_id.html.haml
     end
   end
-  
+
   # GET /admin/cashflow
   def cashflow
     @contracts = Contract.find(:all, :conditions => 'expired <> true', :include => :predecessors, :order => 'end_date, account_name')
@@ -92,6 +92,12 @@ class AdminController < ApplicationController
       end
       @contracts = contracts.flatten.uniq.delete_if {|c| c.id == @id}
     end
+  end
+  def attrition
+    params[:start_date].nil? ? @start_date = Date.today - 12.months : @start_date = params[:start_date]
+    params[:end_date].nil? ? @end_date = Date.today : @end_date = params[:end_date]
+    @unrenewed = Contract.unrenewed(@start_date, @end_date)
+    @contracts = Contract.find(:all, :conditions => ['end_date >= ? AND end_date <= ?', @start_date, @end_date]).reject {|c| c.renewal_attrition >= 0}
   end
   protected
   def authorized?

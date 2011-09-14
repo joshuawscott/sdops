@@ -1,6 +1,6 @@
 - content_for :subtitle do
   Admin Area
-  
+
 #section1
   %h1
     Reports
@@ -20,6 +20,8 @@
     = link_to "Untouched TLCI", {:controller => "admin", :action => "tlci"}
   %p
     = link_to "Check for renewal links", {:controller => "admin", :action => "check_for_renewals"}
+  %p
+    = link_to "Attrition Report", {:controller => "admin", :action => "attrition"}
   %h2 Appgen Invoices
   %p
     = link_to 'Upfront Orders', upfront_orders_path
