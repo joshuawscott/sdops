@@ -1,0 +1,34 @@
+- content_for :subtitle do
+  Search Line Items
+#section1
+  - form_tag line_items_path, :method => :get do
+    %p
+      %label Date
+      = text_field_tag 'line_item[date]', @date
+    %p
+      %label Product Num.
+      = text_field_tag 'line_item[product_num]', @product_num
+    = submit_tag 'Search'
+#section2
+  %table
+    %thead
+      %tr
+        %th Qty
+        %th Part Number
+        %th Part Description
+        %th Location
+        %th Customer
+        %th Contract ID
+        %th Start Date
+        %th End Date
+    %tbody
+      - @line_items.each do |line_item|
+        %tr
+          %td= h line_item.sum_qty
+          %td= h line_item.product_num
+          %td= h line_item.description
+          %td= h line_item.location
+          %td= h line_item.contract.account_name
+          %td= link_to line_item.support_deal_id, url_for(line_item.contract)
+          %td= h line_item.start_date
+          %td= h line_item.end_date

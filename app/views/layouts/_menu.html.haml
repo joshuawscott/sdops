@@ -32,6 +32,8 @@
             %br/
             =link_to 'Special Billing', {:controller => 'reports', :action => 'variable_billing'}, submenuhash('reportsinfo', 'Contracts with changing monthly payments')
             %br/
+            =link_to 'Line Item Search', {:controller => 'line_items', :action => 'index'}, submenuhash('reportsinfo', 'Find which contracts contain a certain product')
+            %br/
           .menuCol
             %h2 Revenue
             =link_to 'Dashboard', {:controller => 'reports', :action => 'index'}, submenuhash('reportsinfo', 'Main Reports Page')

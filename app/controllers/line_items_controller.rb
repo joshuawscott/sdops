@@ -1,12 +1,21 @@
 class LineItemsController < ApplicationController
-  before_filter :get_contract, :except => [:form_pull_pn_data, :sort, :update_field]
+  before_filter :get_contract, :except => [:index, :form_pull_pn_data, :sort, :update_field]
   before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :mass_update]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
   before_filter :admin?, :only => [:destroy]
 
+  def index
+    if params[:line_item]
+      @date = params[:line_item][:date]
+      @product_num = params[:line_item][:product_num]
+    end
+    @line_items = LineItem.find(:all, :select => "line_items.*, support_deals.expired, support_deals.account_name, sum(qty) as sum_qty", :joins => :contract, :conditions => ['line_items.product_num = ? AND ((line_items.begins >= ? AND line_items.ends <= ?) OR support_deals.expired = 0)', @product_num, @date, @date], :group => "support_deals.account_name, support_deal_id, location, begins, ends")
+  end
+
   def show
     @line_item = LineItem.find params[:id]
   end
+
   # GET /line_items/new
   # GET /line_items/new.xml
   def new
