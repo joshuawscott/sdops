@@ -458,7 +458,7 @@ describe Contract do
       it "totals the #{type}line_items in a contract" do
         @contract.send("#{type}_list_price").should == 1200.0
       end
-      
+
       it "correctly totals the #{type} line_items when the line items begin after the contract" do
         [@line_item1, @line_item2, @line_item3].each {|l| l.begins= Date.parse("2009-07-01")}
         @contract.send("#{type}_list_price").should == 600.0
@@ -606,7 +606,38 @@ describe Contract do
       LineItem.delete_all
     end
   end
+
+  describe "Contract.existing_revenue_change" do
+    before(:all) do
+      # Set up the tests.
+      # The revenue 1 year ago was $500.  One of these customers won't be around
+      # in the present time.
+      oldcontract00 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "0", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
+      oldcontract10 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "1", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
+      oldcontract11 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "1", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
+      oldcontract20 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
+      oldcontract21 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
+      # The revenue now is $480.  Two of the contracts won't be counted, since
+      # they were not one of the customers that we had one year ago.  Therefore,
+      # the revenue from the customers we had is $320.  Attrition should be
+      # $180.
+      newcontract12 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
+      newcontract13 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
+      newcontract22 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
+      newcontract23 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
+      newcontract32 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "3", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
+      newcontract33 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "3", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
+    end
+    it "should return the correct amount of attrition." do
+      attrition = Contract.existing_revenue_change
+      attrition.should == {:total => BigDecimal.new("-180.0"), :new_total => BigDecimal("320.0"), :old_total => BigDecimal.new("500.0"), :percentage => BigDecimal.new("0.36")}
+    end
+    after(:all) do
+      Contract.delete_all
+    end
+  end
 end
+# Discount fields:
 #   discount_pref_hw      decimal
 #   discount_pref_sw      decimal
 #   discount_pref_srv     decimal
