@@ -1,0 +1,17 @@
+- content_for :subtitle do
+  Reports - Customer revenue change details
+#section1
+  %table
+    %thead
+      %tr
+        %th Customer
+        %th Old Revenue
+        %th Current Revenue
+        %th Net Change
+    %tbody
+      -@customers.each do |customer|
+        %tr
+          %td= customer.name
+          %td= customer.revenue_as_of(@old_date)
+          %td= customer.revenue_now
+          %td= customer.revenue_now - customer.revenue_as_of(@old_date)

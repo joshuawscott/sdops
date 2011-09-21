@@ -39,10 +39,10 @@
 #   team_id       string
 class SugarAcct < SugarDb
   set_table_name "accounts"
-  
+
   has_many :sugar_acct_opps, :foreign_key => "account_id"
   has_many :sugar_opps, :through => :sugar_acct_opps, :foreign_key => "account_id"
-  has_many :contracts
+  has_many :contracts, :foreign_key => "account_id"
   has_one :sugar_accounts_cstm, :foreign_key => "id_c"
   has_many :sugar_accounts_contacts, :foreign_key => "account_id"
   has_many :sugar_contacts, :through => :sugar_accounts_contacts, :foreign_key => "account_id"
@@ -60,5 +60,20 @@ class SugarAcct < SugarDb
   def sugar_contacts_with_email
     sugar_contact_ids = sugar_contacts.map {|sc| sc.id}
     SugarContact.find_with_email(sugar_contact_ids)
+  end
+
+  def revenue_as_of(date)
+    @revenue_as_of = BigDecimal.new("0.0")
+    self.contracts.each do |contract|
+      @revenue_as_of += contract.total_revenue if (contract.start_date <= date && contract.end_date >= date)
+    end
+    @revenue_as_of
+  end
+  def revenue_now
+    @revenue_now = BigDecimal.new("0.0")
+    self.contracts.each do |contract|
+      @revenue_now += contract.total_revenue if contract.expired == false
+    end
+    @revenue_now
   end
 end

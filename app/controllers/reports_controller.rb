@@ -130,4 +130,9 @@ class ReportsController < ApplicationController
     @contracts = contracts.select {|c| c.billing_fluctuates? }
   end
 
+  def customer_change_detail
+    @old_date = Date.today - 1.year
+    account_ids = Contract.accounts_as_of(@old_date)
+    @customers = SugarAcct.find(account_ids)
+  end
 end

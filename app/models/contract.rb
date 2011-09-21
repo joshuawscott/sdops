@@ -41,7 +41,11 @@ class Contract < SupportDeal
   # +total_revenue+ from those, and then calculates the same thing for those
   # customers' current +total_revenue+.
   #
-  # Returns a BigDecimal of the current - old to calculate an attrition rate.
+  # Returns a Hash of BigDecimals:
+  #   total   net change in contracts
+  #   old_total   total as of 1 year ago.
+  #   new_total   total of those same customers now (includes expired)
+  #   percentage  percent change (absolute value of total / old_total)
   def self.existing_revenue_change
     old_contracts = Contract.find(:all, :conditions => ['start_date <= ? AND end_date >= ?', Date.today - 1.year, Date.today - 1.year])
     account_ids = old_contracts.map {|contract| contract.account_id}
@@ -62,6 +66,19 @@ class Contract < SupportDeal
     return {:total => new_total - old_total, :old_total => old_total, :new_total => new_total, :percentage => percentage}
   end
 
+  #returns an array of strings (+account_id+) as of +date+
+  def self.accounts_as_of(date)
+    self.find(:all, :conditions => ['start_date <= ? AND end_date >= ?', date, date]).map {|c| c.account_id}
+  end
+  # returns the amount of the
+  def self.revenue_for_account(account_id, date=Date.today)
+    contracts = self.find(:all, :conditions => ['account_id = ? AND start_date <= ? AND end_date >= ?', account_id, date, date] )
+    @revenue_for_account = BigDecimal.new("0.0")
+    contracts.each do |contract|
+      @revenue_for_account += contract.total_revenue
+    end
+    return @revenue_for_account
+  end
   # For newbusiness report
   def self.newbusiness
     self.find(:all,
