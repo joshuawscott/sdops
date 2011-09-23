@@ -36,9 +36,25 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "support_deals.support_office = ?", @support_office unless @support_office.blank?
       @contracts = @contracts.conditions "support_deals.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
       @contracts = @contracts.conditions "support_deals.said like ?", "%"+@said+"%" unless @said.blank?
-      op, val = @revenue.split(" ")
+      # Sanitize @revenue:
+      if @revenue.include?(" ") # e.g. '> 50', 'x 50', '>= 50'
+        op, val = @revenue.split(" ")
+        if ['>', '<', '=', '=>', '>=', '<=', '=<'].include?(op) == false # e.g. 'x 50'.  In this case we eliminate the bad entry.
+          val = op
+          op = '='
+        end
+      elsif ['>=', '=>', '<=', '=<'].include?(@revenue[0,2]) #e.g. '>=50'
+        op = @revenue[0,2]
+        val = @revenue[2,@revenue.length - 2]
+      elsif ['>', '<', '='].include?(@revenue[0,1]) # e.g. '>50'
+        op = @revenue[0,1]
+        val = @revenue[1,@revenue.length - 1]
+      else #plain number (hopefully), set the op to '=' so that any spurious entries are eliminated.
+        op = '='
+        val = @revenue
+      end
       @contracts = @contracts.conditions "(support_deals.annual_hw_rev + support_deals.annual_sw_rev + support_deals.annual_ce_rev + support_deals.annual_sa_rev + support_deals.annual_dr_rev) #{op} ?", val.to_f unless @revenue.blank?
-    
+
       if @pay_term =~ /^Not/
         @contracts = @contracts.conditions "support_deals.payment_terms <> 'bundled'"
       else
@@ -73,7 +89,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "support_deals.said like ?", "%"+@said+"%" unless @said.blank?
       op, val = @revenue.split(" ")
       @contracts = @contracts.conditions "(support_deals.annual_hw_rev + support_deals.annual_sw_rev + support_deals.annual_ce_rev + support_deals.annual_sa_rev + support_deals.annual_dr_rev) #{op} ?", val.to_f unless @revenue.blank?
-    
+
       if @pay_term =~ /^Not/
         @contracts = @contracts.conditions "support_deals.payment_terms <> 'bundled'"
       else
@@ -86,7 +102,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "support_deals.end_date #{op} ?", val unless @end_date.blank?
       @contracts = @contracts.conditions "(support_deals.expired <> true OR support_deals.end_date >= '#{Date.today}')" unless @expired == "on"
       @contracts
-      
+
     else
       @contracts = Contract.short_list(current_user.sugar_team_ids)
     end
@@ -137,7 +153,7 @@ class ContractsController < ApplicationController
     @contract = Contract.new
     @replaces = []
     @replaced_by = []
-   
+
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @contract }
@@ -207,11 +223,11 @@ class ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
     logger.info current_user.login + " destroyed contract " + @contract.id.to_s
     @contract.destroy
-    
+
     #Deleted associated Comments
     @comments = Comment.find(:all, :conditions => "commentable_id = #{params[:id]} AND commentable_type = 'Contract'")
     @comments.each {|x| x.destroy}
-    
+
     respond_to do |format|
       format.html { redirect_to(contracts_url) }
       format.xml  { head :ok }
@@ -248,7 +264,7 @@ class ContractsController < ApplicationController
       format.html # show.html.haml
       format.xml  { render :xml => @contract }
       format.xls  #Respond as Excel Doc
-    end    
+    end
   end
 
   def quote
