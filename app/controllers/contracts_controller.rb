@@ -65,7 +65,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "support_deals.start_date #{op} ?", val unless @start_date.blank?
       op, val = @end_date.split(" ")
       @contracts = @contracts.conditions "support_deals.end_date #{op} ?", val unless @end_date.blank?
-      @contracts = @contracts.conditions "(support_deals.expired <> true OR support_deals.end_date >= '#{Date.today}')" unless @expired == "on"
+      @contracts = @contracts.conditions "(support_deals.expired <> true OR support_deals.end_date >= '#{Date.today}')" unless @expired == "1"
       @contracts = @contracts.conditions "id = ?", @id unless @id.blank?
       @contracts
     elsif params[:export] != nil

@@ -15,7 +15,7 @@
     = hidden_field 'export', 'end_date'
     = hidden_field 'export', 'payment_terms'
     = hidden_field 'export', 'revenue'
-    = check_box_tag 'export_expired', @expired, @expired, :name=> 'export[expired]', :style => "display: none"
+    = check_box_tag 'export_expired', 1, @expired, :name=> 'export[expired]', :style => "display: none"
     = submit_tag "Export to Excel", :onclick => "getContractFormData()"
 #section2
   %table{:class => 'plain_table' }
@@ -33,7 +33,7 @@
         = link_to "Clear Filter & Search", contracts_url
   - form_tag contracts_path, { :method => :get } do
     %div{:align => 'right', :style => 'width:980px'}
-      = check_box_tag 'search_expired', @expired, @expired,{:name=> 'search[expired]'}
+      = check_box_tag 'search_expired', "1", @expired == "1",{:name=> 'search[expired]'}
       %label.plain{:for => 'search_expired'}Inc. Expired
       = submit_tag "Search"
       - if @sn_warning
