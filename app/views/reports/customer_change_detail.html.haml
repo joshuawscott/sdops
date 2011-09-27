@@ -1,17 +1,17 @@
 - content_for :subtitle do
   Reports - Customer revenue change details
 #section1
-  %table
+  %table{:class => 'sortable'}
     %thead
       %tr
-        %th Customer
-        %th Old Revenue
-        %th Current Revenue
-        %th Net Change
+        %th{:ts_type => 'string'} Customer
+        %th{:ts_type => 'money'} Old Revenue
+        %th{:ts_type => 'money'} Current Revenue
+        %th{:ts_type => 'money'} Net Change
     %tbody
       -@customers.each do |customer|
         %tr
-          %td= customer.name
-          %td= customer.revenue_as_of(@old_date)
-          %td= customer.revenue_now
-          %td= customer.revenue_now - customer.revenue_as_of(@old_date)
+          %td{:align => 'left'}= customer.name
+          %td{:align => 'right'}= number_to_currency(customer.revenue_as_of(@old_date), :format => '%n')
+          %td{:align => 'right'}= number_to_currency(customer.revenue_now, :format => '%n')
+          %td{:align => 'right'}= number_to_currency(customer.revenue_now - customer.revenue_as_of(@old_date), :format => '%n')

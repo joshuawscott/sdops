@@ -163,7 +163,12 @@
             As a percentage of Support Rev
         %td{:align => 'right'}
           =h number_to_percentage(@attrition_amount[:percentage]*100, :precision => 2)
-
+      %tr
+        %td
+          %b
+            Unrenewed contracts
+        %td{:align => 'right'}
+          =h number_to_currency(@unrenewed_amount, :format => '%n')
 
   %br &nbsp;
 #section3

@@ -7,6 +7,7 @@ class ReportsController < ApplicationController
     @customer_counts_by_office = Contract.customer_counts_by_office
     @total_contracts = @contract_counts_by_office.map{|k,v| @contract_counts_by_office[k]['total']}.sum
     @total_customers = @customer_counts_by_office.map{|k,v| @customer_counts_by_office[k]['total']}.sum
+    @unrenewed_amount = Contract.non_renewing_contracts(Date.today - 1.year, Date.today)
     @attrition_amount = Contract.existing_revenue_change
 
     @offices = []
