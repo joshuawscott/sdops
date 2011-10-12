@@ -123,7 +123,7 @@ describe LineItem do
     it "returns 0 when the begins is after the parent contract end date" do
       @line_item000.effective_months.should == 0.0
     end
-    
+
 
     after(:all) do
       LineItem.delete_all
@@ -140,14 +140,15 @@ describe LineItem do
       d = Factory(:line_item, :qty => 1, :location => 'Dallas', :support_provider => 'Sourcedirect', :product_num => 'A5002', :description => 'Description A5002', :begins => d('2009-01-01'), :ends => d('2009-12-31'))
       e = Factory(:line_item, :qty => 1, :location => 'Dallas', :support_provider => 'Sourcedirect', :product_num => 'A5005', :description => 'Description A5005', :begins => d('2009-01-01'), :ends => d('2009-12-31'))
       @contract.line_items = [a,b,c,d,e]
-      Factory(:inventory_item, :id => 'a', :item_code => 'A5001')
-      Factory(:inventory_item, :id => 'b', :item_code => 'A5001')
-      Factory(:inventory_item, :id => 'c', :item_code => 'A5002')
-      Factory(:inventory_item, :id => 'd', :item_code => 'A5003')
-      Factory(:inventory_item, :id => 'e', :item_code => 'A5003')
+      #Factory(:inventory_item, :id => 'a', :item_code => 'A5001')
+      #Factory(:inventory_item, :id => 'b', :item_code => 'A5001')
+      #Factory(:inventory_item, :id => 'c', :item_code => 'A5002')
+      #Factory(:inventory_item, :id => 'd', :item_code => 'A5003')
+      #Factory(:inventory_item, :id => 'e', :item_code => 'A5003')
       @line_items = LineItem.sparesreq("Dallas")
     end
     it "finds the line items and corresponding inventory items" do
+      FishbowlQoh.should_receive(:find).and_return([0,1]) #mocking up an array of 2 items returned
       @line_items[0].product_num.should == 'A5001'
       @line_items[0].base_product.should == 'A5001'
       @line_items[0].description.should == "Description A5001"
