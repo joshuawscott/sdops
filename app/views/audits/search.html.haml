@@ -1,0 +1,45 @@
+-content_for :subtitle do
+  Auditing
+#section1
+  .boxed
+    %h2 Search
+    -form_tag(:controller => :audits, :action => :search) do
+      %p
+        %label Type
+        =select_tag 'model', options_for_select(@models, @model)
+      %p
+        %label ID
+        =text_field_tag('id',@id)
+      %p
+        =submit_tag('Search')
+#section2
+  %h2
+    Results for
+    =h @model
+    ID
+    =h @id
+  %table
+    %thead
+      %tr
+        %th version
+        %th date
+        %th username
+        %th action
+        %th changes
+    %tbody
+      -@audits.each do |audit|
+        %tr
+          %td= audit.version
+          %td= audit.created_at
+          %td
+            -if audit.user
+              =audit.user.first_name.to_s
+              =audit.user.last_name.to_s
+            -else
+              System Update
+          %td= audit.action
+          %td
+            -if audit.action != 'create'
+              = audit.changes.map {|k,v| '<b>'+k.to_s+'</b>' + ": '" + v[0].to_s + "' &rarr; '" + v[1].to_s + "'<br/>"}
+            -else
+              = audit.changes.map {|k,v| '<b>'+k.to_s+'</b>' + ": '" + v.to_s + "'<br/>"}

@@ -2,14 +2,25 @@
   Auditing
 #section1
   .boxed
-    %h2 Audits by type&nbsp;
+    %h2 Recent Audits by type&nbsp;
     %ul
       - @models.each do |m|
         %li{:style=>'font-weight:bold;padding-bottom:1px;list-style:none'}
           =link_to m, url_for(:action => 'focus', :params => {:model => m })
   .boxed
-    %h2 Audits by User&nbsp;
+    %h2 Recent Audits by User&nbsp;
     %ul
       - @users.each do |u|
         %li{:style=>'font-weight:bold;padding-bottom:1px;list-style:none'}
           =link_to u, url_for(:action => 'user', :params => {:user => u })
+  .boxed
+    %h2 Search
+    -form_tag(:controller => :audits, :action => :search) do
+      %p
+        %label Type
+        =select_tag 'model', options_for_select(@models)
+      %p
+        %label ID
+        =text_field_tag('id',nil)
+      %p
+        =submit_tag('Search')

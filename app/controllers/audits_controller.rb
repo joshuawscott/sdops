@@ -22,6 +22,13 @@ class AuditsController < ApplicationController
     @users << 'system'
   end
 
+  def search
+    @models = Audit.audited_classes.map {|x| x.to_s}.sort
+    @model = params[:model]
+    @id = params[:id]
+    @audits = Audit.find(:all, :include => :user, :conditions => {:auditable_type => @model, :auditable_id => @id}, :order => :id)
+  end
+
   def focus
     @model = params[:model]
     @audits = Audit.find(:all, :conditions => ['auditable_type = ?', @model], :order => 'id DESC', :limit => 5000)
