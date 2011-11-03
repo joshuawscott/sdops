@@ -39,7 +39,7 @@
               System Update
           %td= audit.action
           %td
-            -if audit.action != 'create'
+            -if audit.action == 'update'
               = audit.changes.map {|k,v| '<b>'+k.to_s+'</b>' + ": '" + v[0].to_s + "' &rarr; '" + v[1].to_s + "'<br/>"}
             -else
               = audit.changes.map {|k,v| '<b>'+k.to_s+'</b>' + ": '" + v.to_s + "'<br/>"}
