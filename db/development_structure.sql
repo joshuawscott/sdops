@@ -46,7 +46,7 @@ CREATE TABLE `audits` (
   KEY `auditable_index` (`auditable_id`,`auditable_type`),
   KEY `user_index` (`user_id`,`user_type`),
   KEY `index_audits_on_created_at` (`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=21683 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=175506 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL auto_increment,
@@ -57,7 +57,7 @@ CREATE TABLE `comments` (
   `updated_at` datetime default NULL,
   `user` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1387 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `commissions` (
   `id` int(11) NOT NULL auto_increment,
@@ -119,16 +119,8 @@ CREATE TABLE `contracts` (
   `renewal_sent` date default NULL,
   `po_received` date default NULL,
   `renewal_amount` decimal(20,3) default NULL,
-  `address1` varchar(255) default NULL,
-  `address2` varchar(255) default NULL,
-  `address3` varchar(255) default NULL,
-  `contact_name` varchar(255) default NULL,
-  `contact_phone` varchar(255) default NULL,
-  `contact_email` varchar(255) default NULL,
-  `contact_note` varchar(255) default NULL,
-  `new_business_dollars` decimal(10,0) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1183 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1063 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `dropdowns` (
   `id` int(11) NOT NULL auto_increment,
@@ -139,7 +131,7 @@ CREATE TABLE `dropdowns` (
   `updated_at` datetime default NULL,
   `sort_order` bigint(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `goals` (
   `id` int(11) NOT NULL auto_increment,
@@ -154,7 +146,7 @@ CREATE TABLE `goals` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `hwdb` (
   `id` int(11) NOT NULL auto_increment,
@@ -165,9 +157,11 @@ CREATE TABLE `hwdb` (
   `modified_at` date default NULL,
   `confirm_date` date default NULL,
   `notes` text,
+  `manufacturer_line_id` int(11) default NULL,
+  `tlci` tinyint(1) default NULL,
   PRIMARY KEY  (`id`),
   KEY `index_hwdb_on_part_number` (`part_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=6708 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11473 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `inventory_items` (
   `id` varchar(255) NOT NULL default '',
@@ -216,11 +210,11 @@ CREATE TABLE `io_slots` (
   `description` varchar(255) default NULL,
   `chassis_number` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=303 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `line_items` (
   `id` int(11) NOT NULL auto_increment,
-  `contract_id` bigint(11) default NULL,
+  `support_deal_id` bigint(11) default NULL,
   `support_type` varchar(255) default NULL,
   `product_num` varchar(255) default NULL,
   `serial_num` varchar(255) default NULL,
@@ -241,8 +235,8 @@ CREATE TABLE `line_items` (
   `subcontract_cost` decimal(20,2) default NULL,
   PRIMARY KEY  (`id`),
   KEY `index_line_items_on_product_num` (`product_num`),
-  KEY `index_line_items_on_contract_id` (`contract_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44554 DEFAULT CHARSET=latin1;
+  KEY `index_line_items_on_contract_id` (`support_deal_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=126187 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `locations` (
   `id` int(11) NOT NULL auto_increment,
@@ -255,6 +249,23 @@ CREATE TABLE `locations` (
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `manufacturer_lines` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) default NULL,
+  `manufacturer_id` int(11) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `manufacturers` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `opportunities` (
   `id` int(11) NOT NULL auto_increment,
@@ -323,7 +334,7 @@ CREATE TABLE `relationships` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=658 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1633 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `roles` (
   `id` int(11) NOT NULL auto_increment,
@@ -332,7 +343,7 @@ CREATE TABLE `roles` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=996332878 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `schema_migrations` (
   `version` varchar(255) NOT NULL,
@@ -348,7 +359,7 @@ CREATE TABLE `servers` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `subcontractors` (
   `id` int(11) NOT NULL auto_increment,
@@ -368,7 +379,7 @@ CREATE TABLE `subcontractors` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `subcontracts` (
   `id` int(11) NOT NULL auto_increment,
@@ -394,7 +405,67 @@ CREATE TABLE `subcontracts` (
   `start_date` date default NULL,
   `end_date` date default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=latin1;
+
+CREATE TABLE `support_deals` (
+  `id` int(11) NOT NULL auto_increment,
+  `account_id` varchar(255) default NULL,
+  `account_name` varchar(255) default NULL,
+  `sales_office_name` varchar(255) default NULL,
+  `support_office_name` varchar(255) default NULL,
+  `said` varchar(255) default NULL,
+  `sdc_ref` varchar(255) default NULL,
+  `description` varchar(255) default NULL,
+  `sales_rep_id` bigint(11) default NULL,
+  `sales_office` varchar(255) default NULL,
+  `support_office` varchar(255) default NULL,
+  `cust_po_num` varchar(255) default NULL,
+  `payment_terms` varchar(255) default NULL,
+  `platform` varchar(255) default NULL,
+  `revenue` decimal(20,3) default NULL,
+  `annual_hw_rev` decimal(20,3) default NULL,
+  `annual_sw_rev` decimal(20,3) default NULL,
+  `annual_ce_rev` decimal(20,3) default NULL,
+  `annual_sa_rev` decimal(20,3) default NULL,
+  `annual_dr_rev` decimal(20,3) default NULL,
+  `start_date` date default NULL,
+  `end_date` date default NULL,
+  `multiyr_end` date default NULL,
+  `expired` tinyint(1) default '0',
+  `hw_support_level_id` varchar(255) default NULL,
+  `sw_support_level_id` varchar(255) default NULL,
+  `updates` varchar(255) default NULL,
+  `ce_days` bigint(11) default NULL,
+  `sa_days` bigint(11) default NULL,
+  `discount_pref_hw` decimal(5,3) default NULL,
+  `discount_pref_sw` decimal(5,3) default NULL,
+  `discount_pref_srv` decimal(5,3) default NULL,
+  `discount_prepay` decimal(5,3) default NULL,
+  `discount_multiyear` decimal(5,3) default NULL,
+  `discount_ce_day` decimal(5,3) default NULL,
+  `discount_sa_day` decimal(5,3) default NULL,
+  `replacement_sdc_ref` varchar(255) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `contract_type` varchar(255) default NULL,
+  `so_number` varchar(255) default NULL,
+  `po_number` varchar(255) default NULL,
+  `renewal_sent` date default NULL,
+  `po_received` date default NULL,
+  `renewal_amount` decimal(20,3) default NULL,
+  `address1` varchar(255) default NULL,
+  `address2` varchar(255) default NULL,
+  `address3` varchar(255) default NULL,
+  `contact_name` varchar(255) default NULL,
+  `contact_phone` varchar(255) default NULL,
+  `contact_email` varchar(255) default NULL,
+  `contact_note` varchar(255) default NULL,
+  `new_business_dollars` decimal(10,0) default NULL,
+  `type` varchar(255) default NULL,
+  `list_price_increase` decimal(5,3) default NULL,
+  `renewal_created` date default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2755 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `swdb` (
   `id` int(11) NOT NULL auto_increment,
@@ -406,9 +477,11 @@ CREATE TABLE `swdb` (
   `modified_at` date default NULL,
   `confirm_date` date default NULL,
   `notes` text,
+  `manufacturer_line_id` int(11) default NULL,
+  `tlci` tinyint(1) default NULL,
   PRIMARY KEY  (`id`),
   KEY `index_swdb_on_part_number` (`part_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=1704 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3302 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `swlist_blacklists` (
   `id` int(11) NOT NULL auto_increment,
@@ -416,7 +489,7 @@ CREATE TABLE `swlist_blacklists` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=413 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=436 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `swlist_whitelists` (
   `id` int(11) NOT NULL auto_increment,
@@ -424,7 +497,7 @@ CREATE TABLE `swlist_whitelists` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `swproducts` (
   `id` int(11) NOT NULL auto_increment,
@@ -438,17 +511,18 @@ CREATE TABLE `swproducts` (
   `explanation` text,
   `server_line` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `upfront_orders` (
   `id` int(11) NOT NULL auto_increment,
   `appgen_order_id` varchar(255) default NULL,
   `has_upfront_support` tinyint(1) default '1',
   `completed` tinyint(1) default '0',
-  `contract_id` int(11) default NULL,
+  `support_deal_id` int(11) default NULL,
+  `fishbowl_so_id` int(11) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `index_upfront_orders_on_appgen_order_id` (`appgen_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=801 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL auto_increment,
@@ -466,7 +540,7 @@ CREATE TABLE `users` (
   `remember_token` varchar(255) default NULL,
   `remember_token_expires_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=latin1;
 
 INSERT INTO schema_migrations (version) VALUES ('1');
 
@@ -563,6 +637,24 @@ INSERT INTO schema_migrations (version) VALUES ('20091027154115');
 INSERT INTO schema_migrations (version) VALUES ('20091027161818');
 
 INSERT INTO schema_migrations (version) VALUES ('20091027172353');
+
+INSERT INTO schema_migrations (version) VALUES ('20091105154609');
+
+INSERT INTO schema_migrations (version) VALUES ('20100408150049');
+
+INSERT INTO schema_migrations (version) VALUES ('20100408150121');
+
+INSERT INTO schema_migrations (version) VALUES ('20100408163955');
+
+INSERT INTO schema_migrations (version) VALUES ('20100408164011');
+
+INSERT INTO schema_migrations (version) VALUES ('20101109181937');
+
+INSERT INTO schema_migrations (version) VALUES ('20110617202631');
+
+INSERT INTO schema_migrations (version) VALUES ('20110718134005');
+
+INSERT INTO schema_migrations (version) VALUES ('20111108164115');
 
 INSERT INTO schema_migrations (version) VALUES ('4');
 

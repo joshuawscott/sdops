@@ -10,7 +10,7 @@
           %span{:style => 'font-size:8pt'}= link_to 'export to excel', "/reports/renewals.xls"
       %td
         Filter by Office
-        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOfficesRenewal(8)', :style => "width: 82px"})
+        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOfficesRenewal(9)', :style => "width: 82px"})
       %td{:width => '325px', :align => 'right'}
         - form_tag'/reports/renewals', {:name => 'date_search' }  do
           = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
@@ -119,4 +119,4 @@
         - if x.days_due.to_i > 90 && x.days_due.to_i <= 120
           = render :partial => "renewals_table_content", :locals => { :x => x }
   %script
-    toggleOfficesRenewal(8);
+    toggleOfficesRenewal(9);

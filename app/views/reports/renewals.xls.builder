@@ -40,6 +40,7 @@ xml.Workbook({
       xml.Column 'ss:Width' => '180' #Description
       xml.Column 'ss:Width' => '53.25' #Start Date
       xml.Column 'ss:Width' => '53.25' #End Date
+      xml.Column 'ss:Width' => '65.25' #Renewal Created
       xml.Column 'ss:Width' => '65.25' #Renewal Sent
       xml.Column 'ss:Width' => '63' #Revenue
       xml.Column 'ss:Width' => '63' #Renewal Est.
@@ -55,6 +56,7 @@ xml.Workbook({
         xml.Cell { xml.Data 'Description', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Start Date', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'End Date', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Renewal Created', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Renewal Sent', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Revenue', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Renewal Est.', 'ss:Type' => 'String' }
@@ -75,6 +77,13 @@ xml.Workbook({
           end
           xml.Cell 'ss:StyleID' => 'date' do
             xml.Data contract.end_date.to_xls_serial, 'ss:Type' => 'Number'
+          end
+          if contract.renewal_created.nil?
+            xml.Cell { xml.Data "N/A", 'ss:Type' => 'String' }
+          else
+            xml.Cell 'ss:StyleID' => 'date' do
+              xml.Data contract.renewal_created.nil? ? "N/A" : contract.renewal_created.to_xls_serial, 'ss:Type' => 'Number'
+            end
           end
           if contract.renewal_sent.nil?
             xml.Cell { xml.Data "N/A", 'ss:Type' => 'String' }

@@ -21,5 +21,12 @@
     %br
     %span{:style => "padding-left: 120px"}
       %em format: 12345.00
+  %p
+    %label{:for => "contract_renewal_created"}
+      Renewal Created
+    = f.date_select :renewal_created
+    %br
+    %span{:style => "padding-left: 120px"}
+      %em click the calendar icon to choose the date
 
   = submit_tag "Update"

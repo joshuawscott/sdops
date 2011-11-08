@@ -72,3 +72,13 @@ Then /^I should see the new details$/ do
   response.should contain("My New Description")
 end
 
+Given /^some renewal contracts exist$/ do
+  @contract1 = Factory(:dallas_contract, :description => 'contract the first', :start_date => '2009-01-01', :end_date => Date.today)
+  @contract2 = Factory(:dallas_contract, :description => 'contract the second', :start_date => '2009-02-01', :end_date => Date.today + 121)
+  @contract3 = Factory(:philadelphia_contract, :description => 'contract the third', :start_date => '2009-01-01', :end_date => Date.today )
+  @contract4 = Factory(:philadelphia_contract, :description => 'contract the fourth',:start_date => '2009-02-01', :end_date => Date.today + 121)
+end
+
+When /^I follow the sentrenewal link$/ do
+  visit "/contracts/sentrenewal/" + @contract1.id.to_s
+end
