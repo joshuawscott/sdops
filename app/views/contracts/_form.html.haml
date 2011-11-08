@@ -1,11 +1,11 @@
 =include_calendar
 
 #section1{:style => 'width:800px'}
-  #general.boxed{:style => 'width:450px;height:320px'}
+  #general.boxed{:style => 'width:450px;height:330px'}
     %h2 General Details
     = f.hidden_field :sales_office_name
     = f.hidden_field :support_office_name
-    
+
     %p
       %label{:for => "contract_account_name"}
         Name
@@ -52,6 +52,10 @@
       = f.collection_select(:platform, @platform, :label, :label, { :include_blank => true })
       %em optional
     %p
+      %label{:for => "contract_renewal_created"}
+        Renewal Created
+      = f.date_select :renewal_created, :class => 'textbox'
+    %p
       %label{:for => "contract_renewal_sent"}
         Renewal Sent
       = f.date_select :renewal_sent, :class => 'textbox'
@@ -60,13 +64,13 @@
         Renewal Amount
       = f.text_field :renewal_amount, :class => 'textbox'
 
-  #terms.boxed{:style => 'width:300px;height:320px'}
+  #terms.boxed{:style => 'width:300px;height:330px'}
     %h2 Terms
     %p
       %label{:for => "contract_hw_support_level_id"}
         HW Support Level
       = f.collection_select(:hw_support_level_id, @types_hw, :label, :label, { :include_blank => true })
-    %p                                                 
+    %p
       %label{:for => "contract_sw_support_level_id"}
         SW Support Level
       = f.collection_select(:sw_support_level_id, @types_sw, :label, :label, { :include_blank => true })
@@ -214,7 +218,7 @@
 #section2
   #results.boxed{:style => 'width:800px'}
     %h2 Relationships &nbsp;
-    
+
     %p
       %b Replaced By
       %br
@@ -229,5 +233,5 @@
         = check_box_tag "contract[predecessor_ids][]", x.id, @contract.predecessors.include?(x)
         = x.sdc_ref + " | " + x.said + " | " + x.description + " | " + x.start_date.to_s + " | " + x.end_date.to_s
         %br
-     
+
     %p &nbsp;

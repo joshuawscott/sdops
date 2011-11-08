@@ -1,4 +1,4 @@
-#general.boxed{:style => 'width:430px;height:270px'}
+#general.boxed{:style => 'width:430px;height:300px'}
   %h2 General Details
   %p
     %label{:for => "contract_id"}
@@ -50,6 +50,10 @@
       Platform
     =h @contract.platform.blank? ? 'N/A' : @contract.platform
   %p
+    %label{:for => "contract_renewal_created"}
+      Renewal Created
+    =h @contract.renewal_created.blank? ? 'N/A' : @contract.renewal_created
+  %p
     %label{:for => "contract_renewal_sent"}
       Renewal Sent
     =h @contract.renewal_sent.blank? ? 'N/A' : @contract.renewal_sent
@@ -57,4 +61,3 @@
     %label{:for => "contract_renewal_sent"}
       Renewal Amount
     =h @contract.renewal_amount.nil? ? 'N/A' : @contract.renewal_amount
-
