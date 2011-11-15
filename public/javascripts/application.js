@@ -1,7 +1,7 @@
 // ************************************************
 // Functions for Renewals report
 // ************************************************
-function toggleOfficesRenewal(sum_col) {
+function toggleOfficesRenewal(sum_col, expected_col) {
   toggleOffices(sum_col);
   // insert sums for each section
   sumVisibleRows('sum_expired', 'renewals_expired', sum_col);
@@ -9,6 +9,12 @@ function toggleOfficesRenewal(sum_col) {
   sumVisibleRows('sum_31_60', 'renewals_31_60', sum_col);
   sumVisibleRows('sum_61_90', 'renewals_61_90', sum_col);
   sumVisibleRows('sum_91_120', 'renewals_91_120', sum_col);
+  sumVisibleRows('expected_expired', 'renewals_expired', expected_col);
+  sumVisibleRows('expected_0_30', 'renewals_0_30', expected_col);
+  sumVisibleRows('expected_31_60', 'renewals_31_60', expected_col);
+  sumVisibleRows('expected_61_90', 'renewals_61_90', expected_col);
+  sumVisibleRows('expected_91_120', 'renewals_91_120', expected_col);
+
   // insert counts for each section
   countVisibleRows('count_expired', 'renewals_expired');
   countVisibleRows('count_0_30', 'renewals_0_30');
@@ -17,7 +23,9 @@ function toggleOfficesRenewal(sum_col) {
   countVisibleRows('count_91_120', 'renewals_91_120');
   //Total the sum column
   var sum_all = $('sum_all');
+  var expected_all = $('expected_all');
   var total = 0.0;
+  var expected_total = 0.0;
   //ugh... floats.
   total += ($('sum_expired').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
   total += ($('sum_0_30').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
@@ -25,9 +33,16 @@ function toggleOfficesRenewal(sum_col) {
   total += ($('sum_61_90').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
   total += ($('sum_91_120').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
   sum_all.innerHTML = number_to_currency(total/100);
+  expected_total += ($('expected_expired').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  expected_total += ($('expected_0_30').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  expected_total += ($('expected_31_60').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  expected_total += ($('expected_61_90').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  expected_total += ($('expected_91_120').innerHTML.replace(/[^0-9\.]+/g, "") * 100).round();
+  expected_all.innerHTML = number_to_currency(expected_total/100);
   // Total the count column
   var count_all = $('count_all');
   count_all.innerHTML = $('count_expired').innerHTML*1 + $('count_0_30').innerHTML*1 + $('count_31_60').innerHTML*1 + $('count_61_90').innerHTML*1 + $('count_91_120').innerHTML*1;
+  //expected_all.innerHTML = $('expected_expired').innerHTML*1 + $('expected_0_30').innerHTML*1 + $('expected_31_60').innerHTML*1 + $('expected_61_90').innerHTML*1 + $('expected_91_120').innerHTML*1;
 }
 
 function toggleOfficesGeneric(sum_col) {
