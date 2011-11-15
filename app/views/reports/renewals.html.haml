@@ -10,18 +10,27 @@
           %span{:style => 'font-size:8pt'}= link_to 'export to excel', "/reports/renewals.xls"
       %td
         Filter by Office
-        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOfficesRenewal(9)', :style => "width: 82px"})
+        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOfficesRenewal(9,10)', :style => "width: 82px"})
       %td{:width => '325px', :align => 'right'}
         - form_tag'/reports/renewals', {:name => 'date_search' }  do
           = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
           = submit_tag "Search"
   %table
+    %thead
+      %tr
+        %th
+        %th expired
+        %th estimate
+        %th count
     %tbody
       %tr
         %td
           Expired:&nbsp;
         %td{:align => 'right'}
           %span#sum_expired{:margin => '0'}
+            &nbsp;
+        %td{:align => 'right'}
+          %span#expected_expired
             &nbsp;
         %td{:align => 'right'}
           %span#count_expired{:margin => '0'}
@@ -33,6 +42,9 @@
           %span#sum_0_30{:margin => '0'}
             &nbsp;
         %td{:align => 'right'}
+          %span#expected_0_30{:margin => '0'}
+            &nbsp;
+        %td{:align => 'right'}
           %span#count_0_30{:margin => '0'}
             &nbsp;
       %tr
@@ -40,6 +52,9 @@
           31-60 days:&nbsp;
         %td{:align => 'right'}
           %span#sum_31_60{:margin => '0'}
+            &nbsp;
+        %td{:align => 'right'}
+          %span#expected_31_60{:margin => '0'}
             &nbsp;
         %td{:align => 'right'}
           %span#count_31_60{:margin => '0'}
@@ -51,6 +66,9 @@
           %span#sum_61_90{:margin => '0'}
             &nbsp;
         %td{:align => 'right'}
+          %span#expected_61_90{:margin => '0'}
+            &nbsp;
+        %td{:align => 'right'}
           %span#count_61_90{:margin => '0'}
             &nbsp;
       %tr
@@ -60,6 +78,9 @@
           %span#sum_91_120{:margin => '0'}
             &nbsp;
         %td{:align => 'right'}
+          %span#expected_91_120{:margin => '0'}
+            &nbsp;
+        %td{:align => 'right'}
           %span#count_91_120{:margin => '0'}
             &nbsp;
       %tr
@@ -67,6 +88,9 @@
           Total:&nbsp;
         %td{:align => 'right'}
           %span#sum_all{:margin => '0'}
+            &nbsp;
+        %td{:align => 'right'}
+          %span#expected_all{:margin => '0'}
             &nbsp;
         %td{:align => 'right'}
           %span#count_all{:margin => '0'}
@@ -119,4 +143,4 @@
         - if x.days_due.to_i > 90 && x.days_due.to_i <= 120
           = render :partial => "renewals_table_content", :locals => { :x => x }
   %script
-    toggleOfficesRenewal(9);
+    toggleOfficesRenewal(9,10);
