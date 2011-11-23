@@ -33,6 +33,11 @@
       %label SO Number
       =@linked_order.num
       %br/
+      %br/
+      %label SO Notes:
+      %br/
+      =simple_format(@linked_order.note.to_s)
+
     #results.boxed{:style => 'width: 400px;height: 350px'}
       %h2 New Contract Details
       %label{:for => :account_id} Account ID
@@ -94,11 +99,11 @@
             %td{:title => tooltip_if_truncated(c.description, 30)}= h truncate(c.description, 30)
             %td= c.start_date
             %td= c.end_date
-          
+
   #section1
     #results.boxed{:style => 'width:400px'}
       %h2 Upfront Revenue
-      %label Main Discount: 
+      %label Main Discount:
       =@linked_order.net_discount.to_s + '%'
       %table{:class => 'plain'}
         %tr
@@ -116,12 +121,12 @@
           %td{:colspan => 2, :border => 'none'} Total
           %td= @srltotal
           %td &nbsp;
-        
+
     #results.boxed{:style => 'width:300px;height:170px'}
       %h2 Revenue
       %label{:for => :revenue} Total
       =text_field_tag 'contract[revenue]', '0.0'
-      %br/  
+      %br/
       %label{:for => :annual_hw_rev} Annual HW
       =text_field_tag 'contract[annual_hw_rev]', '0.0'
       %br/

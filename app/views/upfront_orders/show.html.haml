@@ -29,7 +29,7 @@
     %br/
     %label Ship Date
     =@upfront_order.linked_order.ship_date
-  #results.boxed{:style => 'width:350px'}
+  #results.boxed{:style => 'width:250px'}
     %h2 Status
     -if current_user.has_role?(:admin)
       - form_for @upfront_order do |u|
@@ -50,6 +50,10 @@
     -else
       =link_to @upfront_order.support_deal_id, contract_path(@upfront_order.support_deal_id)
     %br/
+  #notes.boxed{:style=>'width: 400px'}
+    %h2 Notes
+    %p
+      =simple_format(@upfront_order.linked_order.note.to_s, :style => 'margin-top:1em;padding:3')
 #section2
   %h2 Line Items
   %table
