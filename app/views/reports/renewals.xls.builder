@@ -37,6 +37,7 @@ xml.Workbook({
       xml.Column 'ss:Width' => '59.25' #Sales Office
       xml.Column 'ss:Width' => '84.75' #Sales Rep
       xml.Column 'ss:Width' => '150' #Account Name
+      xml.Column 'ss:Width' => '31.5' #Account Category
       xml.Column 'ss:Width' => '180' #Description
       xml.Column 'ss:Width' => '53.25' #Start Date
       xml.Column 'ss:Width' => '53.25' #End Date
@@ -53,6 +54,7 @@ xml.Workbook({
         xml.Cell { xml.Data 'Sales Office', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Sales Rep', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Account Name', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Acct. Cat.', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Description', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Start Date', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'End Date', 'ss:Type' => 'String' }
@@ -71,6 +73,7 @@ xml.Workbook({
           xml.Cell { xml.Data contract.sales_office_name, 'ss:Type' => 'String' }
           xml.Cell { xml.Data contract.sales_rep.full_name, 'ss:Type' => 'String' }
           xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.sugar_acct.client_category, 'ss:Type' => 'String' }
           xml.Cell { xml.Data contract.description, 'ss:Type' => 'String' }
           xml.Cell 'ss:StyleID' => 'date' do
             xml.Data contract.start_date.to_xls_serial, 'ss:Type' => 'Number'
