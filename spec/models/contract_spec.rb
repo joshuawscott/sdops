@@ -288,8 +288,8 @@ describe Contract do
 
   describe "Contract.missing_subcontracts" do
     before(:all) do
-      @found1    = Factory :contract, :start_date => Date.parse('2011-01-01'), :end_date => Date.parse('2011-12-31')
-      @found2    = Factory :contract, :start_date => Date.parse('2011-01-01'), :end_date => Date.parse('2011-12-31')
+      @found1    = Factory :contract, :start_date => Date.parse('2012-01-01'), :end_date => Date.parse('2012-12-31')
+      @found2    = Factory :contract, :start_date => Date.parse('2012-01-01'), :end_date => Date.parse('2012-12-31')
       @notfound1 = Factory :contract
       @notfound2 = Factory :contract
       @notfound3 = Factory :contract
@@ -574,13 +574,13 @@ describe Contract do
 
   describe "Contract.billing_fluctuates?" do
     before(:all) do
-      start_date = '2011-01-01'
-      end_date = '2011-12-31'
+      start_date = '2012-01-01'
+      end_date = '2012-12-31'
       # 2 for the non-fluctuating contract
       @line1 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
       @line2 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
       # 2 for the fluctuating contract
-      @fline1 = Factory(:line_item, :begins => '2011-04-01', :ends => end_date, :list_price => 50, :qty => 1)
+      @fline1 = Factory(:line_item, :begins => '2012-04-01', :ends => end_date, :list_price => 50, :qty => 1)
       @fline2 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
       # 2 for the expired contract
       @xline1 = Factory(:line_item, :begins => start_date, :ends => '2010-12-31', :list_price => 50, :qty => 1)

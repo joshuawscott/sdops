@@ -12,6 +12,7 @@
     %td{:align => 'center', :title => 'Set "Renewal Sent" date'}
       = link_to x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s, {:controller=> :contracts, :action => :sentrenewal, :id => x.id}, :method => :post
   -else
+    %td{:align => 'center'}= h x.renewal_created.blank? ? 'N/A' : x.renewal_created.to_s
     %td{:align => 'center'}= h x.renewal_sent.blank? ? 'N/A' : x.renewal_sent.to_s
   %td{:align => 'right'}= h x.days_due
   %td{:align => 'right'}= number_to_currency(x.revenue, :format => '%n')
