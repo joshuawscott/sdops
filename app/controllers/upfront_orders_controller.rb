@@ -77,6 +77,11 @@ class UpfrontOrdersController < ApplicationController
   def save_import
     @upfront_order = UpfrontOrder.find(params[:id])
     @linked_order = @upfront_order.linked_order
+    # Preserve the NULL values to make sure we can separate the old contracts
+    # that have no RMM/MBS from the new contracts where a customer may decline.
+    params[:contract][:basic_backup_auditing] = nil if params[:contract][:basic_backup_auditing] == ""
+    params[:contract][:basic_remote_monitoring] = nil if params[:contract][:basic_remote_monitoring] == ""
+    address1,contact_name = @linked_order.shiptoaddress.split("\nAttn: ") #split the contact name from the address
     #defaults - these are overridden by the user input.
     contract_hash = {
       :said => @linked_order.num,
@@ -94,8 +99,9 @@ class UpfrontOrdersController < ApplicationController
       :discount_sa_day => 0.0,
       :so_number => @linked_order.num,
       :po_received => @linked_order.ship_date,
-      :address1 => @linked_order.shiptoaddress,
-      :address2 => @linked_order.shiptocity + ", " + @linked_order.shiptostate + " " + @linked_order.shiptozip
+      :address1 => address1,
+      :address2 => @linked_order.shiptocity + ", " + @linked_order.shiptostate + " " + @linked_order.shiptozip,
+      :contact_name => contact_name
       }
     @contract = Contract.new(contract_hash.merge(params[:contract]))
     if @contract.save
@@ -170,7 +176,7 @@ class UpfrontOrdersController < ApplicationController
     @support_providers = Subcontractor.find(:all)
     @support_providers << Subcontractor.new(:id => 0, :name => "Sourcedirect")
   end
-    
+
   def authorized?
     current_user.has_role?(:admin) || not_authorized
   end

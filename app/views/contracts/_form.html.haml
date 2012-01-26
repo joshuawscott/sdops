@@ -1,7 +1,7 @@
 =include_calendar
 
 #section1{:style => 'width:800px'}
-  #general.boxed{:style => 'width:450px;height:330px'}
+  #general.boxed{:style => 'width:400px;height:360px'}
     %h2 General Details
     = f.hidden_field :sales_office_name
     = f.hidden_field :support_office_name
@@ -26,6 +26,10 @@
       %label{:for => "contract_sales_rep_id"}
         Sales rep
       = f.collection_select(:sales_rep_id, @reps, :id, :full_name, { :include_blank => true })
+    %p
+      %label{:for => "contract_primary_ce_id"}
+        Primary CE
+      = f.collection_select(:primary_ce_id, @reps, :id, :full_name, { :include_blank => true })
     %p
       %label{:for => "contract_sdc_ref"}
         SDC Reference
@@ -64,8 +68,20 @@
         Renewal Amount
       = f.text_field :renewal_amount, :class => 'textbox'
 
-  #terms.boxed{:style => 'width:300px;height:330px'}
+  #terms.boxed{:style => 'width:300px;height:360px'}
     %h2 Terms
+    %p
+      %label{:for => "contract_start_date"}
+        Start Date
+      = f.date_select :start_date, :class => 'textbox'
+    %p
+      %label{:for => "contract_end_date"}
+        End Date
+      = f.date_select :end_date, :class => 'textbox'
+    %p
+      %label{:for => "contract_multiyr_end"}
+        Multi-Year End
+      = f.date_select :multiyr_end, :class => 'textbox'
     %p
       %label{:for => "contract_hw_support_level_id"}
         HW Support Level
@@ -87,29 +103,27 @@
         Num. SA Days
       = f.text_field :sa_days, :class => 'textbox', :style => 'width: 5em'
     %p
-      %label{:for => "contract_start_date"}
-        Start Date
-      = f.date_select :start_date, :class => 'textbox'
+      %label{:for => "contract_basic_remote_monitoring"}
+        Basic RMM
+      = f.select(:basic_remote_monitoring, [["true", true],["false", false]], :include_blank => true)
     %p
-      %label{:for => "contract_end_date"}
-        End Date
-      = f.date_select :end_date, :class => 'textbox'
-    %p
-      %label{:for => "contract_multiyr_end"}
-        Multi-Year End
-      = f.date_select :multiyr_end, :class => 'textbox'
+      %label{:for => "contract_basic_backup_auditing"}
+        Basic MBS
+      = f.select(:basic_backup_auditing, [["true", true],["false", false]], :include_blank => true)
     %p
       %label{:for => "contract_so_number"}
         SD Sales Order
       = f.text_field :so_number, :class => 'textbox'
-    %p
-      %label{:for => "contract_po_number"}
-        SD Purch. Order
-      = f.text_field :po_number, :class => 'textbox'
-    %p
-      %label{:for => "contract_replacement_sdc_ref"}
-        Replaced By
-      = f.text_field :replacement_sdc_ref, :class => 'textbox'
+    -# po_number was never used.
+    -#%p
+    -#  %label{:for => "contract_po_number"}
+    -#    SD Purch. Order
+    -#  = f.text_field :po_number, :class => 'textbox'
+    -# replacement_sdc_ref is deprecated
+    -#    %p
+    -#      %label{:for => "contract_replacement_sdc_ref"}
+    -#        Replaced By
+    -#      = f.text_field :replacement_sdc_ref, :class => 'textbox'
     %p
       %label{:for => "contract_po_received"}
         PO Received
@@ -119,101 +133,101 @@
         Expired
       = f.check_box :expired
 
-  #revenue.boxed{:style => 'width:240px;height:200px'}
+  #revenue.boxed{:style => 'width:210px;height:200px'}
     %h2 Revenue
     %p
       %label{:for => "contract_revenue"}
         Amount Paid
-      =f.text_field :revenue, :class => 'textboxright'
+      =f.text_field :revenue, :class => 'textboxright', :style => 'width: 6em'
     %p
       %label{:for => "contract_annual_hw_rev"}
         Ann. HW Revenue
-      = f.text_field :annual_hw_rev, :class => 'textboxright'
+      = f.text_field :annual_hw_rev, :class => 'textboxright', :style => 'width: 6em'
     %p
       %label{:for => "contract_annual_sw_rev"}
         Ann. SW Revenue
-      = f.text_field :annual_sw_rev, :class => 'textboxright'
+      = f.text_field :annual_sw_rev, :class => 'textboxright', :style => 'width: 6em'
     %p
       %label{:for => "contract_annual_ce_rev"}
         Ann. CE Revenue
-      = f.text_field :annual_ce_rev, :class => 'textboxright'
+      = f.text_field :annual_ce_rev, :class => 'textboxright', :style => 'width: 6em'
     %p
       %label{:for => "contract_annual_sa_rev"}
         Ann. SA Revenue
-      = f.text_field :annual_sa_rev, :class => 'textboxright'
+      = f.text_field :annual_sa_rev, :class => 'textboxright', :style => 'width: 6em'
     %p
       %label{:for => "contract_annual_dr_rev"}
         Ann. DR Revenue
-      = f.text_field :annual_dr_rev, :class => 'textboxright'
+      = f.text_field :annual_dr_rev, :class => 'textboxright', :style => 'width: 6em'
     %p
       %b &nbsp
-    %p Example: Enter $100,000 as 100000
+    %p <b>Example:</b><br/> Enter $100,000 as 100000
 
-  #discounts.boxed{:style => 'width:240px;height:200px'}
+  #discounts.boxed{:style => 'width:180px;height:200px'}
     %h2 Discounts
     %p
       %label{:for => "contract_discount_pref_hw"}
         Discount HW
-      = f.text_field :discount_pref_hw, :class => 'textboxright'
+      = f.text_field :discount_pref_hw, :class => 'textboxright', :style => 'width: 40px'
     %p
       %label{:for => "contract_discount_pref_sw"}
         Discount SW
-      = f.text_field :discount_pref_sw, :class => 'textboxright'
+      = f.text_field :discount_pref_sw, :class => 'textboxright', :style => 'width: 40px'
     %p
       %label{:for => "contract_discount_pref_srv"}
         Discount SRV
-      = f.text_field :discount_pref_srv, :class => 'textboxright'
+      = f.text_field :discount_pref_srv, :class => 'textboxright', :style => 'width: 40px'
     %p
       %label{:for => "contract_discount_prepay"}
         Discount Prepay
-      = f.text_field :discount_prepay, :class => 'textboxright'
+      = f.text_field :discount_prepay, :class => 'textboxright', :style => 'width: 40px'
     %p
       %label{:for => "contract_discount_multiyear"}
         Multi-year Disc.
-      = f.text_field :discount_multiyear, :class => 'textboxright'
+      = f.text_field :discount_multiyear, :class => 'textboxright', :style => 'width: 40px'
     %p
       %label{:for => "contract_discount_ce_day"}
         Discount CE Days
-      = f.text_field :discount_ce_day, :class => 'textboxright'
+      = f.text_field :discount_ce_day, :class => 'textboxright', :style => 'width: 40px'
     %p
       %label{:for => "contract_discount_sa_day"}
         Discount SA Days
-      = f.text_field :discount_sa_day, :class => 'textboxright'
+      = f.text_field :discount_sa_day, :class => 'textboxright', :style => 'width: 40px'
     %p
       %b &nbsp
-    %p Example: Enter 35% as .35
+    %p <b>Example:</b> Enter 35% as .35
 
-  #contactinfo.boxed{:style => 'width:240px;height:200px'}
+  #contactinfo.boxed{:style => 'width:300px;height:200px'}
     %h2 Contact Details
     %p
       %label{:for => "contract_address1"}
         Address
-      = f.text_field :address1, :class => 'textbox', :style => 'width:8em'
+      = f.text_field :address1, :class => 'textbox', :style => 'width:13em'
     %p
       %label{:for => "contract_address2"}
         &nbsp;
-      = f.text_field :address2, :class => 'textbox', :style => 'width:8em'
+      = f.text_field :address2, :class => 'textbox', :style => 'width:13em'
     %p
       %label{:for => "contract_address3"}
         &nbsp;
-      = f.text_field :address3, :class => 'textbox', :style => 'width:8em'
+      = f.text_field :address3, :class => 'textbox', :style => 'width:13em'
     %br/
     %p
       %label{:for => "contract_contact_name"}
         Contact Name
-      = f.text_field :contact_name, :class => 'textbox', :style => 'width:8em'
+      = f.text_field :contact_name, :class => 'textbox', :style => 'width:13em'
     %p
       %label{:for => "contract_contact_phone"}
         Contact Phone
-      = f.text_field :contact_phone, :class => 'textbox', :style => 'width:8em'
+      = f.text_field :contact_phone, :class => 'textbox', :style => 'width:9em'
     %p
       %label{:for => "contract_contact_email"}
         Contact Email
-      = f.text_field :contact_email, :class => 'textbox', :style => 'width:8em'
+      = f.text_field :contact_email, :class => 'textbox', :style => 'width:13em'
     %p
       %label{:for => "contract_contact_note"}
         Contact Note
-      = f.text_field :contact_note, :class => 'textbox', :style => 'width:8em'
+      = f.text_field :contact_note, :class => 'textbox', :style => 'width:13em'
 
 #section2
   #results.boxed{:style => 'width:800px'}

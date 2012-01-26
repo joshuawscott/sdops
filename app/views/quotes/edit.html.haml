@@ -1,5 +1,7 @@
 - content_for :top_js do
   = javascript_include_tag "contracts.js", "effects.js", "controls.js", "dragdrop.js", :cache => "contract_all"
+- content_for :bottom_js do
+  = javascript_include_tag "quote.js"
 - content_for :subtitle do
   Edit Quote
 

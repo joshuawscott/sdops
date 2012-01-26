@@ -2,7 +2,7 @@
 
 #section1{:style => 'width:800px'}
   %h3 Field names in <span style='color: #D00000;'>red</span> are required
-  #general.boxed{:style => 'width:450px;height:230px'}
+  #general.boxed{:style => 'width:450px;height:250px'}
     %h2 General Details
     = f.hidden_field :sales_office_name
     = f.hidden_field :support_office_name
@@ -31,6 +31,10 @@
         Sales rep
       = f.collection_select(:sales_rep_id, @reps, :id, :full_name, { :include_blank => true })
     %p
+      %label{:for => "quote_primary_ce_id"}
+        Primary CE
+      = f.collection_select(:primary_ce_id, @primary_ces, :id, :full_name, { :include_blank => true })
+    %p
       %label.required{:for => "quote_sdc_ref"}
         SDC Reference
       = f.text_field :sdc_ref, :class => 'textbox', :style => 'width: 18em'
@@ -48,8 +52,20 @@
       = f.collection_select(:platform, @platform, :label, :label, { :include_blank => true })
       %em optional
 
-  #terms.boxed{:style => 'width:300px;height:230px'}
+  #terms.boxed{:style => 'width:300px;height:250px'}
     %h2 Terms
+    %p
+      %label.required{:for => "quote_start_date"}
+        Start Date
+      = f.date_select :start_date, :class => 'textbox'
+    %p
+      %label.required{:for => "quote_end_date"}
+        End Date
+      = f.date_select :end_date, :class => 'textbox'
+    %p
+      %label{:for => "quote_multiyr_end"}
+        Multi-Year End
+      = f.date_select :multiyr_end, :class => 'textbox'
     %p
       %label.required{:for => "quote_hw_support_level_id"}
         HW Support Level
@@ -63,6 +79,14 @@
         SW Updates
       = f.select(:updates, %w{false true unknown})
     %p
+      %label{:for => "quote_basic_remote_monitoring"}
+        Basic RMM
+      = f.select(:basic_remote_monitoring, [["true", true],["false", false]], :include_blank => true)
+    %p
+      %label{:for => "quote_basic_backup_auditing"}
+        Basic MBS
+      = f.select(:basic_backup_auditing, [["true", true],["false", false]], :include_blank => true)
+    %p
       %label{:for => "quote_ce_days"}
         Num. CE Days
       = f.text_field :ce_days, :class => 'textbox', :style => 'width: 5em'
@@ -70,18 +94,6 @@
       %label{:for => "quote_sa_days"}
         Num. SA Days
       = f.text_field :sa_days, :class => 'textbox', :style => 'width: 5em'
-    %p
-      %label.required{:for => "quote_start_date"}
-        Start Date
-      = f.date_select :start_date, :class => 'textbox'
-    %p
-      %label.required{:for => "quote_end_date"}
-        End Date
-      = f.date_select :end_date, :class => 'textbox'
-    %p
-      %label{:for => "quote_multiyr_end"}
-        Multi-Year End
-      = f.date_select :multiyr_end, :class => 'textbox'
 
   #discounts.boxed{:style => 'width:240px;height:210px'}
     %h2 Discounts

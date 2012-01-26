@@ -1,5 +1,17 @@
-#terms.boxed{:style => 'width:300px;height:270px'}
+#terms.boxed{:style => 'width:250px;height:220px'}
   %h2 Terms
+  %p
+    %label{:for => "quote_start_date"}
+      Start Date
+    =h @quote.start_date ||= 'N/A'
+  %p
+    %label{:for => "quote_end_date"}
+      End Date
+    =h @quote.end_date ||= 'N/A'
+  %p
+    %label{:for => "quote_multiyr_end"}
+      Multi-Year End
+    =h @quote.multiyr_end.blank? ? 'N/A' : @quote.multiyr_end
   %p
     %label{:for => "quote_hw_support_level_id"}
       HW Support Level
@@ -21,18 +33,14 @@
       Num. SA Days
     =h @quote.sa_days.blank? ? 'N/A' : @quote.sa_days
   %p
-    %label{:for => "quote_start_date"}
-      Start Date
-    =h @quote.start_date ||= 'N/A'
+    %label{:for => "quote_basic_remote_monitoring"}
+      Basic RMM
+    =h @quote.basic_remote_monitoring.nil? ? 'N/A' : @quote.basic_remote_monitoring
   %p
-    %label{:for => "quote_end_date"}
-      End Date
-    =h @quote.end_date ||= 'N/A'
-  %p
-    %label{:for => "quote_multiyr_end"}
-      Multi-Year End
-    =h @quote.multiyr_end.blank? ? 'N/A' : @quote.multiyr_end
-  %p
-    %label{:for => "quote_expired"}
-      Expired
-    =h @quote.expired.blank? ? 'N/A' : @quote.expired
+    %label{:for => "quote_basic_backup_auditing"}
+      Basic MBS
+    =h @quote.basic_backup_auditing.nil? ? 'N/A' : @quote.basic_backup_auditing
+  -#%p
+  -#  %label{:for => "quote_expired"}
+  -#    Expired
+  -#  =h @quote.expired.blank? ? 'N/A' : @quote.expired

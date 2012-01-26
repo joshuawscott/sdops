@@ -83,6 +83,12 @@ class QuotesController < ApplicationController
   # PUT /quotes/1.xml
   def update
     @quote = Quote.find(params[:id])
+    # Preserve the NULL values to make sure we can separate the old quotes
+    # that have no RMM/MBS from the new quotes where a customer may decline.
+    unless params[:quote].blank?
+      params[:quote][:basic_backup_auditing] = nil if params[:quote][:basic_backup_auditing] == ""
+      params[:quote][:basic_remote_monitoring] = nil if params[:quote][:basic_remote_monitoring] == ""
+    end
 
     respond_to do |format|
       if @quote.update_attributes(params[:quote])
@@ -133,6 +139,7 @@ class QuotesController < ApplicationController
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list
     @reps = User.user_list
+    @primary_ces = @reps
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
   end

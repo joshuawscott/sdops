@@ -14,10 +14,10 @@
       %label{:for => "contract"}
         Contract
       = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label', @contractid.to_i))
-    %p
-      %label{:for => "sales_rep_id", :style => 'color:red'}
-        Sales Rep
-      = select_tag('sales_rep_id', "<option value=''/>" + options_from_collection_for_select(@sales_reps, 'id', 'full_name'))
+    -#%p
+    -#  %label{:for => "sales_rep_id", :style => 'color:red'}
+    -#    Sales Rep
+    -#  = select_tag('sales_rep_id', "<option value=''/>" + options_from_collection_for_select(@sales_reps, 'id', 'full_name'))
     %p
       %label{:for => "sales_office", :style => 'color:red'}
         Sales Office
@@ -38,10 +38,10 @@
       %label{:for => "importfile", :style => 'color:red'}
         File to import
       = file_field_tag('importfile')
-      
+
     %p{:style => 'color:#FF0000'}
       %b Red means required field
-    
+
     = submit_tag "Import File"
 
 

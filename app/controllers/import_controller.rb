@@ -22,7 +22,7 @@ class ImportController < ApplicationController
       else
         records = YAML::load( params[:importfile] )
       end
-      if params["platform"] == "" || params["sales_office"] == "" || params["contract_type"] == "" || params["sales_rep_id"] == "" || params["po_received"] == ""
+      if params["platform"] == "" || params["sales_office"] == "" || params["support_office"] == "" || params["contract_type"] == "" || params["po_received"] == ""
         flash[:error] = "Please fill in all fields in red."
         render :controller => :import, :action => :index and return
       end
@@ -33,17 +33,25 @@ class ImportController < ApplicationController
     end
     #Separate out the data
     contract_ary = records[0]
+    #Determine the Primary CE & Sales Rep ID from the full name given
+    userlist = User.find(:all)
+    sales_rep_id = userlist.map {|sr| sr.id if sr.full_name == contract_ary.ivars['attributes']['sales_rep']}.delete_if {|x| x.nil?}.first
+    contract_ary.ivars['attributes'].delete('sales_rep')
+    primary_ce_id = userlist.map {|sr| sr.id if sr.full_name == contract_ary.ivars['attributes']['primary_ce']}.delete_if {|x| x.nil?}.first
+    contract_ary.ivars['attributes'].delete('primary_ce')
+
     line_items_ary = records[1..-1]
-    aryAcct = params[:account_id].split('|')
-    arySales = params[:sales_office].split('|')
-    arySupport = params[:support_office].split('|')
-    options = {'account_id' => aryAcct[0],
-      'account_name' => aryAcct[1],
-      'sales_rep_id' => params[:sales_rep_id],
-      'sales_office' => arySales[0],
-      'sales_office_name' => arySales[1],
-      'support_office' => arySupport[0],
-      'support_office_name' => arySupport[1],
+    array_acct = params[:account_id].split('|')
+    array_sales = params[:sales_office].split('|')
+    array_support = params[:support_office].split('|')
+    options = {'account_id' => array_acct[0],
+      'account_name' => array_acct[1],
+      'sales_rep_id' => sales_rep_id,
+      'primary_ce_id' => primary_ce_id,
+      'sales_office' => array_sales[0],
+      'sales_office_name' => array_sales[1],
+      'support_office' => array_support[0],
+      'support_office_name' => array_support[1],
       'platform' => params[:platform],
       'contract_type' => params[:contract_type],
       'po_received' => params[:po_received]}
@@ -115,8 +123,8 @@ class ImportController < ApplicationController
       end
     end
   end
-  
-  protected  
+
+  protected
   def authorized?
     current_user.has_role?(:importer) || not_authorized
   end
@@ -125,13 +133,13 @@ class ImportController < ApplicationController
      t = Time.now
      a_dec = t.usec.to_s
      a_sec = t.to_i.to_s
-     
+
      dec_hex = sprintf("%x", a_dec)
      sec_hex = sprintf("%x", a_sec)
-     
+
      dec_hex = ensure_length(dec_hex,5)
      sec_hex = ensure_length(sec_hex,6)
-     
+
      @guid = ""
      @guid << dec_hex
      @guid << create_guid_section(3)
@@ -144,26 +152,26 @@ class ImportController < ApplicationController
      @guid << "-"
      @guid << sec_hex
      @guid << create_guid_section(6)
-  
+
      return @guid
   end
-  
+
   def ensure_length(str, len)
      strlen = str.length
-     
+
      if strlen < len
         str = str + "000000"
         str = str[0,len]
      elsif strlen > len
         str = str[0,len]
      end
-     
+
      return str
   end
-  
+
   def create_guid_section(chars)
      @retval = ""
-     
+
      chars.times do |i|
        @retval << sprintf("%x", rand(15))
      end

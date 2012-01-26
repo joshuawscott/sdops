@@ -35,6 +35,7 @@ Factory.define :contract do |c|
   c.sales_office_name @sugar_team.name
   c.support_office_name @sugar_team.name
   c.sales_rep_id { User.find(:first).id }
+  c.primary_ce_id { User.find(:first).id }
   c.start_date "2009-01-01"
   c.end_date "2009-12-31"
   c.annual_hw_rev 50
@@ -57,7 +58,6 @@ Factory.define :contract do |c|
   c.discount_multiyear 0.0
   c.discount_ce_day 0.0
   c.discount_sa_day 0.0
-  #c.new_business 150
 end
 
 Factory.define :dallas_contract, :class => :contract do |c|
@@ -70,6 +70,7 @@ Factory.define :dallas_contract, :class => :contract do |c|
   c.sales_office_name @sugar_team.name
   c.support_office_name @sugar_team.name
   c.sales_rep_id { User.find(:first).id }
+  c.primary_ce_id { User.find(:first).id }
   c.start_date "2009-01-01"
   c.end_date "2009-12-31"
   c.annual_hw_rev 50
@@ -104,6 +105,7 @@ Factory.define :philadelphia_contract, :class => :contract do |c|
   c.sales_office_name @sugar_team.name
   c.support_office_name @sugar_team.name
   c.sales_rep_id { User.find(:first).id }
+  c.primary_ce_id { User.find(:first).id }
   c.start_date "2009-01-01"
   c.end_date "2009-12-31"
   c.annual_hw_rev 50

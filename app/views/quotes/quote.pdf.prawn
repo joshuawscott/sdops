@@ -194,6 +194,14 @@ pdf.font("Helvetica-Bold")
 pdf.table [["Hardware Support\nService Level", "Description", "Software Support\nService Level", "Description"]], {:border_style => :grid, :row_colors => ["F2F2F2"], :font_size => 10, :border_width => 1, :row_height => 31, :column_widths => {0 => 120, 1 => 240, 2 => 120, 3 => 240}}
 pdf.font("Helvetica")
 pdf.table [[@contract.hw_support_level_id, @contract.hw_support_description, @contract.sw_support_level_id, @contract.sw_support_description]], {:font_size => 10, :border_width => 0, :row_height => 31, :column_widths => {0 => 120, 1 => 240, 2 => 120, 3 => 240}}
+pdf.move_down 40
+#TODO: Move the RMM/MBS text into the model, or into the database
+if @contract.basic_remote_monitoring
+  pdf.table [["","Server Performance Monitoring and Alert Management\nQuarterly Audit Report (four times per year)"]], {:font_size => 10, :border_width => 0, :row_height => 0, :column_widths => {0 => 120, 1 => 600}}
+end
+if @contract.basic_backup_auditing
+  pdf.table [["","Backup Application Performance Audit Report (once per year)"]], {:font_size => 10, :border_width => 0, :row_height => 0, :column_widths => {0 => 120, 1 => 600}}
+end
 
 #######################
 ### PAYMENT OPTIONS ###

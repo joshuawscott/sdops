@@ -10,7 +10,7 @@
 #section2
   = error_messages_for 'contract'
   - form_for(:contract, :url => contract_path(@contract), :html => { :method => :put }) do |f|
-    = render :partial => "form", :locals => { :f => f } 
+    = render :partial => "form", :locals => { :f => f }
     #section3
       %p
         = submit_tag "Update"

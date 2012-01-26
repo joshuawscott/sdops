@@ -12,7 +12,7 @@ line_detail_widths = { 0 => 88, 1 => 92, 2 => 217, 3 => 75, 4 => 47, 5 => 47, 6 
 # to force a new page to start, we would do something like this:
 #   pdf.start_new_page
 #   set_page :description => "lorem", :subheader => "ipsum"
-# The set_page method increments the page number, 
+# The set_page method increments the page number,
 # and also sets the @page_description and @page_subheader variables.
 # We set them initially here:
 @page_description = "Support Quote Overview"
@@ -115,7 +115,7 @@ pdf.bounding_box([pdf.bounds.right - 160, pdf.cursor + 85], :width => 160, :heig
   pdf.text "Contract", :align => :center, :style => :bold, :size => 11
   pdf.move_down 2
   pdf.text "Term", :align => :center, :style => :bold, :size => 11
-  pdf.line_width 1.5 
+  pdf.line_width 1.5
   pdf.stroke_line [2, 33, 158, 33]
   pdf.line_width 1
   pdf.move_down 7
@@ -146,13 +146,13 @@ pdf.bounding_box [0,pdf.cursor], :width => @full_wide, :height => 100 do
     services = ""
     services += " Hardware " if @contract.hw_support_level_id != "None"
     services += " Software " if @contract.sw_support_level_id != "None"
-    services += " Services" if @contract.ce_days + @contract.sa_days + @contract.annual_ce_rev + @contract.annual_sa_rev + @contract.annual_dr_rev > 0
+    services += " Services" if @contract.ce_days + @contract.sa_days + @contract.annual_ce_rev.to_f + @contract.annual_sa_rev.to_f + @contract.annual_dr_rev.to_f > 0
     pdf.bounding_box [0,pdf.bounds.top], :width => @full_wide - 314, :height => 45 do
       pdf.pad_top(6) {pdf.text "Total Annual Contract List Price - " + services}#, :at => [0,30]
       pdf.pad_top(6) {pdf.text "Total Effective Customer Discount (See Option 1)"}#, :at => [0,12]
     end
     pdf.bounding_box [400, pdf.bounds.top], :width => 200, :height => 45 do
-      
+
       #Contract List Price
       pdf.pad_top(6) {pdf.text number_to_currency(@contract.total_list_price), :align => :right}
 
@@ -166,7 +166,7 @@ pdf.bounding_box [0,pdf.cursor], :width => @full_wide, :height => 100 do
     pdf.bounding_box [0,pdf.bounds.top], :width => @full_wide - 314, :height => 20 do
       pdf.pad_top(6) {pdf.indent(2) {pdf.text "Total Source Direct Support & Services Annual Contract Price"}}
     end
-    pdf.bounding_box [400,pdf.bounds.top], :width => 200, :height => 20 do 
+    pdf.bounding_box [400,pdf.bounds.top], :width => 200, :height => 20 do
       # Bottom Line price with best discount.
       pdf.pad_top(6) {pdf.text number_to_currency(@contract.total_list_price - @best_discount_amount), :align => :right}
     end
@@ -194,6 +194,14 @@ pdf.font("Helvetica-Bold")
 pdf.table [["Hardware Support\nService Level", "Description", "Software Support\nService Level", "Description"]], {:border_style => :grid, :row_colors => ["F2F2F2"], :font_size => 10, :border_width => 1, :row_height => 31, :column_widths => {0 => 120, 1 => 240, 2 => 120, 3 => 240}}
 pdf.font("Helvetica")
 pdf.table [[@contract.hw_support_level_id, @contract.hw_support_description, @contract.sw_support_level_id, @contract.sw_support_description]], {:font_size => 10, :border_width => 0, :row_height => 31, :column_widths => {0 => 120, 1 => 240, 2 => 120, 3 => 240}}
+pdf.move_down 40
+#TODO: Move the RMM/MBS text into the model, or into the database
+if @contract.basic_remote_monitoring
+  pdf.table [["","Server Performance Monitoring and Alert Management\nQuarterly Audit Report (four times per year)"]], {:font_size => 10, :border_width => 0, :row_height => 0, :column_widths => {0 => 120, 1 => 600}}
+end
+if @contract.basic_backup_auditing
+  pdf.table [["","Backup Application Performance Audit Report (once per year)"]], {:font_size => 10, :border_width => 0, :row_height => 0, :column_widths => {0 => 120, 1 => 600}}
+end
 
 #######################
 ### PAYMENT OPTIONS ###
@@ -318,7 +326,7 @@ line_item_sections.each do |section,section_name|
         begins = line_item.begins unless islabel == true
         ends = line_item.ends unless islabel == true
         qty = line_item.qty unless islabel == true
-        if islabel 
+        if islabel
           pdf.font("Helvetica-Bold")
         end
         pdf.table [[product_num, line_item.note, description, line_item.serial_num, begins, ends, qty, list_price, ext_price]], {:row_colors => islabel ? ["F2F2F2"] : ["FFFFFF"], :horizontal_padding => 0, :vertical_padding => 0, :font_size => 8, :border_width => 0, :row_height => 5, :column_widths => line_detail_widths, :align => { 2 => islabel ? :center : :left, 6 => :center, 7 => :right, 8 => :right}}

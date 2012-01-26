@@ -1,4 +1,4 @@
-#general.boxed{:style => 'width:430px;height:300px'}
+#general.boxed{:style => 'width:480px;height:310px'}
   %h2 General Details
   %p
     %label{:for => "contract_id"}
@@ -25,6 +25,10 @@
       Sales rep
     = h @contract.sales_rep_id.blank? ? 'N/A' : @sales_rep
   %p
+    %label{:for => "contract_primary_ce_id"}
+      Primary CE
+    = h @contract.primary_ce_id.blank? ? 'N/A' : @contract.primary_ce.full_name
+  %p
     %label{:for => "contract_said"}
       SAID
     =h @contract.said ||= 'N/A'
@@ -35,8 +39,8 @@
   %p
     %label{:for => "contract_description"}
       Description
-    %span{:title => @contract.description.to_s.length > 30 ? @contract.description : ""}
-      =h @contract.description.blank? ? 'N/A' : truncate(@contract.description, 30, ".....")
+    %span{:title => @contract.description.to_s.length > 45 ? @contract.description : ""}
+      =h @contract.description.blank? ? 'N/A' : truncate(@contract.description, 45, "....")
   %p
     %label{:for => "contract_cust_po_num"}
       Customer PO

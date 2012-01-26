@@ -1,9 +1,10 @@
-#general.boxed{:style => 'width:430px;height:270px'}
-  %h2 General Details
+#general.boxed{:style => 'width:480px;height:220px'}
+  %h2 Quote Details
   %p
     %label{:for => "quote_id"}
-      Contract ID
+      Quote ID
     %span#support_deal_id=@quote.id.to_s
+  -# Need to change this to point to a quote lookup?
   %p
     %label{:for => "quote_account_name"}
       Account
@@ -25,6 +26,10 @@
       Sales rep
     = h @quote.sales_rep_id.blank? ? 'N/A' : @sales_rep
   %p
+    %label{:for => "quote_primary_ce_id"}
+      Primary CE
+    = h @quote.primary_ce_id.blank? ? 'N/A' : @quote.primary_ce.full_name
+  %p
     %label{:for => "quote_said"}
       SAID
     =h @quote.said ||= 'N/A'
@@ -35,8 +40,8 @@
   %p
     %label{:for => "quote_description"}
       Description
-    %span{:title => @quote.description.to_s.length > 30 ? @quote.description : ""}
-      =h @quote.description.blank? ? 'N/A' : truncate(@quote.description, 30, ".....")
+    %span{:title => @quote.description.to_s.length > 45 ? @quote.description : ""}
+      =h @quote.description.blank? ? 'N/A' : truncate(@quote.description, 45, "....")
   %p
     %label{:for => "quote_platform"}
       Platform

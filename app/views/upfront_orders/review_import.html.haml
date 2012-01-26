@@ -38,7 +38,7 @@
       %br/
       =simple_format(@linked_order.note.to_s)
 
-    #results.boxed{:style => 'width: 400px;height: 350px'}
+    #results.boxed{:style => 'width: 400px;height: 380px'}
       %h2 New Contract Details
       %label{:for => :account_id} Account ID
       =select_tag("contract[account_id]", '<option></option>' + options_from_collection_for_select(@sugar_accts, :id, :name, @account_selected_id), :onchange => "$('contract[account_name]').value = this.options[this.selectedIndex].text;toggleContracts();", :style => 'width: 200px')
@@ -81,6 +81,12 @@
       %br/
       %label{:for => :sa_days} SA Days
       =text_field_tag 'contract[sa_days]', 0
+      %br/
+      %label{:for => :basic_remote_monitoring} Basic RMM
+      = select_tag('contract[basic_remote_monitoring]', options_for_select([[nil,nil],["true", true],["false", false]]))
+      %br/
+      %label{:for => :basic_backup_auditing} Basic MBS
+      = select_tag('contract[basic_backup_auditing]', options_for_select([[nil,nil],["true", true],["false", false]]))
       %br/
   #section1
     %table

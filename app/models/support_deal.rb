@@ -81,6 +81,7 @@ class SupportDeal < ActiveRecord::Base
   has_one :upfront_order, :dependent => :nullify
 
   belongs_to :sales_rep, :class_name => 'User'
+  belongs_to :primary_ce, :class_name => 'User'
 
   #Validate General Details
   validates_presence_of :account_id, :account_name, :sales_office, :support_office, :sales_rep_id

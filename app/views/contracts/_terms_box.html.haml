@@ -1,5 +1,17 @@
-#terms.boxed{:style => 'width:300px;height:300px'}
+#terms.boxed{:style => 'width:250px;height:310px'}
   %h2 Terms
+  %p
+    %label{:for => "contract_start_date"}
+      Start Date
+    =h @contract.start_date ||= 'N/A'
+  %p
+    %label{:for => "contract_end_date"}
+      End Date
+    =h @contract.end_date ||= 'N/A'
+  %p
+    %label{:for => "contract_multiyr_end"}
+      Multi-Year End
+    =h @contract.multiyr_end.blank? ? 'N/A' : @contract.multiyr_end
   %p
     %label{:for => "contract_hw_support_level_id"}
       HW Support Level
@@ -21,29 +33,27 @@
       Num. SA Days
     =h @contract.sa_days.blank? ? 'N/A' : @contract.sa_days
   %p
-    %label{:for => "contract_start_date"}
-      Start Date
-    =h @contract.start_date ||= 'N/A'
+    %label{:for => "contract_basic_remote_monitoring"}
+      Basic RMM
+    =h @contract.basic_remote_monitoring.nil? ? 'N/A' : @contract.basic_remote_monitoring
   %p
-    %label{:for => "contract_end_date"}
-      End Date
-    =h @contract.end_date ||= 'N/A'
-  %p
-    %label{:for => "contract_multiyr_end"}
-      Multi-Year End
-    =h @contract.multiyr_end.blank? ? 'N/A' : @contract.multiyr_end
+    %label{:for => "contract_basic_backup_auditing"}
+      Basic MBS
+    =h @contract.basic_backup_auditing.nil? ? 'N/A' : @contract.basic_backup_auditing
   %p
     %label{:for => "contract_so_number"}
       SD Sales Order
     =h @contract.so_number.blank? ? 'N/A' : @contract.so_number
-  %p
-    %label{:for => "contract_po_number"}
-      SD Purch. Order
-    =h @contract.po_number.blank? ? 'N/A' : @contract.po_number
-  %p
-    %label{:for => "contract_replacement_sdc_ref"}
-      Replacement Ref
-    =h @contract.replacement_sdc_ref.blank? ? 'N/A' : @contract.replacement_sdc_ref
+  -# po_number was never used
+  -#%p
+  -#  %label{:for => "contract_po_number"}
+  -#    SD Purch. Order
+  -#  =h @contract.po_number.blank? ? 'N/A' : @contract.po_number
+  -# replacement_sdc_ref has been deprecated
+  -#  %p
+  -#    %label{:for => "contract_replacement_sdc_ref"}
+  -#      Replacement Ref
+  -#    =h @contract.replacement_sdc_ref.blank? ? 'N/A' : @contract.replacement_sdc_ref
   %p
     %label{:for => "contract_renewal_sent"}
       PO Received
@@ -51,4 +61,4 @@
   %p
     %label{:for => "contract_expired"}
       Expired
-    =h @contract.expired.blank? ? 'N/A' : @contract.expired
+    =h @contract.expired

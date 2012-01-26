@@ -193,15 +193,11 @@ class ContractsController < ApplicationController
   def update
     params[:contract][:predecessor_ids] ||= []
     params[:contract][:successor_ids] ||= []
+    # Preserve the NULL values to make sure we can separate the old contracts
+    # that have no RMM/MBS from the new contracts where a customer may decline.
+    params[:contract][:basic_backup_auditing] = nil if params[:contract][:basic_backup_auditing] == ""
+    params[:contract][:basic_remote_monitoring] = nil if params[:contract][:basic_remote_monitoring] == ""
     @contract = Contract.find(params[:id])
-    @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
-    @sales_offices =  SugarTeam.dropdown_list(current_user.sugar_team_ids)
-    @support_offices = @sales_offices
-    @pay_terms = Dropdown.payment_terms_list
-    @platform = Dropdown.platform_list
-    @reps = User.user_list
-    @types_hw = Dropdown.support_type_list_hw
-    @types_sw = Dropdown.support_type_list_sw
     @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND start_date <= '#{@contract.start_date}'")
     @replaced_by = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND end_date >= '#{@contract.end_date}'")
 
@@ -296,6 +292,7 @@ class ContractsController < ApplicationController
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list
     @reps = User.user_list
+    @primary_ces = @reps
     @types_hw = Dropdown.support_type_list_hw
     @types_sw = Dropdown.support_type_list_sw
   end
