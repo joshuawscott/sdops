@@ -1,3 +1,4 @@
+#start_time = Time.now
 @pdf = pdf
 # Set default global font
 pdf.font("Helvetica", :size => 10)
@@ -183,9 +184,9 @@ pdf.font("Helvetica")
 pdf.move_down 3
 pdf.text @terms, :size => 10
 
-###########################
-### SUPPORT DESCRIPTION ###
-###########################
+####################################
+### SUPPORT DESCRIPTION (page 2) ###
+####################################
 
 pdf.start_new_page
 set_page :description => "Support Description", :subheader => ""
@@ -203,10 +204,9 @@ if @contract.basic_backup_auditing
   pdf.table [["","Backup Application Performance Audit Report (once per year)"]], {:font_size => 10, :border_width => 0, :row_height => 0, :column_widths => {0 => 120, 1 => 600}}
 end
 
-#######################
-### PAYMENT OPTIONS ###
-#######################
-
+################################
+### PAYMENT OPTIONS (page 3) ###
+################################
 pdf.start_new_page
 set_page :description => "Payment Options Details", :subheader => ""
 pdf.move_down 130
@@ -250,9 +250,9 @@ if monthly_option
   print_payment_option(payment_option_number, :multiyear => false, :prepay => false)
 end
 
-########################
-### PAYMENT SCHEDULE ###
-########################
+#################################
+### PAYMENT SCHEDULE (page 4) ###
+#################################
 
 pdf.start_new_page
 set_page :description => "Monthly Payment Schedule", :subheader => ""
@@ -274,15 +274,15 @@ normal_payment_schedule.size.times do |month|
   pdf.table([["", date, number_to_currency(multiyear_payment_schedule[month]), "", number_to_currency(normal_payment_schedule[month])]], {:padding => 0, :font_size => 10, :border_width => 0, :row_height => 20, :align => column_alignments, :column_widths => column_widths})
 end
 
-########################
-### LINE ITEM DETAIL ###
-########################
+###################################
+### LINE ITEM DETAIL (pages 5+) ###
+###################################
 
 #TODO: make the line item prices reflect discount optionally.
 # slice up the line items 37 to a page:
 line_item_sections = {"srv" => "Services", "sw" => "Software", "hw" => "Hardware"}
 line_item_sections.each do |section,section_name|
-  if @contract.send("#{section}_line_items").size > 0
+  if instance_variable_get("@#{section}_line_items").size > 0
     pdf.start_new_page
     #puts "starting new page #{@page_num}"
     set_page :description => "Line Item Detail - #{section_name}", :subheader => @contract.send("#{section}_support_level_id")
@@ -313,7 +313,7 @@ line_item_sections.each do |section,section_name|
       end
     end
 
-    @contract.send("#{section}_line_items").each_slice(37) do |line_item_group|
+    instance_variable_get("@#{section}_line_items").each_slice(37) do |line_item_group|
       #pdf.start_new_page
       pdf.bounding_box [pdf.bounds.left,pdf.bounds.top], :height => 152, :width => @full_wide do
       end
@@ -339,8 +339,8 @@ line_item_sections.each do |section,section_name|
         #TODO: calculate the annual list price based on months covered, etc.
         pdf.font("Helvetica-Bold")
         pdf.move_down 3
-        pdf.table [["", "", "Total #{section_name} Support - Monthly List Price", "", "", "", "", "", number_to_currency(@contract.send("#{section}_line_items").inject(0) {|sum, n| sum + n.ext_list_price})]], {:horizontal_padding => 0, :vertical_padding => 0, :font_size => 8, :border_width => 0, :row_height => 5, :column_widths => line_detail_widths, :align => {8 => :right}}
-        pdf.table [["", "", "Total #{section_name} Support - Annual List Price", "", "", "", "", "", number_to_currency(@contract.send("#{section}_list_price"))]], {:horizontal_padding => 0, :vertical_padding => 0, :font_size => 8, :border_width => 0, :row_height => 5, :column_widths => line_detail_widths, :align => {8 => :right}}
+        pdf.table [["", "", "Total #{section_name} Support - Monthly List Price", "", "", "", "", "", number_to_currency(instance_variable_get("@#{section}_line_items").inject(0) {|sum, n| sum + n.ext_list_price})]], {:horizontal_padding => 0, :vertical_padding => 0, :font_size => 8, :border_width => 0, :row_height => 5, :column_widths => line_detail_widths, :align => {8 => :right}}
+        pdf.table [["", "", "Total #{section_name} Support - Annual List Price", "", "", "", "", "", number_to_currency(instance_variable_get("@#{section}_list_price"))]], {:horizontal_padding => 0, :vertical_padding => 0, :font_size => 8, :border_width => 0, :row_height => 5, :column_widths => line_detail_widths, :align => {8 => :right}}
         pdf.font("Helvetica")
         pdf.move_down 3
         pdf.table [["End of #{section_name} Section"]], :vertical_padding => 0, :align => :center, :row_colors => ["F2F2F2"], :font_size => 8, :border_width => 0, :width => @full_wide
@@ -348,4 +348,4 @@ line_item_sections.each do |section,section_name|
     end
   end
 end
-
+#puts "Quote created in #{Time.now - start_time}"

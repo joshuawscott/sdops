@@ -270,6 +270,12 @@ class ContractsController < ApplicationController
     #expires_in 120, :private => true, :must-revalidate => nil
     @contract = Contract.find(params[:id])
     @line_items = LineItem.find(:all, :conditions => {:support_deal_id => params[:id]})
+    @hw_line_items = @contract.hw_line_items
+    @sw_line_items = @contract.sw_line_items
+    @srv_line_items = @contract.srv_line_items
+    @hw_list_price = @contract.hw_list_price
+    @sw_list_price = @contract.sw_list_price
+    @srv_list_price = @contract.srv_list_price
     multiyear = @contract.discount_multiyear > 0.0
     prepay = true
     @best_discount_amount = @contract.discount_amount(:type => :hw, :prepay => prepay, :multiyear => multiyear) + @contract.discount_amount(:type => :sw, :prepay => prepay, :multiyear => multiyear) + @contract.discount_amount(:type => :srv, :prepay => prepay, :multiyear => multiyear)

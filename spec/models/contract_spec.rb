@@ -452,6 +452,10 @@ describe Contract do
       @line_item2 = Factory(:line_item, :begins => sd, :ends => ed, :list_price => 100.0, :qty => 1, :support_type => "SW")
       @line_item3 = Factory(:line_item, :begins => sd, :ends => ed, :list_price => 100.0, :qty => 1, :support_type => "SRV")
       @contract.line_items = [@line_item1, @line_item2, @line_item3]
+      @contract.save
+    end
+    before(:each) do
+      @contract.reload
     end
     @types = ["hw", "sw", "srv"]
     @types.each do |type|
@@ -461,21 +465,25 @@ describe Contract do
 
       it "correctly totals the #{type} line_items when the line items begin after the contract" do
         [@line_item1, @line_item2, @line_item3].each {|l| l.begins= Date.parse("2009-07-01")}
+        [@line_item1, @line_item2, @line_item3].each {|l| l.save}
         @contract.send("#{type}_list_price").should == 600.0
       end
 
       it "correctly totals the #{type} line_items when the line items begin before the contract" do
         [@line_item1, @line_item2, @line_item3].each {|l| l.begins= Date.parse("2008-07-01")}
+        [@line_item1, @line_item2, @line_item3].each {|l| l.save}
         @contract.send("#{type}_list_price").should == 1200.0
       end
 
       it "correctly totals the #{type} line_items when the line items end before the contract" do
         [@line_item1, @line_item2, @line_item3].each {|l| l.ends= Date.parse("2009-06-30")}
+        [@line_item1, @line_item2, @line_item3].each {|l| l.save}
         @contract.send("#{type}_list_price").should == 600.0
       end
 
       it "correctly totals the #{type} line_items when the line items end after the contract" do
         [@line_item1, @line_item2, @line_item3].each {|l| l.ends= Date.parse("2010-06-30")}
+        [@line_item1, @line_item2, @line_item3].each {|l| l.save}
         @contract.send("#{type}_list_price").should == 1200.0
       end
     end
