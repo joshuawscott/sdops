@@ -46,6 +46,16 @@ function setReplacedBy(box){
   }
 }
 
+function setExpiredHiddenField() {
+  var search_expired = $('search_expired');
+  var hidden_field = $('hidden_search_expired');
+  if(search_expired.checked == 1) {
+    hidden_field.value = 1;
+  } else {
+    hidden_field.value = 0;
+  }
+}
+
 document.observe("dom:loaded", function() {
   editFieldInPlaceInTable( '.note_click_to_edit', 'line_items', 'line_item', 'note');
   editFieldInPlaceInTable( '.serial_num_click_to_edit', 'line_items', 'line_item', 'serial_num');

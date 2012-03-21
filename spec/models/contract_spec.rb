@@ -46,11 +46,13 @@ describe Contract do
       before(:all) do
         @contract1 = Factory :contract
         @contract2 = Factory :contract
+        @contract3 = Factory :contract, :expired => true
         @contract1.line_items << Factory(:line_item, :serial_num => "sn11")
         @contract1.line_items << Factory(:line_item, :serial_num => "sn12")
         @contract1.line_items << Factory(:line_item, :serial_num => "sn12")
         @contract1.line_items << Factory(:line_item, :serial_num => "sn21")
         @contract2.line_items << Factory(:line_item, :serial_num => "sn21")
+        @contract3.line_items << Factory(:line_item, :serial_num => "sn21")
       end
       it "should find contracts having a line item matching the serial number" do
         Contract.serial_search("sn11").size.should == 1
@@ -61,6 +63,9 @@ describe Contract do
       end
       it "should find two contracts when two match" do
         Contract.serial_search("sn21").size.should == 2
+      end
+      it "should find three contracts when searching for expired" do
+        Contract.serial_search("sn21", true).size.should == 3
       end
 
       after(:all) do

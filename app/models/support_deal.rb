@@ -115,25 +115,35 @@ class SupportDeal < ActiveRecord::Base
   end
 
   # Returns Contracts where Contracts.LineItem.serial_num matches serial_num
-  def self.serial_search(serial_num)
+  def self.serial_search(serial_num, include_expired = false)
 		return [] if serial_num.strip == ''
     serial_num.upcase!
     #TODO: Use passed parameters to determine if expired are shown.
+    if include_expired
+      conditions_array = ['UPPER(line_items.serial_num) = ?', serial_num]
+    else
+      conditions_array = ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) = ?', Date.today, serial_num]
+    end
     contracts = self.find(:all, :select => "DISTINCT support_deals.id, sales_office_name, support_office_name, said, support_deals.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired",
       :joins => :line_items,
-			:conditions => ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) = ?', Date.today, serial_num])
+			:conditions => conditions_array)
     if contracts.size == 0
+      if include_expired
+        conditions_array = ['UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', possible_serial_nums]
+      else
+        conditions_array = ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', Date.today, possible_serial_nums]
+      end
       possible_serial_nums = self.find_substituted_sn_chars(serial_num)
       contracts = self.find(:all, :select => "DISTINCT support_deals.id, sales_office_name, support_office_name, said, support_deals.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired",
         :joins => :line_items,
-        :conditions => ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', Date.today, possible_serial_nums])
+        :conditions => conditions_array)
       contracts[0].sn_approximated = true if contracts.size>0
     end
     if contracts.size == 0
       possible_serial_nums = self.insert_missing_sn_chars(serial_num)
       contracts = self.find(:all, :select => "DISTINCT support_deals.id, sales_office_name, support_office_name, said, support_deals.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired",
         :joins => :line_items,
-        :conditions => ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', Date.today, possible_serial_nums])
+        :conditions => conditions_array)
       contracts[0].sn_approximated = true if contracts.size>0
     end
     contracts

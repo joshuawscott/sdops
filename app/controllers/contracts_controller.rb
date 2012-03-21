@@ -14,7 +14,12 @@ class ContractsController < ApplicationController
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
     @pay_terms << "Not Bundled"
     if params[:serial_search] != nil
-      @contracts = Contract.serial_search(params[:serial_search][:serial_number])
+      if params[:hidden_search_expired].to_i == 1
+        expired = true
+      else
+        expired = false
+      end
+      @contracts = Contract.serial_search(params[:serial_search][:serial_number], expired)
       @sn_warning = "NOTE: Serial Number search found approximate matches." if @contracts[0] && @contracts[0].sn_approximated == true
     elsif params[:search] != nil
       #Get search criteria from params object
