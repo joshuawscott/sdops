@@ -1,0 +1,19 @@
+- content_for :subtitle do
+  Customers needing the System and Application Monitor Appliance
+
+#section2
+  %h2
+    Customers needing the System and Application Monitor Appliance
+  %table
+    %thead
+      %tr
+        %th Account Name
+        %th Start Date
+        %th Sugar Link
+
+    %tbody
+      - @customers.each do |customer|
+        %tr
+          %td= link_to(customer.account_name, contract_search_url(:account_name => customer.account_name), :title => "View all contracts for #{customer.account_name}")
+          %td= customer.min_start_date
+          %td= link_to(customer.account_name, sugarcrm_link("Accounts", customer.account_id), :title => "View Sugar Entry for #{customer.account_name}")

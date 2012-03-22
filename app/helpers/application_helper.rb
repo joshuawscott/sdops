@@ -1,6 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  
+
    # put this in the body after a form to set the input focus to a specific control id
   def set_focus_to_id(id)
     <<-END
@@ -11,7 +11,7 @@ module ApplicationHelper
     </script>
     END
   end
-  
+
   def commenter_url
     commenter = controller.controller_name.singularize
     comments_path(:commentable_type => commenter, :commentable_id => controller.instance_variable_get("@#{commenter}").id)
@@ -72,17 +72,17 @@ module ApplicationHelper
   end
 
   # Renders a simple show view using haml.  Attempts to translate column names ending in '_id' into a
-  # foreign table name, where the value of the remote table's 'name' and 'description' fields are 
+  # foreign table name, where the value of the remote table's 'name' and 'description' fields are
   # substituted for the id value in the table:
   #   @line_item.support_deal_id => @line_item.contract.[name|description]
   # If name or description fields are not available, then the id value prints.
   # instance should be a single ActiveRecord object
-  # 
+  #
   # options hash:
   # - exclude => array of column name excluded from the
   # - ignored_foreign_keys => array of column names that are excluded from the automatic foreign key translation
   # - prefix => this string will be prepended to the table names when doing a foreign key lookup
-  # 
+  #
   # example:
   #   - render_simple_show @user, :exclude => [:id, :created_at], :ignored_foreign_keys => [:passport_id], :prefix => ["users"]
   def render_simple_show(instance, options = {})
@@ -153,7 +153,7 @@ module ApplicationHelper
         end
         linkcols > 0 ? haml_tag(:th, "Options", {:colspan => linkcols}) : nil
       end
-      
+
       haml_tag :tbody do
         aggregation.each do |instance|
           haml_tag :tr do
@@ -236,12 +236,12 @@ module ApplicationHelper
         rcname = controller.controller_name
     end
     #general case
-    if cname == rcname 
+    if cname == rcname
       return("menuSelected")
     else
       return("menuUnselected")
     end
-    
+
   end
 
   # Similar to link_to_if, but returns "" rather than name when condition is false.
@@ -261,4 +261,8 @@ end
 
 def tooltip_if_truncated(string, length)
   string.length > 30 ? string : ""
+end
+
+def sugarcrm_link(model, id)
+  "http://crm1.corp.ad/index.php?action=DetailView&module=#{model}&record=#{id}"
 end

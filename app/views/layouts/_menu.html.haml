@@ -34,6 +34,8 @@
             %br/
             =link_to 'Line Item Search', {:controller => 'line_items', :action => 'index'}, submenuhash('reportsinfo', 'Find which contracts contain a certain product')
             %br/
+            =link_to 'Customers Needing SAM', {:controller => 'reports', :action => 'sam_needed'}, submenuhash('reportsinfo', 'List customers that need to have a SAM prepared and sent')
+            %br/
           .menuCol
             %h2 Revenue
             =link_to 'Dashboard', {:controller => 'reports', :action => 'index'}, submenuhash('reportsinfo', 'Main Reports Page')
