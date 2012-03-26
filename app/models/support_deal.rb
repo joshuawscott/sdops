@@ -56,6 +56,9 @@
 #   contact_phone         string
 #   contact_email         string
 #   contact_note          string
+#   basic_remote_monitoring string
+#   basic_backup_auditing string
+#   primary_ce_id         integer
 class SupportDeal < ActiveRecord::Base
   require "parsedate.rb"
   include ParseDate
@@ -128,12 +131,13 @@ class SupportDeal < ActiveRecord::Base
       :joins => :line_items,
 			:conditions => conditions_array)
     if contracts.size == 0
+      possible_serial_nums = self.find_substituted_sn_chars(serial_num)
       if include_expired
         conditions_array = ['UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', possible_serial_nums]
       else
         conditions_array = ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', Date.today, possible_serial_nums]
       end
-      possible_serial_nums = self.find_substituted_sn_chars(serial_num)
+
       contracts = self.find(:all, :select => "DISTINCT support_deals.id, sales_office_name, support_office_name, said, support_deals.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired",
         :joins => :line_items,
         :conditions => conditions_array)
