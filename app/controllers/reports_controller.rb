@@ -139,6 +139,6 @@ class ReportsController < ApplicationController
 
   def sam_needed
     @customers = Contract.find(:all, :select => 'support_deals.*, min(start_date) as min_start_date ', :conditions => '(expired = 0) AND (basic_remote_monitoring = 1 OR basic_backup_auditing = 1)', :group => 'account_id')
-    @customers.delete_if {|customer| customer.sugar_acct.sugar_accounts_cstm.rmmhubdeployed_c == 1}
+    @customers.delete_if {|customer| customer.sugar_acct.sugar_accounts_cstm.rmmhubdeployed_c == true}
   end
 end
