@@ -1,6 +1,7 @@
 class LineItemsController < ApplicationController
   before_filter :get_contract, :except => [:index, :form_pull_pn_data, :sort, :update_field, :mass_update_location, :save_mass_update_location]
   before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :mass_update]
+  before_filter :location_authorized?, :only => [:mass_update_location, :save_mass_update_location]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
   before_filter :admin?, :only => [:destroy]
 
@@ -194,6 +195,10 @@ class LineItemsController < ApplicationController
 
   def authorized?
     current_user.has_role?(:admin, :contract_admin, :contract_editor) || not_authorized
+  end
+
+  def location_authorized?
+    current_user.has_role?(:admin, :contract_admin) || not_authorized
   end
 
   def admin?
