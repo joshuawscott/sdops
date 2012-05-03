@@ -6,13 +6,13 @@ class UsersController < ApplicationController
   def index
     @users = User.find(:all, :order => "last_name, first_name")
     @roles_labels = Dropdown.role_lables
-  
+
     respond_to do |format|
       format.html # index.html.erb
       #format.xml  { render :xml => @users }
     end
   end
-  
+
   #Refresh users from SugarCRM
   def refresh
     failures = User.update_from_sugar
@@ -29,48 +29,48 @@ class UsersController < ApplicationController
       redirect_to(users_path)
     end
   end
-  
+
   # GET /users/1
   # GET /users/1.xml
   def show
     @user = User.find(params[:id])
-  
+
     respond_to do |format|
       format.html # show.html.erb
       #format.xml  { render :xml => @user }
     end
   end
-  
+
   # GET /users/new
   # GET /users/new.xml
   def new
     @user = User.new
     @team = SugarTeam.dropdown_list(current_user.sugar_team_ids)
     @roles = Dropdown.role_list
-    
+
     respond_to do |format|
       format.html # new.html.erb
       #format.xml  { render :xml => @user }
     end
   end
-  
+
   # GET /users/1/edit
   def edit
     @user = User.find(params[:id])
     @team = SugarTeam.dropdown_list(current_user.sugar_team_ids)
     @roles = Role.find(:all)
   end
-  
+
   # POST /users
   # POST /users.xml
   def create
     cookies.delete :auth_token
-    # protects against session fixation attacks, wreaks havoc with 
+    # protects against session fixation attacks, wreaks havoc with
     # request forgery protection.
     # uncomment at your own risk
     # reset_session
     @user = User.new(params[:user])
-    
+
     respond_to do |format|
       if @user.save
         self.current_user = @user
@@ -84,11 +84,16 @@ class UsersController < ApplicationController
       end
     end
   end
-  
+
   # PUT /users/1
   # PUT /users/1.xml
   def update
+
     @user = User.find(params[:id])
+
+    # When all boxes were unchecked, the roles weren't updated.  Special check
+    # for that case:
+    @user.roles = [] if params[:user][:role_ids].nil?
 
     respond_to do |format|
       if @user.update_attributes(params[:user])
@@ -101,21 +106,21 @@ class UsersController < ApplicationController
       end
     end
   end
-  
+
   # DELETE /users/1
   # DELETE /users/1.xml
   def destroy
     @user = User.find(params[:id])
     logger.info current_user.login + " destroyed user " + @user.id.to_s
     @user.destroy
-  
+
     respond_to do |format|
       format.html { redirect_to(users_url) }
       #format.xml  { head :ok }
     end
   end
-  
-  protected  
+
+  protected
   def authorized?
     current_user.has_role?(:admin) || not_authorized
   end
