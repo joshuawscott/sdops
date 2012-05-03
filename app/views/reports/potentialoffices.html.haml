@@ -3,7 +3,7 @@
 
 #section1
   %h2{:style => 'margin:15px 0px 0px 3px'} Current Annual HW revenue by equipment location
-  
+
   %table{:class => "sortable", :padding => '2', :border => '1'}
     %thead
       %tr
@@ -15,6 +15,9 @@
       - @locations.each do |x|
         %tr
           %td
-            = x.location
+            - if current_user.has_role?(:admin, :contract_admin)
+              = link_to x.location, :controller => :line_items, :action => :mass_update_location, :from_location => x.location
+            - else
+              = x.location
           %td{:align => 'right'}
             = number_to_currency(x.revenue, :format => '%u%n')

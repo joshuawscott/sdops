@@ -1,5 +1,5 @@
 class LineItemsController < ApplicationController
-  before_filter :get_contract, :except => [:index, :form_pull_pn_data, :sort, :update_field]
+  before_filter :get_contract, :except => [:index, :form_pull_pn_data, :sort, :update_field, :mass_update_location, :save_mass_update_location]
   before_filter :authorized?, :only => [:sort, :new, :create, :edit, :update, :mass_update]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
   before_filter :admin?, :only => [:destroy]
@@ -173,6 +173,15 @@ class LineItemsController < ApplicationController
     else
       render :text => "ERROR ON SAVE"
     end
+  end
+
+  def mass_update_location
+    @from_location = params[:from_location]
+  end
+
+  def save_mass_update_location
+    LineItem.update_all("location = '#{params[:to_location]}'", ["location = ?", params[:from_location]])
+    redirect_to '/reports/potentialoffices'
   end
 
   protected

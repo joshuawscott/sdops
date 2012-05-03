@@ -1,0 +1,13 @@
+-content_for :subtitle do
+  Line Item subcontract information
+#section1
+  %label{:style => 'width: 120px'}
+    Original location:
+  = @from_location
+  - form_tag save_mass_update_location_line_items_path do
+    %label{:style => 'width: 120px'}
+      New location:
+    = text_field_tag 'to_location', @from_location
+    = hidden_field_tag 'from_location', @from_location
+    %p
+      = submit_tag 'Update All'
