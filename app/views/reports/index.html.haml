@@ -174,7 +174,7 @@
 #section3
   %p{:style=>"page-break-before: always"}
     - @url1 = url_for :controller => 'graphs', :action => 'sales_by_office'
-    %img{'src' => @url1, 'style' => "border:1px solid #111111;"}
+    %img{'src' => @url1, 'class' => 'chart'}
   %p
     - @url2 = url_for :controller => 'graphs', :action => 'sales_by_type_pie'
-    %img{'src' => @url2, 'style' => "border:1px solid #111111;"}
+    %img{'src' => @url2, 'class' => 'chart'}

@@ -4,7 +4,7 @@
 !sdc_grey = #cccccc
 !radius_width = 8px
 
-/* General Styles
+// General Styles
 body
   :behavior url("/hover.htc")
 
@@ -85,11 +85,8 @@ table
   :border-style solid
   :border-color = !sdc_black
   :border-spacing 0px 0px
-  :-moz-border-radius = !radius_width
-  :-webkit-border-radius = !radius_width
   :border-radius = !radius_width
-  :-moz-box-shadow = 4px 4px 6px #999
-  :-webkit-box-shadow = 4px 4px 6px #999
+  :box-shadow = 4px 4px 6px #999
 
   tr
     td
@@ -108,25 +105,17 @@ table
 
   tr:first-child
     th:last-child
-      :-moz-border-radius-topright = !radius_width
-      :-webkit-border-top-right-radius = !radius_width
       :border-top-right-radius = !radius_width
       :margin-right 30px
 
     th:first-child
-      :-moz-border-radius-topleft = !radius_width
-      :-webkit-border-top-left-radius = !radius_width
       :border-top-left-radius = !radius_width
 
   tr:last-child
     td:first-child
-      :-moz-border-radius-bottomleft = !radius_width
-      :-webkit-border-bottom-left-radius = !radius_width
       :border-bottom-left-radius = !radius_width
 
     td:last-child
-      :-moz-border-radius-bottomright = !radius_width
-      :-webkit-border-bottom-right-radius = !radius_width
       :border-bottom-right-radius = !radius_width
 
   tr.expired
@@ -183,8 +172,7 @@ table
 table.plain_table
   :border-width 0px
   :border-collapse collapse
-  :-moz-box-shadow = 0px 0px 0px #fff
-  :-webkit-box-shadow = 0px 0px 0px #fff
+  :box-shadow = 0px 0px 0px #fff
 
   td
     :border-width 0px
@@ -207,7 +195,7 @@ ul.sub_menu
     :display block
     :float left
     :width 80px
-    /*:height 20px
+    //:height 20px
     :margin-left 2px
     :padding 1px 2px 1px 2px
     :background = !sdc_black + 30
@@ -260,7 +248,7 @@ ul.sub_menu
   :font-weight bold
   :color #f00
 
-/* Boxed Styles
+// Boxed Styles
 
 #search
   :width 90%
@@ -395,10 +383,8 @@ ul.sub_menu
     :width 1px 0px 0px 1px
     :style solid
     :color = #ddd
-  :-moz-border-radius = !radius_width
-  :-webkit-border-radius = !radius_width
-  :-moz-box-shadow = 4px 4px 6px #999
-  :-webkit-box-shadow = 4px 4px 6px #999
+  :border-radius = !radius_width
+  :box-shadow = 4px 4px 6px #999
 
   p
     :margin 0
@@ -411,10 +397,8 @@ ul.sub_menu
     :text-transform uppercase
     :padding-left 5px
     :color = !sdc_black
-    :-moz-border-radius-topleft = !radius_width - 1
-    :-moz-border-radius-topright = !radius_width - 1
-    :-webkit-border-top-left-radius = !radius_width - 1
-    :-webkit-border-top-right-radius = !radius_width - 1
+    :border-top-left-radius = !radius_width - 1
+    :border-top-right-radius = !radius_width - 1
     :background = !sdc_green
     a:hover
       :color = !sdc_green - 60
@@ -433,10 +417,8 @@ ul.sub_menu
     :text-transform uppercase
     :padding-left 5px
     :color = !sdc_black
-    :-moz-border-radius-topleft = 8px
-    :-moz-border-radius-topright = 8px
-    :-webkit-border-top-left-radius = 8px
-    :-webkit-border-top-right-radius = 8px
+    :border-top-left-radius = 8px
+    :border-top-right-radius = 8px
     :background = !sdc_green
     a:hover
       :color = !sdc_green - 60
@@ -456,6 +438,7 @@ ul.sub_menu
       :width 1px
       :style solid
       :color = !sdc_black
+    :box-shadow = 2px 2px 3px #999
 
   .textbox
     :width 10em
@@ -465,9 +448,11 @@ ul.sub_menu
       :width 1px
       :style solid
       :color = !sdc_black
+    :box-shadow = 2px 2px 3px #999
 
   .readonly
     :background-color = !sdc_grey
+    :box-shadow = 0px 0px 0px #fff
 
   .textboxright
     :text-align right
@@ -478,8 +463,12 @@ ul.sub_menu
       :width 1px
       :style solid
       :color = !sdc_black
+    :box-shadow = 2px 2px 3px #999
 
-/* Header Styles
+  .checkbox
+    :box-shadow = 1px 1px 2px #999
+
+// Header Styles
 
 #header
   :left 0px
@@ -490,7 +479,7 @@ ul.sub_menu
     :repeat repeat-x
     :position center bottom
 
-  /* Header > Logo
+  // Header > Logo
 
   #logo
     :float left
@@ -510,7 +499,7 @@ ul.sub_menu
       :margin-top -5px
       :font-size 1em
 
-  /* Header > Title
+  // Header > Title
 
   #title
     :min-width 600px
@@ -521,10 +510,10 @@ ul.sub_menu
       :padding 18px 0 0px 0
       :color = !sdc_black
 
-  /* Header > Menu
+  // Header > Menu
 
   #menu
-    /*:float left
+    //:float left
     :width 700px
 
     ul,li,a
@@ -666,7 +655,7 @@ ul.sub_menu
       :width 99%
       :z-index 0
 
-/* Content
+// Content
 
 #content
   :float left
@@ -679,7 +668,7 @@ ul.sub_menu
   :margin 5px 20px 0px 3px
   :background #fff
 
-/* Section 1
+// Section 1
 
 #section1
   :float left
@@ -691,7 +680,7 @@ ul.sub_menu
     :width 160px
     :margin 0 0 5px 300px
 
-/* Sections 2-6
+// Sections 2-6
 
 #section2, #section3, #section4, #section5, #section6
   :float left
@@ -717,6 +706,10 @@ ul.sub_menu
   :padding 1px
   :max-width 200px
 
+img.chart
+  :border-radius = !radius_width
+  :box-shadow = 4px 4px 6px #999
+  :border 1px solid #111111
 @media print
   .pagebreak
     :page-break-before always

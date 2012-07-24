@@ -33,7 +33,11 @@ class ContractsController < ApplicationController
       @pay_term ||= params[:search][:payment_terms]
       @revenue ||= params[:search][:revenue]
       @expired ||= params[:search][:expired]
-      @id ||= params[:search][:id]
+      if params[:search][:id].blank?
+        @id = []
+      else
+        @id ||= params[:search][:id].split(',')
+      end
       #Create and set the scope conditions
       @contracts = Contract.scoped({})
       @contracts = @contracts.conditions "(support_deals.sales_office IN (?) OR support_deals.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
@@ -71,7 +75,9 @@ class ContractsController < ApplicationController
       op, val = @end_date.split(" ")
       @contracts = @contracts.conditions "support_deals.end_date #{op} ?", val unless @end_date.blank?
       @contracts = @contracts.conditions "(support_deals.expired <> true OR support_deals.end_date >= '#{Date.today}')" unless @expired == "1"
-      @contracts = @contracts.conditions "id = ?", @id unless @id.blank?
+      unless @id.blank?
+        @contracts = @contracts.conditions "id IN(?)", @id
+      end
       @contracts
     elsif params[:export] != nil
       #Get search criteria from params object

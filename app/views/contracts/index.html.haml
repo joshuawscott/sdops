@@ -71,7 +71,7 @@
           %th{:class => "search"}
             = text_field 'search', 'account_name', :size => 19, :value => @account_name
           %th{:class => "search"}
-            = text_field 'search', 'id', :size => 7, :value => @id
+            = text_field 'search', 'id', :size => 7, :value => @id.to_a.join(',')
           %th{:class => "search"}
             = text_field 'search', 'said', :size => 16, :value => @said
           %th{:class => "search"}

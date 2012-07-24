@@ -4,45 +4,46 @@
 
 #section2
   %p= error_messages_for 'contract'
-  %h2 Import data from Excel Quoter Tool
-  - form_tag '/import', :multipart => true do
-    %p
-      %label{:for => "account_id"}
-        Account
-      = select_tag('account_id', "<option value=''/>" + options_from_collection_for_select(@sugar_accts, 'id', 'name'), { :include_blank => true })
-    %p
-      %label{:for => "contract"}
-        Contract
-      = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label', @contractid.to_i))
-    -#%p
-    -#  %label{:for => "sales_rep_id", :style => 'color:red'}
-    -#    Sales Rep
-    -#  = select_tag('sales_rep_id', "<option value=''/>" + options_from_collection_for_select(@sales_reps, 'id', 'full_name'))
-    %p
-      %label{:for => "sales_office", :style => 'color:red'}
-        Sales Office
-      = select_tag('sales_office', "<option value=''/>" + options_from_collection_for_select(@sales_offices, 'id', 'name'))
-    %p
-      %label{:for => "support_office", :style => 'color:red'}
-        Support Office
-      = select_tag('support_office', "<option value=''/>" + options_from_collection_for_select(@support_offices, 'id', 'name'))
-    %p
-      %label{:for => "platform", :style => 'color:red'}
-        Platform
-      = select_tag('platform', "<option value=''/>" + options_from_collection_for_select(@platform, 'label', 'label'))
-    %p
-      %label{:for => "po_received", :style => 'color:red'}
-        PO Received
-      = date_select_tag(:po_received, nil, {}, {})
-    %p
-      %label{:for => "importfile", :style => 'color:red'}
-        File to import
-      = file_field_tag('importfile')
+  .boxed
+    %h2 Import data from Excel Quoter Tool
+    - form_tag '/import', :multipart => true do
+      %p
+        %label{:for => "account_id"}
+          Account
+        = select_tag('account_id', "<option value=''/>" + options_from_collection_for_select(@sugar_accts, 'id', 'name'), { :include_blank => true })
+      %p
+        %label{:for => "contract"}
+          Contract
+        = select_tag('contract', "<option value=''/>" + options_from_collection_for_select(@contracts, 'id', 'label', @contractid.to_i))
+      -#%p
+      -#  %label{:for => "sales_rep_id", :style => 'color:red'}
+      -#    Sales Rep
+      -#  = select_tag('sales_rep_id', "<option value=''/>" + options_from_collection_for_select(@sales_reps, 'id', 'full_name'))
+      %p
+        %label{:for => "sales_office", :style => 'color:red'}
+          Sales Office
+        = select_tag('sales_office', "<option value=''/>" + options_from_collection_for_select(@sales_offices, 'id', 'name'))
+      %p
+        %label{:for => "support_office", :style => 'color:red'}
+          Support Office
+        = select_tag('support_office', "<option value=''/>" + options_from_collection_for_select(@support_offices, 'id', 'name'))
+      %p
+        %label{:for => "platform", :style => 'color:red'}
+          Platform
+        = select_tag('platform', "<option value=''/>" + options_from_collection_for_select(@platform, 'label', 'label'))
+      %p
+        %label{:for => "po_received", :style => 'color:red'}
+          PO Received
+        = date_select_tag(:po_received, nil, {:class => 'textbox'}, {})
+      %p
+        %label{:for => "importfile", :style => 'color:red'}
+          File to import
+        = file_field_tag('importfile')
 
-    %p{:style => 'color:#FF0000'}
-      %b Red means required field
+      %p{:style => 'color:#FF0000'}
+        %b Red means required field
 
-    = submit_tag "Import File"
+      = submit_tag "Import File"
 
 
 #section2

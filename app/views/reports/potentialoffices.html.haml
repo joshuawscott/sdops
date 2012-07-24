@@ -11,13 +11,20 @@
           Location
         %th
           Revenue
+        %th
+          &nbsp;
     %tbody
       - @locations.each do |x|
         %tr
           %td
             - if current_user.has_role?(:admin, :contract_admin)
-              = link_to x.location, :controller => :line_items, :action => :mass_update_location, :from_location => x.location
+              = link_to x.location, contract_search_url(:id => x.contract_ids_by_location.split(',').join(','))
             - else
               = x.location
           %td{:align => 'right'}
             = number_to_currency(x.revenue, :format => '%u%n')
+          %td{:align => 'right'}
+            - if current_user.has_role?(:admin, :contract_admin)
+              = link_to 'mass update', :controller => :line_items, :action => :mass_update_location, :from_location => x.location
+            - else
+              &nbsp;

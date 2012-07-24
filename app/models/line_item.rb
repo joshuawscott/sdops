@@ -249,4 +249,7 @@ class LineItem < ActiveRecord::Base
     self.find(:all, :joins => :contract, :conditions => ["support_deals.account_id = ?", account_id])
   end
 
+  def contract_ids_by_location
+    LineItem.find(:all, :select => 'distinct support_deal_id', :joins => :contract, :conditions => ['location = ?', location]).map{|x| x.support_deal_id}
+  end
 end
