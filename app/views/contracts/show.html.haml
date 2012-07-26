@@ -27,13 +27,14 @@
   %b.hideforprint
     = link_to 'New Line Item', new_contract_line_item_path(@contract) if current_user.has_role?(:admin, :contract_admin, :contract_editor) && @hwlines.empty? && @swlines.empty? && @srvlines.empty?
   %br/
+  %span#sort_warning
   - form_tag mass_update_line_items_path, :method => :put do
     - unless @hwlines.empty?
       - @i = 0
       %h2
         Hardware Line Items
         %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'HW') if current_user.has_role?(:contract_admin, :contract_editor)
-      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+      %table#hw_line_items_table.main_table{:border => "1", :cellpadding => "2", :cellspacing => "2"}
         %thead
           =render :partial => 'lineitems_header', :locals => {:section => "HW"}
         %tbody#hwlines
@@ -44,7 +45,7 @@
       %h2
         Software Line Items
         %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'SW') if current_user.has_role?(:contract_admin, :contract_editor)
-      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+      %table#sw_line_items_table.main_table{:border => "1", :cellpadding => "2", :cellspacing => "2"}
         %thead
           =render :partial => 'lineitems_header', :locals => {:section => "SW"}
         %tbody#swlines
@@ -55,7 +56,7 @@
       %h2
         Services Line Items
         %span.hideforprint{:style => 'font-size:8pt'}= link_to 'New Line Item', new_contract_line_item_path(@contract, :support_type => 'SRV') if current_user.has_role?(:contract_admin, :contract_editor)
-      %table{:class => 'main_table', :border => "1", :cellpadding => "2", :cellspacing => "2"}
+      %table#srv_line_items_table.main_table{:border => "1", :cellpadding => "2", :cellspacing => "2"}
         %thead
           =render :partial => 'lineitems_header', :locals => {:section => "SRV"}
         %tbody
@@ -65,7 +66,7 @@
     - if current_user.has_role?(:contract_admin, :contract_editor)
       #results.boxed.hideforprint{:style => 'height:160px', :style => 'width:480px'}
         %h2 Line Items Mass Update
-        %p 
+        %p
           %label{:for => 'support_provider'}
             Supp Provider
           = select_tag('support_provider', "<option value=''></option>" + options_for_select(@support_providers))
@@ -91,7 +92,7 @@
           %br/
           %p= submit_tag "Add to Subcontract"
 -if current_user.has_role?(:contract_editor, :contract_admin)
-    
+
   = sortable_element('hwlines', :scroll => :window, :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
   = sortable_element('swlines', :scroll => :window, :url => {:controller => :line_items, :action => "sort", :id => @contract}, :handle => :drag_handle, :tag => :tr)
 

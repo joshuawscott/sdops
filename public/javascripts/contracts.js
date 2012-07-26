@@ -56,7 +56,18 @@ function setExpiredHiddenField() {
   }
 }
 
+function disableDragOnSort(e) {
+  //alert(Event.element(event).innerHTML);
+  if(e.ctrlKey == true && e.altKey == true) {
+    $$('.drag_handle').each(function(s){ s.hide(); });
+    $('sort_warning').innerHTML = 'Drag & Drop disabled due to table sorting.  Refresh page to enable.';
+  }
+}
 document.observe("dom:loaded", function() {
   editFieldInPlaceInTable( '.note_click_to_edit', 'line_items', 'line_item', 'note');
   editFieldInPlaceInTable( '.serial_num_click_to_edit', 'line_items', 'line_item', 'serial_num');
+  //Watch for ctrl-alt-click (sort override) and disable drag/drop.
+  $('hw_line_items_table').observe('click', disableDragOnSort);
+  $('sw_line_items_table').observe('click', disableDragOnSort);
+  $('srv_line_items_table').observe('click', disableDragOnSort);
 });
