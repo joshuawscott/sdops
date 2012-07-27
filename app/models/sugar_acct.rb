@@ -76,4 +76,15 @@ class SugarAcct < SugarDb
     end
     @revenue_now
   end
+
+  def partner?
+    return false if self.sugar_accounts_cstm.nil?
+    self.sugar_accounts_cstm.channeltype_c == 'Partner'
+  end
+
+  def end_users
+    #Short circuit unless it's a partner.
+    return Array.new unless partner?
+    SugarAcct.find(:all, :joins => :sugar_accounts_cstm, :conditions => ['accounts_cstm.channelpartner_c = ? AND accounts.id <> ?', self.id, self.id])
+  end
 end

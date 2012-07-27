@@ -80,6 +80,7 @@ class SupportDeal < ActiveRecord::Base
   has_many :comments, :as => :commentable
 
   belongs_to :sugar_acct, :foreign_key => :account_id
+  belongs_to :end_user, :foreign_key => :end_user_id, :class_name => 'SugarAcct'
 
   has_one :upfront_order, :dependent => :nullify
 

@@ -63,6 +63,34 @@ function disableDragOnSort(e) {
     $('sort_warning').innerHTML = 'Drag & Drop disabled due to table sorting.  Refresh page to enable.';
   }
 }
+
+function changeAccount() {
+  var account_id_dropdown = $('contract_account_id');
+  var account_id = account_id_dropdown.options[account_id_dropdown.options.selectedIndex].value;
+  //Update account name:
+  $('contract_account_name').value = account_id_dropdown.options[account_id_dropdown.selectedIndex].text;
+  //Find partners, if needed
+  var requestURL = '/sugar_accts/end_users_for_partner/'+account_id+'.json';
+  new Ajax.Request(requestURL, {
+    method: 'get',
+    //parameters: 'id='+encodeURIComponent(account_id)+'&authenticity_token='+encodeURIComponent(authenticity_token),
+    onFailure: function(transport) {
+      alert('Error retrieving end-users');
+      $('contract_end_user_id').innerHTML = '';
+    },
+    onSuccess: function(transport){
+      var end_users = transport.responseText.evalJSON(true);
+      var end_user_dropdown = $('contract_end_user_id');
+      end_user_dropdown.options.length = 0;
+      end_user_dropdown.options[end_user_dropdown.options.length] = new Option('','');
+      end_users.each(function(end_user) {
+        end_user_dropdown.options[end_user_dropdown.options.length] = new Option(end_user['sugar_acct']['name'], end_user['sugar_acct']['id']);
+      })
+      new Effect.Highlight(end_user_dropdown, {startcolor: '#ffff80'});
+    }
+  });
+
+}
 document.observe("dom:loaded", function() {
   editFieldInPlaceInTable( '.note_click_to_edit', 'line_items', 'line_item', 'note');
   editFieldInPlaceInTable( '.serial_num_click_to_edit', 'line_items', 'line_item', 'serial_num');

@@ -1,7 +1,7 @@
 class ContractsController < ApplicationController
   #only contract_admin's can make changes:
   before_filter :authorized?, :only => [:new, :create, :edit, :update, :destroy]
-	# contract_manager's can make some changes:
+	# contract_managers can make some changes:
   before_filter :manager?, :only => [:sentrenewal, :backtorenewals]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
 
@@ -162,6 +162,7 @@ class ContractsController < ApplicationController
   # GET /contracts/new.xml
   def new
     @contract = Contract.new
+    @end_users = []
     @replaces = []
     @replaced_by = []
 
@@ -174,6 +175,7 @@ class ContractsController < ApplicationController
   # GET /contracts/1/edit
   def edit
     @contract = Contract.find(params[:id])
+    @end_users = @contract.sugar_acct.end_users
     @replaces = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND start_date <= '#{@contract.start_date}'")
     @replaced_by = Contract.find(:all, :conditions => "account_name = '#{@contract.account_name.gsub(/\\/, '\&\&').gsub(/'/, "''")}' AND id <> #{params[:id]} AND end_date >= '#{@contract.end_date}'")
 

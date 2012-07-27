@@ -6,8 +6,16 @@
     =h @contract.id.to_s
   %p
     %label{:for => "contract_account_name"}
-      Account
+      -if @contract.sugar_acct.partner?
+        Partner
+      -else
+        Account
     = @contract.account_name.blank? ? 'N/A' :  link_to(@contract.account_name, contract_search_url(:account_name => @contract.account_name), :title => "View all contracts for #{@contract.account_name}")
+  -if @contract.sugar_acct.partner?
+    %p
+      %label{:for => "end_user"}
+        End User
+    = @contract.end_user.nil? ? 'N/A' : @contract.end_user.name
   %p
     %label{:for => "contract_account_client_category"}
       Client Category

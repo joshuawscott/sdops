@@ -1,7 +1,7 @@
 =include_calendar
 
 #section1{:style => 'width:800px'}
-  #general.boxed{:style => 'width:400px;height:360px'}
+  #general.boxed{:style => 'width:400px;height:380px'}
     %h2 General Details
     = f.hidden_field :sales_office_name
     = f.hidden_field :support_office_name
@@ -13,7 +13,11 @@
     %p
       %label{:for => "contract_account_id"}
         Account
-      = f.collection_select(:account_id, @sugar_accts, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('contract_account_name').value = this.options[this.selectedIndex].text"})
+      = f.collection_select(:account_id, @sugar_accts, :id, :name, { :include_blank => true }, {:onchange => "changeAccount()"})
+    %p
+      %label{:for => "end_user_id"}
+        End User
+      = f.collection_select(:end_user_id, @end_users, :id, :name, { :include_blank => true })
     %p
       %label{:for => "contract_sales_office"}
         Sales Office
@@ -68,7 +72,7 @@
         Renewal Amount
       = f.text_field :renewal_amount, :class => 'textbox'
 
-  #terms.boxed{:style => 'width:300px;height:360px'}
+  #terms.boxed{:style => 'width:300px;height:380px'}
     %h2 Terms
     %p
       %label{:for => "contract_start_date"}

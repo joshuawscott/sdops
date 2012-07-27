@@ -2,6 +2,7 @@
   Login
 
 #section1
+  %h2 Warning: The data contained in this website is highly confidential Source Direct information.
   = error_messages_for :session
   - form_tag sessions_path do
     %p
@@ -19,5 +20,5 @@
 
     %p
       = flash[:error]
-      
+
     = set_focus_to_id 'login'

@@ -43,7 +43,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :product_deals
 
   map.resources :sugar_opps
-  map.resources :sugar_accts
+  map.resources :sugar_accts, :member => {:end_users_for_partner => :get}
   map.resources :sugar_contacts
 
   map.resources :locations

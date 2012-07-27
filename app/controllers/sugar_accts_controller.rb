@@ -14,4 +14,12 @@ class SugarAcctsController < ApplicationController
     end
   end
 
+  def end_users_for_partner
+    partner = SugarAcct.find(params[:id])
+    @end_users = partner.end_users
+    respond_to do |format|
+      format.json {render :json => @end_users}
+    end
+  end
+
 end
