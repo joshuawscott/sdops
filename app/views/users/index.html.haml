@@ -10,8 +10,8 @@
       %th Name
       %th Role
       %th Office
-      %th{:colspan => "2"} Actions
-    
+      %th &nbsp;
+
     - @users.each do |user|
       %tr
         %td= h user.login
@@ -19,8 +19,3 @@
         %td= h @roles_labels[user.role]
         %td= h user.office
         %td= link_to ' Edit ', edit_user_path(user)
-        %td= link_to ' Destroy ', user_path(user), :confirm => 'Are you sure?', :method => :delete
-
-
-#section2
-  = link_to 'New user', new_user_path
