@@ -46,5 +46,5 @@
             = contract.sales_rep.nil? ? 'n/a' : contract.sales_rep.full_name
           %td
             = contract.primary_ce.nil? ? 'n/a' : contract.primary_ce.full_name
-          %td
-            =contract.revenue
+          %td{:align => :right}
+            =number_to_currency(contract.revenue)
