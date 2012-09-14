@@ -106,4 +106,10 @@ class Contract < SupportDeal
     true
   end
 
+  def days_early
+    return nil if po_received.nil?
+    (start_date - po_received).to_i
+
+  end
+
 end

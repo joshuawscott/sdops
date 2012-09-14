@@ -1,0 +1,50 @@
+- content_for :subtitle do
+  Reports
+
+#section1
+  %table{:class => 'plain_table'}
+    %tr
+      %td{:width => '300px', :style => 'valign:bottom'}
+        %h2{:margin => '0'}
+          Renewals &nbsp;&nbsp;&nbsp;
+          %span{:style => 'font-size:8pt'}= link_to 'export to excel', "/reports/po_receiving.xls?date_search[ref_date]=" + @ref_date
+      %td{:width => '325px', :align => 'right'}
+        - form_tag'/reports/po_receiving', {:name => 'date_search' }  do
+          %b Begin date
+          = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
+          = submit_tag "Search"
+
+#section2
+  %table{:class => :sortable}
+    %thead
+      %tr
+        %th ID
+        %th Account Name
+        %th Days Early
+        %th Start Date
+        %th PO Received
+        %th Office
+        %th CBM
+        %th CE
+        %th Revenue
+    %tbody
+      - @contracts.each do |contract|
+        %tr
+          %td
+            =contract.id
+          %td
+            =contract.account_name
+          %td
+            =contract.days_early
+          %td
+            =contract.start_date
+          %td
+            =contract.po_received
+          %td
+            =contract.sales_office_name
+          %td
+            = contract.sales_rep.nil? ? 'n/a' : contract.sales_rep.full_name
+          %td
+            = contract.primary_ce.nil? ? 'n/a' : contract.primary_ce.full_name
+          %td
+            =contract.revenue
