@@ -1,5 +1,4 @@
 # See SupportDeal for schema
-# Test git & capistrano with file change
 class Contract < SupportDeal
 
   validates_presence_of :payment_terms, :po_received
