@@ -156,8 +156,11 @@ class ReportsController < ApplicationController
   end
 
   def sa_days
-    @customers = Contract.find(:all, :select => 'support_deals.*, sum(support_deals.sa_days) AS sum_sa_days', :conditions => 'sa_days > 0 AND sa_days IS NOT NULL AND end_date > NOW()', :group => :account_id)
-    @offices = @customers.map{|x| x.support_office_name}.uniq.sort
+    @contracts = Contract.find(:all,
+      :select => 'support_deals.*, sa_days + ce_days AS sum_sa_days',
+      :include => :sugar_acct,
+      :conditions => '(sa_days IS NOT NULL OR ce_days IS NOT NULL) AND (sa_days > 0 OR ce_days > 0) AND end_date > NOW()')
+    @offices = @contracts.map{|x| x.support_office_name}.uniq.sort
 
   end
 end
