@@ -4,15 +4,15 @@
 function toggleOfficesRenewal(sum_col, expected_col) {
   toggleOffices(sum_col);
   // insert sums for each section
-  sumVisibleRows('sum_expired', 'renewals_expired', sum_col);
-  sumVisibleRows('sum_0_30', 'renewals_0_30', sum_col);
-  sumVisibleRows('sum_31_60', 'renewals_31_60', sum_col);
-  sumVisibleRows('sum_61_90', 'renewals_61_90', sum_col);
-  sumVisibleRows('sum_91_120', 'renewals_91_120', sum_col);
-  sumVisibleRows('expected_expired', 'renewals_expired', expected_col);
-  sumVisibleRows('expected_0_30', 'renewals_0_30', expected_col);
-  sumVisibleRows('expected_31_60', 'renewals_31_60', expected_col);
-  sumVisibleRows('expected_61_90', 'renewals_61_90', expected_col);
+  sumVisibleRows('sum_expired', 'renewals_expired', sum_col, 1);
+  sumVisibleRows('sum_0_30', 'renewals_0_30', sum_col, 1);
+  sumVisibleRows('sum_31_60', 'renewals_31_60', sum_col, 1);
+  sumVisibleRows('sum_61_90', 'renewals_61_90', sum_col, 1);
+  sumVisibleRows('sum_91_120', 'renewals_91_120', sum_col, 1);
+  sumVisibleRows('expected_expired', 'renewals_expired', expected_col, 1);
+  sumVisibleRows('expected_0_30', 'renewals_0_30', expected_col, 1);
+  sumVisibleRows('expected_31_60', 'renewals_31_60', expected_col, 1);
+  sumVisibleRows('expected_61_90', 'renewals_61_90', expected_col, 1);
   sumVisibleRows('expected_91_120', 'renewals_91_120', expected_col);
 
   // insert counts for each section
@@ -45,9 +45,13 @@ function toggleOfficesRenewal(sum_col, expected_col) {
   //expected_all.innerHTML = $('expected_expired').innerHTML*1 + $('expected_0_30').innerHTML*1 + $('expected_31_60').innerHTML*1 + $('expected_61_90').innerHTML*1 + $('expected_91_120').innerHTML*1;
 }
 
-function toggleOfficesGeneric(sum_col) {
+function toggleOfficesGeneric(sum_col, options) {
   toggleOffices(sum_col);
-  sumVisibleRows('sum_total', 'sum_table', sum_col);
+  var display_as_currency = 0
+  if(options == undefined || options['display_as_currency'] == undefined) {
+    display_as_currency = 1;
+  }
+  sumVisibleRows('sum_total', 'sum_table', sum_col, display_as_currency);
 }
 
 function toggleOffices(sum_col){
@@ -88,7 +92,7 @@ function countVisibleRows(total_container_id, count_table_id) {
   $(total_container_id).innerHTML = count;
 }
 
-function sumVisibleRows(total_container_id, sum_table_id, sum_col){
+function sumVisibleRows(total_container_id, sum_table_id, sum_col, display_as_currency){
 	var rows = $$('#'+sum_table_id+' tbody tr');
 	var sum_area = $('expired_total');
 	var sum = 0.0;
@@ -98,7 +102,11 @@ function sumVisibleRows(total_container_id, sum_table_id, sum_col){
 				sum += (price * 1.0); // * 1.0 converts string to a float
 			}
 	});
-	$(total_container_id).innerHTML = number_to_currency(sum);
+        if(display_as_currency == 0) {
+          $(total_container_id).innerHTML = sum;
+        } else {
+          $(total_container_id).innerHTML = number_to_currency(sum);
+        }
 }
 
 // Print view

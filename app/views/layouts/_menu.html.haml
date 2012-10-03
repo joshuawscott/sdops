@@ -36,6 +36,7 @@
             %br/
             =link_to 'Customers Needing SAM', {:controller => 'reports', :action => 'sam_needed'}, submenuhash('reportsinfo', 'List customers that need to have a SAM prepared and sent')
             %br/
+            =link_to 'SA Days', {:controller => 'reports', :action => 'sa_days'}, submenuhash('reportsinfo', 'Total SA Days sold per customer')
           .menuCol
             %h2 Revenue
             =link_to 'Dashboard', {:controller => 'reports', :action => 'index'}, submenuhash('reportsinfo', 'Main Reports Page')

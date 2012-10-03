@@ -1,0 +1,38 @@
+- content_for :subtitle do
+  Reports - SA Days
+
+#section1
+  %p.center{:style => 'padding-right:50%'}
+    %b
+      Filter by Office
+    =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOfficesGeneric(2, {display_as_currency: 0})', :style => "width: 82px"})
+#section2
+  %span.hideforprint{:style => 'margin-top:-50px;padding-top:-50px'}= link_to_function 'format for print', "toggleHeaderStuff()"
+  %table.plain_table
+    %tbody
+      %tr
+        %td
+          %h2 Total:&nbsp;
+        %td
+          %h2#sum_total 0.00
+  %h2{:style => 'margin:15px 0px 0px 90px'} Revenue by Customer and Support Office
+  %table{:class => "sortable", :padding => '2', :border => '1', :id => 'sum_table'}
+    %thead
+      %tr
+        %th{:width => '90px', :ts_type => 'string'}
+          Office
+        %th{:width => '300px', :ts_type => 'string'}
+          Customer
+        %th{:width => '60px'}
+          Days
+    %tbody
+      - @customers.each do |x|
+        %tr{:name => x.support_office_name}
+          %td
+            = h x.support_office_name
+          %td
+            = h x.account_name
+          %td
+            = h x.sum_sa_days
+%script
+  toggleOfficesGeneric(2, {display_as_currency: 0});
