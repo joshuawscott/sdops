@@ -1,6 +1,6 @@
 =include_calendar
 
-#section1{:style => 'width:800px'}
+#section1{:style => 'width:850px'}
   #general.boxed{:style => 'width:400px;height:380px'}
     %h2 General Details
     = f.hidden_field :sales_office_name
@@ -18,7 +18,7 @@
       %label{:for => "end_user_id"}
         End User
       = f.collection_select(:end_user_id, @end_users, :id, :name, { :include_blank => true })
-    %p
+    %p.top
       %label{:for => "contract_sales_office"}
         Sales Office
       = f.collection_select(:sales_office, @sales_offices, :id, :name, { :include_blank => true }, {:onchange => "document.getElementById('contract_sales_office_name').value = this.options[this.selectedIndex].text"})
@@ -34,32 +34,24 @@
       %label{:for => "contract_primary_ce_id"}
         Primary CE
       = f.collection_select(:primary_ce_id, @reps, :id, :full_name, { :include_blank => true })
+    %p.top
+      %label{:for => "contract_said"}
+        SAID
+      = f.text_field :said, :class => 'textbox', :style => 'width: 18em'
     %p
       %label{:for => "contract_sdc_ref"}
         SDC Reference
       = f.text_field :sdc_ref, :class => 'textbox', :style => 'width: 18em'
     %p
-      %label{:for => "contract_said"}
-        SAID
-      = f.text_field :said, :class => 'textbox', :style => 'width: 18em'
-    %p
       %label{:for => "contract_description"}
         Description
       = f.text_field :description, :class => 'textbox', :style => 'width: 18em'
-    %p
-      %label{:for => "contract_cust_po_num"}
-        Customer PO
-      = f.text_field :cust_po_num, :class => 'textbox', :style => 'width: 18em'
-    %p
-      %label{:for => "contract_payment_terms"}
-        Payment Terms
-      = f.collection_select(:payment_terms, @pay_terms, :label, :label, { :include_blank => true })
     %p
       %label{:for => "contract_platform"}
         Platform
       = f.collection_select(:platform, @platform, :label, :label, { :include_blank => true })
       %em optional
-    %p
+    %p.top
       %label{:for => "contract_renewal_created"}
         Renewal Created
       = f.date_select :renewal_created, :class => 'textbox'
@@ -71,8 +63,12 @@
       %label{:for => "contract_renewal_amount"}
         Renewal Amount
       = f.text_field :renewal_amount, :class => 'textbox'
+    %p.top
+      %label{:for => "contract_site_survey_date"}
+        Last Site Survey
+      = f.date_select :site_survey_date, :class => 'textbox'
 
-  #terms.boxed{:style => 'width:300px;height:380px'}
+  #terms.boxed{:style => 'width:400px;height:380px'}
     %h2 Terms
     %p
       %label{:for => "contract_start_date"}
@@ -86,7 +82,7 @@
       %label{:for => "contract_multiyr_end"}
         Multi-Year End
       = f.date_select :multiyr_end, :class => 'textbox'
-    %p
+    %p.top
       %label{:for => "contract_hw_support_level_id"}
         HW Support Level
       = f.collection_select(:hw_support_level_id, @types_hw, :label, :label, { :include_blank => true })
@@ -98,7 +94,7 @@
       %label{:for => "contract_updates"}
         SW Updates
       = f.select(:updates, %w{false true unknown})
-    %p
+    %p.top
       %label{:for => "contract_ce_days"}
         Num. CE Days
       = f.text_field :ce_days, :class => 'textbox', :style => 'width: 5em'
@@ -114,7 +110,7 @@
       %label{:for => "contract_basic_backup_auditing"}
         Basic MBS
       = f.select(:basic_backup_auditing, [["true", true],["false", false]], :include_blank => true)
-    %p
+    %p.top
       %label{:for => "contract_so_number"}
         SD Sales Order
       = f.text_field :so_number, :class => 'textbox'
@@ -129,16 +125,24 @@
     -#        Replaced By
     -#      = f.text_field :replacement_sdc_ref, :class => 'textbox'
     %p
+      %label{:for => "contract_cust_po_num"}
+        Customer PO
+      = f.text_field :cust_po_num, :class => 'textbox', :style => 'width: 18em'
+    %p
+      %label{:for => "contract_payment_terms"}
+        Payment Terms
+      = f.collection_select(:payment_terms, @pay_terms, :label, :label, { :include_blank => true })
+    %p
       %label{:for => "contract_po_received"}
         PO Received
       = f.date_select :po_received, :class => 'textbox'
-    %p
+    %p.top
       %label{:for => "contract_expired"}
         Expired
       = f.check_box :expired, :class => 'checkbox'
 
   #revenue.boxed{:style => 'width:210px;height:200px'}
-    %h2 Revenue
+    %h2 Financials
     %p
       %label{:for => "contract_revenue"}
         Amount Paid

@@ -20,7 +20,7 @@
     %label{:for => "contract_account_client_category"}
       Client Category
     =h @contract.sugar_acct.client_category.blank? ? 'N/A' : @contract.sugar_acct.client_category
-  %p
+  %p.top
     %label{:for => "contract_sales_office_name"}
       Sales Office
     =h @contract.sales_office_name.blank? ? 'N/A' : @contract.sales_office_name
@@ -36,7 +36,7 @@
     %label{:for => "contract_primary_ce_id"}
       Primary CE
     = h @contract.primary_ce_id.blank? ? 'N/A' : @contract.primary_ce.full_name
-  %p
+  %p.top
     %label{:for => "contract_said"}
       SAID
     =h @contract.said ||= 'N/A'
@@ -50,18 +50,10 @@
     %span{:title => @contract.description.to_s.length > 45 ? @contract.description : ""}
       =h @contract.description.blank? ? 'N/A' : truncate(@contract.description, 45, "....")
   %p
-    %label{:for => "contract_cust_po_num"}
-      Customer PO
-    =h @contract.cust_po_num.blank? ? 'N/A' : @contract.cust_po_num
-  %p
-    %label{:for => "contract_payment_terms"}
-      Payment Terms
-    =h @contract.payment_terms ||= 'N/A'
-  %p
     %label{:for => "contract_platform"}
       Platform
     =h @contract.platform.blank? ? 'N/A' : @contract.platform
-  %p
+  %p.top
     %label{:for => "contract_renewal_created"}
       Renewal Created
     =h @contract.renewal_created.blank? ? 'N/A' : @contract.renewal_created
@@ -73,3 +65,7 @@
     %label{:for => "contract_renewal_sent"}
       Renewal Amount
     =h @contract.renewal_amount.nil? ? 'N/A' : @contract.renewal_amount
+  %p.top
+    %label{:for => "contract_site_survey_date"}
+      Last Site Survey
+    =h @contract.site_survey_date.nil? ? 'N/A' : @contract.site_survey_date

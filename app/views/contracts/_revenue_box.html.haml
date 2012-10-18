@@ -1,5 +1,5 @@
 #revenue.boxed{:style => 'width:210px;height:160px'}
-  %h2 Revenue
+  %h2 Financials
   %p
     %label{:for => "contract_revenue"}
       Amount Paid
@@ -30,4 +30,8 @@
       Ann. DR Rev
     - @tmp = number_to_currency(@contract.annual_dr_rev)
     =h @tmp ||= 'N/A'
-
+  %p.top
+    %label
+      Sub-K cost
+    %span{:style => 'color: red'}
+      =h number_to_currency(@subk_cost)

@@ -141,6 +141,8 @@ class ContractsController < ApplicationController
     @support_providers = Subcontractor.find(:all, :select => :name).map {|s| s.name}
     @support_providers.insert 0, "Sourcedirect"
     @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
+    subks = @line_items.map {|line_item| line_item.subcontract}.uniq
+    @subk_cost = - subks.sum {|subk| subk.nil? ? 0 : subk.cost}
     respond_to do |format|
       format.html do
         render :action => 'quote' if params[:quote]
