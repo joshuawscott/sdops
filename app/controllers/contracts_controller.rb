@@ -142,7 +142,7 @@ class ContractsController < ApplicationController
     @support_providers.insert 0, "Sourcedirect"
     @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
     subks = @line_items.map {|line_item| line_item.subcontract}.uniq
-    @subk_cost = - subks.sum {|subk| subk.nil? ? 0 : subk.cost}
+    @subk_cost = - subks.sum {|subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s)}
     respond_to do |format|
       format.html do
         render :action => 'quote' if params[:quote]
