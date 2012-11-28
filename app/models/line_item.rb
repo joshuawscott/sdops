@@ -36,6 +36,8 @@ class LineItem < ActiveRecord::Base
   named_scope :in_contracts, :joins => :contract
   named_scope :in_quotes, :joins => :quote
 
+  validate :begins_and_ends_are_valid
+
   # Aggregates the locations in LineItems as an Array Object
   def self.locations
     LineItem.find(:all, :select => 'location', :joins => :support_deal, :conditions => ['support_deals.expired = ?', false], :group => 'location').map {|x| x.location.to_s}.sort!
@@ -251,5 +253,14 @@ class LineItem < ActiveRecord::Base
 
   def contract_ids_by_location
     LineItem.find(:all, :select => 'distinct support_deal_id', :joins => :contract, :conditions => ['location = ?', location]).map{|x| x.support_deal_id}
+  end
+
+  private
+  #Custom validator for dates
+  def begins_and_ends_are_valid
+    errors.add(:begins, 'must be present unless this is a label entry') if (begins.nil? && product_num.downcase != 'label')
+    errors.add(:ends, 'must be present unless this is a label entry') if (ends.nil? && product_num.downcase != 'label')
+    errors.add(:begins, 'must be 1900-01-01 or later.') if (!begins.nil? && begins < Date.parse('1900-01-01'))
+    errors.add(:ends, 'must be 1900-01-01 or later') if (ends < Date.parse('1900-01-01'))
   end
 end
