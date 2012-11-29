@@ -261,6 +261,6 @@ class LineItem < ActiveRecord::Base
     errors.add(:begins, 'must be present unless this is a label entry') if (begins.nil? && product_num.downcase != 'label')
     errors.add(:ends, 'must be present unless this is a label entry') if (ends.nil? && product_num.downcase != 'label')
     errors.add(:begins, 'must be 1900-01-01 or later.') if (!begins.nil? && begins < Date.parse('1900-01-01'))
-    errors.add(:ends, 'must be 1900-01-01 or later') if (ends < Date.parse('1900-01-01'))
+    errors.add(:ends, 'must be 1900-01-01 or later') if (!ends.nil? && ends < Date.parse('1900-01-01'))
   end
 end
