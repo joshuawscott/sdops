@@ -49,6 +49,8 @@
             %label.table_header{:for => 'search_support_office'}Supp. Office
           %th{:width => '149px', :ts_type => 'string'}
             %label.table_header{:for => 'search_account_name'}Account Name
+          %th{:width => '20px', :ts_type => 'string'}
+            %label.table_header{:for => 'search_client_category'}Cat
           %th{:width => '80px', :ts_type => 'number'}
             %label.table_header{:for => 'search_id'}Contract ID
           %th{:width => '100px', :ts_type => 'string'}
@@ -71,6 +73,8 @@
           %th{:class => "search"}
             = text_field 'search', 'account_name', :size => 19, :value => @account_name
           %th{:class => "search"}
+            = text_field 'search', 'client_category', :size => 1, :value => @client_category, :disabled => true
+          %th{:class => "search"}
             = text_field 'search', 'id', :size => 7, :value => @id.to_a.join(',')
           %th{:class => "search"}
             = text_field 'search', 'said', :size => 16, :value => @said
@@ -90,6 +94,7 @@
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
           %td{:title => contract.account_name.length > 20 ? contract.account_name : ""}= h truncate(contract.account_name, 20)
+          %td= h contract.sugar_acct.client_category
           %td= h contract.id
           %td{:title => contract.said.to_s.length > 15 ? contract.said : ""}= h truncate(contract.said, 15)
           %td{:title => contract.description.to_s.length > 20 ? contract.description : ""}= link_to(truncate(contract.description, 20), contract_path(contract), :class => 'highlight')
