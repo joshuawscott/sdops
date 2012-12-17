@@ -94,7 +94,7 @@
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
           %td{:title => contract.account_name.length > 20 ? contract.account_name : ""}= h truncate(contract.account_name, 20)
-          %td= h contract.sugar_acct.client_category
+          %td= h contract.sugar_acct.client_category unless contract.sugar_acct.nil?
           %td= h contract.id
           %td{:title => contract.said.to_s.length > 15 ? contract.said : ""}= h truncate(contract.said, 15)
           %td{:title => contract.description.to_s.length > 20 ? contract.description : ""}= link_to(truncate(contract.description, 20), contract_path(contract), :class => 'highlight')
