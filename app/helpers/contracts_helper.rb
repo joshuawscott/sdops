@@ -27,7 +27,7 @@ module ContractsHelper
     multiyear = opts[:multiyear]
     prepay = opts[:prepay]
 
-    # Consturct the description of the given discounts
+    # Construct the description of the given discounts
     if multiyear && prepay
       discount_string = "Includes Multi Year and PrePay Discounts"
       hw_discount_breakdown = "HW = " + number_to_percentage(@contract.discount_pref_hw * 100, :precision => 0) + ", Mult = " + number_to_percentage(@contract.discount_multiyear * 100, :precision => 0) + ", PrePay = " + number_to_percentage(@contract.discount_prepay * 100, :precision => 0)
