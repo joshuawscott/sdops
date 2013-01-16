@@ -1,4 +1,4 @@
-class CreateManagedServiceTables < ActiveRecord::Migration
+class CreateManagedDeals < ActiveRecord::Migration
   def self.up
     create_table :managed_deals do |t|
       t.string :account_id
