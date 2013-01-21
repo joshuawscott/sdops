@@ -89,7 +89,7 @@ class User < ActiveRecord::Base
   def full_name
 		[first_name, last_name].join(' ')
 	end
-  
+
   def self.user_list
      User.find(:all, :order => "first_name, last_name")
   end
@@ -103,9 +103,10 @@ class User < ActiveRecord::Base
   end
 
   # Updates local users' information from SugarCRM
+  # Returns a Hash of failures
   def self.update_from_sugar()
     sugar_users = SugarUser.getuserinfo(:all)
-    failures = []
+    failures = {}
     sugar_users.map do |x|
       local_user = User.find(:first, :conditions => ["login = ?", x.user_name])
       if local_user
@@ -119,7 +120,20 @@ class User < ActiveRecord::Base
         if local_user.save
           #all ok
         else
-          failures << x.user_name
+          case
+          when x.first_name.blank?
+            failures[x.user_name] = "Name missing"
+          when x.last_name.blank?
+            failures[x.user_name] = "Name missing"
+          when x.email.blank?
+            failures[x.user_name] = "Email missing or duplicate"
+          when x.user_hash.blank?
+            failures[x.user_name] = "Password not set"
+          when x.default_team.blank?
+            failures[x.user_name] = "Default team not set"
+          else
+            failures[x.user_name] = "Unknown error, contact support"
+          end
         end
       else
         logger.debug x.user_name + " does not exist, creating..."
@@ -134,7 +148,20 @@ class User < ActiveRecord::Base
         if local_user.save
           #all ok
         else
-          failures << x.user_name
+          case
+          when x.first_name.blank?
+            failures[x.user_name] = "Name missing"
+          when x.last_name.blank?
+            failures[x.user_name] = "Name missing"
+          when x.email.blank?
+            failures[x.user_name] = "Email missing or duplicate"
+          when x.user_hash.blank?
+            failures[x.user_name] = "Password not set"
+          when x.default_team.blank?
+            failures[x.user_name] = "Default team not set"
+          else
+            failures[x.user_name] = "Unknown error, contact support"
+          end
         end
       end
     end
@@ -156,13 +183,13 @@ class User < ActiveRecord::Base
   end
 
   protected
-    # before filter 
+    # before filter
     def encrypt_password
       return if password.blank?
       #self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
       self.crypted_password = encrypt(password)
     end
-      
+
     def password_required?
       crypted_password.blank? || !password.blank?
     end

@@ -19,9 +19,14 @@ class UsersController < ApplicationController
     unless failures.empty?
 			logger.error "**************************************"
 			logger.error "*** Failed to update users from Sugar:"
-			logger.error failures.to_s
+      failures.each do |user,problem|
+        flash[:error] += "***" + user.to_s + ': ' + problem.to_s
+      end
 			logger.error "**************************************"
-      flash[:error] = 'Users were not updated - ' + failures.to_s
+      flash[:error] = 'Users were not updated - <br/>'
+      failures.each do |user,problem|
+        flash[:error] += user.to_s + ': ' + problem.to_s
+      end
       redirect_to(users_path)
     else
 			logger.info current_user.login + " Successfully updated users from Sugar"
