@@ -598,11 +598,15 @@ class SupportDeal < ActiveRecord::Base
   # schedule).  Uses calendar months -- any days in a specific month will
   # generate an array member with the calculated price for that month.  The
   # length of this array is thus +calendar_months+
-  def payment_schedule(opts={:multiyear => false, :prepay => false})
+  def payment_schedule(opts={})
+    opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
+
     prepay = opts[:prepay]
     multiyear = opts[:multiyear]
-    month = start_date.month
-    year = start_date.year
+    month = opts[:start_date].month
+    year = opts[:start_date].year
+    end_month = opts[:end_date].month
+    end_year = opts[:end_date].year
 
     hw_pay_sched = []
     sw_pay_sched = []
@@ -613,7 +617,7 @@ class SupportDeal < ActiveRecord::Base
     sw_disc = BigDecimal.new("1.0") - discount(:type => "sw", :prepay => prepay, :multiyear => multiyear)
     srv_disc = BigDecimal.new("1.0") - discount(:type => "srv", :prepay => prepay, :multiyear => multiyear)
 
-    until (year > end_date.year && month == 1) || (month > end_date.month && year == end_date.year) do
+    until (year > end_year && month == 1) || (month > end_month && year == end_year) do
       hw_pay_sched << hw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * hw_disc}
       sw_pay_sched << sw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * sw_disc}
       srv_pay_sched << srv_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * srv_disc}
@@ -629,6 +633,46 @@ class SupportDeal < ActiveRecord::Base
   end
   # END New methods for quoting #
 
+  def multiyear?
+    if payment_terms.split("+")[1] == 'MY'
+      multiyear = true
+    else
+      multiyear = false
+    end
+    return multiyear
+  end
+
+  def prepay?
+    if payment_terms.split("+")[0] == 'Annual'
+      prepay = true
+    else
+      prepay = false
+    end
+    return prepay
+  end
+
+  def unearned_revenue_schedule_array(opts={})
+    opts.reverse_merge! :start_date => self.start_date, :end_date => self.end_date
+    opts[:start_date].class == Date ? start_date = opts[:start_date] : start_date = Date.parse(opts[:start_date])
+    opts[:end_date].class == Date ? end_date = opts[:end_date] : end_date = Date.parse(opts[:end_date])
+    ps_array = payment_schedule(:multiyear => multiyear?, :prepay => prepay?, :start_date => start_date, :end_date => end_date)
+  end
+
+  def unearned_revenue
+    unearned_revenue_schedule_array.sum
+  end
+
+  def self.payment_schedule_headers(opts={})
+    payment_schedule_headers = []
+    opts[:start_date].class == Date ? date = opts[:start_date] : date = Date.parse(opts[:start_date])
+    opts[:end_date].class == Date ? end_date = opts[:end_date] : end_date = Date.parse(opts[:end_date])
+    date = Date.new(date.year, date.month, 1)
+    while date <= end_date
+      payment_schedule_headers << date
+      date = date.next_month
+    end
+    return payment_schedule_headers
+  end
 protected
 
   # This method updates the account_name field from SugarCRM for all the Contracts with a matching account_id

@@ -1,0 +1,16 @@
+- content_for :subtitle do
+  Unearned Revenue Report
+
+#section1
+  %p Enter the start & end dates to generate the Unearned Revenue report
+  - form_tag 'unearned_revenue.xls' do
+    %p
+      %label{:for => :start_date}
+        Start Date
+      = text_field_tag 'start_date', @start_date
+    %p
+      %label{:for => :end_date}
+        End Date
+      = text_field_tag 'end_date', @end_date
+    = submit_tag "Generate Report"
+

@@ -2,8 +2,20 @@
   Admin Area
 
 #section1
-  %h1
-    Reports
+  %h2 Accounting Reports
+  %p
+    = link_to 'Support Cash Flow Forecast', {:controller => "admin", :action => "cashflow"}
+  %p
+    = link_to "Jared's Report", {:controller => "admin", :action => "jared"}
+  %p
+    = link_to "Attrition Report", {:controller => "admin", :action => "attrition"}
+  %p
+    = link_to "Early/Late PO Report", {:controller => :reports, :action => :po_receiving}
+  %p
+    = link_to "Unearned Revenue Report", {:controller => :admin, :action => :unearned_revenue}
+  %h2 Maintenance reports (for data maintenance)
+  %p
+    = link_to "Check for renewal links", {:controller => "admin", :action => "check_for_renewals"}
   %p
     = link_to 'Missing Line Items', {:controller => "admin", :action => "lineitems"}
   %p
@@ -11,19 +23,8 @@
   %p
     = link_to 'Missing MFG', {:controller => "admin", :action => "missing_manufacturer"}
   %p
-    = link_to 'Support Cash Flow Forecast', {:controller => "admin", :action => "cashflow"}
-  %p
-    = link_to 'Potential Office Planning', {:controller => "reports", :action => "potentialoffices"}
-  %p
-    = link_to "Jared's Report", {:controller => "admin", :action => "jared"}
-  %p
     = link_to "Untouched TLCI", {:controller => "admin", :action => "tlci"}
-  %p
-    = link_to "Check for renewal links", {:controller => "admin", :action => "check_for_renewals"}
-  %p
-    = link_to "Attrition Report", {:controller => "admin", :action => "attrition"}
-  %p
-    = link_to "Early/Late PO Report", {:controller => :reports, :action => :po_receiving}
+
   %h2 Appgen Invoices
   %p
     = link_to 'Upfront Orders', upfront_orders_path

@@ -35,7 +35,7 @@
   %p
     %label{:for => "contract_primary_ce_id"}
       Primary CE
-    = h @contract.primary_ce_id.blank? ? 'N/A' : @contract.primary_ce.full_name
+    = h @contract.primary_ce.blank? ? 'N/A' : @contract.primary_ce.full_name
   %p.top
     %label{:for => "contract_said"}
       SAID
