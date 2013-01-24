@@ -1,4 +1,3 @@
-
 xml.instruct!
 xml.Workbook({
   'xmlns'      => "urn:schemas-microsoft-com:office:spreadsheet",
@@ -16,12 +15,6 @@ xml.Workbook({
       xml.Interior
       xml.NumberFormat
       xml.Protection
-    end
-    xml.Style 'ss:ID' => 'description' do
-      xml.Alignment 'ss:Vertical' => 'Bottom', 'ss:WrapText' => '1'
-    end
-    xml.Style 'ss:ID' => 'headers' do
-      xml.Font 'ss:Bold' => '1'
     end
     xml.Style 'ss:ID' => 'currency' do
       xml.NumberFormat 'ss:Format' => '"$"#,##0.00'
@@ -57,7 +50,6 @@ xml.Workbook({
           end
         end
       end
-
     end
   end
 end

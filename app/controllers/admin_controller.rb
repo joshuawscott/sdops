@@ -101,17 +101,18 @@ class AdminController < ApplicationController
   end
 
   def unearned_revenue
-    params.reverse_merge! :start_date => Date.today, :end_date => Date.today.next_year - 1
+    logger.debug "Begin " + Time.now.to_f.to_s
+    params.reverse_merge! :start_date => Date.today, :end_date => Date.today
     @start_date = params[:start_date]
     @end_date = params[:end_date]
     @contracts = Contract.find(:all, :conditions => ["end_date >= ? AND start_date <= ? AND payment_terms <> 'Bundled'", @start_date, @end_date])
-    logger.debug @contracts.length
     @date_headers = SupportDeal.payment_schedule_headers(:start_date => @start_date, :end_date => @end_date)
     respond_to do |format|
       format.html
       format.xls
     end
-  end
+    logger.debug "Finish " + Time.now.to_f.to_s
+ end
 
   protected
   def authorized?

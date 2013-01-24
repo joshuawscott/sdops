@@ -510,17 +510,20 @@ class SupportDeal < ActiveRecord::Base
 
   # Returns an Array of the hardware +line_items+.
   def hw_line_items
-    line_items.find_all {|l| l.support_type == "HW"}.sort_by {|n| n.position}
+    #line_items.find_all {|l| l.support_type == "HW"}.sort_by {|n| n.position}
+    line_items.find_all_by_support_type("HW", :order => 'position ASC')
   end
 
   # Returns an Array of the software +line_items+.
   def sw_line_items
-    line_items.find_all {|l| l.support_type == "SW"}.sort_by {|n| n.position}
+    #line_items.find_all {|l| l.support_type == "SW"}.sort_by {|n| n.position}
+    line_items.find_all_by_support_type("SW", :order => 'position ASC')
   end
 
   # Returns an Array of the services +line_items+.
   def srv_line_items
-    line_items.find_all {|l| l.support_type == "SRV"}.sort_by {|n| n.position}
+    #line_items.find_all {|l| l.support_type == "SRV"}.sort_by {|n| n.position}
+    line_items.find_all_by_support_type("SRV", :order => 'position ASC')
   end
 
   # Returns a Float - hardware list price based on the +line_items+.
@@ -618,12 +621,24 @@ class SupportDeal < ActiveRecord::Base
     srv_disc = BigDecimal.new("1.0") - discount(:type => "srv", :prepay => prepay, :multiyear => multiyear)
 
     until (year > end_year && month == 1) || (month > end_month && year == end_year) do
-      hw_pay_sched << hw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * hw_disc}
-      sw_pay_sched << sw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * sw_disc}
-      srv_pay_sched << srv_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * srv_disc}
+      logger.debug "month start " + Time.now.to_f.to_s
+      #hw_pay_sched << hw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * hw_disc}
+      sum = 0
+      hw_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * hw_disc}
+      hw_pay_sched << sum
+      #sw_pay_sched << sw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * sw_disc}
+      sum = 0
+      sw_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * sw_disc}
+      sw_pay_sched << sum
+      #srv_pay_sched << srv_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * srv_disc}
+      sum = 0
+      srv_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * srv_disc}
+      srv_pay_sched << sum
+
       year += 1 if month == 12
       month = 0 if month == 12
       month += 1
+      logger.debug "month done " + Time.now.to_f.to_s
     end
 
     hw_pay_sched.size.times do |i|

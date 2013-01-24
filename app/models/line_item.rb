@@ -218,26 +218,30 @@ class LineItem < ActiveRecord::Base
   # and :month keys, and the list price is calculated for that calendar month
   # based on start & end dates of the line item and contract.
   def list_price_for_month(opts)
+    #logger.debug 'enter list_price_for_month'
+    return 0 if list_price == 0.0
+
+    startdate = start_date
+    enddate = end_date
     month = opts[:month]
     year = opts[:year]
     days_in_month = Time.days_in_month(month,year)
 
-    if start_date.month == month && start_date.year == year
+    #this month is before the start date
+    return 0 if (startdate.month > month && startdate.year == year) || (startdate.year > year)
+    #this month is after the end date
+    return 0 if (enddate.month < month && enddate.year == year) || (enddate.year < year)
+
+    if startdate.month == month && startdate.year == year
       #beginning month
-      start_day = start_date.day
-    elsif (start_date.month > month && start_date.year == year) || (start_date.year > year)
-      # month before start_date (have to check for the year too because of wraparound)
-      start_day = days_in_month + 1
+      start_day = startdate.day
     else
       start_day = 1
     end
 
-    if end_date.month == month && end_date.year == year
+    if enddate.month == month && enddate.year == year
       #ending month
-      end_day = end_date.day
-    elsif (end_date.month < month && end_date.year == year) || (end_date.year < year)
-      # month after end_date (have to check for the year too because of wraparound)
-      end_day = 0
+      end_day = enddate.day
     else
       end_day = days_in_month
     end
