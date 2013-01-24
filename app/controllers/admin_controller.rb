@@ -102,7 +102,7 @@ class AdminController < ApplicationController
 
   def unearned_revenue
     logger.debug "Begin " + Time.now.to_f.to_s
-    params.reverse_merge! :start_date => Date.today, :end_date => Date.today
+    params.reverse_merge! 'start_date' => Date.today, 'end_date' => Date.today
     @start_date = params[:start_date]
     @end_date = params[:end_date]
     @contracts = Contract.find(:all, :conditions => ["end_date >= ? AND start_date <= ? AND payment_terms <> 'Bundled'", @start_date, @end_date])
