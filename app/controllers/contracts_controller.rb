@@ -118,7 +118,11 @@ class ContractsController < ApplicationController
       @contracts = Contract.short_list(current_user.sugar_team_ids)
     end
     respond_to do |format|
-      store_location
+      #store_location
+      #store_location breaks on large get requests.  potential offices report
+      #redirects here with a massive URL, which would break if store_location
+      #were enabled.  In the future, we could use this again if we used a
+      #DB backed session store.
       format.html { render :html => @contracts }# index.html.haml
       format.xml  { render :xml => @contracts }
       format.xls  #Respond as Excel Doc
