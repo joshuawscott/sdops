@@ -103,14 +103,22 @@ class AdminController < ApplicationController
   def unearned_revenue
     logger.debug "Begin " + Time.now.to_f.to_s
     params.reverse_merge! 'start_date' => Date.today, 'end_date' => Date.today
-    @start_date = params[:start_date]
-    @end_date = params[:end_date]
+    @start_date = params['start_date']
+    @end_date = params['end_date']
+    @total_unearned_revenue = params['total_unearned_revenue']
     @contracts = Contract.find(:all, :conditions => ["end_date >= ? AND start_date <= ? AND payment_terms <> 'Bundled'", @start_date, @end_date])
     @date_headers = SupportDeal.payment_schedule_headers(:start_date => @start_date, :end_date => @end_date)
     respond_to do |format|
       format.html
+      if params['commit'] == 'See Unearned Revenue'
+        @total_unearned_revenue = 0.0
+        @contracts.each do |contract|
+          @total_unearned_revenue += contract.unearned_revenue_schedule_array(:start_date => @start_date, :end_date => @end_date).sum
+        end
+        format.xls {redirect_to '/admin/unearned_revenue.html?total_unearned_revenue='+@total_unearned_revenue.to_s}
+      end
       format.xls
-    end
+      end
     logger.debug "Finish " + Time.now.to_f.to_s
  end
 

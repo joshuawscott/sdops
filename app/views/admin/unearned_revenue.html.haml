@@ -13,4 +13,10 @@
         End Date
       = text_field_tag 'end_date', @end_date
     = submit_tag "Generate Report"
+    %br/
+    = submit_tag "See Unearned Revenue"
+    %p
+      Unearned Revenue:
+      = @total_unearned_revenue
+
 

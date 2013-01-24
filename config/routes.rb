@@ -80,7 +80,8 @@ ActionController::Routing::Routes.draw do |map|
   map.tools '/tools/:action', :controller => 'tools'
   map.admin '/admin', :controller => 'admin', :action => 'index'
   map.jared '/admin/jared.xls', :controller => 'admin', :action => 'jared', :format => 'xls'
-  map.unearned_revenue '/admin/unearned_revenue.xls', :controller => 'admin', :action => 'unearned_revenue', :format => 'xls'
+  map.unearned_revenue_xls '/admin/unearned_revenue.xls', :controller => 'admin', :action => 'unearned_revenue', :format => 'xls'
+  map.unearned_revenue '/admin/unearned_revenue.html', :controller => 'admin', :action => 'unearned_revenue'
 
   map.activate '/activate/:activation_code', :controller => 'users', :action => 'activate', :activation_code => nil
   map.signup '/signup', :controller => 'users', :action => 'new'
