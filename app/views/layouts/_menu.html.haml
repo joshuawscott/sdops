@@ -82,6 +82,10 @@
             =link_to 'Dell Warranty', {:controller => 'tools', :action => 'dell_service_tag'}, submenuhash('toolsinfo', 'Find Dell Warranty information')
             %br/
             =link_to 'Dell Configuration', {:controller => 'tools', :action => 'dell_configuration'}, submenuhash('toolsinfo', 'Find Dell Original Configuration information')
+          .menuCol
+            %h2 Misc.
+            =link_to 'Footprints Categories', footprints_categories_path, submenuhash('toolsinfo', 'Set up Nimsoft -> Footprints category mapping')
+            %br/
           - if current_user.has_role?(:admin, :hardware_sales)
             .menuCol.last
               %h2 Upfront Orders

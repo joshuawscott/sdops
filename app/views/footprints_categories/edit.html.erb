@@ -1,0 +1,23 @@
+<% content_for :subtitle do %>
+  Edit Footprints Category
+<% end %>
+<h1>Edit Category Mapping</h1>
+
+<% form_for(@footprints_category) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :subsystem, "Nimsoft Subsystem", :class => 'doublewide' %><br />
+    <%= f.text_field :subsystem %>
+  </p>
+  <p>
+    <%= f.label :main_category, "Footprints Category", :class => 'doublewide' %><br />
+    <%= f.text_field :main_category %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @footprints_category %> |
+<%= link_to 'Back', footprints_categories_path %>

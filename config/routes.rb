@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :footprints_categories
+
 
   map.resources :managed_deals
   map.resources :managed_deal_items

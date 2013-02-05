@@ -1,0 +1,26 @@
+<% content_for :subtitle do %>
+  Footprints Category List
+<% end %>
+<h1>Footprints Category Mappings</h1>
+
+<table class="main_table">
+  <tr>
+    <th>Nimsoft Subsystem</th>
+    <th>Footprints Main Category</th>
+    <th colspan="3"></th>
+  </tr>
+
+<% for footprints_category in @footprints_categories %>
+  <tr>
+    <td><%=h footprints_category.subsystem %></td>
+    <td><%=h footprints_category.main_category %></td>
+    <td><%= link_to 'Show', footprints_category %></td>
+    <td><%= link_to 'Edit', edit_footprints_category_path(footprints_category) %></td>
+    <td><%= link_to 'Destroy', footprints_category, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Category Mapping', new_footprints_category_path %>
