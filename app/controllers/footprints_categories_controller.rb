@@ -44,8 +44,8 @@ class FootprintsCategoriesController < ApplicationController
 
     respond_to do |format|
       if @footprints_category.save
-        flash[:notice] = 'FootprintsCategory was successfully created.'
-        format.html { redirect_to(@footprints_category) }
+        flash[:notice] = 'Category Mapping was successfully created.'
+        format.html { redirect_to(footprints_categories_url) }
         format.xml  { render :xml => @footprints_category, :status => :created, :location => @footprints_category }
       else
         format.html { render :action => "new" }
@@ -61,8 +61,8 @@ class FootprintsCategoriesController < ApplicationController
 
     respond_to do |format|
       if @footprints_category.update_attributes(params[:footprints_category])
-        flash[:notice] = 'FootprintsCategory was successfully updated.'
-        format.html { redirect_to(@footprints_category) }
+        flash[:notice] = 'Category Mapping was successfully updated.'
+        format.html { redirect_to(footprints_categories_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

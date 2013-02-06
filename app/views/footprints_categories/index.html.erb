@@ -9,6 +9,7 @@
   <tr>
     <th>Nimsoft Subsystem</th>
     <th>Footprints Main Category</th>
+    <th>Footprints Sub-Category</th>
     <th colspan="3"></th>
   </tr>
 
@@ -16,6 +17,7 @@
   <tr>
     <td><%=h footprints_category.subsystem %></td>
     <td><%=h footprints_category.main_category %></td>
+    <td><%=h footprints_category.sub_category %></td>
     <td><%= link_to 'Show', footprints_category %></td>
     <td><%= link_to 'Edit', edit_footprints_category_path(footprints_category) %></td>
     <td><%= link_to 'Destroy', footprints_category, :confirm => 'Are you sure?', :method => :delete %></td>
