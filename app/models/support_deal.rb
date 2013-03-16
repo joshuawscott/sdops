@@ -546,6 +546,40 @@ class SupportDeal < ActiveRecord::Base
     hw_list_price + sw_list_price + srv_list_price
   end
 
+  # like hw_line_items, but uses the DB to pre-group the items by date.
+  # this is to optimize the payment_schedule method
+  def hw_line_items_for_payment_schedule
+    line_items.find(:all,
+      :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
+      :group => 'support_deal_id, begins, ends',
+      :conditions => 'support_type = "HW"')
+  end
+  # like sw_line_items, but uses the DB to pre-group the items by date.
+  # this is to optimize the payment_schedule method
+  def sw_line_items_for_payment_schedule
+    line_items.find(:all,
+      :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
+      :group => 'support_deal_id, begins, ends',
+      :conditions => 'support_type = "SW"')
+  end
+  # like srv_line_items, but uses the DB to pre-group the items by date.
+  # this is to optimize the payment_schedule method
+  def srv_line_items_for_payment_schedule
+    line_items.find(:all,
+      :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
+      :group => 'support_deal_id, begins, ends',
+      :conditions => 'support_type = "SRV"')
+  end
+
+  #Efficient query to determine cost of all associated subcontracts.  Returns a NEGATIVE number!
+  def subcontract_cost
+    subcontract_ids = line_items.find(:all,
+      :select => 'DISTINCT subcontract_id AS ids').map {|x| x.ids}
+    @subcontract_cost = - Subcontract.find(subcontract_ids).sum {|subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s)}
+  end
+
+
+
   # Returns a BigDecimal of the discount percentage (e.g. 30% => 0.30)
   #
   # +opts+ hash
@@ -621,28 +655,70 @@ class SupportDeal < ActiveRecord::Base
     srv_disc = BigDecimal.new("1.0") - discount(:type => "srv", :prepay => prepay, :multiyear => multiyear)
 
     until (year > end_year && month == 1) || (month > end_month && year == end_year) do
-      logger.debug "month start " + Time.now.to_f.to_s
+      #logger.debug "month start " + Time.now.to_f.to_s
       #hw_pay_sched << hw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * hw_disc}
-      sum = 0
+      sum = BigDecimal('0')
       hw_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * hw_disc}
       hw_pay_sched << sum
       #sw_pay_sched << sw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * sw_disc}
-      sum = 0
+      sum = BigDecimal('0')
       sw_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * sw_disc}
       sw_pay_sched << sum
       #srv_pay_sched << srv_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * srv_disc}
-      sum = 0
+      sum = BigDecimal('0')
       srv_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * srv_disc}
       srv_pay_sched << sum
 
       year += 1 if month == 12
       month = 0 if month == 12
       month += 1
-      logger.debug "month done " + Time.now.to_f.to_s
+      #logger.debug "month done " + Time.now.to_f.to_s
     end
 
     hw_pay_sched.size.times do |i|
-      @payment_schedule << hw_pay_sched[i].to_f + sw_pay_sched[i].to_f + srv_pay_sched[i].to_f
+      @payment_schedule << hw_pay_sched[i] + sw_pay_sched[i] + srv_pay_sched[i]
+    end
+    @payment_schedule
+  end
+  def payment_schedule_new(opts={})
+    opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
+
+    prepay = opts[:prepay]
+    multiyear = opts[:multiyear]
+    month = opts[:start_date].month
+    year = opts[:start_date].year
+    end_month = opts[:end_date].month
+    end_year = opts[:end_date].year
+
+    hw_pay_sched = []
+    sw_pay_sched = []
+    srv_pay_sched = []
+    @payment_schedule = []
+    # set discount
+    hw_disc = BigDecimal.new("1.0") - discount(:type => "hw", :prepay => prepay, :multiyear => multiyear)
+    sw_disc = BigDecimal.new("1.0") - discount(:type => "sw", :prepay => prepay, :multiyear => multiyear)
+    srv_disc = BigDecimal.new("1.0") - discount(:type => "srv", :prepay => prepay, :multiyear => multiyear)
+
+    until (year > end_year && month == 1) || (month > end_month && year == end_year) do
+      #logger.debug "month start " + Time.now.to_f.to_s
+      sum = BigDecimal('0')
+      hw_line_items_for_payment_schedule.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * hw_disc}
+      hw_pay_sched << sum
+      sum = BigDecimal('0')
+      sw_line_items_for_payment_schedule.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * sw_disc}
+      sw_pay_sched << sum
+      sum = BigDecimal('0')
+      srv_line_items_for_payment_schedule.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * srv_disc}
+      srv_pay_sched << sum
+
+      year += 1 if month == 12
+      month = 0 if month == 12
+      month += 1
+      #logger.debug "month done " + Time.now.to_f.to_s
+    end
+
+    hw_pay_sched.size.times do |i|
+      @payment_schedule << hw_pay_sched[i] + sw_pay_sched[i] + srv_pay_sched[i]
     end
     @payment_schedule
   end
@@ -687,6 +763,11 @@ class SupportDeal < ActiveRecord::Base
       date = date.next_month
     end
     return payment_schedule_headers
+  end
+
+  def subcontract_cost
+    subks = @line_items.map {|line_item| line_item.subcontract}.uniq
+    @subcontract_cost = - subks.sum {|subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s)}
   end
 protected
 

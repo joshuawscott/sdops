@@ -46,7 +46,7 @@ CREATE TABLE `audits` (
   KEY `auditable_index` (`auditable_id`,`auditable_type`),
   KEY `user_index` (`user_id`,`user_type`),
   KEY `index_audits_on_created_at` (`created_at`)
-) ENGINE=InnoDB AUTO_INCREMENT=175506 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=270454 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL auto_increment,
@@ -57,7 +57,7 @@ CREATE TABLE `comments` (
   `updated_at` datetime default NULL,
   `user` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1387 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4815 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `commissions` (
   `id` int(11) NOT NULL auto_increment,
@@ -131,7 +131,17 @@ CREATE TABLE `dropdowns` (
   `updated_at` datetime default NULL,
   `sort_order` bigint(11) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `footprints_categories` (
+  `id` int(11) NOT NULL auto_increment,
+  `subsystem` varchar(255) default NULL,
+  `main_category` varchar(255) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  `sub_category` varchar(255) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `goals` (
   `id` int(11) NOT NULL auto_increment,
@@ -161,7 +171,7 @@ CREATE TABLE `hwdb` (
   `tlci` tinyint(1) default NULL,
   PRIMARY KEY  (`id`),
   KEY `index_hwdb_on_part_number` (`part_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=11473 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12802 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `inventory_items` (
   `id` varchar(255) NOT NULL default '',
@@ -235,8 +245,10 @@ CREATE TABLE `line_items` (
   `subcontract_cost` decimal(20,2) default NULL,
   PRIMARY KEY  (`id`),
   KEY `index_line_items_on_product_num` (`product_num`),
-  KEY `index_line_items_on_contract_id` (`support_deal_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=126187 DEFAULT CHARSET=latin1;
+  KEY `index_line_items_on_contract_id` (`support_deal_id`),
+  KEY `index_line_items_on_location` (`location`),
+  KEY `support_type_position_support_deal_id` (`support_type`,`position`,`support_deal_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=179346 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `locations` (
   `id` int(11) NOT NULL auto_increment,
@@ -250,6 +262,63 @@ CREATE TABLE `locations` (
   PRIMARY KEY  (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `managed_deal_elements` (
+  `id` int(11) NOT NULL auto_increment,
+  `type` varchar(255) default NULL,
+  `hostname` varchar(255) default NULL,
+  `ip_address` varchar(255) default NULL,
+  `serial_number` varchar(255) default NULL,
+  `footprints_id` varchar(255) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `managed_deal_items` (
+  `id` int(11) NOT NULL auto_increment,
+  `managed_deal_element_id` int(11) default NULL,
+  `managed_deal_id` int(11) default NULL,
+  `managed_service_id` int(11) default NULL,
+  `start_date` date default NULL,
+  `end_date` date default NULL,
+  `monthly_price` decimal(10,0) default NULL,
+  `description` varchar(255) default NULL,
+  `remediation` tinyint(1) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `managed_deals` (
+  `id` int(11) NOT NULL auto_increment,
+  `account_id` varchar(255) default NULL,
+  `end_user_id` varchar(255) default NULL,
+  `sales_office_id` varchar(255) default NULL,
+  `sales_rep_id` varchar(255) default NULL,
+  `customer_po_number` varchar(255) default NULL,
+  `payment_terms` varchar(255) default NULL,
+  `initial_annual_revenue` varchar(255) default NULL,
+  `description` varchar(255) default NULL,
+  `start_date` date default NULL,
+  `end_date` date default NULL,
+  `renewal_created` date default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `managed_services` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) default NULL,
+  `category` varchar(255) default NULL,
+  `version` varchar(255) default NULL,
+  `description` text,
+  `monthly_cost` decimal(10,0) default NULL,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 CREATE TABLE `manufacturer_lines` (
   `id` int(11) NOT NULL auto_increment,
   `name` varchar(255) default NULL,
@@ -257,7 +326,7 @@ CREATE TABLE `manufacturer_lines` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `manufacturers` (
   `id` int(11) NOT NULL auto_increment,
@@ -265,7 +334,7 @@ CREATE TABLE `manufacturers` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `opportunities` (
   `id` int(11) NOT NULL auto_increment,
@@ -334,7 +403,7 @@ CREATE TABLE `relationships` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1633 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2495 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `roles` (
   `id` int(11) NOT NULL auto_increment,
@@ -343,7 +412,7 @@ CREATE TABLE `roles` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=996332878 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `schema_migrations` (
   `version` varchar(255) NOT NULL,
@@ -379,7 +448,7 @@ CREATE TABLE `subcontractors` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `subcontracts` (
   `id` int(11) NOT NULL auto_increment,
@@ -405,7 +474,7 @@ CREATE TABLE `subcontracts` (
   `start_date` date default NULL,
   `end_date` date default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `support_deals` (
   `id` int(11) NOT NULL auto_increment,
@@ -464,8 +533,14 @@ CREATE TABLE `support_deals` (
   `type` varchar(255) default NULL,
   `list_price_increase` decimal(5,3) default NULL,
   `renewal_created` date default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2755 DEFAULT CHARSET=latin1;
+  `basic_remote_monitoring` tinyint(1) default NULL,
+  `basic_backup_auditing` tinyint(1) default NULL,
+  `primary_ce_id` int(11) default NULL,
+  `end_user_id` varchar(255) default NULL,
+  `site_survey_date` date default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `index_support_deals_on_type` (`type`)
+) ENGINE=InnoDB AUTO_INCREMENT=3730 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `swdb` (
   `id` int(11) NOT NULL auto_increment,
@@ -481,7 +556,7 @@ CREATE TABLE `swdb` (
   `tlci` tinyint(1) default NULL,
   PRIMARY KEY  (`id`),
   KEY `index_swdb_on_part_number` (`part_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=3302 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3652 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `swlist_blacklists` (
   `id` int(11) NOT NULL auto_increment,
@@ -489,7 +564,7 @@ CREATE TABLE `swlist_blacklists` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=436 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=457 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `swlist_whitelists` (
   `id` int(11) NOT NULL auto_increment,
@@ -497,7 +572,7 @@ CREATE TABLE `swlist_whitelists` (
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `swproducts` (
   `id` int(11) NOT NULL auto_increment,
@@ -511,7 +586,7 @@ CREATE TABLE `swproducts` (
   `explanation` text,
   `server_line` varchar(255) default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `upfront_orders` (
   `id` int(11) NOT NULL auto_increment,
@@ -522,7 +597,7 @@ CREATE TABLE `upfront_orders` (
   `fishbowl_so_id` int(11) default NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `index_upfront_orders_on_appgen_order_id` (`appgen_order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=801 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=1198 DEFAULT CHARSET=latin1;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL auto_increment,
@@ -540,7 +615,7 @@ CREATE TABLE `users` (
   `remember_token` varchar(255) default NULL,
   `remember_token_expires_at` datetime default NULL,
   PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=149 DEFAULT CHARSET=latin1;
 
 INSERT INTO schema_migrations (version) VALUES ('1');
 
@@ -655,6 +730,22 @@ INSERT INTO schema_migrations (version) VALUES ('20110617202631');
 INSERT INTO schema_migrations (version) VALUES ('20110718134005');
 
 INSERT INTO schema_migrations (version) VALUES ('20111108164115');
+
+INSERT INTO schema_migrations (version) VALUES ('20120117153011');
+
+INSERT INTO schema_migrations (version) VALUES ('20120227214532');
+
+INSERT INTO schema_migrations (version) VALUES ('20120725145159');
+
+INSERT INTO schema_migrations (version) VALUES ('20120727153246');
+
+INSERT INTO schema_migrations (version) VALUES ('20120914191859');
+
+INSERT INTO schema_migrations (version) VALUES ('20130104222842');
+
+INSERT INTO schema_migrations (version) VALUES ('20130205231221');
+
+INSERT INTO schema_migrations (version) VALUES ('20130206135807');
 
 INSERT INTO schema_migrations (version) VALUES ('4');
 

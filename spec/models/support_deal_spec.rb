@@ -17,10 +17,23 @@ describe SupportDeal do
       @contract.line_items = [line_item1,line_item2,line_item3,line_item4]
     end
     it "finds the correct payment schedule for non-multiyear" do
-      @contract.payment_schedule(:multiyear => false).should == [2.0*0.7,2.0*0.7,2.0*0.7,2.0*0.7,2.0 * 0.7 + (17.0/31.0)*2*0.7, 4.0*0.7,4.0*0.7,4.0*0.7,3.0*0.7,2.0*0.7,2.0*0.7,2.0*0.7]
+      @contract.payment_schedule(:multiyear => false).should == [
+        BigDecimal('2.0')*BigDecimal('0.7'),
+        BigDecimal('2.0')*BigDecimal('0.7'),
+        BigDecimal('2.0')*BigDecimal('0.7'),
+        BigDecimal('2.0')*BigDecimal('0.7'),
+        BigDecimal('2.0') * BigDecimal('0.7') + (BigDecimal('17.0')/BigDecimal('31.0'))*BigDecimal('2')*BigDecimal('0.7'),
+        BigDecimal('4.0')*BigDecimal('0.7'),
+        BigDecimal('4.0')*BigDecimal('0.7'),
+        BigDecimal('4.0')*BigDecimal('0.7'),
+        BigDecimal('3.0')*BigDecimal('0.7'),
+        BigDecimal('2.0')*BigDecimal('0.7'),
+        BigDecimal('2.0')*BigDecimal('0.7'),
+        BigDecimal('2.0')*BigDecimal('0.7')]
     end
     it "finds the correct payment schedule for multiyear" do
-      @contract.payment_schedule(:multiyear => true).should == [2.0*0.65,2.0*0.65,2.0*0.65,2.0*0.65,2.0*0.65 + (17.0/31.0)*2*0.65, 4.0*0.65,4.0*0.65,4.0*0.65,3.0*0.65,2.0*0.65,2.0*0.65,2.0*0.65]
+      disc_multiplier = BigDecimal('0.65')
+      @contract.payment_schedule(:multiyear => true).should == [BigDecimal('2.0')*disc_multiplier,BigDecimal('2.0')*disc_multiplier,BigDecimal('2.0')*disc_multiplier,BigDecimal('2.0')*disc_multiplier,BigDecimal('2.0')*disc_multiplier + (BigDecimal('17.0')/BigDecimal('31.0'))*BigDecimal('2')*disc_multiplier, BigDecimal('4.0')*disc_multiplier,BigDecimal('4.0')*disc_multiplier,BigDecimal('4.0')*disc_multiplier,BigDecimal('3.0')*disc_multiplier,BigDecimal('2.0')*disc_multiplier,BigDecimal('2.0')*disc_multiplier,BigDecimal('2.0')*disc_multiplier]
     end
     after(:all) do
       Contract.delete_all

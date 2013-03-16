@@ -58,7 +58,7 @@ describe LineItem do
     it "should remove the line item from subcontract" do
       @subcontractor = Factory :subcontractor
       @subcontract = Factory :subcontract
-      @line_item = Factory :line_item, :subcontract_id => @subcontract.id
+      @line_item = Factory :line_item, :subcontract_id => @subcontract.id, :begins => d('2008-01-01'), :ends => ('2008-12-31')
       @subcontract.line_items.count.should == 1
       @line_item.remove_from @subcontract
       @subcontract.line_items.count.should == 0
@@ -169,23 +169,23 @@ describe LineItem do
       contract.line_items << @line_item
     end
     it "prices a full month correctly" do
-      @line_item.list_price_for_month(:month => 2, :year => 2009).should == 1.0
+      @line_item.list_price_for_month(:month => 2, :year => 2009).should == BigDecimal('1.0')
     end
     it "prices a beginning partial month correctly" do
-      @line_item.list_price_for_month(:month => 1, :year => 2009).should == (11.0 / 31.0)
+      @line_item.list_price_for_month(:month => 1, :year => 2009).should == BigDecimal('11.0') / BigDecimal('31.0')
     end
     it "prices a ending partial month correctly" do
-      @line_item.list_price_for_month(:month => 12, :year => 2009).should == (15.0 / 31.0)
+      @line_item.list_price_for_month(:month => 12, :year => 2009).should == BigDecimal('15.0') / BigDecimal('31.0')
     end
     it "prices a month after the contract correctly" do
-      @line_item.list_price_for_month(:month =>1, :year => 2010).should == (0.0)
+      @line_item.list_price_for_month(:month =>1, :year => 2010).should == BigDecimal('0.0')
     end
     it "prices a month before the contract correctly" do
-      @line_item.list_price_for_month(:month =>12, :year => 2008).should == (0.0)
+      @line_item.list_price_for_month(:month =>12, :year => 2008).should == BigDecimal('0.0')
     end
     it "prices a partial start and stop correctly" do
       @line_item.ends = d('2009-01-22')
-      @line_item.list_price_for_month(:month => 1, :year => 2009).should == (2.0 / 31.0)
+      @line_item.list_price_for_month(:month => 1, :year => 2009).should == BigDecimal('2.0') / BigDecimal('31.0')
     end
     after(:all) do
       LineItem.delete_all

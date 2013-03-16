@@ -106,7 +106,7 @@ class AdminController < ApplicationController
     @start_date = params['start_date']
     @end_date = params['end_date']
     @total_unearned_revenue = params['total_unearned_revenue']
-    @contracts = Contract.find(:all, :conditions => ["end_date >= ? AND start_date <= ? AND payment_terms <> 'Bundled'", @start_date, @end_date])
+    @contracts = Contract.find(:all, :conditions => ["end_date >= ? AND start_date <= ? AND payment_terms <> 'Bundled' AND payment_terms NOT LIKE 'Monthly%'", @start_date, @end_date])
     @date_headers = SupportDeal.payment_schedule_headers(:start_date => @start_date, :end_date => @end_date)
     respond_to do |format|
       format.html

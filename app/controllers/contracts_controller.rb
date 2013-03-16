@@ -13,6 +13,8 @@ class ContractsController < ApplicationController
     @support_offices =  @sales_offices
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
     @pay_terms << "Not Bundled"
+
+    # Serial Search:
     if params[:serial_search] != nil
       if params[:hidden_search_expired].to_i == 1
         expired = true
@@ -21,6 +23,8 @@ class ContractsController < ApplicationController
       end
       @contracts = Contract.serial_search(params[:serial_search][:serial_number], expired)
       @sn_warning = "NOTE: Serial Number search found approximate matches." if @contracts[0] && @contracts[0].sn_approximated == true
+
+    #Normal Search:
     elsif params[:search] != nil
       #Get search criteria from params object
       @sales_office ||= params[:search][:sales_office]
@@ -79,6 +83,8 @@ class ContractsController < ApplicationController
         @contracts = @contracts.conditions "id IN(?)", @id
       end
       @contracts
+
+    # Export
     elsif params[:export] != nil
       #Get search criteria from params object
       @sales_office ||= params[:export][:sales_office]
@@ -114,6 +120,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "(support_deals.expired <> true OR support_deals.end_date >= '#{Date.today}')" unless @expired == "on"
       @contracts
 
+    #Default
     else
       @contracts = Contract.short_list(current_user.sugar_team_ids)
     end
@@ -145,8 +152,7 @@ class ContractsController < ApplicationController
     @support_providers = Subcontractor.find(:all, :select => :name).map {|s| s.name}
     @support_providers.insert 0, "Sourcedirect"
     @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
-    subks = @line_items.map {|line_item| line_item.subcontract}.uniq
-    @subk_cost = - subks.sum {|subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s)}
+    @subk_cost = @contract.subcontract_cost
     respond_to do |format|
       format.html do
         render :action => 'quote' if params[:quote]

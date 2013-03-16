@@ -217,15 +217,22 @@ class LineItem < ActiveRecord::Base
   # Returns the list price for a particular calendar month.  opts takes a :year
   # and :month keys, and the list price is calculated for that calendar month
   # based on start & end dates of the line item and contract.
+  # valid arguments => :month, :year
+  # LineItem object must respond to:
+  #  list price
+  #  support_deal
+  #  begins
+  #  ends
   def list_price_for_month(opts)
     #logger.debug 'enter list_price_for_month'
-    return 0 if list_price == 0.0
-
+    if list_price == 0.0 || list_price.blank?
+      return 0
+    end
     startdate = start_date
     enddate = end_date
     month = opts[:month]
     year = opts[:year]
-    days_in_month = Time.days_in_month(month,year)
+    days_in_month = BigDecimal(Time.days_in_month(month,year).to_s)
 
     #this month is before the start date
     return 0 if (startdate.month > month && startdate.year == year) || (startdate.year > year)
@@ -246,8 +253,8 @@ class LineItem < ActiveRecord::Base
       end_day = days_in_month
     end
 
-    days_covered = (end_day - start_day) + 1
-    list_price.to_f * (days_covered.to_f / days_in_month.to_f) * qty.to_f
+    days_covered = BigDecimal(((end_day - start_day) + 1).to_s)
+    list_price * (days_covered / days_in_month) * BigDecimal(qty.to_s)
   end
 
   # Finds all line items for a customer in contracts. (excludes quotes)

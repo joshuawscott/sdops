@@ -293,8 +293,8 @@ describe Contract do
 
   describe "Contract.missing_subcontracts" do
     before(:all) do
-      @found1    = Factory :contract, :start_date => Date.parse('2012-01-01'), :end_date => Date.parse('2012-12-31')
-      @found2    = Factory :contract, :start_date => Date.parse('2012-01-01'), :end_date => Date.parse('2012-12-31')
+      @found1    = Factory :contract, :start_date => Date.parse(past_date_string), :end_date => Date.parse(future_date_string)
+      @found2    = Factory :contract, :start_date => Date.parse(past_date_string), :end_date => Date.parse(future_date_string)
       @notfound1 = Factory :contract
       @notfound2 = Factory :contract
       @notfound3 = Factory :contract
@@ -587,20 +587,18 @@ describe Contract do
 
   describe "Contract.billing_fluctuates?" do
     before(:all) do
-      start_date = '2012-01-01'
-      end_date = '2012-12-31'
       # 2 for the non-fluctuating contract
-      @line1 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
-      @line2 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
+      @line1 = Factory(:line_item, :begins => past_date_string, :ends => future_date_string, :list_price => 50, :qty => 1)
+      @line2 = Factory(:line_item, :begins => past_date_string, :ends => future_date_string, :list_price => 50, :qty => 1)
       # 2 for the fluctuating contract
-      @fline1 = Factory(:line_item, :begins => '2012-04-01', :ends => end_date, :list_price => 50, :qty => 1)
-      @fline2 = Factory(:line_item, :begins => start_date, :ends => end_date, :list_price => 50, :qty => 1)
+      @fline1 = Factory(:line_item, :begins => '2012-04-01', :ends => future_date_string, :list_price => 50, :qty => 1)
+      @fline2 = Factory(:line_item, :begins => past_date_string, :ends => future_date_string, :list_price => 50, :qty => 1)
       # 2 for the expired contract
-      @xline1 = Factory(:line_item, :begins => start_date, :ends => '2010-12-31', :list_price => 50, :qty => 1)
+      @xline1 = Factory(:line_item, :begins => past_date_string, :ends => '2010-12-31', :list_price => 50, :qty => 1)
       @xline2 = Factory(:line_item, :begins => '2010-04-01', :ends => '2010-12-31', :list_price => 50, :qty => 1)
       @contract_expired = Factory(:contract, :start_date => '2010-01-01', :end_date => '2010-12-31')
-      @contract_match = Factory(:contract, :start_date => start_date, :end_date => end_date)
-      @contract_nomatch = Factory(:contract, :start_date => start_date, :end_date => end_date)
+      @contract_match = Factory(:contract, :start_date => past_date_string, :end_date => future_date_string)
+      @contract_nomatch = Factory(:contract, :start_date => past_date_string, :end_date => future_date_string)
       @contract_expired.line_items = [@xline1, @xline2]
       @contract_match.line_items = [@fline1, @fline2]
       @contract_nomatch.line_items = [@line1, @line2]
