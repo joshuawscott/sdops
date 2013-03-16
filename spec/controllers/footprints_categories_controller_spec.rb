@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe FootprintsCategoriesController do
 
+  before(:each) do
+    controller.stub!(:login_required)
+  end
+
   def mock_footprints_category(stubs={})
     @mock_footprints_category ||= mock_model(FootprintsCategory, stubs)
   end
@@ -50,7 +54,7 @@ describe FootprintsCategoriesController do
       it "redirects to the created footprints_category" do
         FootprintsCategory.stub!(:new).and_return(mock_footprints_category(:save => true))
         post :create, :footprints_category => {}
-        response.should redirect_to(footprints_category_url(mock_footprints_category))
+        response.should redirect_to(footprints_categories_url)
       end
     end
 
@@ -85,10 +89,10 @@ describe FootprintsCategoriesController do
         assigns[:footprints_category].should equal(mock_footprints_category)
       end
 
-      it "redirects to the footprints_category" do
+      it "redirects to the footprints_category index" do
         FootprintsCategory.stub!(:find).and_return(mock_footprints_category(:update_attributes => true))
         put :update, :id => "1"
-        response.should redirect_to(footprints_category_url(mock_footprints_category))
+        response.should redirect_to(footprints_categories_url)
       end
     end
 
