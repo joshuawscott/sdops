@@ -2,6 +2,11 @@
   Contract List
 - content_for :top_js do
   = javascript_include_tag "contracts.js"
+- content_for :bottom_js do
+  %script
+    function doOnRowDblClicked(rowId){window.location = "contracts/" + rowId}
+    function searchForSerialNumber(){document.serial_search.submit;}
+
 
 #section1
   - form_tag formatted_contracts_path('xls'), {:method => 'get', :name => 'export' } do
@@ -65,6 +70,8 @@
             %label.table_header{:for => 'search_payment_terms'}Terms
           %th{:width => '85px', :ts_type => 'money'}
             %label.table_header{:for => 'search_revenue'}Annual Rev
+          %th{:width => '85px', :ts_type => 'money'}
+            %label.table_header{:for => 'search_subcontract_cost'}SubK Cost
         %tr
           %th{:class => "search"}
             = select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 82px"})
@@ -88,6 +95,8 @@
             = select("search", "payment_terms", @pay_terms, {:selected => @pay_term, :include_blank => true },{:style => "width: 80px"})
           %th{:class => "search"}
             = text_field 'search', 'revenue', :size => 9, :value => @revenue
+          %th{:class => "search"}
+            = text_field 'search', 'subcontractor_cost', :size => 9, :value => @subcontract_cost, :disabled => true
       -@contracts.each do |contract|
         - rowclass = contract.end_date < Date.today ? 'expired' : contract.expired == true ? 'old' : 'plain'
         %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"}
@@ -102,6 +111,4 @@
           %td= h contract.end_date
           %td= h contract.payment_terms
           %td{:align => 'right'}= h number_to_currency(contract.total_revenue, :precision => 2)
-%script
-  function doOnRowDblClicked(rowId){window.location = "contracts/" + rowId}
-  function searchForSerialNumber(){document.serial_search.submit;}
+          %td{:align => 'right'}= h number_to_currency(contract.subcontract_cost, :precision => 2)

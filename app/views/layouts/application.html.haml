@@ -12,7 +12,7 @@
     = yield :top_js
   %body
     #header
-      = image_tag("sodi-logo-tag.png", :id => "logo", :border => "0")
+      %img{ :src => "/images/sodi-logo-tag.png", :id => "logo", :border => "0", :alt => 'Logo'}
       #title
         %h1
           -  @subtitle = yield :subtitle

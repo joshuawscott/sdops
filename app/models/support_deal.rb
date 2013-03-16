@@ -575,7 +575,13 @@ class SupportDeal < ActiveRecord::Base
   def subcontract_cost
     subcontract_ids = line_items.find(:all,
       :select => 'DISTINCT subcontract_id AS ids').map {|x| x.ids}
-    @subcontract_cost = - Subcontract.find(subcontract_ids).sum {|subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s)}
+    logger.debug subcontract_ids.inspect
+    if subcontract_ids == [nil]
+      @subcontract_cost = BigDecimal.new("0.0")
+    else
+      @subcontract_cost = - Subcontract.find(subcontract_ids).sum {|subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s)}
+    end
+    @subcontract_cost
   end
 
 
@@ -765,10 +771,6 @@ class SupportDeal < ActiveRecord::Base
     return payment_schedule_headers
   end
 
-  def subcontract_cost
-    subks = @line_items.map {|line_item| line_item.subcontract}.uniq
-    @subcontract_cost = - subks.sum {|subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s)}
-  end
 protected
 
   # This method updates the account_name field from SugarCRM for all the Contracts with a matching account_id
