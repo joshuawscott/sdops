@@ -19,6 +19,7 @@
 
 class Subcontractor < ActiveRecord::Base
   has_many :subcontracts
+  acts_as_audited
 
   # Converts the subcontractor to a vcard
   def to_vcf
