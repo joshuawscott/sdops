@@ -36,24 +36,24 @@ pdf.header pdf.margin_box.top_left, :height => 80, :width => @full_wide do
     pdf.image("public/images/SODI-LOGO-TAG-padded.png", :position => :left, :scale => 0.22)
   end
   pdf.bounding_box [pdf.bounds.left + half_wide,pdf.bounds.top - 20], :width => half_wide do
-    pdf.text "Source Direct Global HQ\n4555 Excel Parkway, Suite 500\nAddison, TX 75001\n877-503-9800", :size => 8, :align => :right
+    pdf.text "Source Direct Global HQ\n15301 Dallas Parkway, Suite 700\nAddison, TX 75001\n877-503-9800", :size => 8, :align => :right
   end
   pdf.bounding_box([pdf.bounds.left,pdf.bounds.top - 80], :width => 250) do
     pdf.text @page_description, :size => 16, :style => :bold
     pdf.text @page_subheader, :size => 12, :style => :bold
   end
   pdf.bounding_box([pdf.bounds.left + 250, pdf.bounds.top - 80], :width => pdf.bounds.right - 250, :height => 20) do
-    pdf.text "Support Agreement ID (SAID): " + @contract.said, :align => :right, :style => :bold, :size => 11
+    pdf.text(truncate("Support Agreement ID: " + @contract.said, 80), :align => :right, :style => :bold, :size => 11)
   end
   pdf.bounding_box([pdf.bounds.left + 250, pdf.bounds.top - 100], :width => pdf.bounds.right - 250) do
-    pdf.text "SourceDirect Reference Number: " + @contract.sdc_ref, :align => :right, :style => :bold, :size => 11
+    pdf.text(truncate("SourceDirect Reference Number: " + @contract.sdc_ref, 80), :align => :right, :style => :bold, :size => 11)
   end
 end
 
 # Setting the footer up.
 pdf.footer [0,pdf.bounds.bottom], :height => 20, :width => @full_wide do
   pdf.bounding_box [pdf.bounds.left, pdf.bounds.top], :height => 20, :width => half_wide + 100 do
-    pdf.text "4555 Excel Parkway, Suite 500 - Addison, TX 75001 - 972-239-4680 - www.sourcedirect.com", :size => 8
+    pdf.text "15301 Dallas Parkway, Suite 700 - Addison, TX 75001 - 972-239-4680 - www.sourcedirect.com", :size => 8
   end
   pdf.bounding_box [half_wide + 100, pdf.bounds.top], :height => 20, :width => half_wide - 100 do
     pdf.text "Page " + @page_num.to_s, :size => 8, :align => :right
@@ -78,7 +78,7 @@ pdf.fill_color "000000"
 pdf.font("Helvetica")
 
 pdf.bounding_box [0,pdf.cursor - 3], :width => @full_wide do
-  pdf.text "Support Agreement ID: " + @contract.said, :size => 12, :style => :bold
+  pdf.text(truncate("Support Agreement ID: " + @contract.said, 110), :size => 12, :style => :bold)
 end
 
 # Customer Address area
@@ -94,7 +94,7 @@ end
 pdf.bounding_box([half_wide, pdf.cursor + 75], :width => 300, :height => 75) do
   pdf.text "Source Direct Contact:", :style => :bold
   pdf.text @contract.sales_rep.first_name + " " + @contract.sales_rep.last_name
-  pdf.text "4555 Excel Parkway, Suite 500"
+  pdf.text "15301 Dallas Parkway, Suite 700"
   pdf.text "Addison, TX 75001"
 end
 
@@ -293,17 +293,17 @@ line_item_sections.each do |section,section_name|
         pdf.image("public/images/SODI-LOGO-TAG-padded.png", :position => :left, :scale => 0.22)
       end
       pdf.bounding_box [pdf.bounds.left + half_wide,pdf.bounds.top - 20], :width => half_wide do
-        pdf.text "Source Direct Global HQ\n4555 Excel Parkway, Suite 500\nAddison, TX 75001\n877-503-9800", :size => 8, :align => :right
+        pdf.text "Source Direct Global HQ\n15301 Dallas Parkway, Suite 700\nAddison, TX 75001\n877-503-9800", :size => 8, :align => :right
       end
       pdf.bounding_box([pdf.bounds.left,pdf.bounds.top - 80], :width => 250) do
         pdf.text @page_description, :size => 16, :style => :bold
         pdf.text @page_subheader, :size => 12, :style => :bold
       end
       pdf.bounding_box([pdf.bounds.left + 250, pdf.bounds.top - 80], :width => pdf.bounds.right - 250, :height => 20) do
-        pdf.text "Support Agreement ID (SAID): " + @contract.said, :align => :right, :style => :bold, :size => 11
+        pdf.text(truncate("Support Agreement ID: " + @contract.said, 80), :align => :right, :style => :bold, :size => 11)
       end
       pdf.bounding_box([pdf.bounds.left + 250, pdf.bounds.top - 100], :width => pdf.bounds.right - 250) do
-        pdf.text "SourceDirect Reference Number: " + @contract.sdc_ref, :align => :right, :style => :bold, :size => 11
+        pdf.text(truncate("SourceDirect Reference Number: " + @contract.sdc_ref, 80), :align => :right, :style => :bold, :size => 11)
       end
       pdf.bounding_box([pdf.bounds.left,pdf.bounds.top - 120], :width => @full_wide) do
         pdf.font("Helvetica-Bold")
