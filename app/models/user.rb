@@ -40,6 +40,12 @@ class User < ActiveRecord::Base
   attr_accessible :login, :email, :password, :password_confirmation, :first_name, :last_name, :office, :role, :role_ids
   acts_as_audited :except => [:password]
 
+  # Finds list suitable for populating an HTML dropdown list
+  # based on an array of ids.
+  def self.dropdown_list
+    find(:all, :select => "id, first_name, last_name", :order => 'first_name, last_name')
+  end
+
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   def self.authenticate(login, password)
     u = find_by_login(login) # need to get the salt

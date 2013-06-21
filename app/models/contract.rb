@@ -112,4 +112,7 @@ class Contract < SupportDeal
 
   end
 
+  def sugar_opportunity_name
+    account_name + '-' + sales_office_name + '-' + id.to_s + '-' + description
+  end
 end

@@ -115,7 +115,7 @@ class SupportDeal < ActiveRecord::Base
   # accepts an array of team ids, and returns contracts where support_office or
   # sales_office matches the passed array of ids.
   def self.short_list(teams)
-    self.find(:all, :select => "account_id, id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired", :conditions => ["(sales_office IN (?) OR support_office IN(?)) AND (expired <> true OR end_date >= '#{Date.today}')", teams, teams], :order => 'sales_office, account_name, start_date', :group => 'id')
+    self.find(:all, :select => "sales_rep_id, account_id, id, sales_office_name, support_office_name, said, description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired", :conditions => ["(sales_office IN (?) OR support_office IN(?)) AND (expired <> true OR end_date >= '#{Date.today}')", teams, teams], :order => 'sales_office, account_name, start_date', :group => 'id')
   end
 
   # Returns Contracts where Contracts.LineItem.serial_num matches serial_num
@@ -637,11 +637,12 @@ class SupportDeal < ActiveRecord::Base
     (end_date.mon - start_date.mon) + ((end_date.year - start_date.year) * 12) + 1
   end
 
+  # DEPRECATED - original version of payment_schedule.  Was too slow.
   # Returns an array of payment amounts for a contract (useful for a payment
   # schedule).  Uses calendar months -- any days in a specific month will
   # generate an array member with the calculated price for that month.  The
   # length of this array is thus +calendar_months+
-  def payment_schedule(opts={})
+  def payment_schedule_old(opts={})
     opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
 
     prepay = opts[:prepay]
@@ -686,9 +687,25 @@ class SupportDeal < ActiveRecord::Base
     end
     @payment_schedule
   end
-  def payment_schedule_new(opts={})
-    opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
 
+  def payment_schedule_beta(opts={})
+    opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
+    if payment_terms == "Annual" || payment_terms == "Monthly"
+      payment_schedule_for_normal(opts)
+    elsif bundled?
+      payment_schedule_for_bundled(opts)
+    elsif twomonthsfree?
+      payment_schedule_for_twomonthsfree(opts)
+    else
+      payment_schedule_for_normal(opts)
+    end
+  end
+  def payment_schedule(opts={})
+    #puts 'payment_schedule opts:'
+    #p opts
+    opts.reverse_merge! :multiyear=> multiyear?, :prepay => prepay?, :start_date => start_date, :end_date => end_date
+
+    #p opts
     prepay = opts[:prepay]
     multiyear = opts[:multiyear]
     month = opts[:start_date].month
@@ -728,31 +745,45 @@ class SupportDeal < ActiveRecord::Base
     end
     @payment_schedule
   end
+
   # END New methods for quoting #
 
   def multiyear?
-    if payment_terms.split("+")[1] == 'MY'
-      multiyear = true
-    else
-      multiyear = false
-    end
-    return multiyear
+    payment_terms.split("+")[1] == 'MY'
   end
 
   def prepay?
-    if payment_terms.split("+")[0] == 'Annual'
-      prepay = true
+    payment_terms.split("+")[0] == 'Annual'
+  end
+
+  def bundled?
+    payment_terms == 'Bundled'
+  end
+
+  def twomonthsfree?
+    if !bundled? &&
+        calendar_months > 13 && calendar_months < 16 &&
+        (total_revenue / payment_schedule(:multiyear => multiyear?, :prepay => prepay?).sum).round(3) == (BigDecimal.new('12.0') / BigDecimal.new('14.0')).round(3)
+      return true
     else
-      prepay = false
+      return false
     end
-    return prepay
   end
 
   def unearned_revenue_schedule_array(opts={})
-    opts.reverse_merge! :start_date => self.start_date, :end_date => self.end_date
-    opts[:start_date].class == Date ? start_date = opts[:start_date] : start_date = Date.parse(opts[:start_date])
-    opts[:end_date].class == Date ? end_date = opts[:end_date] : end_date = Date.parse(opts[:end_date])
-    ps_array = payment_schedule(:multiyear => multiyear?, :prepay => prepay?, :start_date => start_date, :end_date => end_date)
+    opts.reverse_merge! :start_date => start_date, :end_date => end_date
+    #debugger
+
+    #opts[:start_date] = Date.parse(opts[:start_date]) unless opts[:start_date].class == Date
+    #opts[:end_date] = Date.parse(opts[:end_date]) unless opts[:end_date].class == Date
+    if bundled?
+      ps_array = unearned_revenue_schedule_array_for_bundled(:start_date => opts[:start_date], :end_date => opts[:end_date])
+    elsif twomonthsfree?
+      ps_array = unearned_revenue_schedule_array_for_twomonthsfree(:multiyear => multiyear?, :prepay => prepay?, :start_date => opts[:start_date], :end_date => opts[:end_date])
+    else #payment_terms.split('+')[0] == "Annual" || payment_terms.split('+')[0] == "Monthly"
+      ps_array = payment_schedule(:multiyear => multiyear?, :prepay => prepay?, :start_date => opts[:start_date], :end_date => opts[:end_date])
+    end
+    ps_array
   end
 
   def unearned_revenue
@@ -769,6 +800,63 @@ class SupportDeal < ActiveRecord::Base
       date = date.next_month
     end
     return payment_schedule_headers
+  end
+
+  def unearned_revenue_schedule_array_for_twomonthsfree(opts = {})
+    opts.reverse_merge! :start_date => start_date, :end_date => end_date
+    ps_array = payment_schedule(:multiyear => multiyear?, :prepay => prepay?, :start_date => opts[:start_date], :end_date => opts[:end_date])
+    ps_array.collect! {|x| x * BigDecimal.new("12")/BigDecimal.new("14")}
+    ps_array
+  end
+
+  def unearned_revenue_schedule_array_for_bundled(opts = {})
+    monthly_revenue = total_revenue / 12
+
+    opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
+
+    month = opts[:start_date].month
+    year = opts[:start_date].year
+    end_month = opts[:end_date].month
+    end_year = opts[:end_date].year
+
+    @payment_schedule = []
+
+    until (year > end_year && month == 1) || (month > end_month && year == end_year) do
+      #FIGURE PRICE
+      #this month is before the start date or after the end date
+      if (start_date.month > month && start_date.year == year) || (start_date.year > year)
+        @payment_schedule << BigDecimal('0')
+      elsif (end_date.month < month && end_date.year == year) || (end_date.year < year)
+        @payment_schedule << BigDecimal('0')
+      else
+        days_in_month = BigDecimal(Time.days_in_month(month,year).to_s)
+
+        if start_date.month == month && start_date.year == year
+          #beginning month
+          start_day = start_date.day
+        else
+          start_day = 1
+        end
+
+        if end_month == month && end_year == year
+          #ending month
+          end_day = end_date.day
+        else
+          end_day = days_in_month
+        end
+
+        days_covered = BigDecimal(((end_day - start_day) + 1).to_s)
+        @payment_schedule << monthly_revenue * (days_covered / days_in_month)
+
+      end
+
+      # year & month += 1
+      year += 1 if month == 12
+      month = 0 if month == 12
+      month += 1
+    end
+
+    @payment_schedule
   end
 
 protected

@@ -13,6 +13,7 @@
     = link_to 'New contract', new_contract_path if current_user.has_role?(:contract_admin)
     = hidden_field 'export', 'sales_office'
     = hidden_field 'export', 'support_office'
+    = hidden_field 'export', 'sales_rep'
     = hidden_field 'export', 'account_name'
     = hidden_field 'export', 'said'
     = hidden_field 'export', 'description'
@@ -52,10 +53,12 @@
             %label.table_header{:for => 'search_sales_office'}Sales Office
           %th{:width => '80px', :ts_type => 'string'}
             %label.table_header{:for => 'search_support_office'}Supp. Office
+          %th{:width => '80px', :ts_type => 'string'}
+            %label.table_header{:for => 'search_sales_rep'}Sales Rep.
           %th{:width => '149px', :ts_type => 'string'}
             %label.table_header{:for => 'search_account_name'}Account Name
           %th{:width => '20px', :ts_type => 'string'}
-            %label.table_header{:for => 'search_client_category'}Cat
+            %label.table_header{:for => 'search_client_category'}Cat.
           %th{:width => '80px', :ts_type => 'number'}
             %label.table_header{:for => 'search_id'}Contract ID
           %th{:width => '100px', :ts_type => 'string'}
@@ -69,7 +72,7 @@
           %th{:width => '80px', :ts_type => 'string'}
             %label.table_header{:for => 'search_payment_terms'}Terms
           %th{:width => '85px', :ts_type => 'money'}
-            %label.table_header{:for => 'search_revenue'}Annual Rev
+            %label.table_header{:for => 'search_revenue'}Annual Rev.
           %th{:width => '85px', :ts_type => 'money'}
             %label.table_header{:for => 'search_subcontract_cost'}SubK Cost
         %tr
@@ -77,6 +80,8 @@
             = select("search", "sales_office", @sales_offices, {:selected => @sales_office, :include_blank => true },{:style => "width: 82px"})
           %th{:class => "search"}
             = select("search", "support_office", @support_offices, {:selected => @support_office, :include_blank => true },{:style => "width: 82px"})
+          %th{:class => "search"}
+            = select("search", "sales_rep", @sales_reps, {:selected => @sales_rep.to_i, :include_blank => true },{:style => "width: 82px"})
           %th{:class => "search"}
             = text_field 'search', 'account_name', :size => 19, :value => @account_name
           %th{:class => "search"}
@@ -102,6 +107,7 @@
         %tr{:class => rowclass, :ondblclick => "doOnRowDblClicked(#{contract.id})"}
           %td= h contract.sales_office_name
           %td= h contract.support_office_name
+          %td= h contract.sales_rep.full_name unless contract.sales_rep.nil?
           %td{:title => contract.account_name.length > 20 ? contract.account_name : ""}= h truncate(contract.account_name, 20)
           %td= h contract.sugar_acct.client_category unless contract.sugar_acct.nil?
           %td= h contract.id

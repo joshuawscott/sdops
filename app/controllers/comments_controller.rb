@@ -1,13 +1,13 @@
 class CommentsController < ApplicationController
   before_filter :authorized?
 
-  before_filter :find_commenter, :only => [:new, :create, :update,  :destroy] 
+  before_filter :find_commenter, :only => [:new, :create, :update,  :destroy]
 
   ## GET /comments
   ## GET /comments.xml
   #def index
   #  @comments = Comment.find(:all)
-  #  
+  #
   #  respond_to do |format|
   #    format.html # index.html.erb
   #  end
@@ -46,7 +46,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.save
-        format.html { redirect_to :controller => @commenter.class.to_s.pluralize.downcase, :action => :show, :id => @commenter.id }
+        format.html { redirect_to :controller => @commenter.class.to_s.pluralize.underscore, :action => :show, :id => @commenter.id }
       else
         format.html { render :action => "new" }
       end
@@ -82,24 +82,24 @@ class CommentsController < ApplicationController
       format.xml  { head :ok }
     end
   end
-  
-  
-  protected  
+
+
+  protected
   def authorized?
     current_user.has_role?(:commenter) || not_authorized
   end
-  
+
   private
 
   def find_commenter
     if params[:comment]
       klass = params[:comment][:commentable_type].singularize.camelize.constantize
-      @commenter = klass.find(params[:comment][:commentable_id])     
+      @commenter = klass.find(params[:comment][:commentable_id])
     else
       klass = params[:commentable_type].singularize.camelize.constantize
       @commenter = klass.find(params[:commentable_id])
     end
-    
+
   end
 
 end

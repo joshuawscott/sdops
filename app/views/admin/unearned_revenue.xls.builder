@@ -31,6 +31,7 @@ xml.Workbook({
       xml.Row do
         xml.Cell { xml.Data 'Contract ID', 'ss:Type' => 'String' }
         xml.Cell { xml.Data 'Account Name', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Payment Terms', 'ss:Type' => 'String' }
         @date_headers.each do |month|
           xml.Cell 'ss:StyleID' => 'date' do
             xml.Data month.to_xls_serial, 'ss:Type' => 'Number'
@@ -43,6 +44,7 @@ xml.Workbook({
         xml.Row do
           xml.Cell { xml.Data contract.id, 'ss:Type' => 'Number' }
           xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.payment_terms, 'ss:Type' => 'String' }
           contract.unearned_revenue_schedule_array(:start_date => @start_date, :end_date => @end_date).each do |payment_schedule|
             xml.Cell 'ss:StyleID' => 'currency' do
               xml.Data payment_schedule, 'ss:Type' => 'Number'

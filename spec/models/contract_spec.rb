@@ -464,7 +464,7 @@ describe Contract do
     end
     @types = ["hw", "sw", "srv"]
     @types.each do |type|
-      it "totals the #{type}line_items in a contract" do
+      it "totals the #{type} line_items in a contract" do
         @contract.send("#{type}_list_price").should == 1200.0
       end
 
@@ -623,11 +623,11 @@ describe Contract do
       # Set up the tests.
       # The revenue 1 year ago was $500.  One of these customers won't be around
       # in the present time.
-      oldcontract00 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "0", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
-      oldcontract10 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "1", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
-      oldcontract11 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "1", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
-      oldcontract20 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
-      oldcontract21 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months, :expired => 1)
+      oldcontract00 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "0", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months - 1.day, :expired => 1)
+      oldcontract10 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "1", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months - 1.day, :expired => 1)
+      oldcontract11 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "1", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months - 1.day, :expired => 1)
+      oldcontract20 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months - 1.day, :expired => 1)
+      oldcontract21 = Factory(:contract, :annual_hw_rev => 100.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 18.months, :end_date => Date.today - 6.months - 1.day, :expired => 1)
       # The revenue now is $480.  Two of the contracts won't be counted, since
       # they were not one of the customers that we had one year ago.  Therefore,
       # the revenue from the customers we had is $320.  Attrition should be
@@ -638,13 +638,34 @@ describe Contract do
       newcontract23 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "2", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
       newcontract32 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "3", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
       newcontract33 = Factory(:contract, :annual_hw_rev => 80.0, :annual_sw_rev => 0, :annual_sa_rev => 0, :annual_ce_rev => 0, :annual_dr_rev => 0, :account_id => "3", :start_date => Date.today - 6.months, :end_date => Date.today + 6.months)
+      @attrition = Contract.existing_revenue_change
     end
-    it "should return the correct amount of attrition." do
-      attrition = Contract.existing_revenue_change
-      attrition.should == {:total => BigDecimal.new("-180.0"), :new_total => BigDecimal("320.0"), :old_total => BigDecimal.new("500.0"), :percentage => BigDecimal.new("0.36")}
+    it "should find :old_total correctly" do
+      @attrition[:old_total].should == BigDecimal.new("500.0")
+    end
+    it "should find :total correctly" do
+      @attrition[:total].should == BigDecimal.new("-180.0")
+    end
+    it "should find :new_total correctly" do
+      @attrition[:new_total].should == BigDecimal.new("320.0")
+    end
+    it "should find :percentage correctly" do
+      @attrition[:percentage].should == BigDecimal.new("0.36")
+    end
+    it "should make a hash with all the parameters" do
+      @attrition.should == {:old_total => BigDecimal.new("500.0"), :total => BigDecimal.new("-180.0"), :new_total => BigDecimal.new("320.0"), :percentage => BigDecimal.new("0.36")}
     end
     after(:all) do
       Contract.delete_all
+    end
+  end
+
+  describe "Contract#sugar_opportunity_name" do
+    before(:all) do
+      @contract = Factory(:contract, :account_name => "Account Name", :sales_office_name => 'Los Angeles', :id => 9999, :description => "this is a contract")
+    end
+    it "should return the correct name" do
+      @contract.sugar_opportunity_name.should == "Account Name-Los Angeles-9999-this is a contract"
     end
   end
 end

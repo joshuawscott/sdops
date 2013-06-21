@@ -5,12 +5,12 @@ class ContractsController < ApplicationController
   before_filter :manager?, :only => [:sentrenewal, :backtorenewals]
   before_filter :set_dropdowns, :only => [:new, :edit, :create, :update]
 
-	#TODO: show current contracts, including those marked expired
   # GET /contracts
   # GET /contracts.xml
   def index
     @sales_offices =  SugarTeam.dropdown_list(current_user.sugar_team_ids).map {|x| [x.name, x.id]}
     @support_offices =  @sales_offices
+    @sales_reps = User.dropdown_list.map {|x| [x.full_name, x.id]}
     @pay_terms = Dropdown.payment_terms_list.map {|x| x.label}
     @pay_terms << "Not Bundled"
 
@@ -29,6 +29,7 @@ class ContractsController < ApplicationController
       #Get search criteria from params object
       @sales_office ||= params[:search][:sales_office]
       @support_office ||= params[:search][:support_office]
+      @sales_rep ||= params[:search][:sales_rep]
       @account_name ||= params[:search][:account_name]
       @said ||= params[:search][:said]
       @description ||= params[:search][:description]
@@ -47,6 +48,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "(support_deals.sales_office IN (?) OR support_deals.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
       @contracts = @contracts.conditions "support_deals.sales_office = ?", @sales_office unless @sales_office.blank?
       @contracts = @contracts.conditions "support_deals.support_office = ?", @support_office unless @support_office.blank?
+      @contracts = @contracts.conditions "support_deals.sales_rep_id = ?", @sales_rep unless @sales_rep.blank?
       @contracts = @contracts.conditions "support_deals.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
       @contracts = @contracts.conditions "support_deals.said like ?", "%"+@said+"%" unless @said.blank?
       # Sanitize @revenue:
@@ -90,6 +92,7 @@ class ContractsController < ApplicationController
       @sales_office ||= params[:export][:sales_office]
       @support_office ||= params[:export][:support_office]
       @account_name ||= params[:export][:account_name]
+      @sales_rep ||= params[:search][:sales_rep]
       @said ||= params[:export][:said]
       @description ||= params[:export][:description]
       @start_date ||= params[:export][:start_date]
@@ -102,6 +105,7 @@ class ContractsController < ApplicationController
       @contracts = @contracts.conditions "(support_deals.sales_office IN (?) OR support_deals.support_office IN(?))", current_user.sugar_team_ids, current_user.sugar_team_ids
       @contracts = @contracts.conditions "support_deals.sales_office = ?", @sales_office unless @sales_office.blank?
       @contracts = @contracts.conditions "support_deals.support_office = ?", @support_office unless @support_office.blank?
+      @contracts = @contracts.conditions "support_deals.sales_rep_id = ?", @sales_rep unless @sales_rep.blank?
       @contracts = @contracts.conditions "support_deals.account_name like ?", "%"+@account_name+"%" unless @account_name.blank?
       @contracts = @contracts.conditions "support_deals.said like ?", "%"+@said+"%" unless @said.blank?
       op, val = @revenue.split(" ")
