@@ -36,40 +36,39 @@ xml.Workbook({
 
       # Header
       xml.Row do
-          xml.Cell { xml.Data 'Contract ID', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'Sales Office', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'Support Office', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'Account Name', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'Category', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'SAID', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'Description', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'Start Date', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'End Date', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'Terms', 'ss:Type' => 'String' }
-          xml.Cell { xml.Data 'Annual Rev', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Contract ID', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Sales Office', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Support Office', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Account Name', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Category', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'SAID', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Description', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Start Date', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'End Date', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Terms', 'ss:Type' => 'String' }
+        xml.Cell { xml.Data 'Annual Rev', 'ss:Type' => 'String' }
       end
 
       # Rows
       @contracts.each do |contract|
         xml.Row do
-            xml.Cell { xml.Data contract.id, 'ss:Type' => 'Number' }
-            xml.Cell { xml.Data contract.sales_office_name, 'ss:Type' => 'String' }
-            xml.Cell { xml.Data contract.support_office_name, 'ss:Type' => 'String' }
-            xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
-            xml.Cell { xml.Data contract.sugar_acct.client_category, 'ss:Type' => 'String' }
-            xml.Cell { xml.Data contract.said, 'ss:Type' => 'String' }
-            xml.Cell { xml.Data contract.description, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.id, 'ss:Type' => 'Number' }
+          xml.Cell { xml.Data contract.sales_office_name, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.support_office_name, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.sugar_acct.client_category, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.said, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.description, 'ss:Type' => 'String' }
           xml.Cell 'ss:StyleID' => 'date' do
             xml.Data contract.start_date.to_xls_serial, 'ss:Type' => 'Number'
           end
           xml.Cell 'ss:StyleID' => 'date' do
             xml.Data contract.end_date.to_xls_serial, 'ss:Type' => 'Number'
           end
-            xml.Cell { xml.Data contract.payment_terms, 'ss:Type' => 'String' }
-            xml.Cell { xml.Data contract.total_revenue, 'ss:Type' => 'Number' }
+          xml.Cell { xml.Data contract.payment_terms, 'ss:Type' => 'String' }
+          xml.Cell { xml.Data contract.total_revenue, 'ss:Type' => 'Number' }
         end
       end
-
     end
   end
 end

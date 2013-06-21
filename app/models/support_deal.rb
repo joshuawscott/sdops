@@ -772,10 +772,8 @@ class SupportDeal < ActiveRecord::Base
 
   def unearned_revenue_schedule_array(opts={})
     opts.reverse_merge! :start_date => start_date, :end_date => end_date
-    #debugger
-
-    #opts[:start_date] = Date.parse(opts[:start_date]) unless opts[:start_date].class == Date
-    #opts[:end_date] = Date.parse(opts[:end_date]) unless opts[:end_date].class == Date
+    opts[:start_date] = Date.parse(opts[:start_date]) unless opts[:start_date].is_a? Date
+    opts[:end_date] = Date.parse(opts[:end_date]) unless opts[:end_date].is_a? Date
     if bundled?
       ps_array = unearned_revenue_schedule_array_for_bundled(:start_date => opts[:start_date], :end_date => opts[:end_date])
     elsif twomonthsfree?

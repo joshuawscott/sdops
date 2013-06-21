@@ -1,3 +1,4 @@
+
 xml.instruct!
 xml.Workbook({
   'xmlns'      => "urn:schemas-microsoft-com:office:spreadsheet",
@@ -16,6 +17,12 @@ xml.Workbook({
       xml.NumberFormat
       xml.Protection
     end
+    xml.Style 'ss:ID' => 'description' do
+      xml.Alignment 'ss:Vertical' => 'Bottom', 'ss:WrapText' => '1'
+    end
+    xml.Style 'ss:ID' => 'headers' do
+      xml.Font 'ss:Bold' => '1'
+    end
     xml.Style 'ss:ID' => 'currency' do
       xml.NumberFormat 'ss:Format' => '"$"#,##0.00'
     end
@@ -24,7 +31,7 @@ xml.Workbook({
     end
   end
 
-  xml.Worksheet 'ss:Name' => 'Unearned Revenue' do
+  xml.Worksheet 'ss:Name' => 'UnearnedRevenue' do
     xml.Table do
 
       # Header
@@ -45,9 +52,9 @@ xml.Workbook({
           xml.Cell { xml.Data contract.id, 'ss:Type' => 'Number' }
           xml.Cell { xml.Data contract.account_name, 'ss:Type' => 'String' }
           xml.Cell { xml.Data contract.payment_terms, 'ss:Type' => 'String' }
-          contract.unearned_revenue_schedule_array(:start_date => @start_date, :end_date => @end_date).each do |payment_schedule|
+          contract.unearned_revenue_schedule_array(:start_date => Date.parse(@start_date), :end_date => Date.parse(@end_date)).each do |payment_schedule|
             xml.Cell 'ss:StyleID' => 'currency' do
-              xml.Data payment_schedule, 'ss:Type' => 'Number'
+              xml.Data payment_schedule.to_f.round(4), 'ss:Type' => 'Number'
             end
           end
         end

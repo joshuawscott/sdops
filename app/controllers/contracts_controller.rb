@@ -92,7 +92,7 @@ class ContractsController < ApplicationController
       @sales_office ||= params[:export][:sales_office]
       @support_office ||= params[:export][:support_office]
       @account_name ||= params[:export][:account_name]
-      @sales_rep ||= params[:search][:sales_rep]
+      @sales_rep ||= params[:export][:sales_rep]
       @said ||= params[:export][:said]
       @description ||= params[:export][:description]
       @start_date ||= params[:export][:start_date]
