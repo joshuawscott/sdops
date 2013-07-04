@@ -49,6 +49,8 @@
             %br/
             =link_to 'Locations', {:controller => 'reports', :action => 'potentialoffices'}, submenuhash('reportsinfo', 'Revenue by Physical Location')
             %br/
+            =link_to 'Quota', {:controller => 'reports', :action => 'quota'}, submenuhash('reportsinfo', 'Quota Attainment by Quarter')
+            %br/
           .menuCol.last
             %h2 Parts
             =link_to 'Spares Requirements', {:controller => 'reports', :action => 'sparesreq'}, submenuhash('reportsinfo', 'Supported Parts by Location')
