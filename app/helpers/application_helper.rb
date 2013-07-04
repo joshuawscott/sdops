@@ -257,12 +257,15 @@ module ApplicationHelper
     end
   end
 
+  def tooltip_if_truncated(string, length)
+    string.length > 30 ? string : ""
+  end
+
+  def sugarcrm_link(model, id)
+    "http://crm1.corp.ad/index.php?action=DetailView&module=#{model}&record=#{id}"
+  end
+  def today
+    @today ||= Date.today
+  end
 end
 
-def tooltip_if_truncated(string, length)
-  string.length > 30 ? string : ""
-end
-
-def sugarcrm_link(model, id)
-  "http://crm1.corp.ad/index.php?action=DetailView&module=#{model}&record=#{id}"
-end

@@ -584,7 +584,9 @@ class SupportDeal < ActiveRecord::Base
     @subcontract_cost
   end
 
-
+  def gross_profit
+    total_revenue + subcontract_cost
+  end
 
   # Returns a BigDecimal of the discount percentage (e.g. 30% => 0.30)
   #
@@ -855,6 +857,10 @@ class SupportDeal < ActiveRecord::Base
     end
 
     @payment_schedule
+  end
+
+  def self.all_sales_reps
+    User.find(self.all(:select => 'DISTINCT sales_rep_id').map(&:sales_rep_id)).sort_by {|r| r.full_name}
   end
 
 protected

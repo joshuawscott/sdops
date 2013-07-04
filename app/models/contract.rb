@@ -1,6 +1,6 @@
 # See SupportDeal for schema
 class Contract < SupportDeal
-
+  include QuarterlyDates
   validates_presence_of :payment_terms, :po_received
   #Validate Revenue
   validates_numericality_of :revenue, :annual_hw_rev, :annual_sw_rev, :annual_sa_rev, :annual_ce_rev, :annual_dr_rev
@@ -115,4 +115,27 @@ class Contract < SupportDeal
   def sugar_opportunity_name
     account_name + '-' + sales_office_name + '-' + id.to_s + '-' + description
   end
+
+  def self.po_received_last_quarter
+    self.po_received_between(Quarter.beginning_of_last_quarter, Quarter.end_of_last_quarter)
+  end
+  def self.po_received_this_quarter
+    self.po_received_between(Quarter.beginning_of_quarter, Quarter.end_of_quarter)
+  end
+  def self.po_received_between(start_of_q, end_of_q)
+    self.all(:conditions => ['po_received >= ? AND po_received <= ?', start_of_q, end_of_q])
+  end
+  def self.quota_last_quarter
+    self.quota(Quarter.beginning_of_last_quarter, Quarter.end_of_last_quarter)
+  end
+  def self.quota_this_quarter
+    self.quota(Quarter.beginning_of_quarter, Quarter.end_of_quarter)
+  end
+  def self.quota_next_quarter
+    self.quota(Quarter.beginning_of_next_quarter, Quarter.end_of_next_quarter)
+  end
+  def self.quota(start_of_q, end_of_q)
+    self.all(:conditions => ['payment_terms <> "Bundled" AND end_date >= ? AND end_date <= ?', start_of_q - 1, end_of_q - 1])
+  end
+
 end

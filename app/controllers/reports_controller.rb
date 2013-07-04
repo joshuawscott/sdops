@@ -1,4 +1,5 @@
 class ReportsController < ApplicationController
+  include QuarterlyDates
   #TODO: Add filtering based on role to allow viewing of reports
   # GET /reports
   def index
@@ -162,5 +163,33 @@ class ReportsController < ApplicationController
       :conditions => '(sa_days IS NOT NULL OR ce_days IS NOT NULL) AND (sa_days > 0 OR ce_days > 0) AND end_date > NOW()')
     @offices = @contracts.map{|x| x.support_office_name}.uniq.sort
 
+  end
+
+  def quota
+    unless current_user.has_role? :manager
+      @sales_rep = current_user
+      @sales_reps = [[@sales_rep.full_name, @sales_rep.id]]
+    end
+    @sales_reps ||= Contract.all_sales_reps.map {|rep| [rep.full_name, rep.id]}.unshift([nil,nil])
+    if params[:sales_rep_id] || @sales_rep
+      @sales_rep ||= User.find(params[:sales_rep_id])
+      salesman = @sales_rep ? @sales_rep.login : nil
+      prev_quarter_contract_pos = Contract.po_received_last_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
+      this_quarter_contract_pos = Contract.po_received_this_quarter.reject {|c| c.sales_@sales_rep.id != @sales_rep.id}
+      prev_quarter_hardware_pos = FishbowlSo.received_last_quarter.reject {|c| c.salesman != salesman}
+      this_quarter_hardware_pos = FishbowlSo.received_this_quarter.reject {|c| c.salesman != salesman}
+      prev_quarter_contracts = Contract.quota_last_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
+      this_quarter_contracts = Contract.quota_this_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
+      next_quarter_contracts = Contract.quota_next_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
+      @prev_quarter_quota = prev_quarter_contracts.sum(&:gross_profit) * BigDecimal.new('1.4')
+      @this_quarter_quota = this_quarter_contracts.sum(&:gross_profit) * BigDecimal.new('1.4')
+      @next_quarter_quota = next_quarter_contracts.sum(&:gross_profit) * BigDecimal.new('1.4')
+      @prev_quarter_attainment = prev_quarter_contract_pos.sum(&:gross_profit) + prev_quarter_hardware_pos.sum(&:profit)
+      @this_quarter_attainment = this_quarter_contract_pos.sum(&:gross_profit) + this_quarter_hardware_pos.sum(&:profit)
+      @next_quarter_attainment = BigDecimal.new('0.0')
+    else
+      @noquery = true
+      @sales_rep = User.new
+    end
   end
 end
