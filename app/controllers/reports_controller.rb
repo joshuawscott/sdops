@@ -175,7 +175,7 @@ class ReportsController < ApplicationController
       @sales_rep ||= User.find(params[:sales_rep_id])
       salesman = @sales_rep ? @sales_rep.login : nil
       prev_quarter_contract_pos = Contract.po_received_last_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
-      this_quarter_contract_pos = Contract.po_received_this_quarter.reject {|c| c.sales_@sales_rep.id != @sales_rep.id}
+      this_quarter_contract_pos = Contract.po_received_this_quarter.reject {|c| c.sales_rep.id != @sales_rep.id}
       prev_quarter_hardware_pos = FishbowlSo.received_last_quarter.reject {|c| c.salesman != salesman}
       this_quarter_hardware_pos = FishbowlSo.received_this_quarter.reject {|c| c.salesman != salesman}
       prev_quarter_contracts = Contract.quota_last_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
