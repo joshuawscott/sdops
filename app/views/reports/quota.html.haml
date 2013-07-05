@@ -30,14 +30,14 @@
           %td.right= number_to_currency(@prev_quarter_hw_attainment)
           %td.right= number_to_currency(@prev_quarter_contract_attainment + @prev_quarter_hw_attainment)
           %td.right= number_to_currency(@prev_quarter_quota)
-          %td.right= number_to_percentage(band_for(@prev_quarter_attainment, @prev_quarter_quota) * 100, :precision => 0)
+          %td.right= number_to_percentage(band_for(@prev_quarter_contract_attainment + @prev_quarter_hw_attainment, @prev_quarter_quota) * 100, :precision => 0)
         %tr
           %td= quarter.beginning_of_quarter.to_quarter_string
           %td.right= number_to_currency(@this_quarter_contract_attainment)
           %td.right= number_to_currency(@this_quarter_hw_attainment)
           %td.right= number_to_currency(@this_quarter_contract_attainment + @this_quarter_hw_attainment)
           %td.right= number_to_currency(@this_quarter_quota)
-          %td.right= number_to_percentage(band_for(@this_quarter_attainment, @this_quarter_quota) * 100, :precision => 0)
+          %td.right= number_to_percentage(band_for(@this_quarter_contract_attainment + @this_quarter_hw_attainment), @this_quarter_quota) * 100, :precision => 0)
         %tr
           %td= quarter.beginning_of_next_quarter.to_quarter_string
           %td.right N/A
