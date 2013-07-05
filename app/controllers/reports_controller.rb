@@ -181,12 +181,14 @@ class ReportsController < ApplicationController
       prev_quarter_contracts = Contract.quota_last_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
       this_quarter_contracts = Contract.quota_this_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
       next_quarter_contracts = Contract.quota_next_quarter.reject {|c| c.sales_rep_id != @sales_rep.id}
-      @prev_quarter_quota = prev_quarter_contracts.sum(&:gross_profit) * BigDecimal.new('1.4')
-      @this_quarter_quota = this_quarter_contracts.sum(&:gross_profit) * BigDecimal.new('1.4')
-      @next_quarter_quota = next_quarter_contracts.sum(&:gross_profit) * BigDecimal.new('1.4')
-      @prev_quarter_attainment = prev_quarter_contract_pos.sum(&:gross_profit) + prev_quarter_hardware_pos.sum(&:profit)
-      @this_quarter_attainment = this_quarter_contract_pos.sum(&:gross_profit) + this_quarter_hardware_pos.sum(&:profit)
-      @next_quarter_attainment = BigDecimal.new('0.0')
+      @prev_quarter_quota = prev_quarter_contracts.sum(&:total_revenue) * BigDecimal.new('1.4')
+      @this_quarter_quota = this_quarter_contracts.sum(&:total_revenue) * BigDecimal.new('1.4')
+      @next_quarter_quota = next_quarter_contracts.sum(&:total_revenue) * BigDecimal.new('1.4')
+      @prev_quarter_contract_attainment = prev_quarter_contract_pos.sum(&:total_revenue)
+      @this_quarter_contract_attainment = this_quarter_contract_pos.sum(&:total_revenue)
+      @next_quarter_contract_attainment = BigDecimal.new('0.0')
+      @prev_quarter_hw_attainment = prev_quarter_hardware_pos.sum(&:profit)
+      @this_quarter_hw_attainment = this_quarter_hardware_pos.sum(&:profit)
     else
       @noquery = true
       @sales_rep = User.new

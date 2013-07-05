@@ -18,22 +18,30 @@
       %thead
         %tr
           %th Quarter
+          %th Support Revenue
+          %th Harware Profit
+          %th Total Received
           %th Quota
-          %th Attainment
-          %th Band
+          %th Commission Band
       %tbody
         %tr
           %td= quarter.beginning_of_last_quarter.to_quarter_string
+          %td.right= number_to_currency(@prev_quarter_contract_attainment)
+          %td.right= number_to_currency(@prev_quarter_hw_attainment)
+          %td.right= number_to_currency(@prev_quarter_contract_attainment + @prev_quarter_hw_attainment)
           %td.right= number_to_currency(@prev_quarter_quota)
-          %td.right= number_to_currency(@prev_quarter_attainment)
           %td.right= number_to_percentage(band_for(@prev_quarter_attainment, @prev_quarter_quota) * 100, :precision => 0)
         %tr
           %td= quarter.beginning_of_quarter.to_quarter_string
+          %td.right= number_to_currency(@this_quarter_contract_attainment)
+          %td.right= number_to_currency(@this_quarter_hw_attainment)
+          %td.right= number_to_currency(@this_quarter_contract_attainment + @this_quarter_hw_attainment)
           %td.right= number_to_currency(@this_quarter_quota)
-          %td.right= number_to_currency(@this_quarter_attainment)
           %td.right= number_to_percentage(band_for(@this_quarter_attainment, @this_quarter_quota) * 100, :precision => 0)
         %tr
           %td= quarter.beginning_of_next_quarter.to_quarter_string
-          %td.right= number_to_currency(@next_quarter_quota)
           %td.right N/A
+          %td.right N/A
+          %td.right N/A
+          %td.right= number_to_currency(@next_quarter_quota)
           %td.right N/A
