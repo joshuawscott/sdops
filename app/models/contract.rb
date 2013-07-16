@@ -138,4 +138,15 @@ class Contract < SupportDeal
     self.all(:conditions => ['payment_terms <> "Bundled" AND end_date >= ? AND end_date <= ?', start_of_q - 1, end_of_q - 1])
   end
 
+  def parts_cost
+    begin
+      FishbowlPartsCost.cost_for(self.id).cost
+    rescue ActiveResource::ResourceNotFound
+      BigDecimal.new('0.0')
+    end
+  end
+
+  def total_cost
+    parts_cost + subcontract_cost
+  end
 end
