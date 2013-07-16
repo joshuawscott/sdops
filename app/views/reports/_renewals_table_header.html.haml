@@ -2,12 +2,14 @@
   %th{:width => '80px', :ts_type => 'string'}
     %b Office
   %th{:width => '140px', :ts_type => 'string'}
+    %b Sales Rep
+  %th{:width => '140px', :ts_type => 'string'}
     %b Account
   %th{:width => '100px', :ts_type => 'number'}
     %b Contract ID
   %th{:width => '40px', :ts_type => 'string'}
     %b Acct. <br/>Cat.
-  %th{:width => '200px', :ts_type => 'string'}
+  %th{:ts_type => 'string'}
     %b Description
   %th{:width => '80px'}
     %b Start Date
@@ -23,8 +25,8 @@
     %b Revenue
   %th{:width => '90px', :ts_type => 'money'}
     %b Renewal Estimate
-  %th
+  %th{:width => '60px'}
     %b Comment?
   - if current_user.has_role?(:admin)
-    %th
+    %th{:width => '60px'}
       &nbsp;

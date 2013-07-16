@@ -1,5 +1,6 @@
-%tr{:name => x.sales_office_name}
+%tr{:filter_offices => x.sales_office_name, :filter_reps => x.sales_rep.full_name}
   %td= h x.sales_office_name
+  %td= h x.sales_rep.full_name
   %td= h x.account_name
   %td= h x.id
   %td{:align => 'center'}= h x.sugar_acct.client_category

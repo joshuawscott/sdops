@@ -9,9 +9,13 @@
           Renewals &nbsp;&nbsp;&nbsp;
           %span{:style => 'font-size:8pt'}= link_to 'export to excel', "/reports/renewals.xls"
       %td
-        Filter by Office
-        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOfficesRenewal(10,11)', :style => "width: 82px"})
-      %td{:width => '325px', :align => 'right'}
+        Filter by Office:
+        =select("filter", "offices", @offices, {:include_blank => true },{:onchange => 'return toggleOfficesRenewal(11,12)'})
+      %td{:width => '25px'}
+      %td
+        Filter by Rep:
+        =select("filter", "reps", @sales_reps, {:include_blank => true },{:onchange => 'return toggleRepsRenewal(11,12)'})
+      %td{:width => '300px', :align => 'right'}
         - form_tag'/reports/renewals', {:name => 'date_search' }  do
           = text_field 'date_search', 'ref_date', {:size => 10, :value => @ref_date}
           = submit_tag "Search"
@@ -99,7 +103,7 @@
   %h2{:style => 'margin:15px 0px 0px 300px'}
     EXPIRED CONTRACTS &nbsp;&nbsp;&nbsp;
     %span.hideforprint{:style => 'font-size:8pt;text-transform:lowercase'}= link_to_function 'Format for print', "toggleHeaderStuff()"
-  %table#renewals_expired{:class => "sortable", :cellspacing => "0", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ff5455'}
+  %table#renewals_expired{:class => "sortable", :cellspacing => "0", :padding => '2', :border => '1', :style => 'background:#ff5455'}
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
@@ -108,7 +112,7 @@
           = render :partial => "renewals_table_content", :locals => { :x => x }
 
   %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 30 days or less
-  %table#renewals_0_30{:class => "sortable", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ffff66'}
+  %table#renewals_0_30{:class => "sortable", :padding => '2', :border => '1', :style => 'background:#ffff66'}
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
@@ -117,7 +121,7 @@
           = render :partial => "renewals_table_content", :locals => { :x => x }
 
   %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 31 to 60 days
-  %table#renewals_31_60{:class => "sortable", :padding => '2', :border => '1', :width => '860px', :style => 'background:#ffff66'}
+  %table#renewals_31_60{:class => "sortable", :padding => '2', :border => '1', :style => 'background:#ffff66'}
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
@@ -126,7 +130,7 @@
           = render :partial => "renewals_table_content", :locals => { :x => x }
 
   %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 61 to 90 days
-  %table#renewals_61_90{:class => "sortable", :padding => '2', :border => '1', :width => '860px'}
+  %table#renewals_61_90{:class => "sortable", :padding => '2', :border => '1'}
     %thead
       = render :partial => 'renewals_table_header'
     %tbody
@@ -135,7 +139,7 @@
           = render :partial => "renewals_table_content", :locals => { :x => x }
 
   %h2{:style => 'margin:15px 0px 0px 250px'} Contracts expiring in 91 to 120 days
-  %table#renewals_91_120{:class => "sortable", :padding => '2', :border => '1', :width => '860px'}
+  %table#renewals_91_120{:class => "sortable", :padding => '2', :border => '1'}
     %thead
       = render :partial => 'renewals_table_header'
     %tbody

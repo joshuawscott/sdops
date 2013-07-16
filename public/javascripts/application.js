@@ -1,8 +1,7 @@
 // ************************************************
 // Functions for Renewals report
 // ************************************************
-function toggleOfficesRenewal(sum_col, expected_col) {
-  toggleOffices(sum_col);
+function toggleFilterRenewal(filter_col, sum_col, expected_col) {
   // insert sums for each section
   sumVisibleRows('sum_expired', 'renewals_expired', sum_col, 1);
   sumVisibleRows('sum_0_30', 'renewals_0_30', sum_col, 1);
@@ -13,7 +12,7 @@ function toggleOfficesRenewal(sum_col, expected_col) {
   sumVisibleRows('expected_0_30', 'renewals_0_30', expected_col, 1);
   sumVisibleRows('expected_31_60', 'renewals_31_60', expected_col, 1);
   sumVisibleRows('expected_61_90', 'renewals_61_90', expected_col, 1);
-  sumVisibleRows('expected_91_120', 'renewals_91_120', expected_col);
+  sumVisibleRows('expected_91_120', 'renewals_91_120', expected_col, 1);
 
   // insert counts for each section
   countVisibleRows('count_expired', 'renewals_expired');
@@ -45,8 +44,19 @@ function toggleOfficesRenewal(sum_col, expected_col) {
   //expected_all.innerHTML = $('expected_expired').innerHTML*1 + $('expected_0_30').innerHTML*1 + $('expected_31_60').innerHTML*1 + $('expected_61_90').innerHTML*1 + $('expected_91_120').innerHTML*1;
 }
 
+function toggleOfficesRenewal(sum_col, expected_col) {
+  toggleOffices();
+  $('filter_reps').value = ''
+  toggleFilterRenewal(0, sum_col, expected_col);
+}
+function toggleRepsRenewal(sum_col, expected_col) {
+  toggleReps();
+  $('filter_offices').value = ''
+  toggleFilterRenewal(1, sum_col, expected_col);
+}
+
 function toggleOfficesGeneric(sum_col, options) {
-  toggleOffices(sum_col);
+  toggleOffices();
   var display_as_currency = 0
   if(options == undefined || options['display_as_currency'] == undefined) {
     display_as_currency = 1;
@@ -54,16 +64,22 @@ function toggleOfficesGeneric(sum_col, options) {
   sumVisibleRows('sum_total', 'sum_table', sum_col, display_as_currency);
 }
 
-function toggleOffices(sum_col){
-  var office = $('filter_offices').value;
-  var a = $('filter_offices').options;
-  if (office == ""){
+function toggleReps() {
+  toggleDropdown('filter_reps');
+}
+function toggleOffices() {
+  toggleDropdown('filter_offices');
+}
+function toggleDropdown(dropdown_id){
+  var el = $(dropdown_id).value;
+  var a = $(dropdown_id).options;
+  if (el == ""){
     showAll();
   }
   else {
     for (i=0; i < a.length; i++){
-      var name = 'tr[name="'+a[i].value+'"]';
-      if (a[i].value != office && a[i].value !=""){
+      var name = 'tr[' + dropdown_id + '="'+a[i].value+'"]';
+      if (a[i].value != el && a[i].value !=""){
         $$(name).invoke('addClassName', 'hidden');
       }
       else {
@@ -93,20 +109,20 @@ function countVisibleRows(total_container_id, count_table_id) {
 }
 
 function sumVisibleRows(total_container_id, sum_table_id, sum_col, display_as_currency){
-	var rows = $$('#'+sum_table_id+' tbody tr');
-	var sum_area = $('expired_total');
-	var sum = 0.0;
-	rows.each(function(r) {
-			if (r.hasClassName('hidden') == false) {
-				var price = r.cells[sum_col].innerHTML.replace(/[\$\,]/g, '');
-				sum += (price * 1.0); // * 1.0 converts string to a float
-			}
-	});
-        if(display_as_currency == 0) {
-          $(total_container_id).innerHTML = sum;
-        } else {
-          $(total_container_id).innerHTML = number_to_currency(sum);
-        }
+  var rows = $$('#'+sum_table_id+' tbody tr');
+  var sum_area = $('expired_total');
+  var sum = 0.0;
+  rows.each(function(r) {
+    if (r.hasClassName('hidden') == false) {
+      var price = r.cells[sum_col].innerHTML.replace(/[\$\,]/g, '');
+      sum += (price * 1.0); // * 1.0 converts string to a float
+    }
+  });
+  if(display_as_currency == 0) {
+    $(total_container_id).innerHTML = sum;
+  } else {
+    $(total_container_id).innerHTML = number_to_currency(sum);
+  }
 }
 
 // Print view
