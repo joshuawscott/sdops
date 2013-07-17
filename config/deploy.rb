@@ -1,6 +1,7 @@
 set :application, "sdops.sourcedirect.com"
 set :scm, :git
-set :repository,  "git@rails:sdops.git"
+#set :repository,  "git@rails:sdops.git"
+set :repository,  "git@github.com:joshuawscott/sdops.git"
 set :branch, "master"
 set :deploy_via, :copy
 set :copy_exclude, [".svn", ".git"]
