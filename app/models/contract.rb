@@ -141,7 +141,7 @@ class Contract < SupportDeal
   # TODO: ADD THIS AS A FIELD AND RUN NIGHTLY JOB
   def parts_cost
     begin
-      @parts_cost = FishbowlPartsCost.cost_for(self.id).cost
+      @parts_cost = ::FishbowlPartsCost.cost_for(self.id).cost
     rescue ActiveResource::ResourceNotFound
       @parts_cost = BigDecimal.new('0.0')
     end
