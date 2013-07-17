@@ -1,0 +1,44 @@
+#section1
+  #results.boxed
+    %h2 Details
+    %p
+      %label{:for => "managed_deal_account_id"}
+        Account
+      = f.collection_select(:account_id, @sugar_accts, :id, :name, { :include_blank => true })
+    %p
+      %label{:for => "end_user_id"}
+        End User
+      = f.collection_select(:end_user_id, @end_users, :id, :name, { :include_blank => true })
+    %p
+      %label{:for => "managed_deal_sales_office_id"}
+        Sales Office
+      = f.collection_select(:sales_office_id, @sales_offices, :id, :name, { :include_blank => true })
+    %p
+      %label{:for => "managed_deal_sales_rep_id"}
+        Sales Rep
+      = f.collection_select(:sales_rep_id, @sales_reps, :id, :full_name, { :include_blank => true })
+
+    %p
+      %label{:for => "managed_deal_payment_terms"}
+        Payment Terms
+      = f.text_field :payment_terms
+    %p
+      %label{:for => "managed_deal_initial_annual_revenue"}
+        Orig. Revenue
+      = f.text_field :initial_annual_revenue
+    %p
+      %label{:for => "managed_deal_description"}
+        Description
+      = f.text_field :description
+    %p
+      %label{:for => "managed_deal_start_date"}
+        Start Date
+      = f.date_select :start_date, :class => 'textbox'
+    %p
+      %label{:for => "managed_deal_end_date"}
+        End Date
+      = f.date_select :end_date, :class => 'textbox'
+    %p
+      %label{:for => "managed_deal_renewal_created"}
+        End Date
+      = f.date_select :renewal_created, :class => 'textbox'

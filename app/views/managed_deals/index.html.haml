@@ -1,0 +1,39 @@
+- content_for :subtitle do
+  Managed Services Deals
+//      t.string :account_id
+//      t.string :end_user_id
+//      t.string :sales_office_id
+//     t.string :sales_rep_id
+//      t.string :customer_po_number
+//      t.string :payment_terms
+//      t.string :initial_annual_revenue
+//      t.string :description
+//      t.date :start_date
+//      t.date :end_date
+#section1
+  %p
+    =link_to "New Managed Services Deal", new_managed_deal_path
+  %table
+    %thead
+      %tr
+        %th ID
+        %th Account
+        %th Office
+        %th Rep
+        %th Revenue
+        %th Description
+        %th Start Date
+        %th End Date
+    %tbody
+      - @managed_deals.each do |managed_deal|
+        %tr
+          %td
+            = link_to managed_deal.id,  managed_deal
+          %td= managed_deal.sugar_acct.nil? ? 'N/A' : managed_deal.sugar_acct.name
+          %td= managed_deal.sales_office.nil? ? 'N/A' : managed_deal.sales_office.name
+          %td= managed_deal.sales_rep.nil? ? 'N/A' : managed_deal.sales_rep.full_name
+          %td= managed_deal.initial_annual_revenue
+          %td= managed_deal.description
+          %td= managed_deal.start_date
+          %td= managed_deal.end_date
+

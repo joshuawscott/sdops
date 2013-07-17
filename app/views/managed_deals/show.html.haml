@@ -1,0 +1,53 @@
+- content_for :subtitle do
+  Managed Services Deal
+#section1
+  %h2
+    Managed Deal #:
+    =h @managed_deal.id.to_s
+  = link_to('Edit', edit_managed_deal_path(@managed_deal)) + ' | '  if current_user.has_role?(:contract_admin)
+  = link_to('Destroy', managed_deal_path(@managed_deal), :confirm => 'Are you sure?', :method => :delete) if current_user.has_role?(:contract_admin)
+#section2
+  #details.boxed
+    %h2 Details
+    %p
+      %label
+        Account
+      =h !@managed_deal.sugar_acct.nil? && @managed_deal.sugar_acct.name
+    %p
+      %label
+        End User
+      =h !@managed_deal.end_user.nil? ? @managed_deal.end_user.name : 'N/A'
+    %p
+      %label
+        Sales Office
+      =h !@managed_deal.sales_office.nil? && @managed_deal.sales_office.name
+    %p
+      %label
+        PO Number
+      =h @managed_deal.customer_po_number
+    %p
+      %label
+        Payment Terms
+      =h @managed_deal.payment_terms
+    %p
+      %label
+        Orig. Amount
+      =h number_to_currency(@managed_deal.initial_annual_revenue)
+    %p
+      %label
+        Description
+      =h @managed_deal.description
+    %p
+      %label
+        Start Date
+      =h @managed_deal.start_date
+    %p
+      %label
+        End Date
+      =h @managed_deal.end_date
+    %p
+      %label
+        Renewal Created
+      =h @managed_deal.renewal_created
+#section4
+  = render :partial => "/shared_views/comments_box", :locals => {:object => @managed_deal}

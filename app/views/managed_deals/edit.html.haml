@@ -1,0 +1,17 @@
+- content_for :top_js do
+  = javascript_include_tag "managed_deals.js", :cache => "managed_deal_all"
+- content_for :subtitle do
+  Edit Managed Deal
+
+#section1
+  = link_to('Show', managed_deal_path(@managed_deal))
+  = #link_to(' Import Line Items ', '/import?contract=' + @contract.id.to_s) if current_user.has_role?(:admin, :importer, :contract_admin)
+
+#section2
+  = error_messages_for 'managed_deal'
+  - form_for(:managed_deal, :url => managed_deal_path(@managed_deal), :html => { :method => :put }) do |f|
+    = render :partial => "form", :locals => { :f => f }
+    #section3
+      %p
+        = submit_tag "Update"
+
