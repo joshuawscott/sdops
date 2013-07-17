@@ -1,7 +1,7 @@
 // ************************************************
 // Functions for Renewals report
 // ************************************************
-function toggleFilterRenewal(filter_col, sum_col, expected_col) {
+function toggleFilterRenewal(sum_col, expected_col) {
   // insert sums for each section
   sumVisibleRows('sum_expired', 'renewals_expired', sum_col, 1);
   sumVisibleRows('sum_0_30', 'renewals_0_30', sum_col, 1);
@@ -47,12 +47,12 @@ function toggleFilterRenewal(filter_col, sum_col, expected_col) {
 function toggleOfficesRenewal(sum_col, expected_col) {
   toggleOffices();
   $('filter_reps').value = ''
-  toggleFilterRenewal(0, sum_col, expected_col);
+  toggleFilterRenewal(sum_col, expected_col);
 }
 function toggleRepsRenewal(sum_col, expected_col) {
   toggleReps();
   $('filter_offices').value = ''
-  toggleFilterRenewal(1, sum_col, expected_col);
+  toggleFilterRenewal(sum_col, expected_col);
 }
 
 function toggleOfficesGeneric(sum_col, options) {
