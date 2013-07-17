@@ -146,8 +146,8 @@ class ContractsController < ApplicationController
     @contract = Contract.find(params[:id])
     @parts_cost = BigDecimal.new('0.0')
     @subk_cost = BigDecimal.new('0.0')
-    pc_thread = Thread.new { @parts_cost = @contract.parts_cost }
-    sk_thread = Thread.new { @subk_cost = @contract.subcontract_cost }
+    @parts_cost = @contract.parts_cost
+    @subk_cost = @contract.subcontract_cost
     @comments = @contract.comments.sort {|x,y| y.created_at <=> x.created_at}
     @line_items = @contract.line_items.sort_by {|l| l.position}
     @hwlines = @line_items.find_all {|e| e.support_type == "HW"}
@@ -159,8 +159,6 @@ class ContractsController < ApplicationController
     @support_providers = Subcontractor.find(:all, :select => :name).map {|s| s.name}
     @support_providers.insert 0, "Sourcedirect"
     @sales_rep = User.find(@contract.sales_rep_id, :select => "first_name, last_name").full_name
-    pc_thread.join
-    sk_thread.join
     respond_to do |format|
       format.html do
         render :action => 'quote' if params[:quote]
