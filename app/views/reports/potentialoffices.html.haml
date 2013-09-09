@@ -12,6 +12,8 @@
         %th
           Revenue
         %th
+          Sub-K Cost
+        %th
           &nbsp;
     %tbody
       - @locations.each do |x|
@@ -23,6 +25,8 @@
               = x.location
           %td{:align => 'right'}
             = number_to_currency(x.revenue, :format => '%u%n')
+          %td{:align => 'right'}
+            = number_to_currency(x.cost, :format => '%u%n')
           %td{:align => 'right'}
             - if current_user.has_role?(:admin, :contract_admin)
               = link_to 'mass update', :controller => :line_items, :action => :mass_update_location, :from_location => x.location

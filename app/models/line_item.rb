@@ -47,7 +47,8 @@ class LineItem < ActiveRecord::Base
   # location
   def self.hw_revenue_by_location(effective_time = Time.now)
 
-    locations = LineItem.in_contracts.find(:all, :select => 'line_items.*, SUM(effective_price * qty * 12) AS revenue', :conditions => ["begins <= :time AND ends >= :time AND support_type = 'HW'", {:time => effective_time}], :group => 'location ASC' )
+    locations = LineItem.in_contracts.find(:all, :select => 'line_items.*, SUM(effective_price * qty * 12) AS revenue, SUM(subcontract_cost * qty * 12) AS cost', :conditions => ["begins <= :time AND ends >= :time AND support_type = 'HW'", {:time => effective_time}], :group => 'location ASC' )
+    #TODO: WHY to_f?
     locations.each do |l|
       l.revenue = l.revenue.to_f
     end
