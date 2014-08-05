@@ -204,3 +204,38 @@ test
 vendor
   External libraries that the application depends on. Also includes the plugins subdirectory.
   This directory is in the load path.
+
+Stuff to install.  Commented out means maybe not required, but is installed
+on the server.
+
+brew install imagemagick
+brew install mysql
+# gem install -v=0.3.0 columize
+# gem install -v=0.8.0 fast_xs
+gem install -v=1.4.0 fastercsv
+gem install -v=1.0.1 fastthread
+gem install -v=0.3.4 gruff
+gem install -v=2.0.4 haml
+# gem install -v=0.2.5 hirb
+# gem install -v=2.3.2 hoe
+# gem install -v=0.43 linecache
+gem install -v=2.7 mysql
+gem install -v=1.3.2 nokogiri
+# gem install -v=0.7.9.2008.01.28 postgres
+gem install -v=0.5.1 prawn
+gem install -v=0.5.1 prawn-core
+gem install -v=0.2.1 prawn-format
+gem install -v=0.2.1 prawn-layout
+# gem install -v=1.4.6 racc
+# gem install -v=0.4.0 rack
+gem install -v=0.8.7 rake
+gem install -v=2.1.2 rails
+# gem install -v=1.12.5 request-log-analyzer
+# gem install -v=1.0.4 rexical
+gem install -v=2.7.0 rmagick
+gem install -v=0.10.3 ruby-debug
+gem install -v=0.10.3 ruby-debug-base
+# gem install -v=0.7.3 ruby-prof
+# gem install -v=1.0.3 rubyforge
+# gem install -v=1.2.4 sqlite3-ruby
+# gem install -v=2007.05.07 vim-ruby
