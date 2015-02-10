@@ -2,10 +2,12 @@ class UpfrontOrdersController < ApplicationController
   before_filter :set_dropdowns, :only => [:review_import, :save_import]
   before_filter :authorized?, :except => [:show, :index]
   before_filter :read_authorized?, :only => [:show, :index]
+
   def index
     #@upfront_orders = UpfrontOrder.find(:all, :joins => :appgen_order, :order => :ship_date)
     @upfront_orders = UpfrontOrder.find(:all, :conditions => "completed = 0 AND has_upfront_support = 1", :order => :id)
   end
+
   def show
     #@upfront_order = UpfrontOrder.find(params[:id], :include => :appgen_order)
     #@lineitems = AppgenOrderLineitem.find(:all, :include => :appgen_order_serial, :conditions => ['appgen_order_id = ?', @upfront_order.appgen_order_id])
@@ -17,12 +19,14 @@ class UpfrontOrdersController < ApplicationController
     @upfront_order = UpfrontOrder.find(params[:id])
     @linked_order = @upfront_order.linked_order
     @line_items = @upfront_order.linked_order.line_items
-    @contract_dropdown = Contract.find(:all, :conditions => {:payment_terms => "Bundled"}).collect {|c| [c.said.to_s + " | " + c.description.to_s, c.id]}
+    @contract_dropdown = Contract.find(:all, :conditions => {:payment_terms => "Bundled"}).collect { |c| [c.said.to_s + " | " + c.description.to_s, c.id] }
   end
+
   def update_from_appgen
     UpfrontOrder.update_from_appgen
     redirect_to upfront_orders_url
   end
+
   def update_from_fishbowl
     UpfrontOrder.update_from_fishbowl
     redirect_to upfront_orders_url
@@ -36,10 +40,10 @@ class UpfrontOrdersController < ApplicationController
       if @upfront_order.update_attributes(params[:upfront_order])
         flash[:notice] = 'Upfront Order was successfully updated.'
         format.html { redirect_to(@upfront_order) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "show" }
-        format.xml  { render :xml => @upfront_order.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @upfront_order.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -81,28 +85,28 @@ class UpfrontOrdersController < ApplicationController
     # that have no RMM/MBS from the new contracts where a customer may decline.
     params[:contract][:basic_backup_auditing] = nil if params[:contract][:basic_backup_auditing] == ""
     params[:contract][:basic_remote_monitoring] = nil if params[:contract][:basic_remote_monitoring] == ""
-    address1,contact_name = @linked_order.shiptoaddress.split("\nAttn: ") #split the contact name from the address
+    address1, contact_name = @linked_order.shiptoaddress.split("\nAttn: ") #split the contact name from the address
     #defaults - these are overridden by the user input.
     contract_hash = {
-      :said => @linked_order.num,
-      :sdc_ref => @linked_order.num,
-      :cust_po_num => @linked_order.cust_po_number,
-      :payment_terms => "Bundled",
-      :start_date => @linked_order.ship_date + 1,
-      :expired => false,
-      :discount_pref_hw => 0.0,
-      :discount_pref_sw => 0.0,
-      :discount_pref_srv => 0.0,
-      :discount_prepay => 0.0,
-      :discount_multiyear => 0.0,
-      :discount_ce_day => 0.0,
-      :discount_sa_day => 0.0,
-      :so_number => @linked_order.num,
-      :po_received => @linked_order.ship_date,
-      :address1 => address1,
-      :address2 => @linked_order.shiptocity + ", " + @linked_order.shiptostate + " " + @linked_order.shiptozip,
-      :contact_name => contact_name
-      }
+        :said => @linked_order.num,
+        :sdc_ref => @linked_order.num,
+        :cust_po_num => @linked_order.cust_po_number,
+        :payment_terms => "Bundled",
+        :start_date => @linked_order.ship_date + 1,
+        :expired => false,
+        :discount_pref_hw => 0.0,
+        :discount_pref_sw => 0.0,
+        :discount_pref_srv => 0.0,
+        :discount_prepay => 0.0,
+        :discount_multiyear => 0.0,
+        :discount_ce_day => 0.0,
+        :discount_sa_day => 0.0,
+        :so_number => @linked_order.num,
+        :po_received => @linked_order.ship_date,
+        :address1 => address1,
+        :address2 => @linked_order.shiptocity + ", " + @linked_order.shiptostate + " " + @linked_order.shiptozip,
+        :contact_name => contact_name
+    }
     @contract = Contract.new(contract_hash.merge(params[:contract]))
     if @contract.save
       flash[:notice] = "Contract Created"
@@ -111,11 +115,11 @@ class UpfrontOrdersController < ApplicationController
       @upfront_order.completed = true
       @upfront_order.save
       line_item_hash = {
-        :support_deal_id => @contract.id,
-        :begins => @contract.start_date,
-        :ends => @contract.end_date,
-        :location => @contract.support_office_name,
-        :support_provider => 'Sourcedirect'}
+          :support_deal_id => @contract.id,
+          :begins => @contract.start_date,
+          :ends => @contract.end_date,
+          :location => @contract.support_office_name,
+          :support_provider => 'Sourcedirect'}
       position = 1
       params[:line_item].each do |l|
         if l[:is_hw] == "true"

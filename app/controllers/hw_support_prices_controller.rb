@@ -31,7 +31,7 @@ class HwSupportPricesController < ApplicationController
     @hw_support_price = HwSupportPrice.find(params[:id])
     @hw_support_price.destroy
     respond_to do |format|
-      format.html {redirect_to(hw_support_prices_url)}
+      format.html { redirect_to(hw_support_prices_url) }
     end
   end
 
@@ -66,6 +66,6 @@ class HwSupportPricesController < ApplicationController
   end
 
   def set_dropdowns
-    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
+    @manufacturer_lines = ManufacturerLine.find(:all).sort_by { |x| x.manufacturer.name + x.name }
   end
 end

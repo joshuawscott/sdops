@@ -20,6 +20,7 @@ class SwSupportPrice < SupportPricingDb
     self.update_price ||= BigDecimal.new('0.0')
     @list_price ||= phone_price + update_price
   end
+
   def list_price=(list_price)
     @list_price = list_price
   end

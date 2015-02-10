@@ -64,7 +64,7 @@ class AdminController < ApplicationController
       format.xls do
         first_id = params[:first_id].to_i
         last_id = params[:last_id].to_i == 0 ? Contract.find(:last).id.to_i : params[:last_id].to_i
-        @contracts = Contract.find(:all, :conditions => ["id >= ? AND id <= ?", first_id, last_id] )
+        @contracts = Contract.find(:all, :conditions => ["id >= ? AND id <= ?", first_id, last_id])
       end
     end
   end
@@ -85,19 +85,20 @@ class AdminController < ApplicationController
       @contracts = []
     else
       @contract = Contract.find(@id)
-      serial_numbers = @contract.line_items.map {|line_item| line_item.serial_num.to_s}
+      serial_numbers = @contract.line_items.map { |line_item| line_item.serial_num.to_s }
       contracts = []
       serial_numbers.each do |serial_number|
         contracts << Contract.serial_search(serial_number)
       end
-      @contracts = contracts.flatten.uniq.delete_if {|c| c.id == @id}
+      @contracts = contracts.flatten.uniq.delete_if { |c| c.id == @id }
     end
   end
+
   def attrition
     params[:start_date].nil? ? @start_date = Date.today - 12.months : @start_date = params[:start_date]
     params[:end_date].nil? ? @end_date = Date.today : @end_date = params[:end_date]
     @unrenewed = Contract.unrenewed(@start_date, @end_date)
-    @contracts = Contract.find(:all, :conditions => ['end_date >= ? AND end_date <= ?', @start_date, @end_date]).reject {|c| c.renewal_attrition >= 0}
+    @contracts = Contract.find(:all, :conditions => ['end_date >= ? AND end_date <= ?', @start_date, @end_date]).reject { |c| c.renewal_attrition >= 0 }
   end
 
   def unearned_revenue
@@ -115,12 +116,12 @@ class AdminController < ApplicationController
         @contracts.each do |contract|
           @total_unearned_revenue += contract.unearned_revenue_schedule_array(:start_date => @start_date, :end_date => @end_date).sum
         end
-        format.xls {redirect_to '/admin/unearned_revenue.html?total_unearned_revenue='+@total_unearned_revenue.to_s}
+        format.xls { redirect_to '/admin/unearned_revenue.html?total_unearned_revenue='+@total_unearned_revenue.to_s }
       end
       format.xls
-      end
+    end
     logger.debug "Finish " + Time.now.to_f.to_s
- end
+  end
 
   protected
   def authorized?

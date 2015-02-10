@@ -14,16 +14,19 @@ class AppgenOrderLineitem < ActiveRecord::Base
   has_one :appgen_order_serial, :foreign_key => :id
   belongs_to :sugar_acct
   belongs_to :contract
+
   def hwchecked
     # if the first letter is A, then it's checked
     return "true" if part_number[0] == 65 || (part_number[0] >= 48 && part_number[0] <= 57)
     'false'
   end
+
   def swchecked
     # if the first letter is B, then it's checked
     return "true" if part_number[0] == 66
     'false'
   end
+
   #consistent interface between this and fishbowl_so
   def serialnum
     self.appgen_order_serial.serial_number

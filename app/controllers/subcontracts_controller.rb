@@ -4,7 +4,7 @@ class SubcontractsController < ApplicationController
   # GET /subcontracts.xml
   def index
     if params[:subcontractor]
-      @subcontracts = Subcontract.current.find(:all,:conditions => {:subcontractor_id => params[:subcontractor]})
+      @subcontracts = Subcontract.current.find(:all, :conditions => {:subcontractor_id => params[:subcontractor]})
     elsif params[:view_all] == "1"
       @subcontracts = Subcontract.find(:all)
       @viewing_all = true
@@ -12,11 +12,11 @@ class SubcontractsController < ApplicationController
       @subcontracts = Subcontract.current
       @viewing_all = false
     end
-    
+
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @subcontracts }
-      format.js 
+      format.xml { render :xml => @subcontracts }
+      format.js
     end
   end
 
@@ -24,12 +24,12 @@ class SubcontractsController < ApplicationController
   # GET /subcontracts/1.xml
   def show
     @subcontract = Subcontract.find(params[:id])
-    @comments = @subcontract.comments.sort {|x,y| y.created_at <=> x.created_at}
-    @line_items = @subcontract.line_items.sort_by {|x| x.position}
+    @comments = @subcontract.comments.sort { |x, y| y.created_at <=> x.created_at }
+    @line_items = @subcontract.line_items.sort_by { |x| x.position }
     @comment = Comment.new
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @subcontract }
+      format.xml { render :xml => @subcontract }
       format.js
     end
   end
@@ -42,7 +42,7 @@ class SubcontractsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @subcontract }
+      format.xml { render :xml => @subcontract }
     end
   end
 
@@ -61,11 +61,11 @@ class SubcontractsController < ApplicationController
       if @subcontract.save
         flash[:notice] = 'Subcontract was successfully created.'
         format.html { redirect_to(@subcontract) }
-        format.xml  { render :xml => @subcontract, :status => :created, :location => @subcontract }
+        format.xml { render :xml => @subcontract, :status => :created, :location => @subcontract }
       else
         @subcontractors = Subcontractor.find(:all)
         format.html { render :action => "new" }
-        format.xml  { render :xml => @subcontract.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @subcontract.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -79,11 +79,11 @@ class SubcontractsController < ApplicationController
       if @subcontract.update_attributes(params[:subcontract])
         flash[:notice] = 'Subcontract was successfully updated.'
         format.html { redirect_to(@subcontract) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         @subcontractors = Subcontractor.find(:all)
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @subcontract.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @subcontract.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -96,7 +96,7 @@ class SubcontractsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(subcontracts_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 

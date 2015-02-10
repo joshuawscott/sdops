@@ -4,10 +4,10 @@ class SwlistWhitelistsController < ApplicationController
   # GET /swlist_whitelists.xml
   def index
     @swlist_whitelists = SwlistWhitelist.find(:all, :order => :pattern)
-    
+
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @swlist_whitelists }
+      format.xml { render :xml => @swlist_whitelists }
     end
   end
 
@@ -21,7 +21,7 @@ class SwlistWhitelistsController < ApplicationController
     end
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @swlist_whitelist }
+      format.xml { render :xml => @swlist_whitelist }
     end
   end
 
@@ -32,7 +32,7 @@ class SwlistWhitelistsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @swlist_whitelist }
+      format.xml { render :xml => @swlist_whitelist }
     end
   end
 
@@ -50,10 +50,10 @@ class SwlistWhitelistsController < ApplicationController
       if @swlist_whitelist.save
         flash[:notice] = 'SwlistWhitelist was successfully created.'
         format.html { redirect_to(@swlist_whitelist) }
-        format.xml  { render :xml => @swlist_whitelist, :status => :created, :location => @swlist_whitelist }
+        format.xml { render :xml => @swlist_whitelist, :status => :created, :location => @swlist_whitelist }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @swlist_whitelist.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @swlist_whitelist.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -67,10 +67,10 @@ class SwlistWhitelistsController < ApplicationController
       if @swlist_whitelist.update_attributes(params[:swlist_whitelist])
         flash[:notice] = 'SwlistWhitelist was successfully updated.'
         format.html { redirect_to(@swlist_whitelist) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @swlist_whitelist.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @swlist_whitelist.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -83,10 +83,10 @@ class SwlistWhitelistsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(swlist_whitelists_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
-  
+
   protected
   def authorized?
     current_user.has_role?(:config_tool_admin) || not_authorized

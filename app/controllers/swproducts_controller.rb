@@ -13,7 +13,7 @@ class SwproductsController < ApplicationController
     logger.debug @license_types
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @swproduct }
+      format.xml { render :xml => @swproduct }
     end
   end
 
@@ -37,10 +37,10 @@ class SwproductsController < ApplicationController
         @swproduct = nil
         #format.html { render :action => "new" }
         format.html { redirect_to new_swlist_whitelist_swproduct_path(@swlist_whitelist) }
-        format.xml  { render :xml => @swlist_whitelist, :status => :created, :location => @swlist_whitelist }
+        format.xml { render :xml => @swlist_whitelist, :status => :created, :location => @swlist_whitelist }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @swproduct.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @swproduct.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -54,10 +54,10 @@ class SwproductsController < ApplicationController
       if @swproduct.update_attributes(params[:swproduct])
         flash[:notice] = 'Swproducts was successfully updated.'
         format.html { redirect_to(@swlist_whitelist) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @swproduct.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @swproduct.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -70,10 +70,10 @@ class SwproductsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(@swlist_whitelist) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
-  
+
   protected
   def authorized?
     current_user.has_role?(:config_tool_admin) || not_authorized

@@ -22,6 +22,7 @@ class PricingDbSunService < PricingDb
   def self.find_pn(part_number)
     @pricing_db_sun_service = self.all.find(:first, :conditions => ["mkt_part_number = ?", part_number]) || self.new
   end
+
   def pricing_db_sun_description
     PricingDbSunDescription.find(:first, :conditions => ["mkt_part_number = ?", mkt_part_number]) || PricingDbSunDescription.new
   end

@@ -9,6 +9,6 @@
 #   deleted         boolean
 class SugarTeamMembership < SugarDb
   set_table_name "team_memberships"
-  
+
   has_one :sugar_team, :foreign_key => :id
 end

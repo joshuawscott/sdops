@@ -9,7 +9,7 @@ class QuotesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @quotes }
+      format.xml { render :xml => @quotes }
     end
   end
 
@@ -17,18 +17,18 @@ class QuotesController < ApplicationController
   # GET /quotes/1.xml
   def show
     @quote = Quote.find(params[:id])
-    @comments = @quote.comments.sort {|x,y| y.created_at <=> x.created_at}
+    @comments = @quote.comments.sort { |x, y| y.created_at <=> x.created_at }
     @comment = Comment.new
-    @line_items = @quote.line_items.sort_by {|x| x.position}
-    @hwlines = @line_items.find_all {|e| e.support_type == "HW"}
-    @swlines = @line_items.find_all {|e| e.support_type == "SW"}
-    @srvlines = @line_items.find_all {|e| e.support_type == "SRV"}
-    @support_providers = Subcontractor.find(:all, :select => :name).map {|s| s.name}
+    @line_items = @quote.line_items.sort_by { |x| x.position }
+    @hwlines = @line_items.find_all { |e| e.support_type == "HW" }
+    @swlines = @line_items.find_all { |e| e.support_type == "SW" }
+    @srvlines = @line_items.find_all { |e| e.support_type == "SRV" }
+    @support_providers = Subcontractor.find(:all, :select => :name).map { |s| s.name }
     @support_providers.insert 0, "Sourcedirect"
     @sales_rep = User.find(@quote.sales_rep_id, :select => "first_name, last_name").full_name
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @quote }
+      format.xml { render :xml => @quote }
       format.json { render :json => @quote }
     end
   end
@@ -38,19 +38,19 @@ class QuotesController < ApplicationController
   def new
     # Quote defaults
     @quote = Quote.new(:discount_pref_hw => 0.0,
-      :discount_pref_sw => 0.0,
-      :discount_pref_srv => 0.0,
-      :discount_prepay => 0.04,
-      :discount_multiyear => 0.0,
-      :discount_ce_day => 0.0,
-      :discount_sa_day => 0.0
+                       :discount_pref_sw => 0.0,
+                       :discount_pref_srv => 0.0,
+                       :discount_prepay => 0.04,
+                       :discount_multiyear => 0.0,
+                       :discount_ce_day => 0.0,
+                       :discount_sa_day => 0.0
     )
     @replaces = []
     @replaced_by = []
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @quote }
+      format.xml { render :xml => @quote }
     end
   end
 
@@ -71,10 +71,10 @@ class QuotesController < ApplicationController
       if @quote.save
         flash[:notice] = 'Quote was successfully created.'
         format.html { redirect_to(@quote) }
-        format.xml  { render :xml => @quote, :status => :created, :location => @quote }
+        format.xml { render :xml => @quote, :status => :created, :location => @quote }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @quote.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @quote.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -94,10 +94,10 @@ class QuotesController < ApplicationController
       if @quote.update_attributes(params[:quote])
         flash[:notice] = 'Quote was successfully updated.'
         format.html { redirect_to(@quote) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @quote.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @quote.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -110,7 +110,7 @@ class QuotesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(quotes_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 
@@ -140,7 +140,7 @@ class QuotesController < ApplicationController
 
   def set_dropdowns
     @sugar_accts = SugarAcct.find(:all, :select => "id, name", :conditions => "deleted = 0", :order => "name")
-    @sales_offices =  SugarTeam.dropdown_list(current_user.sugar_team_ids)
+    @sales_offices = SugarTeam.dropdown_list(current_user.sugar_team_ids)
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list

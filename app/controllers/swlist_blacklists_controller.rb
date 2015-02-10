@@ -7,7 +7,7 @@ class SwlistBlacklistsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @swlist_blacklists }
+      format.xml { render :xml => @swlist_blacklists }
     end
   end
 
@@ -18,7 +18,7 @@ class SwlistBlacklistsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @swlist_blacklist }
+      format.xml { render :xml => @swlist_blacklist }
     end
   end
 
@@ -29,7 +29,7 @@ class SwlistBlacklistsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @swlist_blacklist }
+      format.xml { render :xml => @swlist_blacklist }
     end
   end
 
@@ -47,10 +47,10 @@ class SwlistBlacklistsController < ApplicationController
       if @swlist_blacklist.save
         flash[:notice] = 'SwlistBlacklist was successfully created.'
         format.html { redirect_to :action => :new }
-        format.xml  { render :xml => @swlist_blacklist, :status => :created, :location => @swlist_blacklist }
+        format.xml { render :xml => @swlist_blacklist, :status => :created, :location => @swlist_blacklist }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @swlist_blacklist.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @swlist_blacklist.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -64,10 +64,10 @@ class SwlistBlacklistsController < ApplicationController
       if @swlist_blacklist.update_attributes(params[:swlist_blacklist])
         flash[:notice] = 'SwlistBlacklist was successfully updated.'
         format.html { redirect_to(swlist_blacklists_url) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @swlist_blacklist.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @swlist_blacklist.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -80,7 +80,7 @@ class SwlistBlacklistsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(swlist_blacklists_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 

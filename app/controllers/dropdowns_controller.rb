@@ -61,10 +61,10 @@ class DropdownsController < ApplicationController
       if @dropdowns.update_attributes(params[:dropdown])
         flash[:notice] = 'Dropdown was successfully updated.'
         format.html { redirect_to(@dropdowns) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @dropdowns.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @dropdowns.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -78,12 +78,12 @@ class DropdownsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(dropdowns_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
-  
-  
-  protected  
+
+
+  protected
   def authorized?
     current_user.has_role?(:admin) || not_authorized
   end

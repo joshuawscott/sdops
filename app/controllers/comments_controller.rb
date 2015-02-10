@@ -1,7 +1,7 @@
 class CommentsController < ApplicationController
   before_filter :authorized?
 
-  before_filter :find_commenter, :only => [:new, :create, :update,  :destroy]
+  before_filter :find_commenter, :only => [:new, :create, :update, :destroy]
 
   ## GET /comments
   ## GET /comments.xml
@@ -62,10 +62,10 @@ class CommentsController < ApplicationController
       if @comments.update_attributes(params[:comment])
         #flash[:notice] = 'Comment was successfully updated.'
         format.html { redirect_to :controller => @commenter.class.to_s.pluralize.downcase, :action => :show, :id => @commenter.id }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @comments.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @comments.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -79,7 +79,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to :controller => @commenter.class.to_s.pluralize.downcase, :action => :show, :id => @commenter.id }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 

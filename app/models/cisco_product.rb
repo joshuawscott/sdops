@@ -64,7 +64,7 @@ class CiscoProduct
     if @base_price[0].nil?
       @base_price = 0.0
     else
-      @base_price = @base_price[0].content.sub("$","").to_f
+      @base_price = @base_price[0].content.sub("$", "").to_f
     end
   end
 
@@ -79,7 +79,7 @@ class CiscoProduct
     if @full_price[0].nil?
       @full_price = 0.0
     else
-      @full_price = @full_price[0].content.sub("$","").to_f
+      @full_price = @full_price[0].content.sub("$", "").to_f
     end
   end
 

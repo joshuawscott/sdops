@@ -6,7 +6,7 @@ class ManufacturersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @manufacturers }
+      format.xml { render :xml => @manufacturers }
     end
   end
 
@@ -17,7 +17,7 @@ class ManufacturersController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @manufacturer }
+      format.xml { render :xml => @manufacturer }
     end
   end
 
@@ -28,7 +28,7 @@ class ManufacturersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @manufacturer }
+      format.xml { render :xml => @manufacturer }
     end
   end
 
@@ -46,10 +46,10 @@ class ManufacturersController < ApplicationController
       if @manufacturer.save
         flash[:notice] = 'Manufacturer was successfully created.'
         format.html { redirect_to(@manufacturer) }
-        format.xml  { render :xml => @manufacturer, :status => :created, :location => @manufacturer }
+        format.xml { render :xml => @manufacturer, :status => :created, :location => @manufacturer }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @manufacturer.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @manufacturer.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -63,10 +63,10 @@ class ManufacturersController < ApplicationController
       if @manufacturer.update_attributes(params[:manufacturer])
         flash[:notice] = 'Manufacturer was successfully updated.'
         format.html { redirect_to(@manufacturer) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @manufacturer.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @manufacturer.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -79,7 +79,7 @@ class ManufacturersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(manufacturers_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 end

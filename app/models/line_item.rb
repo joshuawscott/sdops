@@ -40,14 +40,14 @@ class LineItem < ActiveRecord::Base
 
   # Aggregates the locations in LineItems as an Array Object
   def self.locations
-    LineItem.find(:all, :select => 'location', :joins => :support_deal, :conditions => ['support_deals.expired = ?', false], :group => 'location').map {|x| x.location.to_s}.sort!
+    LineItem.find(:all, :select => 'location', :joins => :support_deal, :conditions => ['support_deals.expired = ?', false], :group => 'location').map { |x| x.location.to_s }.sort!
   end
 
   # Returns a collection of LineItem Objects with the total revenue for each
   # location
   def self.hw_revenue_by_location(effective_time = Time.now)
 
-    locations = LineItem.in_contracts.find(:all, :select => 'line_items.*, SUM(effective_price * qty * 12) AS revenue, SUM(subcontract_cost * qty * 12) AS cost', :conditions => ["begins <= :time AND ends >= :time AND support_type = 'HW'", {:time => effective_time}], :group => 'location ASC' )
+    locations = LineItem.in_contracts.find(:all, :select => 'line_items.*, SUM(effective_price * qty * 12) AS revenue, SUM(subcontract_cost * qty * 12) AS cost', :conditions => ["begins <= :time AND ends >= :time AND support_type = 'HW'", {:time => effective_time}], :group => 'location ASC')
     #TODO: WHY to_f?
     locations.each do |l|
       l.revenue = l.revenue.to_f
@@ -83,14 +83,14 @@ class LineItem < ActiveRecord::Base
     lineitems = LineItem.find(:all, :select => "DISTINCT product_num", :joins => :support_deal, :conditions => "support_deals.expired <> true AND support_type = 'HW' AND product_num IS NOT NULL AND product_num NOT LIKE 'label'")
     lineitems.each do |l|
       @cp = HwSupportPrice.current_list_price(l.product_num).list_price
-      LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'HW'", l.product_num] )
+      LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'HW'", l.product_num])
     end
 
     # Update SW Lines
     lineitems = LineItem.find(:all, :select => "DISTINCT product_num", :joins => :support_deal, :conditions => "support_deals.expired <> true AND support_type = 'SW' AND product_num IS NOT NULL AND product_num NOT LIKE 'label'")
     lineitems.each do |l|
       @cp = SwSupportPrice.current_list_price(l.product_num).list_price
-      LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'SW'", l.product_num] )
+      LineItem.update_all(["current_list_price = ?", @cp], ["product_num = ? AND support_type = 'SW'", l.product_num])
     end
     # Update SRV Lines
     LineItem.update_all("current_list_price = list_price", "support_type = 'SRV'")
@@ -168,10 +168,10 @@ class LineItem < ActiveRecord::Base
   # Calculates the spares needed in an office, based on the covered equipment
   def self.sparesreq(office_name)
     @lineitems = LineItem.find(:all,
-      :select => 'l.product_num, l.description, sum(l.qty) as count',
-      :conditions => ['l.support_provider = "Sourcedirect" AND l.location = ? AND l.support_type = "HW" AND l.product_num <> "LABEL" AND (l.ends > CURDATE() AND l.begins < ADDDATE(CURDATE(), INTERVAL 30 DAY) OR c.expired <> true)', office_name],
-      :joins => 'as l inner join support_deals c on c.id = l.support_deal_id AND c.type = "Contract"',
-      :group => 'l.product_num')
+                               :select => 'l.product_num, l.description, sum(l.qty) as count',
+                               :conditions => ['l.support_provider = "Sourcedirect" AND l.location = ? AND l.support_type = "HW" AND l.product_num <> "LABEL" AND (l.ends > CURDATE() AND l.begins < ADDDATE(CURDATE(), INTERVAL 30 DAY) OR c.expired <> true)', office_name],
+                               :joins => 'as l inner join support_deals c on c.id = l.support_deal_id AND c.type = "Contract"',
+                               :group => 'l.product_num')
   end
 
   # FIXME: Not working with Fishbowl.  Bug #14
@@ -190,15 +190,15 @@ class LineItem < ActiveRecord::Base
 
     if office_name.nil?
       begin
-        FishbowlQoh.find(:all, :params => {:partnum => base_product }).length
+        FishbowlQoh.find(:all, :params => {:partnum => base_product}).length
       rescue ActiveResource::ResourceNotFound
         0
       end
     else
       begin
         #@fb_locationgroup ||= Rails.cache.fetch("fishbowl_locationgroup_#{locationgroupid}") { Fishbowl.find(:first, :from => :locationgroup, :params => {:id => locationgroupid} ) }
-        qbclass ||= Rails.cache.fetch("fishbowl_qbclass_name_#{office_name}") { Fishbowl.find(:first, :from => :qbclass, :params => {:name => office_name, :use_limit => 1} ) }
-        locationgroups ||= Rails.cache.fetch("fishbowl_locationgroups_qbclassid_#{qbclass.id}") {Fishbowl.find(:all, :from => :locationgroup, :params => {:qbclassid => qbclass.id}).delete_if { |lg| !lg.name.include? "Spr" } }
+        qbclass ||= Rails.cache.fetch("fishbowl_qbclass_name_#{office_name}") { Fishbowl.find(:first, :from => :qbclass, :params => {:name => office_name, :use_limit => 1}) }
+        locationgroups ||= Rails.cache.fetch("fishbowl_locationgroups_qbclassid_#{qbclass.id}") { Fishbowl.find(:all, :from => :locationgroup, :params => {:qbclassid => qbclass.id}).delete_if { |lg| !lg.name.include? "Spr" } }
         locationgroupids = locationgroups.map { |lg| lg.id }
         FishbowlQoh.find(:all, :params => {:partnum => base_product, :locationgroupid => locationgroupids}).length
       rescue ActiveResource::ResourceNotFound
@@ -233,7 +233,7 @@ class LineItem < ActiveRecord::Base
     enddate = end_date
     month = opts[:month]
     year = opts[:year]
-    days_in_month = BigDecimal(Time.days_in_month(month,year).to_s)
+    days_in_month = BigDecimal(Time.days_in_month(month, year).to_s)
 
     #this month is before the start date
     return 0 if (startdate.month > month && startdate.year == year) || (startdate.year > year)
@@ -264,7 +264,7 @@ class LineItem < ActiveRecord::Base
   end
 
   def contract_ids_by_location
-    LineItem.find(:all, :select => 'distinct support_deal_id', :joins => :contract, :conditions => ['location = ?', location]).map{|x| x.support_deal_id}
+    LineItem.find(:all, :select => 'distinct support_deal_id', :joins => :contract, :conditions => ['location = ?', location]).map { |x| x.support_deal_id }
   end
 
   private

@@ -25,8 +25,8 @@ class ToolsController < ApplicationController
   def dell_service_tag
     @warranty_info = []
     if params[:service_tags]
-      st_list = params[:service_tags].strip.split("\r\n").reject  {|x| x.nil? || x.strip.blank?}
-      @warranty_info = st_list.map { |service_tag| DellServiceTag.find_warranty(service_tag.strip)}
+      st_list = params[:service_tags].strip.split("\r\n").reject { |x| x.nil? || x.strip.blank? }
+      @warranty_info = st_list.map { |service_tag| DellServiceTag.find_warranty(service_tag.strip) }
     end
   end
 
@@ -40,8 +40,8 @@ class ToolsController < ApplicationController
   def hp_warranty
     @warranty_info = []
     if params[:serial_numbers]
-      sn_list = params[:serial_numbers].strip.split("\r\n").reject {|x| x.nil? || x.strip.blank?}
-      @warranty_info = sn_list.map {|serial_number| HpWarranty.new(serial_number)}
+      sn_list = params[:serial_numbers].strip.split("\r\n").reject { |x| x.nil? || x.strip.blank? }
+      @warranty_info = sn_list.map { |serial_number| HpWarranty.new(serial_number) }
 #      if params[:pn] == '' || params[:pn].nil?
 #        part_number = nil
 #      else

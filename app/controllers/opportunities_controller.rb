@@ -42,7 +42,7 @@ class OpportunitiesController < ApplicationController
   # POST /opportunities
   # POST /opportunities.xml
   def create
-    
+
     @opportunity = Opportunity.new(params[:opportunity])
 
     respond_to do |format|
@@ -86,56 +86,53 @@ class OpportunitiesController < ApplicationController
       #format.xml  { head :ok }
     end
   end
-  
+
   protected
   def authorized?
     current_user.has_role?(:admin)
   end
 
-  
-  
-  
 
-# models/search.rb
-def products
-  @products ||= find_products
-end
+  # models/search.rb
+  def products
+    @products ||= find_products
+  end
 
-def find_products
-  Product.find(:all, :conditions => conditions)
-end
+  def find_products
+    Product.find(:all, :conditions => conditions)
+  end
 
-def keyword_conditions
-  ["products.name LIKE ?", "%#{keywords}%", "%#{keywords}%"] unless keywords.blank?
-end
+  def keyword_conditions
+    ["products.name LIKE ?", "%#{keywords}%", "%#{keywords}%"] unless keywords.blank?
+  end
 
-def minimum_price_conditions
-  ["products.price >= ?", minimum_price] unless minimum_price.blank?
-end
+  def minimum_price_conditions
+    ["products.price >= ?", minimum_price] unless minimum_price.blank?
+  end
 
-def maximum_price_conditions
-  ["products.price <= ?", maximum_price] unless maximum_price.blank?
-end
+  def maximum_price_conditions
+    ["products.price <= ?", maximum_price] unless maximum_price.blank?
+  end
 
-def category_conditions
-  ["products.category_id = ?", category_id] unless category_id.blank?
-end
+  def category_conditions
+    ["products.category_id = ?", category_id] unless category_id.blank?
+  end
 
-def conditions
-  [conditions_clauses.join(' AND '), *conditions_options]
-end
+  def conditions
+    [conditions_clauses.join(' AND '), *conditions_options]
+  end
 
-def conditions_clauses
-  conditions_parts.map { |condition| condition.first }
-end
+  def conditions_clauses
+    conditions_parts.map { |condition| condition.first }
+  end
 
-def conditions_options
-  conditions_parts.map { |condition| condition[1..-1] }.flatten
-end
+  def conditions_options
+    conditions_parts.map { |condition| condition[1..-1] }.flatten
+  end
 
-def conditions_parts
-  methods.grep(/_conditions$/).map { |m| send(m) }.compact
-end
+  def conditions_parts
+    methods.grep(/_conditions$/).map { |m| send(m) }.compact
+  end
 
 
 end

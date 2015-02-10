@@ -1,7 +1,7 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-   # put this in the body after a form to set the input focus to a specific control id
+  # put this in the body after a form to set the input focus to a specific control id
   def set_focus_to_id(id)
     <<-END
     <script language="javascript">
@@ -21,6 +21,7 @@ module ApplicationHelper
     content_for(:stylesheets) { stylesheet_link_tag("/javascripts/jscalendar-1.0/calendar-blue.css") }
     content_for(:top_js) { javascript_include_tag("jscalendar-1.0/calendar.js", "jscalendar-1.0/lang/calendar-en.js", "jscalendar-1.0/calendar-setup.js", :cache => "calendar_all") }
   end
+
   # Requires the activecalendar plugin.
   # Creates a javascript assisted date selector for use inside a form_tag created form.
   # This is done with a text field, and an image trigger.
@@ -68,7 +69,7 @@ module ApplicationHelper
     Contract.columns.each do |c|
       search_hash[c.name.to_sym] ||= ""
     end
-    url_for  :controller => "contracts", :action => "index", :commit => "Search", :params => { :search => search_hash }
+    url_for :controller => "contracts", :action => "index", :commit => "Search", :params => {:search => search_hash}
   end
 
   # Renders a simple show view using haml.  Attempts to translate column names ending in '_id' into a
@@ -100,7 +101,7 @@ module ApplicationHelper
         haml_tag :label, {:for => c.name} do
           haml_concat h(c.name.humanize)
         end
-        if((c.name.split('_')[-1] == 'id' && c.name != 'id') && (!options[:ignored_foreign_keys].include?(c.name.to_sym)))
+        if ((c.name.split('_')[-1] == 'id' && c.name != 'id') && (!options[:ignored_foreign_keys].include?(c.name.to_sym)))
           # handle foreign key fields
           foreign_model = (options[:prefix].to_s + c.name.gsub(/_id$/, '')).camelize.constantize
           if foreign_model.columns.include?('name')
@@ -159,7 +160,7 @@ module ApplicationHelper
           haml_tag :tr do
             instance.class.columns.each do |c|
               haml_tag :td do
-                if((c.name.split('_')[-1] == 'id' && c.name != 'id') && (!options[:ignored_foreign_keys].include?(c.name.to_sym)))
+                if ((c.name.split('_')[-1] == 'id' && c.name != 'id') && (!options[:ignored_foreign_keys].include?(c.name.to_sym)))
                   # handle foreign key fields
                   foreign_model = (options[:prefix].to_s + c.name.gsub(/_id$/, '')).camelize.constantize
                   if foreign_model.column_names.include?('name')
@@ -193,10 +194,12 @@ module ApplicationHelper
         end #aggregation
       end #tbody
     end #table
-  end #render_simple_index
+  end
+
+  #render_simple_index
 
   #returns an html options hash for the main submenu
-  def submenuhash(id,description)
+  def submenuhash(id, description)
     {:class => 'submenu', :onmouseover => "commandDescOn('#{id}','#{description}');", :onmouseout => "commandDescOff('#{id}');"}
   end
 
@@ -204,33 +207,33 @@ module ApplicationHelper
   def tabclass(cname)
     #change cname to the correct selected tab name in exceptional cases:
     case controller.controller_name
-      when  'inventory_items'
+      when 'inventory_items'
         rcname = 'reports'
-      when  'comments',
-            'line_items',
-            'subcontractors',
-            'subcontracts'
+      when 'comments',
+          'line_items',
+          'subcontractors',
+          'subcontracts'
         rcname = 'contracts'
-      when  'audits',
-            'dropdowns',
-            'import',
-            'roles',
-            'users'
+      when 'audits',
+          'dropdowns',
+          'import',
+          'roles',
+          'users'
         rcname = 'admin'
-      when  'appgen_orders',
-            'io_slots',
-            'ioscans',
-            'servers',
-            'swlist_blacklists',
-            'swlist_whitelists',
-            'swlists',
-            'swproducts',
-            'upfront_orders'
+      when 'appgen_orders',
+          'io_slots',
+          'ioscans',
+          'servers',
+          'swlist_blacklists',
+          'swlist_whitelists',
+          'swlists',
+          'swproducts',
+          'upfront_orders'
         rcname = 'tools'
-      when  'hw_support_prices',
-            'manufacturers',
-            'manufacturer_lines',
-            'sw_support_prices'
+      when 'hw_support_prices',
+          'manufacturers',
+          'manufacturer_lines',
+          'sw_support_prices'
         rcname = 'prices'
       else
         rcname = controller.controller_name
@@ -264,6 +267,7 @@ module ApplicationHelper
   def sugarcrm_link(model, id)
     "http://crm1.corp.ad/index.php?action=DetailView&module=#{model}&record=#{id}"
   end
+
   def today
     @today ||= Date.today
   end

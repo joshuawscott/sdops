@@ -25,14 +25,14 @@ class User < ActiveRecord::Base
   # Virtual attribute for the unencrypted password
   attr_accessor :password
 
-  validates_presence_of     :login, :email, :first_name, :last_name
-  validates_presence_of     :password,                   :if => :password_required?
-  validates_presence_of     :password_confirmation,      :if => :password_required?
-  validates_length_of       :password, :within => 4..40, :if => :password_required?
-  validates_confirmation_of :password,                   :if => :password_required?
-  validates_length_of       :login,    :within => 3..40
-  validates_length_of       :email,    :within => 3..100
-  validates_uniqueness_of   :login, :email, :case_sensitive => false
+  validates_presence_of :login, :email, :first_name, :last_name
+  validates_presence_of :password, :if => :password_required?
+  validates_presence_of :password_confirmation, :if => :password_required?
+  validates_length_of :password, :within => 4..40, :if => :password_required?
+  validates_confirmation_of :password, :if => :password_required?
+  validates_length_of :login, :within => 3..40
+  validates_length_of :email, :within => 3..100
+  validates_uniqueness_of :login, :email, :case_sensitive => false
   before_save :encrypt_password
 
   # prevents a user from submitting a crafted form that bypasses activation
@@ -82,29 +82,29 @@ class User < ActiveRecord::Base
 
   def remember_me_until(time)
     self.remember_token_expires_at = time
-    self.remember_token            = encrypt("#{email}--#{remember_token_expires_at}")
+    self.remember_token = encrypt("#{email}--#{remember_token_expires_at}")
     save(false)
   end
 
   def forget_me
     self.remember_token_expires_at = nil
-    self.remember_token            = nil
+    self.remember_token = nil
     save(false)
   end
 
   def full_name
-		[first_name, last_name].join(' ')
-	end
+    [first_name, last_name].join(' ')
+  end
 
   def self.user_list
-     User.find(:all, :order => "first_name, last_name")
+    User.find(:all, :order => "first_name, last_name")
   end
 
   def sugar_team_ids
     if has_role?(:admin, :manager)
-      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0", :group => "team_id").map {|x| x.team_id}
+      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "deleted = 0", :group => "team_id").map { |x| x.team_id }
     else
-      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}'", :group => "team_id").map {|x| x.team_id}
+      SugarTeamMembership.find(:all, :select => "team_id", :conditions => "user_id = '#{self.sugar_id}'", :group => "team_id").map { |x| x.team_id }
     end
   end
 
@@ -117,8 +117,8 @@ class User < ActiveRecord::Base
       local_user = User.find(:first, :conditions => ["login = ?", x.user_name])
       if local_user
         logger.debug x.user_name + " exists, updating..."
-				local_user.first_name = x.first_name
-				local_user.last_name = x.last_name
+        local_user.first_name = x.first_name
+        local_user.last_name = x.last_name
         local_user.email = x.email
         local_user.crypted_password = x.user_hash
         local_user.office = x.default_team
@@ -127,23 +127,23 @@ class User < ActiveRecord::Base
           #all ok
         else
           case
-          when x.first_name.blank?
-            failures[x.user_name] = "Name missing"
-          when x.last_name.blank?
-            failures[x.user_name] = "Name missing"
-          when x.email.blank?
-            failures[x.user_name] = "Email missing or duplicate"
-          when x.user_hash.blank?
-            failures[x.user_name] = "Password not set"
-          when x.default_team.blank?
-            failures[x.user_name] = "Default team not set"
-          else
-            failures[x.user_name] = "Unknown error, contact support"
+            when x.first_name.blank?
+              failures[x.user_name] = "Name missing"
+            when x.last_name.blank?
+              failures[x.user_name] = "Name missing"
+            when x.email.blank?
+              failures[x.user_name] = "Email missing or duplicate"
+            when x.user_hash.blank?
+              failures[x.user_name] = "Password not set"
+            when x.default_team.blank?
+              failures[x.user_name] = "Default team not set"
+            else
+              failures[x.user_name] = "Unknown error, contact support"
           end
         end
       else
         logger.debug x.user_name + " does not exist, creating..."
-				local_user = User.new
+        local_user = User.new
         local_user.login = x.user_name
         local_user.first_name = x.first_name
         local_user.last_name = x.last_name
@@ -155,18 +155,18 @@ class User < ActiveRecord::Base
           #all ok
         else
           case
-          when x.first_name.blank?
-            failures[x.user_name] = "Name missing"
-          when x.last_name.blank?
-            failures[x.user_name] = "Name missing"
-          when x.email.blank?
-            failures[x.user_name] = "Email missing or duplicate"
-          when x.user_hash.blank?
-            failures[x.user_name] = "Password not set"
-          when x.default_team.blank?
-            failures[x.user_name] = "Default team not set"
-          else
-            failures[x.user_name] = "Unknown error, contact support"
+            when x.first_name.blank?
+              failures[x.user_name] = "Name missing"
+            when x.last_name.blank?
+              failures[x.user_name] = "Name missing"
+            when x.email.blank?
+              failures[x.user_name] = "Email missing or duplicate"
+            when x.user_hash.blank?
+              failures[x.user_name] = "Password not set"
+            when x.default_team.blank?
+              failures[x.user_name] = "Default team not set"
+            else
+              failures[x.user_name] = "Unknown error, contact support"
           end
         end
       end
@@ -181,24 +181,24 @@ class User < ActiveRecord::Base
     # the roles of this User instance.  If the length is > 0, then we have a match.
     args = args.to_ary
     args << :admin
-    (roles.map {|r| r.name} &(args.map{|a| a.to_s})).length > 0
+    (roles.map { |r| r.name } &(args.map { |a| a.to_s })).length > 0
   end
 
   def role_names
-    roles.map {|r| r.name}
+    roles.map { |r| r.name }
   end
 
   protected
-    # before filter
-    def encrypt_password
-      return if password.blank?
-      #self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
-      self.crypted_password = encrypt(password)
-    end
+  # before filter
+  def encrypt_password
+    return if password.blank?
+    #self.salt = Digest::SHA1.hexdigest("--#{Time.now.to_s}--#{login}--") if new_record?
+    self.crypted_password = encrypt(password)
+  end
 
-    def password_required?
-      crypted_password.blank? || !password.blank?
-    end
+  def password_required?
+    crypted_password.blank? || !password.blank?
+  end
 
 
 end

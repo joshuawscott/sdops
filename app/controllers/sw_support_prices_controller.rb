@@ -10,6 +10,7 @@ class SwSupportPricesController < ApplicationController
       format.js
     end
   end
+
   def new
     @sw_support_price ||= SwSupportPrice.new
     @sw_support_price.confirm_date ||= params[:confirm_date]
@@ -21,7 +22,7 @@ class SwSupportPricesController < ApplicationController
       flash[:notice] = "The price was saved successfully."
       redirect_to url_for(new_sw_support_price_path) + "?confirm_date=" + params[:sw_support_price][:confirm_date]
     else
-      @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
+      @manufacturer_lines = ManufacturerLine.find(:all).sort_by { |x| x.manufacturer.name + x.name }
       flash[:notice] = "The price failed to save"
       render :action => "new"
     end
@@ -31,7 +32,7 @@ class SwSupportPricesController < ApplicationController
     @sw_support_price = SwSupportPrice.find(params[:id])
     @sw_support_price.destroy
     respond_to do |format|
-      format.html {redirect_to(sw_support_prices_url)}
+      format.html { redirect_to(sw_support_prices_url) }
     end
   end
 
@@ -65,6 +66,6 @@ class SwSupportPricesController < ApplicationController
   end
 
   def set_dropdowns
-    @manufacturer_lines = ManufacturerLine.find(:all).sort_by {|x| x.manufacturer.name + x.name}
+    @manufacturer_lines = ManufacturerLine.find(:all).sort_by { |x| x.manufacturer.name + x.name }
   end
 end

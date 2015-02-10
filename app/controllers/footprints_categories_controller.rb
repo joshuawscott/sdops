@@ -6,7 +6,7 @@ class FootprintsCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @footprints_categories }
+      format.xml { render :xml => @footprints_categories }
     end
   end
 
@@ -17,7 +17,7 @@ class FootprintsCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @footprints_category }
+      format.xml { render :xml => @footprints_category }
     end
   end
 
@@ -28,7 +28,7 @@ class FootprintsCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @footprints_category }
+      format.xml { render :xml => @footprints_category }
     end
   end
 
@@ -46,10 +46,10 @@ class FootprintsCategoriesController < ApplicationController
       if @footprints_category.save
         flash[:notice] = 'Category Mapping was successfully created.'
         format.html { redirect_to(footprints_categories_url) }
-        format.xml  { render :xml => @footprints_category, :status => :created, :location => @footprints_category }
+        format.xml { render :xml => @footprints_category, :status => :created, :location => @footprints_category }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @footprints_category.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @footprints_category.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -63,10 +63,10 @@ class FootprintsCategoriesController < ApplicationController
       if @footprints_category.update_attributes(params[:footprints_category])
         flash[:notice] = 'Category Mapping was successfully updated.'
         format.html { redirect_to(footprints_categories_url) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @footprints_category.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @footprints_category.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -79,7 +79,7 @@ class FootprintsCategoriesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(footprints_categories_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 end

@@ -14,13 +14,13 @@ class ImportController < ApplicationController
     #because the import processing is so complex, we must do form checking in the controller
     #to avoid nils and NoMethodErrors
     if params[:contract] != ""
-      records = YAML::load( params[:importfile] )
+      records = YAML::load(params[:importfile])
     else
       if params["importfile"] == ""
         flash[:error] = "You must select a file to import"
         render :controller => :import, :action => :index and return
       else
-        records = YAML::load( params[:importfile] )
+        records = YAML::load(params[:importfile])
       end
       if params["platform"] == "" || params["sales_office"] == "" || params["support_office"] == "" || params["contract_type"] == "" || params["po_received"] == ""
         flash[:error] = "Please fill in all fields in red."
@@ -35,9 +35,9 @@ class ImportController < ApplicationController
     contract_ary = records[0]
     #Determine the Primary CE & Sales Rep ID from the full name given
     userlist = User.find(:all)
-    sales_rep_id = userlist.map {|sr| sr.id if sr.full_name == contract_ary.ivars['attributes']['sales_rep']}.delete_if {|x| x.nil?}.first
+    sales_rep_id = userlist.map { |sr| sr.id if sr.full_name == contract_ary.ivars['attributes']['sales_rep'] }.delete_if { |x| x.nil? }.first
     contract_ary.ivars['attributes'].delete('sales_rep')
-    primary_ce_id = userlist.map {|sr| sr.id if sr.full_name == contract_ary.ivars['attributes']['primary_ce']}.delete_if {|x| x.nil?}.first
+    primary_ce_id = userlist.map { |sr| sr.id if sr.full_name == contract_ary.ivars['attributes']['primary_ce'] }.delete_if { |x| x.nil? }.first
     contract_ary.ivars['attributes'].delete('primary_ce')
 
     line_items_ary = records[1..-1]
@@ -45,16 +45,16 @@ class ImportController < ApplicationController
     array_sales = params[:sales_office].split('|')
     array_support = params[:support_office].split('|')
     options = {'account_id' => array_acct[0],
-      'account_name' => array_acct[1],
-      'sales_rep_id' => sales_rep_id,
-      'primary_ce_id' => primary_ce_id,
-      'sales_office' => array_sales[0],
-      'sales_office_name' => array_sales[1],
-      'support_office' => array_support[0],
-      'support_office_name' => array_support[1],
-      'platform' => params[:platform],
-      'contract_type' => params[:contract_type],
-      'po_received' => params[:po_received]}
+               'account_name' => array_acct[1],
+               'sales_rep_id' => sales_rep_id,
+               'primary_ce_id' => primary_ce_id,
+               'sales_office' => array_sales[0],
+               'sales_office_name' => array_sales[1],
+               'support_office' => array_support[0],
+               'support_office_name' => array_support[1],
+               'platform' => params[:platform],
+               'contract_type' => params[:contract_type],
+               'po_received' => params[:po_received]}
     contract_ary.ivars['attributes'].update(options)
 
     #Cleanup
@@ -114,12 +114,12 @@ class ImportController < ApplicationController
       if !@contract.new_record?
         flash[:notice] ||= 'Contract was successfully imported.'
         format.html { redirect_to(contract_url(@contract)) }
-        format.xml  { render :xml => @contract, :status => :created, :location => @contract }
+        format.xml { render :xml => @contract, :status => :created, :location => @contract }
       else
         flash[:error] ||= 'Contract was not successfully created.'
         logger.warn "Contract import FAILED"
         format.html { render :action => "index" }
-        format.xml  { render :xml => @contract.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @contract.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -130,52 +130,52 @@ class ImportController < ApplicationController
   end
 
   def create_guid()
-     t = Time.now
-     a_dec = t.usec.to_s
-     a_sec = t.to_i.to_s
+    t = Time.now
+    a_dec = t.usec.to_s
+    a_sec = t.to_i.to_s
 
-     dec_hex = sprintf("%x", a_dec)
-     sec_hex = sprintf("%x", a_sec)
+    dec_hex = sprintf("%x", a_dec)
+    sec_hex = sprintf("%x", a_sec)
 
-     dec_hex = ensure_length(dec_hex,5)
-     sec_hex = ensure_length(sec_hex,6)
+    dec_hex = ensure_length(dec_hex, 5)
+    sec_hex = ensure_length(sec_hex, 6)
 
-     @guid = ""
-     @guid << dec_hex
-     @guid << create_guid_section(3)
-     @guid << "-"
-     @guid << create_guid_section(4)
-     @guid << "-"
-     @guid << create_guid_section(4)
-     @guid << "-"
-     @guid << create_guid_section(4)
-     @guid << "-"
-     @guid << sec_hex
-     @guid << create_guid_section(6)
+    @guid = ""
+    @guid << dec_hex
+    @guid << create_guid_section(3)
+    @guid << "-"
+    @guid << create_guid_section(4)
+    @guid << "-"
+    @guid << create_guid_section(4)
+    @guid << "-"
+    @guid << create_guid_section(4)
+    @guid << "-"
+    @guid << sec_hex
+    @guid << create_guid_section(6)
 
-     return @guid
+    return @guid
   end
 
   def ensure_length(str, len)
-     strlen = str.length
+    strlen = str.length
 
-     if strlen < len
-        str = str + "000000"
-        str = str[0,len]
-     elsif strlen > len
-        str = str[0,len]
-     end
+    if strlen < len
+      str = str + "000000"
+      str = str[0, len]
+    elsif strlen > len
+      str = str[0, len]
+    end
 
-     return str
+    return str
   end
 
   def create_guid_section(chars)
-     @retval = ""
+    @retval = ""
 
-     chars.times do |i|
-       @retval << sprintf("%x", rand(15))
-     end
-     return @retval
+    chars.times do |i|
+      @retval << sprintf("%x", rand(15))
+    end
+    return @retval
   end
 
   def set_dropdowns
@@ -184,7 +184,7 @@ class ImportController < ApplicationController
     @contracts = Contract.find(:all, :select => "id, concat(account_name,' | ',IF(LENGTH(said)>29,CONCAT(LEFT(said,30),'...'),said),' | ',start_date,' | ', IF(LENGTH(description)>29,CONCAT(LEFT(description,30),'...'),description)) as label", :order => 'account_name, said')
     @contractid ||= params[:contract]
     @sales_reps = User.user_list
-    @sales_offices =  SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0 AND id <> '1'", :order => "name")
+    @sales_offices = SugarTeam.find(:all, :select => "concat(id, '|', name) as id, name", :conditions => "deleted = 0 AND id <> '1'", :order => "name")
     @support_offices = @sales_offices
     @pay_terms = Dropdown.payment_terms_list
     @platform = Dropdown.platform_list

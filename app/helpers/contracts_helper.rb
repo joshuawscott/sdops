@@ -63,7 +63,7 @@ module ContractsHelper
     @pdf.table [["Option #{num.to_s} (#{discount_string})"]], :row_colors => ["F2F2F2"], :font_size => 12, :border_width => 0, :width => @full_wide, :row_height => 18
 
     #row titles
-    @pdf.table [["","", "List\nPrice", "Discount\nRate", "Discount\nAmount", "Contract Price", prepay ? "" : "Monthly Price"]], {:font_size => 8, :align => :center, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
+    @pdf.table [["", "", "List\nPrice", "Discount\nRate", "Discount\nAmount", "Contract Price", prepay ? "" : "Monthly Price"]], {:font_size => 8, :align => :center, :column_widths => @pod_widths, :border_width => 0, :vertical_padding => 0, :horizontal_padding => 0}
     @pdf.font("Helvetica", :size => 10)
 
     # data

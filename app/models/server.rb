@@ -18,7 +18,7 @@ class Server < ActiveRecord::Base
   def self.by_name
     self.find(:all, :select => "id, model_name", :order => "model_name")
   end
-  
+
   # Returns the tier of the server for integrity
   def integrity_socket_tier
     if self.sockets <= 2
@@ -31,5 +31,5 @@ class Server < ActiveRecord::Base
       4
     end
   end
-  
+
 end

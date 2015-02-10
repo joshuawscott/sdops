@@ -7,7 +7,7 @@ class ServersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @servers }
+      format.xml { render :xml => @servers }
     end
   end
 
@@ -17,7 +17,7 @@ class ServersController < ApplicationController
     @server = Server.find(params[:id])
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @server }
+      format.xml { render :xml => @server }
     end
   end
 
@@ -28,7 +28,7 @@ class ServersController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @server }
+      format.xml { render :xml => @server }
     end
   end
 
@@ -46,10 +46,10 @@ class ServersController < ApplicationController
       if @server.save
         flash[:notice] = 'Server was successfully created.'
         format.html { redirect_to(@server) }
-        format.xml  { render :xml => @server, :status => :created, :location => @server }
+        format.xml { render :xml => @server, :status => :created, :location => @server }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @server.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @server.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -63,10 +63,10 @@ class ServersController < ApplicationController
       if @server.update_attributes(params[:server])
         flash[:notice] = 'Server was successfully updated.'
         format.html { redirect_to(@server) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @server.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @server.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -79,7 +79,7 @@ class ServersController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(servers_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 

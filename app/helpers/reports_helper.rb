@@ -1,5 +1,6 @@
 module ReportsHelper
   include QuarterlyDates
+
   def comment_link_if_present(contract)
     comment = contract.last_comment
     if comment.nil?
@@ -9,6 +10,7 @@ module ReportsHelper
       haml_concat "<div class='tooltip_content' id='contract_comment_tooltip_" + contract.id.to_s + "'><p><b>Contract " + contract.id.to_s + "</b><br/><b>User:</b> " + comment.user+ "<br/><b>Date:</b>" + comment.updated_at.to_s + "</p><p>" + comment.body + "</p></div>"
     end
   end
+
   def band_for(attainment, quota)
     return BigDecimal.new('0.01') if quota == 0
     fraction = BigDecimal.new(attainment.to_s) / BigDecimal.new(quota.to_s)
@@ -22,6 +24,7 @@ module ReportsHelper
       return 0.10
     end
   end
+
   def quarter
     Quarter
   end

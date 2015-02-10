@@ -21,7 +21,7 @@ class PricingDbHpPrice < PricingDb
   attr_accessor :type
 
   #
-  def self.find_pn(part_number,type)
+  def self.find_pn(part_number, type)
     @pricing_db_hp_price = self.find(:first, :conditions => ["product_number = ?", part_number]) || self.new
     @pricing_db_hp_price.type = type
     @pricing_db_hp_price

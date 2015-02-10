@@ -16,14 +16,14 @@ class AuditsController < ApplicationController
   before_filter :authorized?
 
   def index
-    @models = Audit.audited_classes.map {|x| x.to_s}.sort
+    @models = Audit.audited_classes.map { |x| x.to_s }.sort
     #@users = Audit.find(:all, :include => :user).map {|a| a.user.nil? ? "system" : a.user.login}.uniq.sort
-    @users = User.find(:all).map{|a| a.login}.sort
+    @users = User.find(:all).map { |a| a.login }.sort
     @users << 'system'
   end
 
   def search
-    @models = Audit.audited_classes.map {|x| x.to_s}.sort
+    @models = Audit.audited_classes.map { |x| x.to_s }.sort
     @model = params[:model]
     @id = params[:id]
     @audits = Audit.find(:all, :include => :user, :conditions => {:auditable_type => @model, :auditable_id => @id}, :order => :id)
@@ -36,22 +36,23 @@ class AuditsController < ApplicationController
 
   def user
     @user = params[:user] == 'system' ?
-      User.new(:first_name => '', :last_name => 'system') :
-      User.find(:first, :conditions => {:login => params[:user]})
+        User.new(:first_name => '', :last_name => 'system') :
+        User.find(:first, :conditions => {:login => params[:user]})
     @audits = Audit.find(:all, :conditions => {:user_id => @user.id}, :order => 'id DESC', :limit => 5000)
   end
 
   def show
     @audit = Audit.find(params[:id])
     @user = @audit.user_id.nil? ?
-      User.new(:last_name => 'system', :login => 'system') :
-      User.find(@audit.user_id)
+        User.new(:last_name => 'system', :login => 'system') :
+        User.find(@audit.user_id)
   end
 
   def history
     @audit = Audit.find(params[:id])
     @audits = Audit.find(:all, :conditions => {:auditable_type => @audit.auditable_type, :auditable_id => @audit.auditable_id})
   end
+
   protected
   def authorized?
     current_user.has_role?(:auditor) || not_authorized

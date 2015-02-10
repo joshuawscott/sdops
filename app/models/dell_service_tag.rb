@@ -18,7 +18,7 @@ class DellServiceTag
 
   # Takes a String (service_tag) and a Fixnum(tab_number) and returns a new
   # instance of DellServiceTag
-  def initialize(service_tag, tab_number)#:nodoc:
+  def initialize(service_tag, tab_number) #:nodoc:
     @service_tag = service_tag
     @tab_number = tab_number
     @dell_page = Nokogiri::HTML(open(dell_url))
@@ -41,7 +41,7 @@ class DellServiceTag
 
     curr_max = 0
     curr_max_index = 0
-    correct_row = days_left_array.each_with_index do |x,i|
+    correct_row = days_left_array.each_with_index do |x, i|
       if x > curr_max
         curr_max = x
         curr_max_index = i
@@ -73,7 +73,7 @@ class DellServiceTag
     #puts raw_html
     #puts "------------------------------------------------"
     raw_html.each_slice(3) do |line|
-      new_dell_service_tag.add_line_item(DellServiceTagLineItem.new(line[0].content,line[1].content,line[2].content))
+      new_dell_service_tag.add_line_item(DellServiceTagLineItem.new(line[0].content, line[1].content, line[2].content))
     end
 
     # Alternate code, this one uses CSS classes to find the data.  The problem
@@ -108,7 +108,8 @@ end
 # line item in a DellServiceTag
 class DellServiceTagLineItem
   attr_accessor :quantity, :part_number, :description
-  def initialize(qty,pn,desc)
+
+  def initialize(qty, pn, desc)
     @quantity = qty
     @part_number = pn
     @description = desc

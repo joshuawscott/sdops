@@ -11,7 +11,7 @@ class FishbowlQoh < Fishbowl
   self.collection_name = 'custom_inventory'
   # Caches locationgroupid to avoid repeated XML requests.
   def fb_locationgroup
-    @fb_locationgroup ||= Rails.cache.fetch("fishbowl_locationgroup_#{locationgroupid}") { Fishbowl.find(:first, :from => :locationgroup, :params => {:id => locationgroupid} ) }
+    @fb_locationgroup ||= Rails.cache.fetch("fishbowl_locationgroup_#{locationgroupid}") { Fishbowl.find(:first, :from => :locationgroup, :params => {:id => locationgroupid}) }
   end
   #def location
   #  @location ||= Rails.cache.fetch("fishbowl_location_#{locationid}") { Fishbowl.find(:first, :from => :location, :params => {:id => locationid} ) }

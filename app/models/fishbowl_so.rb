@@ -22,7 +22,7 @@ class FishbowlSo < Fishbowl
 
   def line_items
     begin
-      @line_items ||= FishbowlSoItem.find(:all, :params => {:soid => self.id, :typeid => [10,11,12,30,31,80]})
+      @line_items ||= FishbowlSoItem.find(:all, :params => {:soid => self.id, :typeid => [10, 11, 12, 30, 31, 80]})
     rescue ActiveResource::ResourceNotFound
       @line_items ||= []
     end
@@ -32,9 +32,11 @@ class FishbowlSo < Fishbowl
   def self.received_last_quarter
     self.received_between(Quarter.beginning_of_last_quarter, Quarter.end_of_last_quarter)
   end
+
   def self.received_this_quarter
     self.received_between(Quarter.beginning_of_quarter, Quarter.end_of_quarter)
   end
+
   def self.received_between(beginning_of_q, end_of_q)
     begin
       x = self.find(:all, :params => {:datecreated_gt => beginning_of_q - 1.day, :datecreated_lt => end_of_q + 1.day})
@@ -45,12 +47,13 @@ class FishbowlSo < Fishbowl
   end
 
   def revenue
-    line_items.sum {|l| l.qtytofulfill * l.unitprice.to_f}
+    line_items.sum { |l| l.qtytofulfill * l.unitprice.to_f }
   end
 
   def quickbooks
     Quickbooks.profits_for_so(num)
   end
+
   def profit
     return BigDecimal('0.0') unless quickbooks
     quickbooks.profit
@@ -60,27 +63,35 @@ class FishbowlSo < Fishbowl
   def cust_name
     customer_name
   end
+
   def ship_date
     datecompleted.to_date
   end
+
   def address2
     shiptoaddress
   end
+
   def address3
     shiptocity.to_s + ", " + shiptostate.to_s + " " + shiptozip.to_s
   end
+
   def address4
     ""
   end
+
   def sales_rep
     salesman
   end
+
   def net_discount
     nil
   end
+
   def cust_po_number
     customerpo
   end
+
   # columns method to imitate ActiveRecord functionality
   def self.columns
     example_record = self.find(:first) #need to make this find(:first)

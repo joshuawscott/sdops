@@ -17,5 +17,5 @@
 class Opportunity < ActiveRecord::Base #:nodoc:
   belongs_to :sugar_opp, :foreign_key => :sugar_id
   belongs_to :sugar_acct, :foreign_key => :account_id
-  
+
 end

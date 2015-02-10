@@ -10,6 +10,7 @@ class SugarContactsController < ApplicationController
       format.json { render :json => @sugar_contacts }
     end
   end
+
   def show
     @sugar_contact = SugarContact.find_with_email params[:id]
     respond_to do |format|

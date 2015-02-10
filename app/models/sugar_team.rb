@@ -13,7 +13,7 @@
 #   deleted           boolean
 class SugarTeam < SugarDb
   set_table_name "team"
-  
+
   belongs_to :sugar_team_membership
   has_many :sugar_team_memberships, :foreign_key => 'team_id'
   has_many :sugar_users, :through => :sugar_team_memberships

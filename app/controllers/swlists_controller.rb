@@ -2,6 +2,7 @@ class SwlistsController < ApplicationController
   def index
     @server_names = Server.by_name
   end
+
   # Process the swlist into arrays for the view
   # --
   # TODO: Move to an Swlist model
@@ -21,7 +22,7 @@ class SwlistsController < ApplicationController
     @whitelist_array = []
     @unmatched_array = []
     @blacklist_array = []
-    
+
     swlist_file.each_line do |line|
       wlmatch = false
       blmatch = false
@@ -38,7 +39,7 @@ class SwlistsController < ApplicationController
           else
             @whitelist_array << ['original line', line]
           end
-          
+
           wlmatch = true
         end #if
         break if wlmatch
@@ -55,7 +56,7 @@ class SwlistsController < ApplicationController
       logger.debug "wlmatch: " + wlmatch.to_s + "; blmatch: " + blmatch.to_s
       @unmatched_array << line unless wlmatch || blmatch
       logger.debug "no pattern matched" unless wlmatch || blmatch
-      
+
     end #swlist_file.each
     @productslist_array ||= ['no products found', '']
     @whitelist_array ||= ['no products found']

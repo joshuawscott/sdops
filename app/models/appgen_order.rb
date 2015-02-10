@@ -24,9 +24,11 @@ class AppgenOrder < ActiveRecord::Base
   def line_items
     appgen_order_lineitems
   end
+
   def num
     id
   end
+
   def salesman
     ""
   end

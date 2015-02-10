@@ -6,7 +6,7 @@ class SugarOppsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @sugar_opps }
+      format.xml { render :xml => @sugar_opps }
     end
   end
 
@@ -18,7 +18,7 @@ class SugarOppsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.haml
-      format.xml  { render :xml => @sugar_opp }
+      format.xml { render :xml => @sugar_opp }
     end
   end
 

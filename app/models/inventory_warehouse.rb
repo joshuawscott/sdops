@@ -1,3 +1,3 @@
 #DEPRECATED
-class InventoryWarehouse < ActiveRecord::Base#:nodoc:
+class InventoryWarehouse < ActiveRecord::Base #:nodoc:
 end

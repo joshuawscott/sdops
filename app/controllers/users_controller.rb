@@ -17,19 +17,19 @@ class UsersController < ApplicationController
   def refresh
     failures = User.update_from_sugar
     unless failures.empty?
-			logger.error "**************************************"
-			logger.error "*** Failed to update users from Sugar:"
-      failures.each do |user,problem|
+      logger.error "**************************************"
+      logger.error "*** Failed to update users from Sugar:"
+      failures.each do |user, problem|
         flash[:error] += "***" + user.to_s + ': ' + problem.to_s
       end
-			logger.error "**************************************"
+      logger.error "**************************************"
       flash[:error] = 'Users were not updated - <br/>'
-      failures.each do |user,problem|
+      failures.each do |user, problem|
         flash[:error] += user.to_s + ': ' + problem.to_s
       end
       redirect_to(users_path)
     else
-			logger.info current_user.login + " Successfully updated users from Sugar"
+      logger.info current_user.login + " Successfully updated users from Sugar"
       flash[:notice] = 'Users updated successfully'
       redirect_to(users_path)
     end

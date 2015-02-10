@@ -8,7 +8,7 @@ class RolesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @roles }
+      format.xml { render :xml => @roles }
     end
   end
 
@@ -26,14 +26,15 @@ class RolesController < ApplicationController
     respond_to do |format|
       if @role.update_attributes(params[:role])
         flash[:notice] = 'Role was successfully updated.'
-        format.html { redirect_to(roles_path  ) }
-        format.xml  { head :ok }
+        format.html { redirect_to(roles_path) }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @role.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @role.errors, :status => :unprocessable_entity }
       end
     end
   end
+
   protected
   def authorized?
     current_user.has_role?(:admin) || not_authorized

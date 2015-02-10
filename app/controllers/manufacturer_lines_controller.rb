@@ -2,12 +2,13 @@ class ManufacturerLinesController < ApplicationController
   # GET /manufacturer_lines
   # GET /manufacturer_lines.xml
   before_filter :get_mfgs
+
   def index
     @manufacturer_lines = ManufacturerLine.find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @manufacturer_lines }
+      format.xml { render :xml => @manufacturer_lines }
     end
   end
 
@@ -18,7 +19,7 @@ class ManufacturerLinesController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @manufacturer_line }
+      format.xml { render :xml => @manufacturer_line }
     end
   end
 
@@ -29,7 +30,7 @@ class ManufacturerLinesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @manufacturer_line }
+      format.xml { render :xml => @manufacturer_line }
     end
   end
 
@@ -47,10 +48,10 @@ class ManufacturerLinesController < ApplicationController
       if @manufacturer_line.save
         flash[:notice] = 'ManufacturerLine was successfully created.'
         format.html { redirect_to(@manufacturer_line) }
-        format.xml  { render :xml => @manufacturer_line, :status => :created, :location => @manufacturer_line }
+        format.xml { render :xml => @manufacturer_line, :status => :created, :location => @manufacturer_line }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @manufacturer_line.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @manufacturer_line.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -64,10 +65,10 @@ class ManufacturerLinesController < ApplicationController
       if @manufacturer_line.update_attributes(params[:manufacturer_line])
         flash[:notice] = 'ManufacturerLine was successfully updated.'
         format.html { redirect_to(@manufacturer_line) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @manufacturer_line.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @manufacturer_line.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -80,7 +81,7 @@ class ManufacturerLinesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(manufacturer_lines_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 

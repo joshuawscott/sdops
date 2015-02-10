@@ -6,7 +6,7 @@ class SubcontractorsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @subcontractors }
+      format.xml { render :xml => @subcontractors }
     end
   end
 
@@ -29,7 +29,7 @@ class SubcontractorsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @subcontractor }
+      format.xml { render :xml => @subcontractor }
     end
   end
 
@@ -47,10 +47,10 @@ class SubcontractorsController < ApplicationController
       if @subcontractor.save
         flash[:notice] = 'Subcontractor was successfully created.'
         format.html { redirect_to(@subcontractor) }
-        format.xml  { render :xml => @subcontractor, :status => :created, :location => @subcontractor }
+        format.xml { render :xml => @subcontractor, :status => :created, :location => @subcontractor }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @subcontractor.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @subcontractor.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -64,10 +64,10 @@ class SubcontractorsController < ApplicationController
       if @subcontractor.update_attributes(params[:subcontractor])
         flash[:notice] = 'Subcontractor was successfully updated.'
         format.html { redirect_to(@subcontractor) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @subcontractor.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @subcontractor.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -80,7 +80,7 @@ class SubcontractorsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(subcontractors_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 end

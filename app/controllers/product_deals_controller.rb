@@ -6,7 +6,7 @@ class ProductDealsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @product_deals }
+      format.xml { render :xml => @product_deals }
     end
   end
 
@@ -17,7 +17,7 @@ class ProductDealsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @product_deal }
+      format.xml { render :xml => @product_deal }
     end
   end
 
@@ -28,7 +28,7 @@ class ProductDealsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @product_deal }
+      format.xml { render :xml => @product_deal }
     end
   end
 
@@ -46,10 +46,10 @@ class ProductDealsController < ApplicationController
       if @product_deal.save
         flash[:notice] = 'ProductDeal was successfully created.'
         format.html { redirect_to(@product_deal) }
-        format.xml  { render :xml => @product_deal, :status => :created, :location => @product_deal }
+        format.xml { render :xml => @product_deal, :status => :created, :location => @product_deal }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @product_deal.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @product_deal.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -63,10 +63,10 @@ class ProductDealsController < ApplicationController
       if @product_deal.update_attributes(params[:product_deal])
         flash[:notice] = 'ProductDeal was successfully updated.'
         format.html { redirect_to(@product_deal) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @product_deal.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @product_deal.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -80,7 +80,7 @@ class ProductDealsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(product_deals_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 end

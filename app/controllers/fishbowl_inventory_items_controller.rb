@@ -8,7 +8,7 @@ class FishbowlInventoryItemsController < ApplicationController
       if !params[:search].blank? && !(params[:search][:serialnum].blank? && params[:search][:part_num].blank? && params[:search][:locationgroupid].blank? && params[:search][:partdescription].blank?)
         params[:search][:line_items_limit].to_i < 1 ? @line_items_limit = 1000 : @line_items_limit = params[:search][:line_items_limit].to_i
         search_hash = params[:search]
-        search_hash.delete_if {|k,v| v.blank?}
+        search_hash.delete_if { |k, v| v.blank? }
         @part_num = search_hash[:part_num] if !search_hash[:part_num].blank?
         @partdescription = search_hash[:partdescription] if !search_hash[:partdescription].blank?
         @serialnum = search_hash[:serialnum] if !search_hash[:serialnum].blank?
@@ -32,7 +32,7 @@ class FishbowlInventoryItemsController < ApplicationController
       end
       #Takes too long
       #@locations = Fishbowl.find(:all, :from => :location)
-      @locationgroups = Fishbowl.find(:all, :from => :locationgroup).map {|lg| [lg.name, lg.id]}
+      @locationgroups = Fishbowl.find(:all, :from => :locationgroup).map { |lg| [lg.name, lg.id] }
     rescue ActiveResource::ResourceNotFound => err
       @inventory_items = []
       @locationgroups = []

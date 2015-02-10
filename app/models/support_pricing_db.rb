@@ -16,8 +16,8 @@ class SupportPricingDb < ActiveRecord::Base
     return [] if partnumber == nil && description == nil
     description ||= ""
     self.find(:all,
-      :conditions => "part_number LIKE '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND description like '%#{description.gsub(/\\/, '\&\&').gsub(/'/, "''")}%'",
-      :limit => "1000")
+              :conditions => "part_number LIKE '#{partnumber.gsub(/\\/, '\&\&').gsub(/'/, "''")}%' AND description like '%#{description.gsub(/\\/, '\&\&').gsub(/'/, "''")}%'",
+              :limit => "1000")
   end
 
   # Returns most recently added product record that has a modification date

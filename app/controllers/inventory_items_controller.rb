@@ -26,13 +26,13 @@ class InventoryItemsController < ApplicationController
     else
       @inventory_items = []
     end
-    @locations = InventoryItem.find(:all, :select => 'DISTINCT location', :order => 'location ASC').map {|x| x.location}
-    @warehouses = InventoryWarehouse.all.map {|x| x.description}.sort
-    @manufacturers = InventoryItem.find(:all, :select => 'DISTINCT manufacturer', :order => 'manufacturer ASC').map {|x| x.manufacturer}
+    @locations = InventoryItem.find(:all, :select => 'DISTINCT location', :order => 'location ASC').map { |x| x.location }
+    @warehouses = InventoryWarehouse.all.map { |x| x.description }.sort
+    @manufacturers = InventoryItem.find(:all, :select => 'DISTINCT manufacturer', :order => 'manufacturer ASC').map { |x| x.manufacturer }
     respond_to do |format|
-      format.html { render :html => @inventory_items }# index.html.haml
-      format.xml  { render :xml => @inventory_items }
-      format.xls  #Respond as Excel Doc
+      format.html { render :html => @inventory_items } # index.html.haml
+      format.xml { render :xml => @inventory_items }
+      format.xls #Respond as Excel Doc
     end
   end
 
@@ -43,8 +43,8 @@ class InventoryItemsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.haml
-      format.xml  { render :xml => @inventory_item }
-      format.xls  #Respond as Excel Doc
+      format.xml { render :xml => @inventory_item }
+      format.xls #Respond as Excel Doc
     end
   end
 
@@ -52,10 +52,10 @@ class InventoryItemsController < ApplicationController
   # GET /inventory_items/new.xml
   def new
     @inventory_item = InventoryItem.new
-   
+
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @inventory_item }
+      format.xml { render :xml => @inventory_item }
     end
   end
 
@@ -75,10 +75,10 @@ class InventoryItemsController < ApplicationController
       if @inventory_item.save
         flash[:notice] = 'InventoryItem was successfully created.'
         format.html { redirect_to(@inventory_item) }
-        format.xml  { render :xml => @inventory_item, :status => :created, :location => @inventory_item }
+        format.xml { render :xml => @inventory_item, :status => :created, :location => @inventory_item }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @inventory_item.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @inventory_item.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -92,10 +92,10 @@ class InventoryItemsController < ApplicationController
       if @inventory_item.update_attributes(params[:inventory_item])
         flash[:notice] = 'InventoryItem was successfully updated.'
         format.html { redirect_to(@inventory_item) }
-        format.xml  { head :ok }
+        format.xml { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @inventory_item.errors, :status => :unprocessable_entity }
+        format.xml { render :xml => @inventory_item.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -108,7 +108,7 @@ class InventoryItemsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to(inventory_items_url) }
-      format.xml  { head :ok }
+      format.xml { head :ok }
     end
   end
 

@@ -60,24 +60,24 @@ class SugarContact < SugarDb
     if args.length == 1
       if args.class == Array
         self.valid.find(:all,
-          :select => 'contacts.*, email_addresses.email_address',
-          :joins => 'LEFT JOIN email_addr_bean_rel ON contacts.id = email_addr_bean_rel.bean_id AND email_addr_bean_rel.bean_module = "Contacts" AND primary_address = 1 AND email_addr_bean_rel.deleted = 0 LEFT JOIN email_addresses ON email_addr_bean_rel.email_address_id = email_addresses.id',
-          :conditions => {:id => args[0]} )
+                        :select => 'contacts.*, email_addresses.email_address',
+                        :joins => 'LEFT JOIN email_addr_bean_rel ON contacts.id = email_addr_bean_rel.bean_id AND email_addr_bean_rel.bean_module = "Contacts" AND primary_address = 1 AND email_addr_bean_rel.deleted = 0 LEFT JOIN email_addresses ON email_addr_bean_rel.email_address_id = email_addresses.id',
+                        :conditions => {:id => args[0]})
       else
         self.valid.find(:first,
-          :select => 'contacts.*, email_addresses.email_address',
-          :joins => 'LEFT JOIN email_addr_bean_rel ON contacts.id = email_addr_bean_rel.bean_id AND email_addr_bean_rel.bean_module = "Contacts" AND primary_address = 1 AND email_addr_bean_rel.deleted = 0 LEFT JOIN email_addresses ON email_addr_bean_rel.email_address_id = email_addresses.id',
-          :conditions => {:id => args[0]})
+                        :select => 'contacts.*, email_addresses.email_address',
+                        :joins => 'LEFT JOIN email_addr_bean_rel ON contacts.id = email_addr_bean_rel.bean_id AND email_addr_bean_rel.bean_module = "Contacts" AND primary_address = 1 AND email_addr_bean_rel.deleted = 0 LEFT JOIN email_addresses ON email_addr_bean_rel.email_address_id = email_addresses.id',
+                        :conditions => {:id => args[0]})
 
       end
     else
       scope = args[0]
       options = args[1]
       self.valid.find(scope,
-        :select => 'contacts.*, email_addresses.email_address',
-        :conditions => options[:conditions],
-        :joins => 'LEFT JOIN email_addr_bean_rel ON contacts.id = email_addr_bean_rel.bean_id AND email_addr_bean_rel.bean_module = "Contacts" AND primary_address = 1 AND email_addr_bean_rel.deleted = 0 LEFT JOIN email_addresses ON email_addr_bean_rel.email_address_id = email_addresses.id',
-        :limit => options[:limit])
+                      :select => 'contacts.*, email_addresses.email_address',
+                      :conditions => options[:conditions],
+                      :joins => 'LEFT JOIN email_addr_bean_rel ON contacts.id = email_addr_bean_rel.bean_id AND email_addr_bean_rel.bean_module = "Contacts" AND primary_address = 1 AND email_addr_bean_rel.deleted = 0 LEFT JOIN email_addresses ON email_addr_bean_rel.email_address_id = email_addresses.id',
+                      :limit => options[:limit])
     end
   end
 end

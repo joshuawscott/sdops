@@ -9,3 +9,4 @@ doc/*
 *~
 public/stylesheets/main.css
 nbproject/*
+.idea

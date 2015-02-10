@@ -32,6 +32,7 @@ class FishbowlSoItem < Fishbowl
     #default checked
     'true'
   end
+
   def swchecked
     # if the first letter is B, then it's checked
     return "true" if part_number[0] == 66
@@ -44,16 +45,20 @@ class FishbowlSoItem < Fishbowl
   def part_number
     productnum
   end
+
   def quantity
     # was qtytofulfill, but all qtys are 1 due to 100% serial number tracking in fishbowl.
     1
   end
+
   def price
     unitprice
   end
+
   def discount
     "-$" + adjustamount.to_s + " OR " + (adjustpercentage * 100).to_s + "%"
   end
+
   # columns method to imitate ActiveRecord functionality
   def self.columns
     example_record = self.find(:first) #need to make this find(:first)

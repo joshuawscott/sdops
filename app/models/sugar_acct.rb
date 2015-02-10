@@ -58,7 +58,7 @@ class SugarAcct < SugarDb
 
   # Pull all linked contacts while including the email address field.
   def sugar_contacts_with_email
-    sugar_contact_ids = sugar_contacts.map {|sc| sc.id}
+    sugar_contact_ids = sugar_contacts.map { |sc| sc.id }
     SugarContact.find_with_email(sugar_contact_ids)
   end
 
@@ -69,6 +69,7 @@ class SugarAcct < SugarDb
     end
     @revenue_as_of
   end
+
   def revenue_now
     @revenue_now = BigDecimal.new("0.0")
     self.contracts.each do |contract|

@@ -65,14 +65,14 @@ class SupportDeal < ActiveRecord::Base
   include ContractConstants
   has_many :line_items, :dependent => :destroy
 
-  has_many  :succeeds,
-            :foreign_key => :successor_id,
-            :class_name => 'Relationship',
-            :dependent => :destroy
-  has_many  :precedes,
-            :foreign_key => :predecessor_id,
-            :class_name => 'Relationship',
-            :dependent => :destroy
+  has_many :succeeds,
+           :foreign_key => :successor_id,
+           :class_name => 'Relationship',
+           :dependent => :destroy
+  has_many :precedes,
+           :foreign_key => :predecessor_id,
+           :class_name => 'Relationship',
+           :dependent => :destroy
 
   has_many :successors, :through => :precedes
   has_many :predecessors, :through => :succeeds
@@ -105,7 +105,7 @@ class SupportDeal < ActiveRecord::Base
 
   # This allows iterating through each of the types.
   def srv_support_level_id
-    if srv_line_items.inject(0) {|sum,n| sum + n.qty}
+    if srv_line_items.inject(0) { |sum, n| sum + n.qty }
       "Services"
     else
       ""
@@ -120,7 +120,7 @@ class SupportDeal < ActiveRecord::Base
 
   # Returns Contracts where Contracts.LineItem.serial_num matches serial_num
   def self.serial_search(serial_num, include_expired = false)
-		return [] if serial_num.strip == ''
+    return [] if serial_num.strip == ''
     serial_num.upcase!
     #TODO: Use passed parameters to determine if expired are shown.
     if include_expired
@@ -129,8 +129,8 @@ class SupportDeal < ActiveRecord::Base
       conditions_array = ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) = ?', Date.today, serial_num]
     end
     contracts = self.find(:all, :select => "DISTINCT support_deals.id, sales_office_name, support_office_name, said, support_deals.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired",
-      :joins => :line_items,
-			:conditions => conditions_array)
+                          :joins => :line_items,
+                          :conditions => conditions_array)
     if contracts.size == 0
       possible_serial_nums = self.find_substituted_sn_chars(serial_num)
       if include_expired
@@ -140,15 +140,15 @@ class SupportDeal < ActiveRecord::Base
       end
 
       contracts = self.find(:all, :select => "DISTINCT support_deals.id, sales_office_name, support_office_name, said, support_deals.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired",
-        :joins => :line_items,
-        :conditions => conditions_array)
+                            :joins => :line_items,
+                            :conditions => conditions_array)
       contracts[0].sn_approximated = true if contracts.size>0
     end
     if contracts.size == 0
       possible_serial_nums = self.insert_missing_sn_chars(serial_num)
       contracts = self.find(:all, :select => "DISTINCT support_deals.id, sales_office_name, support_office_name, said, support_deals.description, start_date, end_date, payment_terms, annual_hw_rev, annual_sw_rev, annual_sa_rev, annual_ce_rev, annual_dr_rev, account_name, expired",
-        :joins => :line_items,
-        :conditions => ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', Date.today, possible_serial_nums])
+                            :joins => :line_items,
+                            :conditions => ['(end_date >= ? OR expired <> 1) AND UPPER(line_items.serial_num) IN (?) AND UPPER(line_items.serial_num) IS NOT NULL', Date.today, possible_serial_nums])
       contracts[0].sn_approximated = true if contracts.size>0
     end
     contracts
@@ -169,11 +169,11 @@ class SupportDeal < ActiveRecord::Base
 
     plus90 = ref_date.months_since(4)
     self.find(:all,
-      :select => "id, account_id, sales_rep_id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent, renewal_amount, renewal_created",
-      :conditions => ["end_date <= '#{plus90}' AND expired <> 1 AND (sales_office IN (?) OR support_office IN (?))", teams, teams],
-      :include => :sales_rep,
-      :order => 'sales_office, days_due')
-    end
+              :select => "id, account_id, sales_rep_id, sales_office_name, description, start_date, end_date, (annual_hw_rev + annual_sw_rev + annual_ce_rev + annual_sa_rev + annual_dr_rev) as revenue, account_name, DATEDIFF(end_date, '#{ref_date}') as days_due, renewal_sent, renewal_amount, renewal_created",
+              :conditions => ["end_date <= '#{plus90}' AND expired <> 1 AND (sales_office IN (?) OR support_office IN (?))", teams, teams],
+              :include => :sales_rep,
+              :order => 'sales_office, days_due')
+  end
 
   # Total Annual Revenue - adds +annual_hw_rev+, +annual_sw_rev+, and
   # +annual_srv_rev+
@@ -237,12 +237,12 @@ class SupportDeal < ActiveRecord::Base
   def self.all_revenue(date = nil)
     if date.nil?
       self.find(:first,
-        :select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev',
-        :conditions => "expired <> true")
+                :select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev',
+                :conditions => "expired <> true")
     else
       self.find(:first,
-        :select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev',
-        :conditions => ["start_date <= ? AND end_date >= ?", date, date])
+                :select => 'sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total_revenue, sum(annual_hw_rev) as annual_hw_rev, sum(annual_sw_rev) as annual_sw_rev, sum(annual_sa_rev) as annual_sa_rev, sum(annual_ce_rev) as annual_ce_rev, sum(annual_dr_rev) as annual_dr_rev',
+                :conditions => ["start_date <= ? AND end_date >= ?", date, date])
     end
   end
 
@@ -252,7 +252,7 @@ class SupportDeal < ActiveRecord::Base
     offices = self.find(:all, :select => 'DISTINCT sales_office_name', :conditions => 'expired <> true', :order => 'sales_office_name')
     hash = {}
     offices.length.times do |x|
-      hash[offices[x].sales_office_name] = {'hw' => 0, 'sw' => 0, 'sa' => 0, 'ce' => 0, 'dr' => 0, 'total' => 0 }
+      hash[offices[x].sales_office_name] = {'hw' => 0, 'sw' => 0, 'sa' => 0, 'ce' => 0, 'dr' => 0, 'total' => 0}
     end
     hw = self.count(:account_name, {:conditions => "annual_hw_rev > 0 AND expired <> true", :group => 'sales_office_name'})
     sw = self.count(:account_name, {:conditions => "annual_sw_rev > 0 AND expired <> true", :group => 'sales_office_name'})
@@ -278,7 +278,7 @@ class SupportDeal < ActiveRecord::Base
     offices = self.find(:all, :select => 'DISTINCT sales_office_name', :conditions => 'expired <> 1', :order => 'sales_office_name')
     hash = {}
     offices.length.times do |x|
-      hash[offices[x].sales_office_name] = {'hw' => 0, 'sw' => 0, 'sa' => 0, 'ce' => 0, 'dr' => 0, 'total' => 0 }
+      hash[offices[x].sales_office_name] = {'hw' => 0, 'sw' => 0, 'sa' => 0, 'ce' => 0, 'dr' => 0, 'total' => 0}
     end
     hw = self.count(:account_name, {:distinct => true, :conditions => "annual_hw_rev > 0 AND expired <> true", :group => 'sales_office_name'})
     sw = self.count(:account_name, {:distinct => true, :conditions => "annual_sw_rev > 0 AND expired <> true", :group => 'sales_office_name'})
@@ -315,14 +315,14 @@ class SupportDeal < ActiveRecord::Base
   def self.revenue_by_office_by_type(date = nil)
     if date.nil?
       self.find(:all,
-        :select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr',
-        :conditions => 'expired <> true',
-        :group => 'sales_office_name')
+                :select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr',
+                :conditions => 'expired <> true',
+                :group => 'sales_office_name')
     else
       self.find(:all,
-        :select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr',
-        :conditions => ["start_date <= ? AND end_date >= ?", date, date],
-        :group => 'sales_office_name')
+                :select => 'sales_office_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sum(annual_hw_rev) as hw, sum(annual_sw_rev) as sw, sum(annual_sa_rev) as sa, sum(annual_ce_rev) as ce, sum(annual_dr_rev) as dr',
+                :conditions => ["start_date <= ? AND end_date >= ?", date, date],
+                :group => 'sales_office_name')
     end
   end
 
@@ -331,9 +331,9 @@ class SupportDeal < ActiveRecord::Base
   # * account_name (group field #1)
   # * sales_office_name (group field #2)
   # * total (total of all annual revenue fields)
-	def self.customer_rev_list_by_sales_office
-		self.find(:all, :select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sales_office_name', :conditions => 'expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) )', :group => 'account_name, sales_office_name')
-	end
+  def self.customer_rev_list_by_sales_office
+    self.find(:all, :select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as total, sales_office_name', :conditions => 'expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) )', :group => 'account_name, sales_office_name')
+  end
 
   # Takes an array +teams+ that limits the query to only SupportDeal objects
   # having a +support_office+ matching one of the +teams+.
@@ -343,13 +343,13 @@ class SupportDeal < ActiveRecord::Base
   # * support_office_name (group field #2)
   # * revenue (total of all annual revenue fields)
   # Sorted by highest +revenue+ first.
-	def self.customer_rev_list_by_support_office(teams)
-		self.find(:all,
-      :select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue, support_office_name',
-      :conditions => ['support_office IN (?) AND (expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) ))', teams],
-      :group => 'account_name, support_office_name',
-      :order => 'revenue DESC')
-	end
+  def self.customer_rev_list_by_support_office(teams)
+    self.find(:all,
+              :select => 'account_name, sum(annual_hw_rev + annual_sw_rev + annual_sa_rev + annual_ce_rev + annual_dr_rev) as revenue, support_office_name',
+              :conditions => ['support_office IN (?) AND (expired <> true OR (start_date <= DATE(Now()) AND end_date > DATE(Now() ) ))', teams],
+              :group => 'account_name, support_office_name',
+              :order => 'revenue DESC')
+  end
 
   # Calculates the current effective overall hardware discount of a Contract.
   # Returns a BigDecimal giving the discount as a decimal number, e.g. 30% = 0.3
@@ -407,22 +407,22 @@ class SupportDeal < ActiveRecord::Base
       @x = renewal_amount
     elsif payment_terms != "Bundled"
       hw_t = 0.0
-      line_items.each {|l| hw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "HW" }
+      line_items.each { |l| hw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "HW" }
       hw_t = hw_t * (1.0 - (discount_pref_hw + (payment_terms == "Annual" ? discount_prepay : 0.0)))
 
       sw_t = 0.0
-      line_items.each {|l| sw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SW" }
+      line_items.each { |l| sw_t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SW" }
       sw_t = sw_t * (1.0 - (discount_pref_sw + (payment_terms == "Annual" ? discount_prepay : 0.0)))
 
       srv_t = 0.0
-      line_items.each {|l| srv_t += (l.list_price.nil? ? 0.0 : l.list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SRV" }
+      line_items.each { |l| srv_t += (l.list_price.nil? ? 0.0 : l.list_price * (l.qty.nil? ? 0.0 : l.qty)) if l.support_type == "SRV" }
       srv_t = srv_t * (1.0 - (discount_pref_srv + (payment_terms == "Annual" ? discount_prepay : 0.0)))
 
       @x = 12 * ((hw_t * hw_support_level_multiplier) + (sw_t * sw_support_level_multiplier) + srv_t)
 
     else
       t = 0.0
-      line_items.each {|l| t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) }
+      line_items.each { |l| t += (l.current_list_price.nil? ? 0.0 : l.current_list_price * (l.qty.nil? ? 0.0 : l.qty)) }
       @x = t * 12 * 0.5
     end
   end
@@ -434,11 +434,16 @@ class SupportDeal < ActiveRecord::Base
   #   c.hw_support_level_multiplier # 0.65
   def hw_support_level_multiplier
     case hw_support_level_id
-      when "SDC 24x7" then 1
-      when "SDC SD" then BigDecimal.new('0.83')
-      when "SDC ND" then BigDecimal.new('0.65')
-      when "SDC CS" then BigDecimal.new('1.65')
-      else 1
+      when "SDC 24x7" then
+        1
+      when "SDC SD" then
+        BigDecimal.new('0.83')
+      when "SDC ND" then
+        BigDecimal.new('0.65')
+      when "SDC CS" then
+        BigDecimal.new('1.65')
+      else
+        1
     end
   end
 
@@ -446,9 +451,12 @@ class SupportDeal < ActiveRecord::Base
   # software support. See +hw_support_level_multiplier+.
   def sw_support_level_multiplier
     case sw_support_level_id
-      when "SDC SW 24x7" then 1
-      when "SDC SW 13x5" then BigDecimal.new('0.83')
-      else 1
+      when "SDC SW 24x7" then
+        1
+      when "SDC SW 13x5" then
+        BigDecimal.new('0.83')
+      else
+        1
     end
   end
 
@@ -479,7 +487,7 @@ class SupportDeal < ActiveRecord::Base
   # * Some of the line items that have a support provider != 'Sourcedirect' also
   #   have subcontractor_id == nil
   def self.missing_subcontracts
-    support_deal_ids = LineItem.find(:all, :select => "support_deal_id", :conditions => "support_provider <> 'Sourcedirect' AND subcontract_id IS NULL").map {|l| l.support_deal_id}.uniq
+    support_deal_ids = LineItem.find(:all, :select => "support_deal_id", :conditions => "support_provider <> 'Sourcedirect' AND subcontract_id IS NULL").map { |l| l.support_deal_id }.uniq
     @support_deals = self.current_unexpired.find(:all, :conditions => ["id IN (?)", support_deal_ids])
     @support_deals
   end
@@ -492,7 +500,7 @@ class SupportDeal < ActiveRecord::Base
     if num == 1
       Comment.find(:first, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC")
     else
-      Comment.find(:all, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC", :limit => num )
+      Comment.find(:all, :conditions => ["commentable_id = ? AND commentable_type IN ('SupportDeal', 'Contract')", self.id], :order => "id DESC", :limit => num)
     end
   end
 
@@ -528,17 +536,17 @@ class SupportDeal < ActiveRecord::Base
 
   # Returns a Float - hardware list price based on the +line_items+.
   def hw_list_price
-    hw_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
+    hw_line_items.inject(0) { |sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f }
   end
 
   # Returns a Float - software list price based on the +line_items+.
   def sw_list_price
-    sw_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
+    sw_line_items.inject(0) { |sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f }
   end
 
   # Returns a Float - services list price based on the +line_items+.
   def srv_list_price
-    srv_line_items.inject(0) {|sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f}
+    srv_line_items.inject(0) { |sum, n| sum + (n.list_price.to_f * n.effective_months * n.qty.to_i).to_f }
   end
 
   # Total of +hw_list_price+, +sw_list_price+ and +srv_list_price+
@@ -550,36 +558,38 @@ class SupportDeal < ActiveRecord::Base
   # this is to optimize the payment_schedule method
   def hw_line_items_for_payment_schedule
     line_items.find(:all,
-      :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
-      :group => 'support_deal_id, begins, ends',
-      :conditions => 'support_type = "HW"')
+                    :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
+                    :group => 'support_deal_id, begins, ends',
+                    :conditions => 'support_type = "HW"')
   end
+
   # like sw_line_items, but uses the DB to pre-group the items by date.
   # this is to optimize the payment_schedule method
   def sw_line_items_for_payment_schedule
     line_items.find(:all,
-      :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
-      :group => 'support_deal_id, begins, ends',
-      :conditions => 'support_type = "SW"')
+                    :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
+                    :group => 'support_deal_id, begins, ends',
+                    :conditions => 'support_type = "SW"')
   end
+
   # like srv_line_items, but uses the DB to pre-group the items by date.
   # this is to optimize the payment_schedule method
   def srv_line_items_for_payment_schedule
     line_items.find(:all,
-      :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
-      :group => 'support_deal_id, begins, ends',
-      :conditions => 'support_type = "SRV"')
+                    :select => '1 as qty, SUM(COALESCE(qty,0) * COALESCE(list_price,0.0)) AS list_price, begins, ends, support_deal_id',
+                    :group => 'support_deal_id, begins, ends',
+                    :conditions => 'support_type = "SRV"')
   end
 
   #Efficient query to determine cost of all associated subcontracts.  Returns a NEGATIVE number!
   def subcontract_cost
     subcontract_ids = line_items.find(:all,
-      :select => 'DISTINCT subcontract_id AS ids').map {|x| x.ids}
+                                      :select => 'DISTINCT subcontract_id AS ids').map { |x| x.ids }
     logger.debug subcontract_ids.inspect
     if subcontract_ids == [nil]
       @subcontract_cost = BigDecimal.new("0.0")
     else
-      @subcontract_cost = - Subcontract.find(subcontract_ids).sum {|subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s)}
+      @subcontract_cost = -Subcontract.find(subcontract_ids).sum { |subk| subk.nil? ? BigDecimal.new("0.0") : BigDecimal.new(subk.cost.to_s) }
     end
     @subcontract_cost
   end
@@ -645,7 +655,7 @@ class SupportDeal < ActiveRecord::Base
   # generate an array member with the calculated price for that month.  The
   # length of this array is thus +calendar_months+
   def payment_schedule_old(opts={})
-    opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
+    opts.reverse_merge! :multiyear => false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
 
     prepay = opts[:prepay]
     multiyear = opts[:multiyear]
@@ -667,15 +677,15 @@ class SupportDeal < ActiveRecord::Base
       #logger.debug "month start " + Time.now.to_f.to_s
       #hw_pay_sched << hw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * hw_disc}
       sum = BigDecimal('0')
-      hw_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * hw_disc}
+      hw_line_items.each { |n| sum += n.list_price_for_month(:year => year, :month => month) * hw_disc }
       hw_pay_sched << sum
       #sw_pay_sched << sw_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * sw_disc}
       sum = BigDecimal('0')
-      sw_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * sw_disc}
+      sw_line_items.each { |n| sum += n.list_price_for_month(:year => year, :month => month) * sw_disc }
       sw_pay_sched << sum
       #srv_pay_sched << srv_line_items.inject(0) {|sum, n| sum + n.list_price_for_month(:year => year, :month => month) * srv_disc}
       sum = BigDecimal('0')
-      srv_line_items.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * srv_disc}
+      srv_line_items.each { |n| sum += n.list_price_for_month(:year => year, :month => month) * srv_disc }
       srv_pay_sched << sum
 
       year += 1 if month == 12
@@ -691,7 +701,7 @@ class SupportDeal < ActiveRecord::Base
   end
 
   def payment_schedule_beta(opts={})
-    opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
+    opts.reverse_merge! :multiyear => false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
     if payment_terms == "Annual" || payment_terms == "Monthly"
       payment_schedule_for_normal(opts)
     elsif bundled?
@@ -702,10 +712,11 @@ class SupportDeal < ActiveRecord::Base
       payment_schedule_for_normal(opts)
     end
   end
+
   def payment_schedule(opts={})
     #puts 'payment_schedule opts:'
     #p opts
-    opts.reverse_merge! :multiyear=> multiyear?, :prepay => prepay?, :start_date => start_date, :end_date => end_date
+    opts.reverse_merge! :multiyear => multiyear?, :prepay => prepay?, :start_date => start_date, :end_date => end_date
 
     #p opts
     prepay = opts[:prepay]
@@ -727,13 +738,13 @@ class SupportDeal < ActiveRecord::Base
     until (year > end_year && month == 1) || (month > end_month && year == end_year) do
       #logger.debug "month start " + Time.now.to_f.to_s
       sum = BigDecimal('0')
-      hw_line_items_for_payment_schedule.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * hw_disc}
+      hw_line_items_for_payment_schedule.each { |n| sum += n.list_price_for_month(:year => year, :month => month) * hw_disc }
       hw_pay_sched << sum
       sum = BigDecimal('0')
-      sw_line_items_for_payment_schedule.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * sw_disc}
+      sw_line_items_for_payment_schedule.each { |n| sum += n.list_price_for_month(:year => year, :month => month) * sw_disc }
       sw_pay_sched << sum
       sum = BigDecimal('0')
-      srv_line_items_for_payment_schedule.each {|n| sum += n.list_price_for_month(:year => year, :month => month) * srv_disc}
+      srv_line_items_for_payment_schedule.each { |n| sum += n.list_price_for_month(:year => year, :month => month) * srv_disc }
       srv_pay_sched << sum
 
       year += 1 if month == 12
@@ -805,14 +816,14 @@ class SupportDeal < ActiveRecord::Base
   def unearned_revenue_schedule_array_for_twomonthsfree(opts = {})
     opts.reverse_merge! :start_date => start_date, :end_date => end_date
     ps_array = payment_schedule(:multiyear => multiyear?, :prepay => prepay?, :start_date => opts[:start_date], :end_date => opts[:end_date])
-    ps_array.collect! {|x| x * BigDecimal.new("12")/BigDecimal.new("14")}
+    ps_array.collect! { |x| x * BigDecimal.new("12")/BigDecimal.new("14") }
     ps_array
   end
 
   def unearned_revenue_schedule_array_for_bundled(opts = {})
     monthly_revenue = total_revenue / 12
 
-    opts.reverse_merge! :multiyear=> false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
+    opts.reverse_merge! :multiyear => false, :prepay => false, :start_date => self.start_date, :end_date => self.end_date
 
     month = opts[:start_date].month
     year = opts[:start_date].year
@@ -829,7 +840,7 @@ class SupportDeal < ActiveRecord::Base
       elsif (end_date.month < month && end_date.year == year) || (end_date.year < year)
         @payment_schedule << BigDecimal('0')
       else
-        days_in_month = BigDecimal(Time.days_in_month(month,year).to_s)
+        days_in_month = BigDecimal(Time.days_in_month(month, year).to_s)
 
         if start_date.month == month && start_date.year == year
           #beginning month
@@ -860,14 +871,14 @@ class SupportDeal < ActiveRecord::Base
   end
 
   def self.all_sales_reps
-    User.find(self.all(:select => 'DISTINCT sales_rep_id').map(&:sales_rep_id)).sort_by {|r| r.full_name}
+    User.find(self.all(:select => 'DISTINCT sales_rep_id').map(&:sales_rep_id)).sort_by { |r| r.full_name }
   end
 
-protected
+  protected
 
   # This method updates the account_name field from SugarCRM for all the Contracts with a matching account_id
   def update_account_name_from_sugar
-    SupportDeal.update_all(["account_name = ?", sugar_acct && sugar_acct.name ], ["account_id = ?", account_id])
+    SupportDeal.update_all(["account_name = ?", sugar_acct && sugar_acct.name], ["account_id = ?", account_id])
   end
 
   # Returns an Array of strings giving possible alternate serial numbers based
@@ -876,25 +887,25 @@ protected
     #check for similar serial numbers
     possible_serial_nums = []
     patterns = [
-      ["0","O"],
-      ["O","0"],
-      ["1","I"],
-      ["I","1"],
-      ["S","5"],
-      ["5","S"],
-      ["O","Q"],
-      ["Q","O"],
-      ["0","Q"],
-      ["Q","0"],
-      ["B","8"],
-      ["8","B"],
-      ["U","V"],
-      ["V","U"]
-      ]
+        ["0", "O"],
+        ["O", "0"],
+        ["1", "I"],
+        ["I", "1"],
+        ["S", "5"],
+        ["5", "S"],
+        ["O", "Q"],
+        ["Q", "O"],
+        ["0", "Q"],
+        ["Q", "0"],
+        ["B", "8"],
+        ["8", "B"],
+        ["U", "V"],
+        ["V", "U"]
+    ]
     sn_arr = serial_num.split(//)
     patterns.each do |pattern|
       sn_arr = serial_num.split(//)
-      sn_arr.each_with_index do |letter,position|
+      sn_arr.each_with_index do |letter, position|
         sn_arr = serial_num.split(//)
         if letter == pattern[0]
           sn_arr[position] = pattern[1]
@@ -918,7 +929,7 @@ protected
     chars.each do |char|
       sn_arr.each_index do |position|
         sn_arr = serial_num.split(//)
-        sn_arr.insert(position,char)
+        sn_arr.insert(position, char)
         possible_serial_nums << sn_arr.to_s
       end
     end
